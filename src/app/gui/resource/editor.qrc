@@ -1,0 +1,58 @@
+<RCC>
+    <qresource prefix="/toolbar">
+        <file>images/undo.png</file>
+        <file>images/redo.png</file>
+        <file>images/delete.png</file>
+        <file>images/copy.png</file>
+        <file>images/quit.png</file>
+        <file>images/cut.png</file>
+        <file>images/zoom_in.png</file>
+        <file>images/zoom_out.png</file>
+        <file>images/zoom_restore.png</file>
+        <file>images/save.png</file>
+        <file>images/new.png</file>
+        <file>images/open.png</file>
+        <file>images/baseCursor.png</file>
+        <file>images/handCursor.png</file>
+        <file>images/key.png</file>
+        <file>images/bringtofront.png</file>
+        <file>images/addExtra.png</file>
+        <file>images/pointer.png</file>
+        <file>images/sendtoback.png</file>
+        <file>images/foot.png</file>
+        <file>images/hand.png</file>
+        <file>images/saveall.png</file>
+        <file>images/find.png</file>
+        <file>images/setting.png</file>
+        <file>images/run.png</file>
+    </qresource>
+    <qresource prefix="/undodock">
+        <file>images/empty.png</file>
+    </qresource>
+    <qresource prefix="/menu">
+        <file>images/harmer.png</file>
+    </qresource>
+    <qresource prefix="/window"/>
+    <qresource prefix="/tools">
+        <file>images/unselect.png</file>
+        <file>images/check.png</file>
+        <file>images/add.png</file>
+        <file>images/selectall.png</file>
+        <file>images/about.png</file>
+        <file>images/clear.png</file>
+    </qresource>
+    <qresource prefix="/actionsdock">
+        <file>images/add.png</file>
+        <file>images/remove.png</file>
+        <file>images/pause.png</file>
+        <file>images/play.png</file>
+        <file>images/stop_play.png</file>
+    </qresource>
+    <qresource prefix="/other">
+        <file>images/controller3.png</file>
+        <file>images/controller2.png</file>
+        <file>images/controller.png</file>
+        <file>images/default.png</file>
+        <file>images/open2.png</file>
+    </qresource>
+</RCC>

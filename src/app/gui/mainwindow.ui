@@ -1,0 +1,996 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <author>bilge theall</author>
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1062</width>
+    <height>683</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Scene Editor</string>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
+  <property name="dockNestingEnabled">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>1</number>
+    </property>
+    <property name="leftMargin">
+     <number>1</number>
+    </property>
+    <property name="topMargin">
+     <number>1</number>
+    </property>
+    <property name="rightMargin">
+     <number>1</number>
+    </property>
+    <property name="bottomMargin">
+     <number>1</number>
+    </property>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="mainMenu">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1062</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <widget class="QMenu" name="menuRecentFiles">
+     <property name="title">
+      <string>&amp;Recent Files</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="actionClearRecentFiles"/>
+    </widget>
+    <addaction name="actionNew"/>
+    <addaction name="actionOpen"/>
+    <addaction name="menuRecentFiles"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSaveAll"/>
+    <addaction name="separator"/>
+    <addaction name="actionExport"/>
+    <addaction name="actionExportAs"/>
+    <addaction name="separator"/>
+    <addaction name="actionClose"/>
+    <addaction name="actionCloseAll"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionCut"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionPaste"/>
+    <addaction name="actionDelete"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreferences"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionAlwaysOnTop"/>
+    <addaction name="actionShowGrid"/>
+    <addaction name="separator"/>
+    <addaction name="actionZoomIn"/>
+    <addaction name="actionZoomOut"/>
+    <addaction name="actionZoomNormal"/>
+    <addaction name="separator"/>
+    <addaction name="actionDocumentProperties"/>
+   </widget>
+   <widget class="QMenu" name="menu_H">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="actionLicense"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout"/>
+    <addaction name="actionAboutQt"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+   <addaction name="menu_H"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QToolBar" name="MainToolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionNew"/>
+   <addaction name="actionOpen"/>
+   <addaction name="actionSave"/>
+   <addaction name="actionSaveAll"/>
+  </widget>
+  <widget class="QToolBar" name="EditToolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionUndo"/>
+   <addaction name="actionRedo"/>
+  </widget>
+  <widget class="QToolBar" name="RunToolBar">
+   <property name="windowTitle">
+    <string>toolBar_2</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionRun"/>
+  </widget>
+  <widget class="QToolBar" name="ActionsToolBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="windowTitle">
+    <string>toolBar_2</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionSelect"/>
+  </widget>
+  <action name="actionHelp">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/Kombine_toolbar_014.png</normaloff>:/toolbar/images/Kombine_toolbar_014.png</iconset>
+   </property>
+   <property name="text">
+    <string>Help</string>
+   </property>
+   <property name="shortcut">
+    <string>F12</string>
+   </property>
+  </action>
+  <action name="actionLicense">
+   <property name="text">
+    <string>License</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/Kombine_toolbar_029.png</normaloff>:/toolbar/images/Kombine_toolbar_029.png</iconset>
+   </property>
+   <property name="text">
+    <string>A&amp;bout</string>
+   </property>
+   <property name="toolTip">
+    <string>About</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/new.png</normaloff>:/toolbar/images/new.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;New</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/open.png</normaloff>:/toolbar/images/open.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/save.png</normaloff>:/toolbar/images/save.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save</string>
+   </property>
+   <property name="toolTip">
+    <string>Save current project.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/quit.png</normaloff>:/toolbar/images/quit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+E</string>
+   </property>
+  </action>
+  <action name="actionEnglish">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>English</string>
+   </property>
+  </action>
+  <action name="actionChinese">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Chinese</string>
+   </property>
+  </action>
+  <action name="actionZoomIn">
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/zoom_in.png</normaloff>:/toolbar/images/zoom_in.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom In</string>
+   </property>
+   <property name="toolTip">
+    <string>Zoom In</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionSelect">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/pointer.png</normaloff>:/toolbar/images/pointer.png</iconset>
+   </property>
+   <property name="text">
+    <string>Select</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle to select item</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+1</string>
+   </property>
+  </action>
+  <action name="actionZoomOut">
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/zoom_out.png</normaloff>:/toolbar/images/zoom_out.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom Out</string>
+   </property>
+   <property name="toolTip">
+    <string>Frame Zoom Out</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionZoomNormal">
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/zoom_restore.png</normaloff>:/toolbar/images/zoom_restore.png</iconset>
+   </property>
+   <property name="text">
+    <string>Normal Size</string>
+   </property>
+   <property name="toolTip">
+    <string>Restore</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+/</string>
+   </property>
+  </action>
+  <action name="actionShowHand">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/hand.png</normaloff>:/toolbar/images/hand.png</iconset>
+   </property>
+   <property name="text">
+    <string>show hand postion</string>
+   </property>
+   <property name="toolTip">
+    <string>Define Hand Position</string>
+   </property>
+  </action>
+  <action name="actionShowBase">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/foot.png</normaloff>:/toolbar/images/foot.png</iconset>
+   </property>
+   <property name="text">
+    <string>show base popstion</string>
+   </property>
+   <property name="toolTip">
+    <string>Define Foot Position</string>
+   </property>
+  </action>
+  <action name="actionAddFireObject">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/addExtra.png</normaloff>:/toolbar/images/addExtra.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add fire object</string>
+   </property>
+   <property name="toolTip">
+    <string>Add fire object</string>
+   </property>
+  </action>
+  <action name="actionPlay">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/Kombine_toolbar_005.png</normaloff>:/toolbar/images/Kombine_toolbar_005.png</iconset>
+   </property>
+   <property name="text">
+    <string>play</string>
+   </property>
+   <property name="toolTip">
+    <string>Play Action</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="actionPause">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/Kombine_toolbar_004.png</normaloff>:/toolbar/images/Kombine_toolbar_004.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pause</string>
+   </property>
+   <property name="toolTip">
+    <string>Pause Action</string>
+   </property>
+   <property name="shortcut">
+    <string>F6</string>
+   </property>
+  </action>
+  <action name="actionNextFrame">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/Kombine_toolbar_002.png</normaloff>:/toolbar/images/Kombine_toolbar_002.png</iconset>
+   </property>
+   <property name="text">
+    <string>nextFrame</string>
+   </property>
+   <property name="toolTip">
+    <string>Next Frame</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
+   </property>
+  </action>
+  <action name="actionLastFrame">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/Kombine_toolbar_001.png</normaloff>:/toolbar/images/Kombine_toolbar_001.png</iconset>
+   </property>
+   <property name="text">
+    <string>lastFrame</string>
+   </property>
+   <property name="toolTip">
+    <string>Last Frame</string>
+   </property>
+   <property name="shortcut">
+    <string>F10</string>
+   </property>
+  </action>
+  <action name="actionDeleteObj">
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/delete.png</normaloff>:/toolbar/images/delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>deleteObj</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete Object</string>
+   </property>
+  </action>
+  <action name="actionPlayFast">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/Kombine_toolbar_003.png</normaloff>:/toolbar/images/Kombine_toolbar_003.png</iconset>
+   </property>
+   <property name="text">
+    <string>playFast</string>
+   </property>
+   <property name="toolTip">
+    <string>Play Action Fast</string>
+   </property>
+   <property name="shortcut">
+    <string>F7</string>
+   </property>
+  </action>
+  <action name="actionPlaySlow">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/Kombine_toolbar_006.png</normaloff>:/toolbar/images/Kombine_toolbar_006.png</iconset>
+   </property>
+   <property name="text">
+    <string>playSlow</string>
+   </property>
+   <property name="toolTip">
+    <string>Play Action Slow</string>
+   </property>
+   <property name="shortcut">
+    <string>F8</string>
+   </property>
+  </action>
+  <action name="actionFramesList">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Frames List</string>
+   </property>
+  </action>
+  <action name="actionViewActions">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Action</string>
+   </property>
+  </action>
+  <action name="actionViewSounds">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Sound</string>
+   </property>
+  </action>
+  <action name="actionViewProperties">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Property</string>
+   </property>
+  </action>
+  <action name="actionViewPlayer">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Action Player</string>
+   </property>
+  </action>
+  <action name="actionMapEditor">
+   <property name="text">
+    <string>&amp;Map Editor </string>
+   </property>
+  </action>
+  <action name="actionMaterialEditor">
+   <property name="text">
+    <string>M&amp;aterial Editor</string>
+   </property>
+  </action>
+  <action name="actionWeaponEditor">
+   <property name="text">
+    <string>&amp;Weapon Editor</string>
+   </property>
+  </action>
+  <action name="actionPaticle_Editor">
+   <property name="text">
+    <string>Paticle Editor</string>
+   </property>
+  </action>
+  <action name="actionClearRecentFiles">
+   <property name="text">
+    <string>&amp;Clear</string>
+   </property>
+  </action>
+  <action name="actionViewPaticles">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Pati&amp;cles</string>
+   </property>
+  </action>
+  <action name="actionViewFrames">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Frames</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+   <property name="toolTip">
+    <string>Close current project.</string>
+   </property>
+  </action>
+  <action name="actionShowExtraObjects">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/main/images/pt29_a3.bmp</normaloff>:/main/images/pt29_a3.bmp</iconset>
+   </property>
+   <property name="text">
+    <string>show extra objects</string>
+   </property>
+  </action>
+  <action name="actionAddCollideArea">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/collide_area.png</normaloff>:/toolbar/images/collide_area.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add collide area</string>
+   </property>
+   <property name="toolTip">
+    <string>Add collision area</string>
+   </property>
+  </action>
+  <action name="actionShowGrid">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Display Grid</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/images/16x16/edit-paste.png</normaloff>:/images/16x16/edit-paste.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Paste</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/copy.png</normaloff>:/toolbar/images/copy.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Copy</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/quit.png</normaloff>:/toolbar/images/quit.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
+   </property>
+  </action>
+  <action name="actionCut">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/cut.png</normaloff>:/toolbar/images/cut.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cu&amp;t</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/delete.png</normaloff>:/toolbar/images/delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Delete</string>
+   </property>
+   <property name="iconText">
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Pre&amp;ferences...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
+   </property>
+  </action>
+  <action name="actionSaveAll">
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/saveall.png</normaloff>:/toolbar/images/saveall.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save All</string>
+   </property>
+   <property name="toolTip">
+    <string>Save all project.</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>&amp;Export</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionReload">
+   <property name="text">
+    <string>Reload</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionCloseAll">
+   <property name="text">
+    <string>C&amp;lose All</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+W</string>
+   </property>
+  </action>
+  <action name="actionCharacterProperties">
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/menu/images/harmer.png</normaloff>:/menu/images/harmer.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edit Properties</string>
+   </property>
+   <property name="toolTip">
+    <string>View and edit character properties</string>
+   </property>
+  </action>
+  <action name="actionDocumentation">
+   <property name="text">
+    <string>Documentation</string>
+   </property>
+  </action>
+  <action name="actionBecomePatron">
+   <property name="text">
+    <string>Become a Patron</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>-</string>
+   </property>
+  </action>
+  <action name="actionDocumentProperties">
+   <property name="text">
+    <string>Project Properties</string>
+   </property>
+  </action>
+  <action name="actionAddAction">
+   <property name="text">
+    <string>Add Action</string>
+   </property>
+  </action>
+  <action name="actionExportAs">
+   <property name="text">
+    <string>Export As</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+E</string>
+   </property>
+  </action>
+  <action name="actionAddArea">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/tools/images/add.png</normaloff>:/tools/images/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add area</string>
+   </property>
+   <property name="toolTip">
+    <string>Add area</string>
+   </property>
+  </action>
+  <action name="actionAboutQt">
+   <property name="text">
+    <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="text">
+    <string>SaveAs</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/redo.png</normaloff>:/toolbar/images/redo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Redo</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/undo.png</normaloff>:/toolbar/images/undo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Undo</string>
+   </property>
+  </action>
+  <action name="actionAlwaysOnTop">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>AlwaysOnTop</string>
+   </property>
+  </action>
+  <action name="actionRemoveArea">
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/actionsdock/images/remove.png</normaloff>:/actionsdock/images/remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>RemoveArea</string>
+   </property>
+  </action>
+  <action name="actionAddTerrianArea">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/terrian_area.png</normaloff>:/toolbar/images/terrian_area.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add terrian area</string>
+   </property>
+   <property name="toolTip">
+    <string>Add terrian area</string>
+   </property>
+  </action>
+  <action name="actionAddAttackArea">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/attack_area.png</normaloff>:/toolbar/images/attack_area.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add attack area</string>
+   </property>
+   <property name="toolTip">
+    <string>Add attack area</string>
+   </property>
+  </action>
+  <action name="actionAddUndertakeArea">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/undertake_area.png</normaloff>:/toolbar/images/undertake_area.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add undertake area</string>
+   </property>
+   <property name="toolTip">
+    <string>Add undertake area</string>
+   </property>
+  </action>
+  <action name="actionShowCollideArea">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/collide_area.png</normaloff>:/toolbar/images/collide_area.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show collide area</string>
+   </property>
+   <property name="toolTip">
+    <string>Show collision area</string>
+   </property>
+  </action>
+  <action name="actionShowTerrianArea">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/terrian_area.png</normaloff>:/toolbar/images/terrian_area.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show terrian area</string>
+   </property>
+   <property name="toolTip">
+    <string>Show terrian area</string>
+   </property>
+  </action>
+  <action name="actionShowAttackArea">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/attack_area.png</normaloff>:/toolbar/images/attack_area.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show attack area</string>
+   </property>
+   <property name="toolTip">
+    <string>Show attack area</string>
+   </property>
+  </action>
+  <action name="actionShowUndertakeArea">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/undertake_area.png</normaloff>:/toolbar/images/undertake_area.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show undertake area</string>
+   </property>
+   <property name="toolTip">
+    <string>Show undertake area</string>
+   </property>
+  </action>
+  <action name="actionRun">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/toolbar/images/run.png</normaloff>:/toolbar/images/run.png</iconset>
+   </property>
+   <property name="text">
+    <string>Run</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="resource/editor.qrc"/>
+ </resources>
+ <connections/>
+</ui>

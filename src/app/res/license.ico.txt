@@ -1,0 +1,10 @@
+图标尺寸
+256×256PX
+图标风格组
+meow-icons
+图标作者
+meow-icons
+图标作者网站
+http://iconka.com
+图标使用说明
+Free for commercial use (Link to author)
