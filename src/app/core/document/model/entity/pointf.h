@@ -1,16 +1,16 @@
-#ifndef TPOINT_H
-#define TPOINT_H
+#ifndef TPOINTF_H
+#define TPOINTF_H
 
 #include "../../base/io.h"
 
 #include <QList>
-#include <QPoint>
+#include <QPointF>
 #include <QDataStream>
 
-class TPoint : public QPoint, TIO
+class TPointF : public QPointF, TIO
 {
 public:
-    TPoint();
+    TPointF();
 
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
@@ -18,6 +18,6 @@ public:
 private:
 };
 
-typedef QList<TPoint*> TPointList;
+typedef QList<TPointF*> TPointFList;
 
-#endif // TPOINT_H
+#endif // TPOINTF_H

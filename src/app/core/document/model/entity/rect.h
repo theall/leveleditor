@@ -1,23 +1,21 @@
-#ifndef TPOINT_H
-#define TPOINT_H
+#ifndef TRECT_H
+#define TRECT_H
 
 #include "../../base/io.h"
 
 #include <QList>
-#include <QPoint>
+#include <QRect>
 #include <QDataStream>
 
-class TPoint : public QPoint, TIO
+class TRect : public QRect, TIO
 {
 public:
-    TPoint();
-
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
 
 private:
 };
 
-typedef QList<TPoint*> TPointList;
+typedef QList<TRect*> TRectList;
 
-#endif // TPOINT_H
+#endif // TRECT_H

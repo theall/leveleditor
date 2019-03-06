@@ -2,6 +2,7 @@
 #define TWALLSMODEL_H
 
 #include "../base/io.h"
+#include "entity/wall.h"
 
 #include <QAbstractTableModel>
 
@@ -22,6 +23,9 @@ public:
     int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
+
+private:
+    TWallList mWallList;
 };
 
 #endif // TWALLSMODEL_H

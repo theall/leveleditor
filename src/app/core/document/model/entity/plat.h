@@ -22,8 +22,9 @@ public:
 private:
     TDocument *mDocument;
     QPixmap mPixmap;
+    QList<QPoint> mPointList;
     void initPropertySheet();
 };
-typedef QList<TPlat*> TPlatsList;
+typedef QList<TPlat*> TPlatList;
 
 #endif // TPLAT_H

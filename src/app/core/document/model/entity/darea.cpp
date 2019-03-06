@@ -1,11 +1,13 @@
 #include "darea.h"
+#include "../../base/tr.h"
+
 #include <QRect>
 
-static const char *P_RECT = "Area";
-static const char *P_FLEE_DIR = "Flee Direction";
-static const char *P_TYPE = "Type";
-static const char *P_TARGET = "Target";
-static const char *P_MOVE_BY = "Move By";
+static const QString P_RECT = T("Area");
+static const QString P_FLEE_DIR = T("Flee Direction");
+static const QString P_TYPE = T("Type");
+static const QString P_TARGET = T("Target");
+static const QString P_MOVE_BY = T("Move By");
 
 TDArea::TDArea(QObject *parent) :
     TPropertyObject(parent)

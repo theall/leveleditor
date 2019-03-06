@@ -78,7 +78,7 @@ bool Utils::exploreFile(QString fileName)
     return ret;
 }
 
-void Utils::cpy2wchar(wchar_t *dest, QString source)
+void Utils::cpy2wchar(wchar_t *dest, const QString &source)
 {
     if(dest)
     {

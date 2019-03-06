@@ -20,6 +20,6 @@ private:
     void initPropertySheet();
 };
 
-typedef QList<TDArea*> TDAreasList;
+typedef QList<TDArea*> TDAreaList;
 
 #endif // TDAREA_H

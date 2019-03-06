@@ -1,17 +1,17 @@
-#ifndef TAREA_H
-#define TAREA_H
+#ifndef TTILE_H
+#define TTILE_H
 
 #include <QList>
 
 #include "../../base/io.h"
 #include "../../base/propertyobject.h"
 
-class TArea : public TPropertyObject, TIO
+class TTile : public TPropertyObject, TIO
 {
     Q_OBJECT
 
 public:
-    TArea(QObject *parent = nullptr);
+    TTile(QObject *parent = nullptr);
 
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
@@ -20,6 +20,6 @@ private:
     void initPropertySheet();
 };
 
-typedef QList<TArea*> TAreaList;
+typedef QList<TTile*> TTileList;
 
-#endif // TAREA_H
+#endif // TTILE_H

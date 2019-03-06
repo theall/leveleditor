@@ -81,7 +81,7 @@ namespace Utils{
     QString secToTimeStr(long seconds, bool padZero=true);
     QString absoluteFilePath(QString fileName);
     bool exploreFile(QString fileName);
-    void cpy2wchar(wchar_t *dest, QString source);
+    void cpy2wchar(wchar_t *dest, const QString &source);
 }
 
 #endif // UTILS_H

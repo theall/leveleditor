@@ -1,17 +1,17 @@
-#ifndef TAREA_H
-#define TAREA_H
+#ifndef TRESPAWN_H
+#define TRESPAWN_H
 
 #include <QList>
 
 #include "../../base/io.h"
 #include "../../base/propertyobject.h"
 
-class TArea : public TPropertyObject, TIO
+class TRespawn : public TPropertyObject, TIO
 {
     Q_OBJECT
 
 public:
-    TArea(QObject *parent = nullptr);
+    TRespawn(QObject *parent = nullptr);
 
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
@@ -20,6 +20,6 @@ private:
     void initPropertySheet();
 };
 
-typedef QList<TArea*> TAreaList;
+typedef QList<TRespawn*> TRespawnList;
 
-#endif // TAREA_H
+#endif // TRESPAWN_H

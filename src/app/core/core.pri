@@ -30,7 +30,14 @@ SOURCES += \
     $$PWD/document/model/entity/point.cpp \
     $$PWD/document/model/entity/area.cpp \
     $$PWD/document/model/entity/darea.cpp \
-    $$PWD/document/model/entity/plat.cpp
+    $$PWD/document/model/entity/plat.cpp \
+    $$PWD/document/model/entity/box.cpp \
+    $$PWD/document/model/entity/wall.cpp \
+    $$PWD/document/model/entity/tile.cpp \
+    $$PWD/document/model/entity/respawn.cpp \
+    $$PWD/document/model/entity/pointf.cpp \
+    $$PWD/document/model/entity/rect.cpp \
+    $$PWD/document/model/entity/trigger.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -64,4 +71,12 @@ HEADERS  += \
     $$PWD/document/model/entity/point.h \
     $$PWD/document/model/entity/area.h \
     $$PWD/document/model/entity/darea.h \
-    $$PWD/document/model/entity/plat.h
+    $$PWD/document/model/entity/plat.h \
+    $$PWD/document/model/entity/box.h \
+    $$PWD/document/base/tr.h \
+    $$PWD/document/model/entity/wall.h \
+    $$PWD/document/model/entity/tile.h \
+    $$PWD/document/model/entity/respawn.h \
+    $$PWD/document/model/entity/pointf.h \
+    $$PWD/document/model/entity/rect.h \
+    $$PWD/document/model/entity/trigger.h

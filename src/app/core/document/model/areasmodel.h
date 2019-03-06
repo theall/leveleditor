@@ -23,7 +23,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
 private:
-    TAreasList mAreasList;
+    TAreaList mAreaList;
 };
 
 #endif // TAREASMODEL_H

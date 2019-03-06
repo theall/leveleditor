@@ -8,19 +8,19 @@ TAreasModel::TAreasModel(QObject *parent) :
 
 void TAreasModel::clear()
 {
-    mAreasList.clear();
+    mAreaList.clear();
 }
 
 void TAreasModel::readFromStream(QDataStream &stream)
 {
     int areaAmount = 0;
     stream >> areaAmount;
-    mAreasList.clear();
+    mAreaList.clear();
 
     for(int i=0;i<areaAmount;i++) {
         TArea *area = new TArea(this);
         area->readFromStream(stream);
-        mAreasList.append(area);
+        mAreaList.append(area);
     }
 }
 
@@ -32,7 +32,7 @@ void TAreasModel::saveToStream(QDataStream &stream) const
 int TAreasModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return mAreasList.size();
+    return mAreaList.size();
 }
 
 int TAreasModel::columnCount(const QModelIndex &parent) const
@@ -43,10 +43,11 @@ int TAreasModel::columnCount(const QModelIndex &parent) const
 
 QVariant TAreasModel::data(const QModelIndex &index, int role) const
 {
-    if(role == Qt::DisplayRole)
-    if(index.isValid()) {
-        int row = index.row();
-        if(row>=0 && row<mAreasList.size()) {
+    int row = index.row();
+    if(row>=0 && row<mAreaList.size())
+    {
+        if(role==Qt::DisplayRole)
+        {
             return tr("Area %d").arg(row+1);
         }
     }

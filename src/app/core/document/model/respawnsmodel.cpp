@@ -8,12 +8,19 @@ TRespawnsModel::TRespawnsModel(QObject *parent) :
 
 void TRespawnsModel::clear()
 {
-
+    mRespawnPointList.clear();
 }
 
 void TRespawnsModel::readFromStream(QDataStream &stream)
 {
-
+    int respawnPointAmount = 0;
+    stream >> respawnPointAmount;
+    mRespawnPointList.clear();
+    for(int i=0;i<respawnPointAmount;i++) {
+        TPoint *respawnPoint = new TPoint;
+        respawnPoint->readFromStream(stream);
+        mRespawnPointList.append(respawnPoint);
+    }
 }
 
 void TRespawnsModel::saveToStream(QDataStream &stream) const
@@ -23,15 +30,23 @@ void TRespawnsModel::saveToStream(QDataStream &stream) const
 
 int TRespawnsModel::rowCount(const QModelIndex &parent) const
 {
-
+    return mRespawnPointList.size();
 }
 
 int TRespawnsModel::columnCount(const QModelIndex &parent) const
 {
-
+    return 1;
 }
 
 QVariant TRespawnsModel::data(const QModelIndex &index, int role) const
 {
-
+    int row = index.row();
+    if(row>=0 && row<mRespawnPointList.size())
+    {
+        if(role==Qt::DisplayRole)
+        {
+            return tr("Respawn Point %d").arg(row+1);
+        }
+    }
+    return QVariant();
 }

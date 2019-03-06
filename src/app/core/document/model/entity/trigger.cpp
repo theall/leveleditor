@@ -1,0 +1,104 @@
+#include "trigger.h"
+#include "point.h"
+#include "rect.h"
+#include "../../base/tr.h"
+
+static const QString P_RECT = T("Rect");
+static const QString P_WAY = T("Way");
+static const QString P_ON = T("On");
+static const QString P_ACTION = T("Action");
+static const QString P_PASS_BY = T("Pass By");
+static const QString P_OBJECT_HIT = T("Object Hit");
+static const QString P_EVENT = T("Event");
+static const QString P_DRAW = T("Draw");
+static const QString P_IMAGE_NO = T("Image NO");
+static const QString P_IMAGE_POS = T("Image Pos");
+static const QString P_AFFECT = T("Affect");
+static const QString P_SOUND = T("Sound");
+static const QString P_FOLLOW = T("Follow");
+static const QString P_PLATFORM_POS = T("Platform Pos");
+static const QString P_ON_STATUS = T("On Status");
+static const QString P_OFF_STATUS = T("Off Status");
+
+TTrigger::TTrigger(QObject *parent) :
+    TPropertyObject(parent)
+{
+    initPropertySheet();
+}
+
+void TTrigger::saveToStream(QDataStream &stream) const
+{
+
+}
+
+void TTrigger::readFromStream(QDataStream &stream)
+{
+    QRect rect;
+    int way;
+    int on;
+    int action;
+    int passBy;
+    int objHit;
+    int event;
+    int draw;
+    int imageN;
+    QPoint imagePos;
+    int affect;
+    int sound;
+    int follow;
+    QPoint platPos;
+    int onStatus;
+    int offStatus;
+    stream >> rect;
+    stream >> way;
+    stream >> on;
+    stream >> action;
+    stream >> passBy;
+    stream >> objHit;
+    stream >> event;
+    stream >> draw;
+    stream >> imageN;
+    stream >> imagePos;
+    stream >> affect;
+    stream >> sound;
+    stream >> follow;
+    stream >> platPos;
+    stream >> onStatus;
+    stream >> offStatus;
+    mPropertySheet->setValue(P_RECT, rect);
+    mPropertySheet->setValue(P_WAY, way);
+    mPropertySheet->setValue(P_ON, on);
+    mPropertySheet->setValue(P_ACTION, action);
+    mPropertySheet->setValue(P_PASS_BY, passBy);
+    mPropertySheet->setValue(P_OBJECT_HIT, objHit);
+    mPropertySheet->setValue(P_EVENT, event);
+    mPropertySheet->setValue(P_DRAW, draw);
+    mPropertySheet->setValue(P_IMAGE_NO, imageN);
+    mPropertySheet->setValue(P_IMAGE_POS, imagePos);
+    mPropertySheet->setValue(P_AFFECT, affect);
+    mPropertySheet->setValue(P_SOUND, sound);
+    mPropertySheet->setValue(P_FOLLOW, follow);
+    mPropertySheet->setValue(P_PLATFORM_POS, platPos);
+    mPropertySheet->setValue(P_ON_STATUS, onStatus);
+    mPropertySheet->setValue(P_OFF_STATUS, offStatus);
+}
+
+void TTrigger::initPropertySheet()
+{
+    mPropertySheet->addProperty(PT_RECT, P_RECT, PID_TRIGGER_RECT);
+    mPropertySheet->addProperty(PT_INT, P_WAY, PID_TRIGGER_WAY);
+    mPropertySheet->addProperty(PT_INT, P_ON, PID_TRIGGER_ON);
+    mPropertySheet->addProperty(PT_INT, P_ACTION, PID_TRIGGER_ACTION);
+    mPropertySheet->addProperty(PT_INT, P_PASS_BY, PID_TRIGGER_PASS_BY);
+    mPropertySheet->addProperty(PT_INT, P_OBJECT_HIT, PID_TRIGGER_OBJECT_HIT);
+    mPropertySheet->addProperty(PT_INT, P_EVENT, PID_TRIGGER_EVENT);
+    mPropertySheet->addProperty(PT_INT, P_DRAW, PID_TRIGGER_DRAW);
+    mPropertySheet->addProperty(PT_INT, P_IMAGE_NO, PID_TRIGGER_IMAGE_NO);
+    mPropertySheet->addProperty(PT_POINT, P_IMAGE_POS, PID_TRIGGER_IMAGE_POS);
+    mPropertySheet->addProperty(PT_INT, P_AFFECT, PID_TRIGGER_AFFECT);
+    mPropertySheet->addProperty(PT_INT, P_SOUND, PID_TRIGGER_SOUND);
+    mPropertySheet->addProperty(PT_INT, P_FOLLOW, PID_TRIGGER_FOLLOW);
+    mPropertySheet->addProperty(PT_POINT, P_PLATFORM_POS, PID_TRIGGER_PLATFORM_POS);
+    mPropertySheet->addProperty(PT_INT, P_ON_STATUS, PID_TRIGGER_ON_STATUS);
+    mPropertySheet->addProperty(PT_INT, P_OFF_STATUS, PID_TRIGGER_OFF_STATUS);
+}

@@ -2,11 +2,13 @@
 #include "base/filesystemwatcher.h"
 #include "base/cachedpixmap.h"
 #include "base/cachedsound.h"
+#include "base/tr.h"
+
 #include "undocommand/layersundocommand.h"
 
 #include <QUuid>
 
-static const char *P_NAME = "Name";
+static const QString P_NAME = T("Name");
 
 static const char *ATTR_ENUMNAMES = "enumNames";
 static const char *RES_PATH_IMAGE = "image";
@@ -155,6 +157,8 @@ bool TDocument::save(const QString &fileName)
         // Generate data stream first to avoid truncate map file while exception occoured
         QByteArray byteArray;
         QDataStream stream(&byteArray, QIODevice::WriteOnly);
+        stream.setByteOrder(QDataStream::LittleEndian);
+        stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
         mSceneModel->saveToStream(stream);
         if(!byteArray.isEmpty())
         {
@@ -251,6 +255,7 @@ void TDocument::load(const QString &file)
             QFile f(file);
             QDataStream stream(&f);
             stream.setByteOrder(QDataStream::LittleEndian);
+            stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
             f.open(QIODevice::ReadOnly);
             mSceneModel->readFromStream(stream);
         } catch (...) {

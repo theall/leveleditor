@@ -1,18 +1,19 @@
 #include "sceneModel.h"
 #include "entity/point.h"
+#include "../base/tr.h"
 
-static const char *P_BACKGROUND_COLOR = "Background Color";
-static const char *P_FLAG1 = "Flag Point 1";
-static const char *P_FLAG2 = "Flag Point 2";
-static const char *P_SCROLLABLE = "Scrollable";
-static const char *P_START_POINT = "Start Point";
-static const char *P_FIGHT_MODE = "Fight Mode";
-static const char *P_NUMBER = "Number";
-static const char *P_SCREEN_LOCK = "Screen Lock";
-static const char *P_CAMERA = "Camera";
-static const char *P_AIR_STRIKE = "Air Strike";
-static const char *P_MUSIC1 = "Music 1";
-static const char *P_MUSIC2 = "Music 2";
+static const QString P_BACKGROUND_COLOR = T("Background Color");
+static const QString P_FLAG1 = T("Flag Point 1");
+static const QString P_FLAG2 = T("Flag Point 2");
+static const QString P_SCROLLABLE = T("Scrollable");
+static const QString P_START_POINT = T("Start Point");
+static const QString P_FIGHT_MODE = T("Fight Mode");
+static const QString P_NUMBER = T("Number");
+static const QString P_SCREEN_LOCK = T("Screen Lock");
+static const QString P_CAMERA = T("Camera");
+static const QString P_AIR_STRIKE = T("Air Strike");
+static const QString P_MUSIC1 = T("Music 1");
+static const QString P_MUSIC2 = T("Music 2");
 
 TSceneModel::TSceneModel(QObject *parent) :
     TPropertyObject(parent)
@@ -98,17 +99,22 @@ void TSceneModel::readFromStream(QDataStream &stream)
     stream >> r;
     stream >> g;
     stream >> b;
-    mPropertySheet->setValue(P_BACKGROUND_COLOR, QColor(r,g,b));
+
+    mLayersModel->readFromStream(stream);
+    mRespawnsModel->readFromStream(stream);
 
     TPoint flag1, flag2;
     flag1.readFromStream(stream);
     flag2.readFromStream(stream);
-    mPropertySheet->setValue(P_FLAG1, flag1);
-    mPropertySheet->setValue(P_FLAG2, flag2);
 
-    mLayersModel->readFromStream(stream);
-    mRespawnsModel->readFromStream(stream);
+    int scrollMap;
+    stream >> scrollMap;
+
     mEventsModel->readFromStream(stream);
     mTriggersModel->readFromStream(stream);
     mAnimationsModel->readFromStream(stream);
+
+    mPropertySheet->setValue(P_BACKGROUND_COLOR, QColor(r,g,b));
+    mPropertySheet->setValue(P_FLAG1, flag1);
+    mPropertySheet->setValue(P_FLAG2, flag2);
 }

@@ -18,8 +18,8 @@ void TPlat::readFromStream(QDataStream &stream)
 {
     float x;
     float y;
-    int xSpeed;
-    int ySpeed;
+    float xSpeed;
+    float ySpeed;
     int danger;
     int draw;
     int width;
@@ -54,12 +54,13 @@ void TPlat::readFromStream(QDataStream &stream)
     stream >> sound;
     stream >> breakable;
     stream >> eventN2;
+    mPointList.clear();
+    for(int i=0;i<pointsAmount;i++) {
+        QPoint point;
+        stream >> point;
+    }
     if(mDocument) {
         mPixmap = mDocument->getPixmap(QString::asprintf("plat%d.bmp", pic))->pixmap();
-    }
-    for(int i=0;i<pointsAmount;i++) {
-        TPoint point;
-        point.readFromStream(stream);
     }
 }
 
