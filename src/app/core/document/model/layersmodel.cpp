@@ -117,6 +117,13 @@ int TLayersModel::count()
     return mLayerList.count();
 }
 
+void TLayersModel::render(QPainter *painter, const QRectF &rect)
+{
+    foreach (TLayer *layer, mLayerList) {
+        layer->render(painter, rect);
+    }
+}
+
 void TLayersModel::slotLayerNameChanged(const QString &newName)
 {
     Q_UNUSED(newName);

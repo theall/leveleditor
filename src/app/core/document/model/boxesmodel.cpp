@@ -30,11 +30,13 @@ void TBoxesModel::saveToStream(QDataStream &stream) const
 
 int TBoxesModel::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return mBoxList.size();
 }
 
 int TBoxesModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return 1;
 }
 

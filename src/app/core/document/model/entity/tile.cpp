@@ -1,5 +1,8 @@
 #include "tile.h"
 #include "../../base/tr.h"
+#include "../../base/findobj.h"
+#include "../../document.h"
+#include "../../../assets/cachedpixmap.h"
 
 #include <QPoint>
 #include <QPointF>
@@ -21,12 +24,16 @@ static const QString P_SCREEN_SPEED = T("Screen Speed");
 TTile::TTile(QObject *parent) :
     TPropertyObject(parent)
 {
+    FIND_OBJECT;
+
     initPropertySheet();
 }
 
 void TTile::saveToStream(QDataStream &stream) const
 {
-
+    QPointF pos1 = mPropertySheet->getValue(P_POS_1).toPointF();
+    stream << (float)pos1.x();
+    stream << (float)pos1.y();
 }
 
 void TTile::readFromStream(QDataStream &stream)
@@ -102,6 +109,21 @@ void TTile::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(P_FOLLOW_TYPE, followType);
     mPropertySheet->setValue(P_TARGET, target);
     mPropertySheet->setValue(P_SCREEN_SPEED, screenSpeed);
+
+    TPixmap *pixmap = mDocument->getPixmap(imagePath);
+    if(pixmap) {
+        mPixmap = pixmap->pixmap();
+        mRect.setTopLeft(pos1);
+        mRect.setSize(mPixmap.size());
+    }
+}
+
+void TTile::render(QPainter *painter, const QRectF &rect)
+{
+    if(rect.intersected(mRect).isEmpty())
+        return;
+
+    painter->drawPixmap(mRect.topLeft(), mPixmap);
 }
 
 void TTile::initPropertySheet()

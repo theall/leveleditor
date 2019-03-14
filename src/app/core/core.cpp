@@ -1,18 +1,23 @@
 #include "core.h"
 #include "../utils/preferences.h"
-#include "document/base/filesystemwatcher.h"
+#include "shared/filesystemwatcher.h"
+#include "assets/assetsmanager.h"
 
 TCore::TCore(QObject *parent) :
     QObject(parent)
-  , mPreferences(TPreferences::instance())
   , mFileWatcher(new TFileSystemWatcher(this))
 {
-
+    TPreferences::instance();
 }
 
 TCore::~TCore()
 {
 
+}
+
+void TCore::loadResource(const QString &path)
+{
+    TAssetsManager::getInstance()->setPath(path);
 }
 
 TDocument *TCore::open(const QString &file)
@@ -75,11 +80,6 @@ bool TCore::hasDirtyDocument()
 QList<TDocument *> TCore::documents() const
 {
     return mDocuments;
-}
-
-TFileSystemWatcher *TCore::fileWatcher() const
-{
-    return mFileWatcher;
 }
 
 void TCore::addDocument(TDocument *document)

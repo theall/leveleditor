@@ -30,6 +30,7 @@ public:
 
     TLayer *getLayer(int index);
     int count();
+    void render(QPainter *painter, const QRectF &rect);
 
 private slots:
     void slotLayerNameChanged(const QString &newName);

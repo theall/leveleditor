@@ -19,6 +19,8 @@ public:
     QString name() const;
     void setName(const QString &name);
 
+    void render(QPainter *painter, const QRectF &rect);
+
 private:
     QString mName;
     TDocument *mDocument;

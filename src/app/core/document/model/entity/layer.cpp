@@ -1,5 +1,6 @@
 #include "layer.h"
 #include "../../document.h"
+#include <utils/macro.h>
 
 TLayer::TLayer(const QString &name=QString(), QObject *parent) :
     TPropertyObject(parent)
@@ -21,7 +22,7 @@ TLayer::TLayer(const QString &name=QString(), QObject *parent) :
 
 TLayer::~TLayer()
 {
-
+    FREE_CONTAINER(mTileList);
 }
 
 QString TLayer::name() const
@@ -34,17 +35,25 @@ void TLayer::setName(const QString &name)
     mName = name;
 }
 
+void TLayer::render(QPainter *painter, const QRectF &rect)
+{
+    foreach (TTile *tile, mTileList) {
+        tile->render(painter, rect);
+    }
+}
+
 void TLayer::saveToStream(QDataStream &stream) const
 {
-
+    foreach (TTile *tile, mTileList) {
+        tile->saveToStream(stream);
+    }
 }
 
 void TLayer::readFromStream(QDataStream &stream)
 {
     int tileAmount = 0;
+    FREE_CONTAINER(mTileList);
     stream >> tileAmount;
-    mTileList.clear();
-
     for(int i=0;i<tileAmount;i++) {
         TTile *tile = new TTile(this);
         tile->readFromStream(stream);

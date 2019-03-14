@@ -1,5 +1,4 @@
 #include "sceneModel.h"
-#include "entity/point.h"
 #include "../base/tr.h"
 
 static const QString P_BACKGROUND_COLOR = T("Background Color");
@@ -42,6 +41,11 @@ TLayersModel *TSceneModel::layersModel() const
 TGraphicsScene *TSceneModel::graphicsScene() const
 {
     return mGraphicsScene;
+}
+
+void TSceneModel::render(QPainter *painter, const QRectF &rect)
+{
+    mLayersModel->render(painter, rect);
 }
 
 void TSceneModel::slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue)
@@ -103,9 +107,9 @@ void TSceneModel::readFromStream(QDataStream &stream)
     mLayersModel->readFromStream(stream);
     mRespawnsModel->readFromStream(stream);
 
-    TPoint flag1, flag2;
-    flag1.readFromStream(stream);
-    flag2.readFromStream(stream);
+    QPoint flag1, flag2;
+    stream >> flag1;
+    stream >> flag2;
 
     int scrollMap;
     stream >> scrollMap;

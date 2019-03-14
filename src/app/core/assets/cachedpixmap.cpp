@@ -1,5 +1,5 @@
 #include "cachedpixmap.h"
-#include "filesystemwatcher.h"
+#include "../shared/filesystemwatcher.h"
 
 #include <QDir>
 #include <QFile>

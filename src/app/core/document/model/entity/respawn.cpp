@@ -1,5 +1,4 @@
 #include "respawn.h"
-#include "point.h"
 #include "../../base/tr.h"
 
 #include <QPointF>
@@ -21,9 +20,9 @@ void TRespawn::saveToStream(QDataStream &stream) const
 
 void TRespawn::readFromStream(QDataStream &stream)
 {
-    TPoint start, respawn;
-    start.readFromStream(stream);
-    respawn.readFromStream(stream);
+    QPoint start, respawn;
+    stream >> start;
+    stream >> respawn;
     mPropertySheet->setValue(P_START, start);
     mPropertySheet->setValue(P_RESPAWN, respawn);
 }

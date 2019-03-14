@@ -1,7 +1,6 @@
 #include "document.h"
-#include "base/filesystemwatcher.h"
-#include "base/cachedpixmap.h"
-#include "base/cachedsound.h"
+#include "../shared/filesystemwatcher.h"
+#include "../assets/assetsmanager.h"
 #include "base/tr.h"
 
 #include "undocommand/layersundocommand.h"
@@ -10,18 +9,12 @@
 
 static const QString P_NAME = T("Name");
 
-static const char *ATTR_ENUMNAMES = "enumNames";
-static const char *RES_PATH_IMAGE = "image";
-static const char *RES_PATH_SOUND = "sound";
-
 TDocument::TDocument(const QString &file, QObject *parent) :
     TPropertyObject(parent)
   , mIsDirty(false)
   , mUndoStack(new QUndoStack(this))
   , mFileName(file)
   , mFileWatcher(new TFileSystemWatcher(this))
-  , mCachedPixmaps(new TCachedPixmap(this))
-  , mCachedSounds(new TCachedSound(this))
   , mSceneModel(new TSceneModel(this))
 {
     setObjectName("Document");
@@ -100,38 +93,6 @@ void TDocument::cmdRemoveLayer(int layerIndex)
     if(!layer)
         return;
     cmdRemoveLayer(layer);
-}
-
-TPixmap *TDocument::getPixmap(const QString &file) const
-{
-    return mCachedPixmaps->getPixmap(QFileInfo(file).fileName());
-}
-
-QString TDocument::getPixmapRelativePath(const QString &file) const
-{
-    QString path;
-    TPixmap *pixmap = mCachedPixmaps->getPixmap(file);
-    if(!pixmap)
-        return path;
-
-    path = pixmap->fileFullName();
-    return path.right(path.size() - mProjectRoot.size());
-}
-
-TSound *TDocument::getSound(const QString &file) const
-{
-    return mCachedSounds->getSound(QFileInfo(file).fileName());
-}
-
-QString TDocument::getSoundRelativePath(const QString &file) const
-{
-    QString path;
-    TSound *sound = mCachedSounds->getSound(file);
-    if(!sound)
-        return path;
-
-    path = sound->fileFullName();
-    return path.right(path.size() - mProjectRoot.size());
 }
 
 QString TDocument::baseName() const
@@ -220,19 +181,7 @@ QString TDocument::projectRoot() const
 void TDocument::setProjectRoot(const QString &projectRoot)
 {
     mProjectDir.setPath(projectRoot);
-    mSoundDir.setPath(mProjectDir.absoluteFilePath(RES_PATH_SOUND));
-
-    if(!mProjectDir.exists(RES_PATH_IMAGE))
-        mProjectDir.mkdir(RES_PATH_IMAGE);
-    if(!mSoundDir.exists())
-        mProjectDir.mkdir(RES_PATH_SOUND);
-
     mProjectRoot = projectRoot;
-
-    // Load image
-    mCachedPixmaps->setPath(mProjectDir.absoluteFilePath(RES_PATH_IMAGE));
-    // Load sound
-    mCachedSounds->setPath(mProjectDir.absoluteFilePath(RES_PATH_SOUND));
 }
 
 QString TDocument::projectName() const
@@ -316,38 +265,6 @@ void TDocument::slotDirectoryChanged(const QString &dir)
     Q_UNUSED(dir);
 }
 
-void TDocument::slotIconPropertyItemChanged(const QVariant &oldValue)
-{
-    Q_UNUSED(oldValue);
-
-    TPropertyItem *propertyItem = static_cast<TPropertyItem*>(sender());
-    if(!propertyItem)
-        return;
-
-    QString newPixmapFile = propertyItem->value().toString();
-    emit iconChanged(getPixmap(newPixmapFile));
-}
-
-QPixmap TDocument::getIcon() const
-{
-    return mIcon;
-}
-
-void TDocument::setIcon(const QPixmap &icon)
-{
-    mIcon = icon;
-}
-
-TCachedPixmap *TDocument::getCachedPixmaps() const
-{
-    return mCachedPixmaps;
-}
-
-TCachedSound *TDocument::getCachedSounds() const
-{
-    return mCachedSounds;
-}
-
 QDateTime TDocument::lastSaveTime() const
 {
     return mLastSaveTime;
@@ -356,4 +273,9 @@ QDateTime TDocument::lastSaveTime() const
 TGraphicsScene *TDocument::graphicsScene() const
 {
     return mSceneModel->graphicsScene();
+}
+
+TPixmap *TDocument::getPixmap(const QString &file)
+{
+    return TAssetsManager::getInstance()->getPixmap(file);
 }

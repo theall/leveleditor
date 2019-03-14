@@ -119,6 +119,8 @@ void TGraphicsScene::refresh()
 void TGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
     QGraphicsScene::drawBackground(painter, rect);
+
+
 }
 
 void TGraphicsScene::drawForeground(QPainter *painter, const QRectF &rect)

@@ -25,11 +25,13 @@ void TWallsModel::saveToStream(QDataStream &stream) const
 
 int TWallsModel::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return mWallList.size();
 }
 
 int TWallsModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return 1;
 }
 

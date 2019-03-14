@@ -2,11 +2,10 @@
 #define TPLAT_H
 
 #include <QList>
+#include <QPixmap>
 
-#include "point.h"
 #include "../../base/io.h"
 #include "../../base/propertyobject.h"
-#include "../../base/pixmap.h"
 
 class TDocument;
 class TPlat : public TPropertyObject, TIO

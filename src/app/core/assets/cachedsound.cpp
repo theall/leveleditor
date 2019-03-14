@@ -1,5 +1,5 @@
 #include "cachedsound.h"
-#include "filesystemwatcher.h"
+#include "../shared/filesystemwatcher.h"
 
 #include <QDebug>
 

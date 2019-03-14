@@ -2,8 +2,9 @@
 #define TRESPAWNSMODEL_H
 
 #include "../base/io.h"
-#include "entity/point.h"
 
+#include <QList>
+#include <QPoint>
 #include <QAbstractTableModel>
 
 class TRespawnsModel : public QAbstractTableModel, TIO
@@ -25,7 +26,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
 private:
-    TPointList mRespawnPointList;
+    QList<QPoint> mRespawnPointList;
 };
 
 #endif // TRESPAWNSMODEL_H

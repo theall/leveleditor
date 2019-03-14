@@ -1,12 +1,13 @@
 #ifndef CACHEDPIXMAP_H
 #define CACHEDPIXMAP_H
 
-#include "pixmap.h"
-
 #include <QDir>
 #include <QMap>
 #include <QMutex>
 #include <QThread>
+
+#include "pixmap.h"
+#include <utils/macro.h>
 
 class TFileSystemWatcher;
 class TCachedPixmap : public QThread

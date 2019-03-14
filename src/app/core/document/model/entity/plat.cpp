@@ -1,5 +1,4 @@
 #include "plat.h"
-#include "point.h"
 #include "../../document.h"
 
 TPlat::TPlat(QObject *parent) :

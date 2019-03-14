@@ -1,7 +1,8 @@
 #include "trigger.h"
-#include "point.h"
-#include "rect.h"
 #include "../../base/tr.h"
+
+#include <QRect>
+#include <QPoint>
 
 static const QString P_RECT = T("Rect");
 static const QString P_WAY = T("Way");

@@ -31,11 +31,13 @@ void TDAreasModel::saveToStream(QDataStream &stream) const
 
 int TDAreasModel::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return mDAreaList.size();
 }
 
 int TDAreasModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return 1;
 }
 

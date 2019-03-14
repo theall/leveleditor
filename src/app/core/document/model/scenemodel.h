@@ -23,8 +23,8 @@ public:
     TSceneModel(QObject *parent = nullptr);
 
     TLayersModel *layersModel() const;
-
     TGraphicsScene *graphicsScene() const;
+    void render(QPainter *painter, const QRectF &rect);
 
 private slots:
     void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);

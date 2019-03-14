@@ -17,8 +17,8 @@ void TRespawnsModel::readFromStream(QDataStream &stream)
     stream >> respawnPointAmount;
     mRespawnPointList.clear();
     for(int i=0;i<respawnPointAmount;i++) {
-        TPoint *respawnPoint = new TPoint;
-        respawnPoint->readFromStream(stream);
+        QPoint respawnPoint;
+        stream >> respawnPoint;
         mRespawnPointList.append(respawnPoint);
     }
 }
@@ -30,11 +30,13 @@ void TRespawnsModel::saveToStream(QDataStream &stream) const
 
 int TRespawnsModel::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return mRespawnPointList.size();
 }
 
 int TRespawnsModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return 1;
 }
 

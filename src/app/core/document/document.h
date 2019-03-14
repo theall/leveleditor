@@ -8,12 +8,9 @@
 
 #include "model/scenemodel.h"
 #include "base/propertyundocommand.h"
+#include "../assets/pixmap.h"
 
-class TPixmap;
-class TSound;
 class TPropertyObject;
-class TCachedPixmap;
-class TCachedSound;
 class TFileSystemWatcher;
 
 class TDocument : public TPropertyObject
@@ -32,11 +29,6 @@ public:
     void cmdAddLayer(const QString &name);
     void cmdRemoveLayer(TLayer *layer);
     void cmdRemoveLayer(int layerIndex);
-
-    TPixmap *getPixmap(const QString &file) const;
-    QString getPixmapRelativePath(const QString &file) const;
-    TSound *getSound(const QString &file) const;
-    QString getSoundRelativePath(const QString &file) const;
 
     QDir projectDir() const;
 
@@ -64,11 +56,7 @@ public:
     TLayersModel *layersModel() const;
     TGraphicsScene *graphicsScene() const;
 
-    TCachedPixmap *getCachedPixmaps() const;
-    TCachedSound *getCachedSounds() const;
-
-    QPixmap getIcon() const;
-    void setIcon(const QPixmap &icon);
+    TPixmap *getPixmap(const QString &file);
 
 signals:
     void projectFileChanged();
@@ -81,7 +69,6 @@ private slots:
     void slotModificationChanged(bool isClean);
     void slotFileChanged(const QString &file);
     void slotDirectoryChanged(const QString &dir);
-    void slotIconPropertyItemChanged(const QVariant &oldValue);
 
 private:
     bool mIsDirty;
@@ -89,16 +76,12 @@ private:
     QString mLastExportFileName;
     QUndoStack *mUndoStack;
     QDir mProjectDir;
-    QDir mSoundDir;
     QString mProjectRoot;
     QString mProjectName;
     QString mFileName;
     QString mBaseName;
-    QPixmap mIcon;
 
     TFileSystemWatcher *mFileWatcher;
-    TCachedPixmap *mCachedPixmaps;
-    TCachedSound *mCachedSounds;
     TSceneModel *mSceneModel;
 
     void load(const QString &file);

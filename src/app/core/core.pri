@@ -2,15 +2,15 @@ QT += core widgets multimedia
 
 SOURCES += \
     $$PWD/core.cpp \
+    $$PWD/assets/cachedpixmap.cpp \
+    $$PWD/assets/pixmap.cpp \
+    $$PWD/assets/cachedsound.cpp \
+    $$PWD/assets/sound.cpp \
+    $$PWD/shared/filesystemwatcher.cpp \
     $$PWD/document/document.cpp \
-    $$PWD/document/base/cachedpixmap.cpp \
-    $$PWD/document/base/filesystemwatcher.cpp \
-    $$PWD/document/base/pixmap.cpp \
     $$PWD/document/base/propertysheet.cpp \
     $$PWD/document/base/propertyitem.cpp \
     $$PWD/document/base/propertyundocommand.cpp \
-    $$PWD/document/base/cachedsound.cpp \
-    $$PWD/document/base/sound.cpp \
     $$PWD/document/model/layersmodel.cpp \
     $$PWD/document/model/entity/layer.cpp \
     $$PWD/document/undocommand/layersundocommand.cpp \
@@ -37,20 +37,21 @@ SOURCES += \
     $$PWD/document/model/entity/respawn.cpp \
     $$PWD/document/model/entity/pointf.cpp \
     $$PWD/document/model/entity/rect.cpp \
-    $$PWD/document/model/entity/trigger.cpp
+    $$PWD/document/model/entity/trigger.cpp \
+    $$PWD/assets/assetsmanager.cpp
 
 HEADERS  += \
     $$PWD/core.h \
+    $$PWD/assets/cachedpixmap.h \
+    $$PWD/assets/pixmap.h \
+    $$PWD/assets/cachedsound.h \
+    $$PWD/assets/sound.h \
+    $$PWD/shared/filesystemwatcher.h \
     $$PWD/document/document.h \
-    $$PWD/document/base/cachedpixmap.h \
-    $$PWD/document/base/filesystemwatcher.h \
-    $$PWD/document/base/pixmap.h \
     $$PWD/document/base/property.h \
     $$PWD/document/base/propertysheet.h \
     $$PWD/document/base/propertyitem.h \
     $$PWD/document/base/propertyundocommand.h \
-    $$PWD/document/base/cachedsound.h \
-    $$PWD/document/base/sound.h \
     $$PWD/document/model/layersmodel.h \
     $$PWD/document/model/entity/layer.h \
     $$PWD/document/undocommand/layersundocommand.h \
@@ -79,4 +80,6 @@ HEADERS  += \
     $$PWD/document/model/entity/respawn.h \
     $$PWD/document/model/entity/pointf.h \
     $$PWD/document/model/entity/rect.h \
-    $$PWD/document/model/entity/trigger.h
+    $$PWD/document/model/entity/trigger.h \
+    $$PWD/document/base/findobj.h \
+    $$PWD/assets/assetsmanager.h

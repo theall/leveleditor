@@ -1,9 +1,9 @@
 #ifndef TCORE_H
 #define TCORE_H
 
+#include <QList>
+#include <QString>
 #include "document/document.h"
-
-class TPreferences;
 
 class TCore : public QObject
 {
@@ -11,6 +11,7 @@ public:
     TCore(QObject *parent=nullptr);
     ~TCore();
 
+    void loadResource(const QString &path);
     TDocument *open(const QString &file);    
     TDocument *newDocument(const QString &projectRoot, const QString &projectName);
 
@@ -22,10 +23,7 @@ public:
 
     QList<TDocument *> documents() const;
 
-    TFileSystemWatcher *fileWatcher() const;
-
 private:
-    TPreferences *mPreferences;
     QList<TDocument*> mDocuments;
     TFileSystemWatcher *mFileWatcher;
 

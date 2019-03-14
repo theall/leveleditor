@@ -31,6 +31,7 @@ void TEventsModel::saveToStream(QDataStream &stream) const
 
 int TEventsModel::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return mEventList.size();
 }
 
