@@ -38,7 +38,10 @@ SOURCES += \
     $$PWD/document/model/entity/pointf.cpp \
     $$PWD/document/model/entity/rect.cpp \
     $$PWD/document/model/entity/trigger.cpp \
-    $$PWD/assets/assetsmanager.cpp
+    $$PWD/assets/assetsmanager.cpp \
+    $$PWD/assets/faceid.cpp \
+    $$PWD/assets/tileset.cpp \
+    $$PWD/assets/tileid.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -82,4 +85,7 @@ HEADERS  += \
     $$PWD/document/model/entity/rect.h \
     $$PWD/document/model/entity/trigger.h \
     $$PWD/document/base/findobj.h \
-    $$PWD/assets/assetsmanager.h
+    $$PWD/assets/assetsmanager.h \
+    $$PWD/assets/faceid.h \
+    $$PWD/assets/tileset.h \
+    $$PWD/assets/tileid.h

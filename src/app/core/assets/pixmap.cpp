@@ -6,6 +6,7 @@
 
 TPixmap::TPixmap(QObject *parent) :
     QObject(parent)
+  , mIsValid(false)
 {
 
 }
@@ -39,6 +40,11 @@ int TPixmap::height() const
     return mPixmap.height();
 }
 
+bool TPixmap::isValid() const
+{
+    return mIsValid;
+}
+
 QString TPixmap::fileFullName() const
 {
     return mFileFullName;
@@ -64,6 +70,7 @@ void TPixmap::load(const QString &file)
 
 void TPixmap::reload()
 {           
+    mIsValid = false;
     mPixmap.load(mFileFullName);
     if(mPixmap.isNull())
         return;
@@ -81,4 +88,5 @@ void TPixmap::reload()
     } else {
         mThumbnail = mPixmap;
     }
+    mIsValid = true;
 }

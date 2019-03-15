@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 
     QGraphicsView gv;
     TCore core;
+    core.loadResource("Z:/mh-reinstated-zeto");
     core.open(argv[1]);
     QGraphicsScene *scene;
     scene = core.documents().at(0)->graphicsScene();

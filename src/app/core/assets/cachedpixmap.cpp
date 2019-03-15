@@ -101,7 +101,7 @@ void TCachedPixmap::run()
             QString fileFullPath = mImageDir.absoluteFilePath(imageFile);
             pixmap = new TPixmap;
             pixmap->load(fileFullPath);
-            if(pixmap->pixmap().isNull())
+            if(!pixmap->isValid())
             {
                 qDebug() << "Load image failed, " << fileFullPath;
             }

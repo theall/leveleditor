@@ -5,29 +5,39 @@
 #include <QPixmap>
 #include <utils/macro.h>
 
-#include "pixmap.h"
 #include "sound.h"
+#include "pixmap.h"
+#include "faceid.h"
+#include "tileset.h"
 
 class TCachedSound;
 class TCachedPixmap;
+
+typedef (*LoadCallback)(int progress, int total);
 class TAssetsManager : public QObject
 {
     DECL_SINGLE_INSTANCE(TAssetsManager)
 
 public:
     TAssetsManager(QObject *parent=Q_NULLPTR);
+    ~TAssetsManager();
 
-    void setPath(const QString &path);
+    void load(const QString &path, LoadCallback callback = nullptr);
     TPixmap *getPixmap(const QString &file) const;
     TSound *getSound(const QString &file) const;
 
     TCachedPixmap *getCachedPixmaps() const;
     TCachedSound *getCachedSounds() const;
 
+    TileSetList getTileSetList() const;
+
 private:
     QString mPath;
+    TFaceList mFaceList;
     TCachedPixmap *mCachedPixmaps;
     TCachedSound *mCachedSounds;
+    TileSetList mTileSetList;
+    LoadCallback mCallback;
     void loadAssets();
 };
 

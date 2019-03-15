@@ -25,7 +25,10 @@ public:
     int width() const;
     int height() const;
 
+    bool isValid() const;
+
 private:
+    bool mIsValid;
     QString mFileFullName;
     QString mFileName;
     QPixmap mPixmap;
