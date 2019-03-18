@@ -1,12 +1,14 @@
 #include "layersmodel.h"
 
 #include <QColor>
+#include <utils/macro.h>
 
 static const int COLUMN_FRAMES_COUNT = 0;
 static const int COLUMN_LAYER_NAME = 1;
 
 TLayersModel::TLayersModel(QObject *parent) :
     QAbstractTableModel(parent)
+  , mCurrentLayer(nullptr)
 {
 
 }
@@ -30,7 +32,18 @@ void TLayersModel::clear()
 
 void TLayersModel::readFromStream(QDataStream &stream)
 {
+    FREE_CONTAINER(mLayerList);
 
+    for(int i=0;i<6;i++) {
+        TLayer *layer = new TLayer(this);
+        if(i<3) {
+            layer->setName(tr("Background Layer"));
+        } else {
+            layer->setName(tr("Foreground Layer"));
+        }
+        layer->readFromStream(stream);
+        mLayerList.append(layer);
+    }
 }
 
 QList<TLayer *> TLayersModel::layerList() const
@@ -40,7 +53,7 @@ QList<TLayer *> TLayersModel::layerList() const
 
 int TLayersModel::addLayer(const QString &name)
 {
-    return addLayer(new TLayer(name, this));
+    return addLayer(new TLayer(this, name));
 }
 
 int TLayersModel::addLayer(TLayer *layer, int index)
@@ -115,13 +128,6 @@ TLayer *TLayersModel::getLayer(int index)
 int TLayersModel::count()
 {
     return mLayerList.count();
-}
-
-void TLayersModel::render(QPainter *painter, const QRectF &rect)
-{
-    foreach (TLayer *layer, mLayerList) {
-        layer->render(painter, rect);
-    }
 }
 
 void TLayersModel::slotLayerNameChanged(const QString &newName)

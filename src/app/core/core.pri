@@ -15,8 +15,6 @@ SOURCES += \
     $$PWD/document/model/entity/layer.cpp \
     $$PWD/document/undocommand/layersundocommand.cpp \
     $$PWD/document/base/propertyobject.cpp \
-    $$PWD/document/model/graphicsscene.cpp \
-    $$PWD/document/graphicsitem/mousetracegraphicsitem.cpp \
     $$PWD/document/model/scenemodel.cpp \
     $$PWD/document/model/areasmodel.cpp \
     $$PWD/document/model/platformsmodel.cpp \
@@ -41,7 +39,16 @@ SOURCES += \
     $$PWD/assets/assetsmanager.cpp \
     $$PWD/assets/faceid.cpp \
     $$PWD/assets/tileset.cpp \
-    $$PWD/assets/tileid.cpp
+    $$PWD/assets/tileid.cpp \
+    $$PWD/document/graphics/graphicsscene.cpp \
+    $$PWD/document/graphics/hovereditem.cpp \
+    $$PWD/document/graphics/selecteditem.cpp \
+    $$PWD/document/model/entity/object.cpp \
+    $$PWD/document/graphics/mousetraceitem.cpp \
+    $$PWD/document/graphics/layeritem.cpp \
+    $$PWD/document/graphics/sceneitem.cpp \
+    $$PWD/document/graphics/tileitem.cpp \
+    $$PWD/document/graphics/objectitem.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -59,8 +66,6 @@ HEADERS  += \
     $$PWD/document/model/entity/layer.h \
     $$PWD/document/undocommand/layersundocommand.h \
     $$PWD/document/base/propertyobject.h \
-    $$PWD/document/model/graphicsscene.h \
-    $$PWD/document/graphicsitem/mousetracegraphicsitem.h \
     $$PWD/document/model/scenemodel.h \
     $$PWD/document/base/io.h \
     $$PWD/document/model/areasmodel.h \
@@ -88,4 +93,13 @@ HEADERS  += \
     $$PWD/assets/assetsmanager.h \
     $$PWD/assets/faceid.h \
     $$PWD/assets/tileset.h \
-    $$PWD/assets/tileid.h
+    $$PWD/assets/tileid.h \
+    $$PWD/document/graphics/hovereditem.h \
+    $$PWD/document/graphics/selecteditem.h \
+    $$PWD/document/model/entity/object.h \
+    $$PWD/document/graphics/graphicsscene.h \
+    $$PWD/document/graphics/mousetraceitem.h \
+    $$PWD/document/graphics/layeritem.h \
+    $$PWD/document/graphics/sceneitem.h \
+    $$PWD/document/graphics/tileitem.h \
+    $$PWD/document/graphics/objectitem.h

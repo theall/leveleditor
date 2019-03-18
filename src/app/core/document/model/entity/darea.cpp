@@ -10,7 +10,7 @@ static const QString P_TARGET = T("Target");
 static const QString P_MOVE_BY = T("Move By");
 
 TDArea::TDArea(QObject *parent) :
-    TPropertyObject(parent)
+    TObject(TObject::DAREA, parent)
 {
     initPropertySheet();
 }

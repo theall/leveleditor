@@ -45,8 +45,9 @@ void TPropertySheet::removeProperty(const TPropertyItems &propertyItemList)
     TPropertyItems itemsRemoved;
     for(TPropertyItem *propertyItem : propertyItemList)
     {
-        int ret = mPropertyMap.remove(propertyItem->name());
-        if(ret == 1)
+        int ret1 = mPropertyMap.remove(propertyItem->name());
+        int ret2 = mPropertyIdMap.remove(propertyItem->propertyId());
+        if(ret1==1 && ret2==1)
         {
             itemsRemoved.append(propertyItem);
         }
@@ -80,9 +81,35 @@ TPropertyItem *TPropertySheet::get(const QString &name)
     return mPropertyMap.value(name, nullptr);
 }
 
+QVariant TPropertySheet::getValue(const PropertyID &pid)
+{
+    TPropertyItem *item = mPropertyIdMap.value(pid, nullptr);
+    if(item)
+        return item->value();
+    return QVariant();
+}
+
+void TPropertySheet::setValue(const PropertyID &pid, const QVariant &value)
+{
+    TPropertyItem *item = mPropertyIdMap.value(pid, nullptr);
+    if(item)
+        item->setValue(value);
+}
+
+TPropertyItem *TPropertySheet::operator [](const PropertyID &pid)
+{
+    return mPropertyIdMap.value(pid, nullptr);
+}
+
+TPropertyItem *TPropertySheet::get(const PropertyID &pid)
+{
+    return mPropertyIdMap.value(pid, nullptr);
+}
+
 void TPropertySheet::clear()
 {
     mPropertyMap.clear();
+    mPropertyIdMap.clear();
 }
 
 QString TPropertySheet::getContextName()
@@ -130,19 +157,25 @@ void TPropertySheet::internalAddProperty(TPropertyItem *propertyItem, TPropertyI
     {
         parent->addSubPropertyItem(propertyItem);
     } else {
-        if(!beforeProperty)
+        if(!beforeProperty) {
             mPropertyMap.insert(propertyItem->name(), propertyItem);
-        else {
+            mPropertyIdMap.insert(propertyItem->propertyId(), propertyItem);
+        } else {
             QMap<QString, TPropertyItem*>::iterator findIt = mPropertyMap.end();
-            for(QMap<QString, TPropertyItem*>::iterator it=mPropertyMap.begin();it!=mPropertyMap.end();it++)
+            QMap<PropertyID, TPropertyItem*>::iterator findIt2 = mPropertyIdMap.end();
+            QMap<QString, TPropertyItem*>::iterator it;
+            QMap<PropertyID, TPropertyItem*>::iterator it2;
+            for(it=mPropertyMap.begin(),it2=mPropertyIdMap.begin();it!=mPropertyMap.end();it++,it2++)
             {
                 if(it.value() == beforeProperty)
                 {
                     findIt = it;
+                    findIt2 = it2;
                     break;
                 }
             }
             mPropertyMap.insert(findIt, propertyItem->name(), propertyItem);
+            mPropertyIdMap.insert(findIt2, propertyItem->propertyId(), propertyItem);
         }
     }
 }

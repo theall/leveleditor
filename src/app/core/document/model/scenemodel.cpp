@@ -26,7 +26,6 @@ TSceneModel::TSceneModel(QObject *parent) :
   , mRespawnsModel(new TRespawnsModel(this))
   , mTriggersModel(new TTriggersModel(this))
   , mWallsModel(new TWallsModel(this))
-  , mGraphicsScene(new TGraphicsScene(this))
 {
     initPropertySheet();
 
@@ -38,36 +37,16 @@ TLayersModel *TSceneModel::layersModel() const
     return mLayersModel;
 }
 
-TGraphicsScene *TSceneModel::graphicsScene() const
+QColor TSceneModel::getBackgroundColor() const
 {
-    return mGraphicsScene;
-}
-
-void TSceneModel::render(QPainter *painter, const QRectF &rect)
-{
-    mLayersModel->render(painter, rect);
-}
-
-void TSceneModel::slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue)
-{
-    Q_UNUSED(oldValue);
-
-    if(!item)
-        return;
-
-    PropertyID pid = item->propertyId();
-    if(pid == PID_SCENE_BACKGROUND_COLOR) {
-        mGraphicsScene->setBackgroundColor(item->value().value<QColor>());
-    }
+    TPropertyItem *item = mPropertySheet->get(P_BACKGROUND_COLOR);
+    if(item)
+        return item->value().value<QColor>();
+    return QColor();
 }
 
 void TSceneModel::initPropertySheet()
 {
-    connect(mPropertySheet,
-            SIGNAL(propertyItemValueChanged(TPropertyItem*,QVariant)),
-            this,
-            SLOT(slotPropertyItemValueChanged(TPropertyItem*,QVariant)));
-
     mPropertySheet->addProperty(PT_COLOR, P_BACKGROUND_COLOR, PID_SCENE_BACKGROUND_COLOR);
     mPropertySheet->addProperty(PT_VECTOR, P_FLAG1, PID_SCENE_FLAG1);
     mPropertySheet->addProperty(PT_VECTOR, P_FLAG2, PID_SCENE_FLAG2);

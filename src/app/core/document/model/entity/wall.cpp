@@ -6,7 +6,7 @@
 static const QString P_RECT = T("Area");
 
 TWall::TWall(QObject *parent) :
-    TPropertyObject(parent)
+    TObject(TObject::WALL, parent)
 {
     initPropertySheet();
 }

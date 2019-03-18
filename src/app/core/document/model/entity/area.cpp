@@ -10,7 +10,7 @@ static const QString P_EDGES = T("Edges");
 static const QString P_MOVE_BY = T("Move By");
 
 TArea::TArea(QObject *parent) :
-    TPropertyObject(parent)
+    TObject(TObject::AREA, parent)
 {
     initPropertySheet();
 }

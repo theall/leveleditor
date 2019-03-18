@@ -4,8 +4,8 @@
 #include <QList>
 #include <QPixmap>
 
+#include "object.h"
 #include "../../base/io.h"
-#include "../../base/propertyobject.h"
 
 class TDocument;
 class TPlat : public TPropertyObject, TIO

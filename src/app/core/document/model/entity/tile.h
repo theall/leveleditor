@@ -4,11 +4,11 @@
 #include <QList>
 #include <QPainter>
 
+#include "object.h"
 #include "../../base/io.h"
-#include "../../base/propertyobject.h"
 
 class TDocument;
-class TTile : public TPropertyObject, TIO
+class TTile : public TObject, TIO
 {
     Q_OBJECT
 
@@ -18,7 +18,9 @@ public:
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
 
-    void render(QPainter *painter, const QRectF &rect);
+    QRectF rect() const;
+
+    QPixmap pixmap() const;
 
 private:
     QRectF mRect;

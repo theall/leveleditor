@@ -18,6 +18,9 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <QSize>
+#include <QPoint>
+#include <QRectF>
 #include <QString>
 
 namespace Utils{
@@ -30,6 +33,13 @@ namespace Utils{
     QString absoluteFilePath(QString fileName);
     bool exploreFile(QString fileName);
     void cpy2wchar(wchar_t *dest, const QString &source);
+
+    qreal defaultDpiScale();
+    qreal dpiScaled(qreal value);
+    QSize dpiScaled(QSize value);
+    QPoint dpiScaled(QPoint value);
+    QRectF dpiScaled(QRectF value);
+    QSize smallIconSize();
 }
 
 #endif // UTILS_H

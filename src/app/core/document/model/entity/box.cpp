@@ -25,7 +25,7 @@ static const QString P_EVENTN = T("Eventn");
 static const QString P_EVENTN2 = T("Eventn2");
 
 TBox::TBox(QObject *parent) :
-    TPropertyObject(parent)
+    TObject(TObject::BOX, parent)
 {
     initPropertySheet();
 }

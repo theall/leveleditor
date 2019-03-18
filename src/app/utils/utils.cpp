@@ -19,16 +19,19 @@
 
 #include <QDir>
 #include <QtMath>
+#include <QScreen>
 #include <QProcess>
 #include <QFileInfo>
 #include <QApplication>
 
-QString Utils::microSecToTimeStr(long ms, bool padZero)
+namespace Utils {
+
+QString microSecToTimeStr(long ms, bool padZero)
 {
     return secToTimeStr(qCeil((double)ms/1000), padZero);
 }
 
-QString Utils::secToTimeStr(long seconds, bool padZero)
+QString secToTimeStr(long seconds, bool padZero)
 {
     int hour = seconds / 3600;
     if(hour > 99)
@@ -56,7 +59,7 @@ QString Utils::secToTimeStr(long seconds, bool padZero)
     return result;
 }
 
-QString Utils::absoluteFilePath(QString fileName)
+QString absoluteFilePath(QString fileName)
 {
     QFileInfo fi(fileName);
     if(fi.isRelative())
@@ -67,7 +70,7 @@ QString Utils::absoluteFilePath(QString fileName)
     return fileName;
 }
 
-bool Utils::exploreFile(QString fileName)
+bool exploreFile(QString fileName)
 {
     bool ret = false;
 #ifdef Q_OS_WIN32
@@ -78,11 +81,54 @@ bool Utils::exploreFile(QString fileName)
     return ret;
 }
 
-void Utils::cpy2wchar(wchar_t *dest, const QString &source)
+void cpy2wchar(wchar_t *dest, const QString &source)
 {
     if(dest)
     {
         std::wstring sourceW = source.toStdWString();
         wcscpy(dest, sourceW.c_str());
     }
+}
+
+qreal defaultDpiScale()
+{
+    static qreal scale = []{
+        if (const QScreen *screen = QGuiApplication::primaryScreen())
+            return screen->logicalDotsPerInchX() / 96.0;
+        return 1.0;
+    }();
+    return scale;
+}
+
+qreal dpiScaled(qreal value)
+{
+#ifdef Q_OS_MAC
+    // On mac the DPI is always 72 so we should not scale it
+    return value;
+#else
+    static const qreal scale = defaultDpiScale();
+    return value * scale;
+#endif
+}
+
+QSize dpiScaled(QSize value)
+{
+    return QSize(qRound(dpiScaled(value.width())),
+                 qRound(dpiScaled(value.height())));
+}
+
+QPoint dpiScaled(QPoint value)
+{
+    return QPoint(qRound(dpiScaled(value.x())),
+                  qRound(dpiScaled(value.y())));
+}
+
+QRectF dpiScaled(QRectF value)
+{
+    return QRectF(dpiScaled(value.x()),
+                  dpiScaled(value.y()),
+                  dpiScaled(value.width()),
+                  dpiScaled(value.height()));
+}
+
 }

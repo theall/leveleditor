@@ -13,13 +13,13 @@ class TLayer : public TPropertyObject, TIO
     Q_OBJECT
 
 public:
-    TLayer(const QString &name, QObject *parent=nullptr);
+    TLayer(QObject *parent=nullptr, const QString &name=QString());
     ~TLayer();
 
     QString name() const;
     void setName(const QString &name);
 
-    void render(QPainter *painter, const QRectF &rect);
+    TTileList tileList() const;
 
 private:
     QString mName;

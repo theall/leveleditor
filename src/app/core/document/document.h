@@ -8,7 +8,8 @@
 
 #include "model/scenemodel.h"
 #include "base/propertyundocommand.h"
-#include "../assets/pixmap.h"
+#include "../assets/tileid.h"
+#include "graphics/graphicsscene.h"
 
 class TPropertyObject;
 class TFileSystemWatcher;
@@ -53,10 +54,9 @@ public:
 
     QDateTime lastSaveTime() const;
 
-    TLayersModel *layersModel() const;
+    TTileId *getTileId(int tileSet, int tile);
     TGraphicsScene *graphicsScene() const;
-
-    TPixmap *getPixmap(const QString &file);
+    TSceneModel *getSceneModel() const;
 
 signals:
     void projectFileChanged();
@@ -83,6 +83,7 @@ private:
 
     TFileSystemWatcher *mFileWatcher;
     TSceneModel *mSceneModel;
+    TGraphicsScene *mGraphicsScene;
 
     void load(const QString &file);
     void setFileName(const QString &fileName);

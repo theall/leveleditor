@@ -43,14 +43,26 @@ void TAssetsManager::load(const QString &path, LoadCallback callback)
     loadAssets();
 }
 
-TPixmap *TAssetsManager::getPixmap(const QString &file) const
+TFaceId *TAssetsManager::getFace(int id) const
 {
-    return mCachedPixmaps->getPixmap(QFileInfo(file).fileName());
+    foreach (TFaceId *face, mFaceList) {
+        if(face->id() == id)
+            return face;
+    }
+    return nullptr;
 }
 
-TSound *TAssetsManager::getSound(const QString &file) const
+TTileId *TAssetsManager::getTile(int tileSetId, int tileId) const
 {
-    return mCachedSounds->getSound(QFileInfo(file).fileName());
+    foreach (TTileSet *tileSet, mTileSetList) {
+        if(tileSet->id() == tileSetId) {
+            foreach (TTileId *tile, tileSet->tileList()) {
+                if(tile->id() == tileId)
+                    return tile;
+            }
+        }
+    }
+    return nullptr;
 }
 
 TCachedPixmap *TAssetsManager::getCachedPixmaps() const

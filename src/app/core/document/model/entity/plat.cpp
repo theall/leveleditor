@@ -59,7 +59,7 @@ void TPlat::readFromStream(QDataStream &stream)
         stream >> point;
     }
     if(mDocument) {
-        mPixmap = mDocument->getPixmap(QString::asprintf("plat%d.bmp", pic))->pixmap();
+        //mPixmap = mDocument->getPixmap(QString::asprintf("plat%d.bmp", pic))->pixmap();
     }
 }
 

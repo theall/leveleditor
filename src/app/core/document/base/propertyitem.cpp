@@ -1,6 +1,7 @@
 #include "propertyitem.h"
 #include "propertyundocommand.h"
 #include "../document.h"
+#include "findobj.h"
 
 const char *g_propertyAttrMap[PA_COUNT] = {
     "constraint",// PA_CONSTRAINT
@@ -28,15 +29,7 @@ TPropertyItem::TPropertyItem(
   , mPropertyId(undoCommand)
   , mDocument(nullptr)
 {
-    QObject *obj = parent;
-    while (obj) {
-        mDocument = qobject_cast<TDocument*>(obj);
-        if(mDocument)
-            break;
-        obj = obj->parent();
-    }
-    if(!mDocument)
-        throw QString("File:%1, Line:%2: Parent must be document.").arg(__FILE__).arg(__LINE__);
+    FIND_OBJECT;
 }
 
 TPropertyItem::~TPropertyItem()

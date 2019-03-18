@@ -1,23 +1,16 @@
 #include "layer.h"
 #include "../../document.h"
+#include "../../base/findobj.h"
 #include <utils/macro.h>
 
-TLayer::TLayer(const QString &name=QString(), QObject *parent) :
+TLayer::TLayer(QObject *parent, const QString &name) :
     TPropertyObject(parent)
   , mName(name)
   , mDocument(nullptr)
 {
-    setObjectName("Layer");
+    FIND_OBJECT;
 
-    QObject *obj = parent;
-    while (obj) {
-        mDocument = qobject_cast<TDocument*>(obj);
-        if(mDocument)
-            break;
-        obj = obj->parent();
-    }
-    if(!mDocument)
-        throw QString("File:%1, Line:%2: Parent must be document.").arg(__FILE__).arg(__LINE__);
+    setObjectName("Layer");   
 }
 
 TLayer::~TLayer()
@@ -33,13 +26,6 @@ QString TLayer::name() const
 void TLayer::setName(const QString &name)
 {
     mName = name;
-}
-
-void TLayer::render(QPainter *painter, const QRectF &rect)
-{
-    foreach (TTile *tile, mTileList) {
-        tile->render(painter, rect);
-    }
 }
 
 void TLayer::saveToStream(QDataStream &stream) const
@@ -59,4 +45,9 @@ void TLayer::readFromStream(QDataStream &stream)
         tile->readFromStream(stream);
         mTileList.append(tile);
     }
+}
+
+TTileList TLayer::tileList() const
+{
+    return mTileList;
 }

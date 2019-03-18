@@ -29,6 +29,10 @@ public:
     void setValue(const QString &name, const QVariant &value);
     TPropertyItem *operator [](const QString &name);
     TPropertyItem *get(const QString &name);
+    QVariant getValue(const PropertyID &pid);
+    void setValue(const PropertyID &pid, const QVariant &value);
+    TPropertyItem *operator [](const PropertyID &pid);
+    TPropertyItem *get(const PropertyID &pid);
 
     void clear();
 
@@ -45,6 +49,7 @@ signals:
 private:
     QString mContextName;
     QMap<QString, TPropertyItem*> mPropertyMap;
+    QMap<PropertyID, TPropertyItem*> mPropertyIdMap;
 
     void internalAddProperty(TPropertyItem *propertyItem, TPropertyItem *parent, TPropertyItem *beforeProperty = nullptr);
 

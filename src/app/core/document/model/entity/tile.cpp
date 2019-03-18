@@ -22,7 +22,7 @@ static const QString P_TARGET = T("Target");
 static const QString P_SCREEN_SPEED = T("Screen Speed");
 
 TTile::TTile(QObject *parent) :
-    TPropertyObject(parent)
+    TObject(TObject::TILE, parent)
 {
     FIND_OBJECT;
 
@@ -94,11 +94,9 @@ void TTile::readFromStream(QDataStream &stream)
     QPointF speed(xSpeed, ySpeed);
     QPoint startPos(xStart, yStart);
     QPointF screenSpeed(xScrSpeed, yScrSpeed);
-    QString imagePath = QString("%1_%2.bmp").arg(setNumber).arg(number);
 
     mPropertySheet->setValue(P_POS_1, pos1);
     mPropertySheet->setValue(P_POS_2, pos2);
-    mPropertySheet->setValue(P_IMAGE, imagePath);
     mPropertySheet->setValue(P_END_1, end1);
     mPropertySheet->setValue(P_END_2, end2);
     mPropertySheet->setValue(P_RAND_1, rand1);
@@ -110,20 +108,24 @@ void TTile::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(P_TARGET, target);
     mPropertySheet->setValue(P_SCREEN_SPEED, screenSpeed);
 
-    TPixmap *pixmap = mDocument->getPixmap(imagePath);
-    if(pixmap) {
+    TTileId *tileId = mDocument->getTileId(setNumber, number);
+    if(tileId) {
+        TPixmap *pixmap = tileId->pixmap();
+        mPropertySheet->setValue(P_IMAGE, pixmap->fileName());
         mPixmap = pixmap->pixmap();
         mRect.setTopLeft(pos1);
         mRect.setSize(mPixmap.size());
     }
 }
 
-void TTile::render(QPainter *painter, const QRectF &rect)
+QRectF TTile::rect() const
 {
-    if(rect.intersected(mRect).isEmpty())
-        return;
+    return mRect;
+}
 
-    painter->drawPixmap(mRect.topLeft(), mPixmap);
+QPixmap TTile::pixmap() const
+{
+    return mPixmap;
 }
 
 void TTile::initPropertySheet()

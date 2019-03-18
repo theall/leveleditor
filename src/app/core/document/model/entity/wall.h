@@ -3,10 +3,10 @@
 
 #include <QList>
 
+#include "object.h"
 #include "../../base/io.h"
-#include "../../base/propertyobject.h"
 
-class TWall : public TPropertyObject, TIO
+class TWall : public TObject, TIO
 {
     Q_OBJECT
 

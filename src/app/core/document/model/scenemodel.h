@@ -1,7 +1,6 @@
 #ifndef SCENEMODEL_H
 #define SCENEMODEL_H
 
-#include "graphicsscene.h"
 #include "animationsmodel.h"
 #include "areasmodel.h"
 #include "boxesmodel.h"
@@ -23,11 +22,8 @@ public:
     TSceneModel(QObject *parent = nullptr);
 
     TLayersModel *layersModel() const;
-    TGraphicsScene *graphicsScene() const;
-    void render(QPainter *painter, const QRectF &rect);
 
-private slots:
-    void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);
+    QColor getBackgroundColor() const;
 
 private:
     TAnimationsModel *mAnimationsModel;
@@ -40,7 +36,6 @@ private:
     TRespawnsModel *mRespawnsModel;
     TTriggersModel *mTriggersModel;
     TWallsModel *mWallsModel;
-    TGraphicsScene *mGraphicsScene;
 
     void initPropertySheet();
 

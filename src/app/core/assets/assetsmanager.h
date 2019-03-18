@@ -23,8 +23,8 @@ public:
     ~TAssetsManager();
 
     void load(const QString &path, LoadCallback callback = nullptr);
-    TPixmap *getPixmap(const QString &file) const;
-    TSound *getSound(const QString &file) const;
+    TFaceId *getFace(int id) const;
+    TTileId *getTile(int tileSetId, int tileId) const;
 
     TCachedPixmap *getCachedPixmaps() const;
     TCachedSound *getCachedSounds() const;

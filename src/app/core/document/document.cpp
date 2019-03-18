@@ -16,6 +16,7 @@ TDocument::TDocument(const QString &file, QObject *parent) :
   , mFileName(file)
   , mFileWatcher(new TFileSystemWatcher(this))
   , mSceneModel(new TSceneModel(this))
+  , mGraphicsScene(new TGraphicsScene(this))
 {
     setObjectName("Document");
 
@@ -67,7 +68,7 @@ void TDocument::addUndoCommand(QUndoCommand *command)
 
 void TDocument::cmdAddLayer(const QString &name)
 {
-    TLayer *layer = new TLayer(name, this);
+    TLayer *layer = new TLayer(this, name);
     TLayersUndoCommand *command = new TLayersUndoCommand(
                 LUC_ADD,
                 mSceneModel->layersModel(),
@@ -207,6 +208,7 @@ void TDocument::load(const QString &file)
             stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
             f.open(QIODevice::ReadOnly);
             mSceneModel->readFromStream(stream);
+            mGraphicsScene->setSceneModel(mSceneModel);
         } catch (...) {
             throw tr("Load map failed!");
             return;
@@ -265,17 +267,22 @@ void TDocument::slotDirectoryChanged(const QString &dir)
     Q_UNUSED(dir);
 }
 
+TSceneModel *TDocument::getSceneModel() const
+{
+    return mSceneModel;
+}
+
 QDateTime TDocument::lastSaveTime() const
 {
     return mLastSaveTime;
 }
 
-TGraphicsScene *TDocument::graphicsScene() const
+TTileId *TDocument::getTileId(int tileSet, int tile)
 {
-    return mSceneModel->graphicsScene();
+    return TAssetsManager::getInstance()->getTile(tileSet, tile);
 }
 
-TPixmap *TDocument::getPixmap(const QString &file)
+TGraphicsScene *TDocument::graphicsScene() const
 {
-    return TAssetsManager::getInstance()->getPixmap(file);
+    return mGraphicsScene;
 }
