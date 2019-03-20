@@ -4,7 +4,7 @@
 #include <QList>
 
 #include "../../base/io.h"
-#include "../../base/propertyobject.h"
+#include "../../property/propertyobject.h"
 
 class TTrigger : public TPropertyObject, TIO
 {

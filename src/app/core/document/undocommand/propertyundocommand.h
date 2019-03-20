@@ -3,7 +3,7 @@
 
 #include <QVariant>
 #include <QUndoCommand>
-#include "../base/property.h"
+#include "../property/property.h"
 
 class TPropertyItem;
 

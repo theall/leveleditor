@@ -3,7 +3,7 @@
 
 #include "entity/layer.h"
 #include "../base/io.h"
-#include "../base/propertyobject.h"
+#include "../property/propertyobject.h"
 
 #include <QAbstractTableModel>
 

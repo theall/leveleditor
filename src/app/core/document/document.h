@@ -7,7 +7,7 @@
 #include <QGraphicsScene>
 
 #include "model/scenemodel.h"
-#include "base/propertyundocommand.h"
+#include "undocommand/propertyundocommand.h"
 #include "../assets/tileid.h"
 #include "graphics/graphicsscene.h"
 

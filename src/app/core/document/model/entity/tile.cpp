@@ -1,6 +1,6 @@
 #include "tile.h"
 #include "../../base/tr.h"
-#include "../../base/findobj.h"
+#include "../../base/finddoc.h"
 #include "../../document.h"
 #include "../../../assets/cachedpixmap.h"
 
@@ -24,7 +24,7 @@ static const QString P_SCREEN_SPEED = T("Screen Speed");
 TTile::TTile(QObject *parent) :
     TObject(TObject::TILE, parent)
 {
-    FIND_OBJECT;
+    FIND_DOCUMENT;
 
     initPropertySheet();
 }
@@ -113,14 +113,9 @@ void TTile::readFromStream(QDataStream &stream)
         TPixmap *pixmap = tileId->pixmap();
         mPropertySheet->setValue(P_IMAGE, pixmap->fileName());
         mPixmap = pixmap->pixmap();
-        mRect.setTopLeft(pos1);
-        mRect.setSize(mPixmap.size());
+        setPos(pos1);
+        setSize(mPixmap.size());
     }
-}
-
-QRectF TTile::rect() const
-{
-    return mRect;
 }
 
 QPixmap TTile::pixmap() const
@@ -130,7 +125,6 @@ QPixmap TTile::pixmap() const
 
 void TTile::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_VECTORF, P_POS_1, PID_TILE_POS_1);
     mPropertySheet->addProperty(PT_VECTOR, P_POS_2, PID_TILE_POS_2);
     mPropertySheet->addProperty(PT_PIXMAP, P_IMAGE, PID_TILE_IMAGE);
     mPropertySheet->addProperty(PT_VECTOR, P_END_1, PID_TILE_END_1);
@@ -143,4 +137,9 @@ void TTile::initPropertySheet()
     mPropertySheet->addProperty(PT_INT, P_FOLLOW_TYPE, PID_TILE_FOLLOW_TYPE);
     mPropertySheet->addProperty(PT_INT, P_TARGET, PID_TILE_TARGET);
     mPropertySheet->addProperty(PT_VECTOR, P_SCREEN_SPEED, PID_TILE_SCREEN_SPEED);
+}
+
+QString TTile::typeString() const
+{
+    return T("Tile");
 }

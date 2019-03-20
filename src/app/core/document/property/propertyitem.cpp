@@ -1,7 +1,7 @@
 #include "propertyitem.h"
-#include "propertyundocommand.h"
 #include "../document.h"
-#include "findobj.h"
+#include "../base/finddoc.h"
+#include "../undocommand/propertyundocommand.h"
 
 const char *g_propertyAttrMap[PA_COUNT] = {
     "constraint",// PA_CONSTRAINT
@@ -29,7 +29,7 @@ TPropertyItem::TPropertyItem(
   , mPropertyId(undoCommand)
   , mDocument(nullptr)
 {
-    FIND_OBJECT;
+    FIND_DOCUMENT;
 }
 
 TPropertyItem::~TPropertyItem()

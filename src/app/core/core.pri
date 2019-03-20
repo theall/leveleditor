@@ -8,13 +8,11 @@ SOURCES += \
     $$PWD/assets/sound.cpp \
     $$PWD/shared/filesystemwatcher.cpp \
     $$PWD/document/document.cpp \
-    $$PWD/document/base/propertysheet.cpp \
-    $$PWD/document/base/propertyitem.cpp \
-    $$PWD/document/base/propertyundocommand.cpp \
+    $$PWD/document/property/propertysheet.cpp \
+    $$PWD/document/property/propertyitem.cpp \
     $$PWD/document/model/layersmodel.cpp \
     $$PWD/document/model/entity/layer.cpp \
-    $$PWD/document/undocommand/layersundocommand.cpp \
-    $$PWD/document/base/propertyobject.cpp \
+    $$PWD/document/property/propertyobject.cpp \
     $$PWD/document/model/scenemodel.cpp \
     $$PWD/document/model/areasmodel.cpp \
     $$PWD/document/model/platformsmodel.cpp \
@@ -48,7 +46,11 @@ SOURCES += \
     $$PWD/document/graphics/layeritem.cpp \
     $$PWD/document/graphics/sceneitem.cpp \
     $$PWD/document/graphics/tileitem.cpp \
-    $$PWD/document/graphics/objectitem.cpp
+    $$PWD/document/graphics/objectitem.cpp \
+    $$PWD/document/graphics/selecteditems.cpp \
+    $$PWD/document/undocommand/propertyundocommand.cpp \
+    $$PWD/document/undocommand/layersundocommand.cpp \
+    $$PWD/document/undocommand/objectundocommand.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -58,14 +60,12 @@ HEADERS  += \
     $$PWD/assets/sound.h \
     $$PWD/shared/filesystemwatcher.h \
     $$PWD/document/document.h \
-    $$PWD/document/base/property.h \
-    $$PWD/document/base/propertysheet.h \
-    $$PWD/document/base/propertyitem.h \
-    $$PWD/document/base/propertyundocommand.h \
+    $$PWD/document/property/property.h \
+    $$PWD/document/property/propertysheet.h \
+    $$PWD/document/property/propertyitem.h \
     $$PWD/document/model/layersmodel.h \
     $$PWD/document/model/entity/layer.h \
-    $$PWD/document/undocommand/layersundocommand.h \
-    $$PWD/document/base/propertyobject.h \
+    $$PWD/document/property/propertyobject.h \
     $$PWD/document/model/scenemodel.h \
     $$PWD/document/base/io.h \
     $$PWD/document/model/areasmodel.h \
@@ -89,7 +89,6 @@ HEADERS  += \
     $$PWD/document/model/entity/pointf.h \
     $$PWD/document/model/entity/rect.h \
     $$PWD/document/model/entity/trigger.h \
-    $$PWD/document/base/findobj.h \
     $$PWD/assets/assetsmanager.h \
     $$PWD/assets/faceid.h \
     $$PWD/assets/tileset.h \
@@ -102,4 +101,9 @@ HEADERS  += \
     $$PWD/document/graphics/layeritem.h \
     $$PWD/document/graphics/sceneitem.h \
     $$PWD/document/graphics/tileitem.h \
-    $$PWD/document/graphics/objectitem.h
+    $$PWD/document/graphics/objectitem.h \
+    $$PWD/document/graphics/selecteditems.h \
+    $$PWD/document/undocommand/propertyundocommand.h \
+    $$PWD/document/undocommand/layersundocommand.h \
+    $$PWD/document/undocommand/objectundocommand.h \
+    $$PWD/document/base/finddoc.h

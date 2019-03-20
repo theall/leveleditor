@@ -46,3 +46,8 @@ void TDArea::initPropertySheet()
     mPropertySheet->addProperty(PT_INT, P_TARGET, PID_AREA_EDGES);
     mPropertySheet->addProperty(PT_INT, P_MOVE_BY, PID_AREA_MOVE_BY);
 }
+
+QString TDArea::typeString() const
+{
+    return T("Danger Area");
+}

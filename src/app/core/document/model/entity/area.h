@@ -18,6 +18,10 @@ public:
 
 private:
     void initPropertySheet();
+
+    // TObject interface
+public:
+    QString typeString() const Q_DECL_OVERRIDE;
 };
 
 typedef QList<TArea*> TAreaList;

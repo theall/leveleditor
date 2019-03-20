@@ -135,3 +135,8 @@ void TBox::initPropertySheet()
     mPropertySheet->addProperty(PT_INT, P_EVENTN, PID_BOX_EVENTN);
     mPropertySheet->addProperty(PT_INT, P_EVENTN2, PID_BOX_EVENTN2);
 }
+
+QString TBox::typeString() const
+{
+    return T("Box");
+}

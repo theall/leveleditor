@@ -4,7 +4,7 @@
 #include <QString>
 
 #include "../../base/io.h"
-#include "../../base/propertyobject.h"
+#include "../../property/propertyobject.h"
 #include "tile.h"
 
 class TDocument;

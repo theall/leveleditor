@@ -1,7 +1,7 @@
-#ifndef FINDOBJ_H
-#define FINDOBJ_H
+#ifndef FIND_DOCUMENT_H
+#define FIND_DOCUMENT_H
 
-#define FIND_OBJECT \
+#define FIND_DOCUMENT \
     QObject *obj = parent;\
     while (obj) {\
         mDocument = qobject_cast<TDocument*>(obj);\
@@ -12,4 +12,4 @@
     if(!mDocument)\
         throw QString("File:%1, Line:%2: Parent must be document.").arg(__FILE__).arg(__LINE__)
 
-#endif // FINDOBJ_H
+#endif // FIND_DOCUMENT_H

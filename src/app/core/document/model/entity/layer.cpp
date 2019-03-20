@@ -1,6 +1,6 @@
 #include "layer.h"
 #include "../../document.h"
-#include "../../base/findobj.h"
+#include "../../base/finddoc.h"
 #include <utils/macro.h>
 
 TLayer::TLayer(QObject *parent, const QString &name) :
@@ -8,7 +8,7 @@ TLayer::TLayer(QObject *parent, const QString &name) :
   , mName(name)
   , mDocument(nullptr)
 {
-    FIND_OBJECT;
+    FIND_DOCUMENT;
 
     setObjectName("Layer");   
 }

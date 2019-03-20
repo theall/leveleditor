@@ -1,6 +1,7 @@
 #ifndef TSELECTEDITEM_H
 #define TSELECTEDITEM_H
 
+#include <QList>
 #include <QGraphicsObject>
 #include "objectitem.h"
 
@@ -11,20 +12,17 @@ public:
 
     void setObjectItem(TObjectItem *objectItem);
 
+    void step();
     QRectF boundingRect() const override;
     void paint(QPainter *painter,
                const QStyleOptionGraphicsItem *,
                QWidget *) override;
 
-protected:
-    void timerEvent(QTimerEvent *event) override;
-
 private:
+    int mOffset;
     QRectF mBoundingRect;
     TObjectItem *mObjectItem;
-
-    // Marching ants effect
-    int mUpdateTimer;
-    int mOffset = 0;
 };
+
+typedef QList<TSelectedItem*> TSelectedItemList;
 #endif // TSELECTEDITEM_H

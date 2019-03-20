@@ -70,7 +70,7 @@ void TDocument::cmdAddLayer(const QString &name)
 {
     TLayer *layer = new TLayer(this, name);
     TLayersUndoCommand *command = new TLayersUndoCommand(
-                LUC_ADD,
+                TLayersUndoCommand::Add,
                 mSceneModel->layersModel(),
                 layer);
     mUndoStack->push(command);
@@ -82,7 +82,7 @@ void TDocument::cmdRemoveLayer(TLayer *layer)
         return;
 
     TLayersUndoCommand *command = new TLayersUndoCommand(
-                LUC_REMOVE,
+                TLayersUndoCommand::Remove,
                 mSceneModel->layersModel(),
                 layer);
     mUndoStack->push(command);

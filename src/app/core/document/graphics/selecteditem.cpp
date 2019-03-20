@@ -2,20 +2,19 @@
 
 #include <QPen>
 #include <QPainter>
-#include <QTimerEvent>
-#include <QGraphicsScene>
 #include <utils/utils.h>
 
 TSelectedItem::TSelectedItem(QGraphicsItem *parent) :
     QGraphicsObject(parent)
+  , mOffset(0)
 {
-    mUpdateTimer = startTimer(100);
+
 }
 
 void TSelectedItem::setObjectItem(TObjectItem *objectItem)
 {
     if(mObjectItem) {
-        mObjectItem->disconnect(this);
+        //mObjectItem->disconnect(this);
     }
 
     mObjectItem = objectItem;
@@ -31,6 +30,11 @@ void TSelectedItem::setObjectItem(TObjectItem *objectItem)
     }
 }
 
+void TSelectedItem::step()
+{
+    mOffset--;
+}
+
 QRectF TSelectedItem::boundingRect() const
 {
     return mBoundingRect;
@@ -40,6 +44,9 @@ void TSelectedItem::paint(QPainter *painter,
                           const QStyleOptionGraphicsItem *,
                           QWidget *)
 {
+    if(!mObjectItem)
+        return;
+
     const QLineF lines[4] = {
         QLineF(mBoundingRect.topLeft(), mBoundingRect.topRight()),
         QLineF(mBoundingRect.bottomLeft(), mBoundingRect.bottomRight()),
@@ -63,15 +70,4 @@ void TSelectedItem::paint(QPainter *painter,
     pen.setDashOffset(mOffset);
     painter->setPen(pen);
     painter->drawLines(lines, 4);
-}
-
-void TSelectedItem::timerEvent(QTimerEvent *event)
-{
-    if (event->timerId() == mUpdateTimer) {
-        // Update offset used in drawing black dashed line
-        mOffset--;
-        scene()->update();
-    } else {
-        QGraphicsObject::timerEvent(event);
-    }
 }

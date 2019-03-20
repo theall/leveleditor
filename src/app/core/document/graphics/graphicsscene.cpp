@@ -4,6 +4,9 @@
 #include <QGraphicsSceneMouseEvent>
 
 #include "graphicsscene.h"
+#include "../base/finddoc.h"
+#include "../document.h"
+#include "../undocommand/objectundocommand.h"
 
 #define TOP_Z_VALUE 10000
 TGraphicsScene::TGraphicsScene(QObject *parent) :
@@ -13,15 +16,18 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
   , mSceneModel(nullptr)
   , mSceneItem(nullptr)
   , mHoveredItem(new THoveredItem)
-  , mSelectedItem(new TSelectedItem)
+  , mSelectedItems(new TSelectedItems)
+  , mDocument(nullptr)
 {
     setSize(640, 480);
 
     mHoveredItem->setZValue(TOP_Z_VALUE);
     addItem(mHoveredItem);
 
-    mSelectedItem->setZValue(TOP_Z_VALUE+1);
-    addItem(mSelectedItem);
+    mSelectedItems->setZValue(TOP_Z_VALUE+1);
+    addItem(mSelectedItems);
+
+    FIND_DOCUMENT;
 }
 
 TGraphicsScene::~TGraphicsScene()
@@ -161,8 +167,18 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         else
             stop();
     } else if(button == Qt::LeftButton) {
+        Qt::KeyboardModifiers modifers = event->modifiers();
         TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
-        mSelectedItem->setObjectItem(objectItem);
+        if(modifers&Qt::ControlModifier) {
+            if(mSelectedItems->containsObjectItem(objectItem))
+                mSelectedItems->removeObjectItem(objectItem);
+            else
+                mSelectedItems->addObjectItem(objectItem);
+        } else {
+            if(!mSelectedItems->containsObjectItem(objectItem))
+                mSelectedItems->setObjectItem(objectItem);
+        }
+
         update();
     }
 }
@@ -196,8 +212,25 @@ void TGraphicsScene::keyPressEvent(QKeyEvent *event)
         } else {
             step();
         }
-    } else if(event->modifiers()&Qt::ControlModifier) {
-
+    } else if(key>=Qt::Key_Left && key<=Qt::Key_Down) {
+        TObjectList objectList = mSelectedItems->getSelectedObjectList();
+        if(objectList.size() > 0) {
+            QPointF offset;
+            if(key == Qt::Key_Left) {
+                offset.setX(-1);
+            } else if(key == Qt::Key_Up) {
+                offset.setY(-1);
+            } else if(key == Qt::Key_Right) {
+                offset.setX(1);
+            } else if(key == Qt::Key_Down) {
+                offset.setY(1);
+            }
+            TObjectUndoCommand *command = new TObjectUndoCommand(
+                        TObjectUndoCommand::Move,
+                        objectList,
+                        offset);
+            mDocument->addUndoCommand(command);
+        }
     }
     QGraphicsScene::keyPressEvent(event);
 }

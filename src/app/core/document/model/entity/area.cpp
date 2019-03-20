@@ -46,3 +46,8 @@ void TArea::initPropertySheet()
     mPropertySheet->addProperty(PT_INT, P_EDGES, PID_AREA_EDGES);
     mPropertySheet->addProperty(PT_INT, P_MOVE_BY, PID_AREA_MOVE_BY);
 }
+
+QString TArea::typeString() const
+{
+    return T("Area");
+}

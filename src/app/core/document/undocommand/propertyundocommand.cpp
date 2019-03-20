@@ -1,7 +1,7 @@
 #include "propertyundocommand.h"
 
-#include "../base/property.h"
-#include "../base/propertyitem.h"
+#include "../property/property.h"
+#include "../property/propertyitem.h"
 
 #include <QCoreApplication>
 

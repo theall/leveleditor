@@ -30,3 +30,8 @@ void TWall::initPropertySheet()
 {
     mPropertySheet->addProperty(PT_RECT, P_RECT, PID_WALL_RECT);
 }
+
+QString TWall::typeString() const
+{
+    return T("Wall");
+}

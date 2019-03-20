@@ -18,15 +18,16 @@ public:
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
 
-    QRectF rect() const;
-
     QPixmap pixmap() const;
 
 private:
-    QRectF mRect;
     QPixmap mPixmap;
     TDocument *mDocument;
     void initPropertySheet();
+
+    // TObject interface
+public:
+    QString typeString() const Q_DECL_OVERRIDE;
 };
 
 typedef QList<TTile*> TTileList;

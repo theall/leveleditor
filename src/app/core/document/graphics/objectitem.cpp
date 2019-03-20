@@ -7,6 +7,11 @@ TObjectItem::TObjectItem(TObject *object, QGraphicsItem *parent) :
     Q_ASSERT(mObject);
 }
 
+int TObjectItem::type() const
+{
+    return Type;
+}
+
 TObject *TObjectItem::object() const
 {
     return mObject;

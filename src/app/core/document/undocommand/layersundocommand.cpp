@@ -1,18 +1,15 @@
 #include "layersundocommand.h"
 #include "../model/layersmodel.h"
+#include "../base/tr.h"
 
-#include <QCoreApplication>
-
-#define tr(x) QCoreApplication::translate("UndoCommand", x)
-
-const QString g_commandText[LUC_COUNT] = {
-    tr("Add new layer"),
-    tr("Remove layer"),
-    tr("Clone layer")
+const QString g_commandText[TLayersUndoCommand::COUNT] = {
+    T("Add new layer"),
+    T("Remove layer"),
+    T("Clone layer")
 };
 
 TLayersUndoCommand::TLayersUndoCommand(
-        LayerUndoCommand command,
+        Command command,
         TLayersModel *layerModel,
         TLayer *layer,
         QUndoCommand *parent) :
@@ -32,20 +29,20 @@ TLayersUndoCommand::~TLayersUndoCommand()
 
 void TLayersUndoCommand::undo()
 {
-    if(mCommand==LUC_ADD)
+    if(mCommand==Add)
     {
         mIndex = mLayersModel->removeLayer(mLayer);
-    } else if(mCommand==LUC_REMOVE) {
+    } else if(mCommand==Remove) {
         mLayersModel->addLayer(mLayer, mIndex);
     }
 }
 
 void TLayersUndoCommand::redo()
 {
-    if(mCommand==LUC_ADD)
+    if(mCommand==Add)
     {
         mLayersModel->addLayer(mLayer, mIndex);
-    } else if(mCommand==LUC_REMOVE) {
+    } else if(mCommand==Remove) {
         mIndex = mLayersModel->removeLayer(mLayer);
     }
 }
