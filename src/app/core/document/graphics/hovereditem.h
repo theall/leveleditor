@@ -32,6 +32,7 @@ class THoveredItem : public QGraphicsObject
 
 public:
     THoveredItem(QGraphicsItem *parent = nullptr);
+    ~THoveredItem();
 
     bool isHoverIndicator() const;
     void setIsHoverIndicator(bool isHoverIndicator);
@@ -45,6 +46,9 @@ public:
     void paint(QPainter *painter,
                const QStyleOptionGraphicsItem *option,
                QWidget *widget = nullptr) override;
+
+private slots:
+    void slotObjectBoundingRectChanged();
 
 private:
     TObjectItem *mObjectItem;

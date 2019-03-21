@@ -50,6 +50,8 @@ private:
     bool mStepMode;
     qreal mScale;
     int mTimerId;
+    bool mLeftButtonDown;
+    QPointF mLeftButtonDownPos;
     TSceneModel *mSceneModel;
     TSceneItem *mSceneItem;
     THoveredItem *mHoveredItem;
@@ -57,6 +59,7 @@ private:
     TDocument *mDocument;
 
     void step();
+    void pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset);
 
 private slots:
     void refresh();

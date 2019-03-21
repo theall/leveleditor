@@ -18,17 +18,24 @@ public:
     TObjectUndoCommand(
            Command command,
            const TObjectList &objectList,
-           const QVariant &parameter,
+           const QVariant &parameter = QVariant(),
            QUndoCommand *parent = Q_NULLPTR);
     ~TObjectUndoCommand();
 
-    void undo() Q_DECL_OVERRIDE;
-    void redo() Q_DECL_OVERRIDE;
+    Command command() const;
+    QPointF offset() const;
+    TObjectList objectList() const;
 
 private:
     Command mCommand;
     QPointF mOffset;
     TObjectList mObjectList;
+
+    // QUndoCommand interface
+public:
+    void undo() Q_DECL_OVERRIDE;
+    void redo() Q_DECL_OVERRIDE;
+    bool mergeWith(const QUndoCommand *other) Q_DECL_OVERRIDE;
 };
 
 #endif // TOBJECTUNDOCOMMAND_H

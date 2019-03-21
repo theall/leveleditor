@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QPainter>
 #include <QWheelEvent>
 #include <QCoreApplication>
@@ -13,6 +14,7 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
     QGraphicsScene(parent)
   , mStepMode(false)
   , mTimerId(-1)
+  , mLeftButtonDown(false)
   , mSceneModel(nullptr)
   , mSceneItem(nullptr)
   , mHoveredItem(new THoveredItem)
@@ -142,6 +144,15 @@ void TGraphicsScene::step()
 
 }
 
+void TGraphicsScene::pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset)
+{
+    TObjectUndoCommand *command = new TObjectUndoCommand(
+                TObjectUndoCommand::Move,
+                objectList,
+                offset);
+    mDocument->addUndoCommand(command);
+}
+
 void TGraphicsScene::refresh()
 {
 
@@ -160,6 +171,7 @@ void TGraphicsScene::drawForeground(QPainter *painter, const QRectF &rect)
 void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Qt::MouseButton button = event->button();
+    mLeftButtonDown = (button==Qt::LeftButton);
     if(button == Qt::RightButton)
     {
         if(mTimerId==-1)
@@ -167,32 +179,53 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         else
             stop();
     } else if(button == Qt::LeftButton) {
-        Qt::KeyboardModifiers modifers = event->modifiers();
-        TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
-        if(modifers&Qt::ControlModifier) {
-            if(mSelectedItems->containsObjectItem(objectItem))
-                mSelectedItems->removeObjectItem(objectItem);
-            else
-                mSelectedItems->addObjectItem(objectItem);
-        } else {
-            if(!mSelectedItems->containsObjectItem(objectItem))
-                mSelectedItems->setObjectItem(objectItem);
-        }
+        mLeftButtonDownPos = event->scenePos();
+        TObjectItem *objectItem = getTopMostObjectItem(mLeftButtonDownPos);
+        TObjectItemList objectItemList = mSelectedItems->getSelectedObjectItemList();
+        if(objectItemList.contains(objectItem)) {
 
-        update();
+        } else {
+
+        }
     }
 }
 
 void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
-    mHoveredItem->setObjectItem(objectItem);
-    update();
+    if(!mLeftButtonDown) {
+        TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
+        mHoveredItem->setObjectItem(objectItem);
+        update();
+    } else {
+        TObjectList objectList = mSelectedItems->getSelectedObjectList();
+        if(objectList.size() > 0) {
+            QPointF offset = event->scenePos() - event->lastScenePos();
+            if(!offset.isNull()) {
+                pushObjectMoveCommand(objectList, offset);
+            }
+        }
+    }
 }
 
 void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    Q_UNUSED(event);
+    if(mLeftButtonDown) {
+        mLeftButtonDown = false;
+        QPointF mousePos = event->scenePos();
+        if(mLeftButtonDownPos==mousePos) {
+            Qt::KeyboardModifiers modifers = event->modifiers();
+            TObjectItem *objectItem = getTopMostObjectItem(mLeftButtonDownPos);
+            if(modifers&Qt::ControlModifier) {
+                if(!mSelectedItems->containsObjectItem(objectItem))
+                    mSelectedItems->addObjectItem(objectItem);
+                else
+                    mSelectedItems->removeObjectItem(objectItem);
+            } else {
+                mSelectedItems->setObjectItem(objectItem);
+            }
+            update();
+        }
+    }
 }
 
 void TGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
@@ -225,11 +258,7 @@ void TGraphicsScene::keyPressEvent(QKeyEvent *event)
             } else if(key == Qt::Key_Down) {
                 offset.setY(1);
             }
-            TObjectUndoCommand *command = new TObjectUndoCommand(
-                        TObjectUndoCommand::Move,
-                        objectList,
-                        offset);
-            mDocument->addUndoCommand(command);
+            pushObjectMoveCommand(objectList, offset);
         }
     }
     QGraphicsScene::keyPressEvent(event);

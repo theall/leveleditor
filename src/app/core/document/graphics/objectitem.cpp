@@ -5,6 +5,12 @@ TObjectItem::TObjectItem(TObject *object, QGraphicsItem *parent) :
   , mObject(object)
 {
     Q_ASSERT(mObject);
+
+    connect(mObject->propertySheet(),
+            SIGNAL(propertyItemValueChanged(TPropertyItem*,QVariant)),
+            this,
+            SLOT(slotPropertyItemValueChanged(TPropertyItem*,QVariant))
+            );
 }
 
 int TObjectItem::type() const
@@ -20,4 +26,12 @@ TObject *TObjectItem::object() const
 TObject::Type TObjectItem::objectType() const
 {
     return mObject->type();
+}
+
+void TObjectItem::slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &)
+{
+    PropertyID pid = item->propertyId();
+    if(pid==PID_OBJECT_POS || pid==PID_OBJECT_SIZE) {
+        emit boundingRectChanged();
+    }
 }

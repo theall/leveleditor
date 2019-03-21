@@ -18,6 +18,12 @@ public:
     TObject *object() const;
     TObject::Type objectType() const;
 
+signals:
+    void boundingRectChanged();
+
+private slots:
+    void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);
+
 private:
     TObject *mObject;
 };

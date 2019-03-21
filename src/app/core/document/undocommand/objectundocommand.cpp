@@ -2,8 +2,8 @@
 #include "../base/tr.h"
 
 const QString g_commandText[TObjectUndoCommand::COUNT] = {
-    T("Move %s"),
-    T("Delete %s")
+    T("Move %1"),
+    T("Delete %1")
 };
 
 TObjectUndoCommand::TObjectUndoCommand(
@@ -26,11 +26,11 @@ TObjectUndoCommand::TObjectUndoCommand(
                 context += "...";
         }
     }
-    QString tmp = QString("(%d %s)").arg(objectList.size());
+    QString tmp = QString::number(objectList.size()) + " ";
     if(objectList.size() > 1)
-        tmp.arg(T("objects"));
+        tmp += T("objects");
     else
-        tmp.arg(T("object"));
+        tmp += T("object");
     context += tmp;
     setText(g_commandText[command].arg(context));
 
@@ -42,6 +42,21 @@ TObjectUndoCommand::TObjectUndoCommand(
 TObjectUndoCommand::~TObjectUndoCommand()
 {
 
+}
+
+QPointF TObjectUndoCommand::offset() const
+{
+    return mOffset;
+}
+
+TObjectList TObjectUndoCommand::objectList() const
+{
+    return mObjectList;
+}
+
+TObjectUndoCommand::Command TObjectUndoCommand::command() const
+{
+    return mCommand;
 }
 
 void TObjectUndoCommand::undo()
@@ -62,4 +77,10 @@ void TObjectUndoCommand::redo()
            object->move(mOffset);
        }
     }
+}
+
+bool TObjectUndoCommand::mergeWith(const QUndoCommand *other)
+{
+    const TObjectUndoCommand *command = static_cast<const TObjectUndoCommand*>(other);
+    return command && (mCommand==command->command()) && (mOffset==command->offset()) && (mObjectList==command->objectList());
 }

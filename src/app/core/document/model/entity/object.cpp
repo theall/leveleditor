@@ -8,7 +8,7 @@ TObject::TObject(Type type, QObject *parent) :
     TPropertyObject(parent)
   , mType(type)
 {
-
+    initPropertySheet();
 }
 
 TObject::Type TObject::type() const
@@ -18,32 +18,47 @@ TObject::Type TObject::type() const
 
 QPointF TObject::pos() const
 {
-    return mPos;
+    return mPropertySheet->getValue(PID_OBJECT_POS).toPointF();
 }
 
 void TObject::setPos(const QPointF &pos)
 {
-    mPos = pos;
+    QPointF currentPos = mPropertySheet->getValue(PID_OBJECT_POS).toPointF();
+    if(currentPos == pos)
+        return;
+
+    mPropertySheet->setValue(PID_OBJECT_POS, pos);
 }
 
 QSize TObject::size() const
 {
-    return mSize;
+    return mPropertySheet->getValue(PID_OBJECT_SIZE).toSize();
 }
 
 void TObject::setSize(const QSize &size)
 {
-    mSize = size;
+    QSizeF currentSize = mPropertySheet->getValue(PID_OBJECT_SIZE).toSizeF();
+    if(currentSize == size)
+        return;
+
+    mPropertySheet->setValue(PID_OBJECT_SIZE, size);
 }
 
 QRectF TObject::rect() const
 {
-    return QRectF(mPos, mSize);
+    QPointF pos = mPropertySheet->getValue(PID_OBJECT_POS).toPointF();
+    QSizeF size = mPropertySheet->getValue(PID_OBJECT_SIZE).toSizeF();
+    return QRectF(pos, size);
 }
 
 void TObject::move(const QPointF &offset)
 {
-    mPos += offset;
+    if(offset.isNull())
+        return;
+
+    QPointF pos = mPropertySheet->getValue(PID_OBJECT_POS).toPointF();
+    pos += offset;
+    mPropertySheet->setValue(PID_OBJECT_POS, pos);
 }
 
 void TObject::initPropertySheet()

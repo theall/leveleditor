@@ -5,7 +5,6 @@ TTileItem::TTileItem(TTile *tile, QGraphicsItem *parent) :
   , mTile(tile)
 {
     Q_ASSERT(mTile);
-
 }
 
 QRectF TTileItem::boundingRect() const

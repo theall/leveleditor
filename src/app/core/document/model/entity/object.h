@@ -41,8 +41,6 @@ protected:
 
 private:
     Type mType;
-    QPointF mPos;
-    QSize mSize;
 };
 
 typedef QList<TObject*> TObjectList;

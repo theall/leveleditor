@@ -7,20 +7,33 @@
 TSelectedItem::TSelectedItem(QGraphicsItem *parent) :
     QGraphicsObject(parent)
   , mOffset(0)
+  , mObjectItem(nullptr)
 {
 
+}
+
+TSelectedItem::~TSelectedItem()
+{
+    if(mObjectItem) {
+        mObjectItem->disconnect(this);
+    }
 }
 
 void TSelectedItem::setObjectItem(TObjectItem *objectItem)
 {
     if(mObjectItem) {
-        //mObjectItem->disconnect(this);
+        mObjectItem->disconnect(this);
     }
 
     mObjectItem = objectItem;
 
     if(mObjectItem) {
         mBoundingRect = mObjectItem->boundingRect();
+        connect(mObjectItem,
+                SIGNAL(boundingRectChanged()),
+                this,
+                SLOT(slotObjectBoundingRectChanged()));
+
         if(!isVisible())
             setVisible(true);
     } else {
@@ -70,4 +83,10 @@ void TSelectedItem::paint(QPainter *painter,
     pen.setDashOffset(mOffset);
     painter->setPen(pen);
     painter->drawLines(lines, 4);
+}
+
+void TSelectedItem::slotObjectBoundingRectChanged()
+{
+    if(mObjectItem)
+        mBoundingRect = mObjectItem->boundingRect();
 }

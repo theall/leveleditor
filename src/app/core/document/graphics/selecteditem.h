@@ -7,8 +7,11 @@
 
 class TSelectedItem : public QGraphicsObject
 {
+    Q_OBJECT
+
 public:
     TSelectedItem(QGraphicsItem *parent = nullptr);
+    ~TSelectedItem();
 
     void setObjectItem(TObjectItem *objectItem);
 
@@ -17,6 +20,9 @@ public:
     void paint(QPainter *painter,
                const QStyleOptionGraphicsItem *,
                QWidget *) override;
+
+private slots:
+    void slotObjectBoundingRectChanged();
 
 private:
     int mOffset;
