@@ -226,10 +226,6 @@ void TMainController::createNewDocument(
         const QString &projectComment)
 {
     TDocument *document = mCore->newDocument(projectRoot, projectName);
-    document->setVersion(projectVersion);
-    document->setAuthor(projectAuthor);
-    document->setEmail(projectContact);
-    document->setComment(projectComment);
     setCurrentDocument(document);
     mMainWindow->addRecentFile(document->fileName());
 }

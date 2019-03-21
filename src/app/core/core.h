@@ -7,6 +7,8 @@
 
 class TCore : public QObject
 {
+    Q_OBJECT
+
 public:
     TCore(QObject *parent=nullptr);
     ~TCore();
@@ -22,6 +24,9 @@ public:
     bool hasDirtyDocument();
 
     QList<TDocument *> documents() const;
+
+signals:
+    void documentFileChanged(const QString &file);
 
 private:
     QList<TDocument*> mDocuments;

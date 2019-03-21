@@ -1,7 +1,7 @@
 #include "propertycontroller.h"
 #include "tabcontroller.h"
-#include "../core/document/base/sound.h"
-#include "../core/document/base/pixmap.h"
+#include "../core/assets/sound.h"
+#include "../core/assets/pixmap.h"
 #include "../gui/component/propertydock/propertybrowser.h"
 #include "../gui/component/propertydock/variantpropertymanager.h"
 #include "../gui/dialogs/soundresourcedialog.h"
@@ -88,7 +88,7 @@ void TPropertyController::slotGetSelectedSound(QString &text, QMediaContent *&me
         return;
 
     QString soundFile = mSoundResourceDialog->getSelectedSound();
-    TSound *sound = mDocument->getSound(soundFile);
+    TSound *sound = nullptr;
     if(sound)
     {
         text = soundFile;
@@ -190,7 +190,7 @@ QtVariantProperty *TPropertyController::createProperty(TPropertyItem *propertyIt
     }
     if(propertyType == PT_PIXMAP) {
         QVariant fileName = propertyItem->value();
-        TPixmap *pixmap = mDocument->getPixmap(fileName.toString());
+        TPixmap *pixmap = nullptr;
         if(pixmap)
         {
             mPropertyManager->setValue(p, fileName, pixmap->thumbnail());
@@ -199,7 +199,7 @@ QtVariantProperty *TPropertyController::createProperty(TPropertyItem *propertyIt
         }
     } else if(propertyType == PT_SOUND_ITEM_SOURCE) {
         QVariant fileName = propertyItem->value();
-        TSound *sound = mDocument->getSound(fileName.toString());
+        TSound *sound = nullptr;
         if(sound)
         {
             mPropertyManager->setValue(p, fileName, QVariant::fromValue((void*)sound->mediaContent()));

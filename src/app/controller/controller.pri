@@ -6,7 +6,6 @@ SOURCES += \
     $$PWD/tabcontroller.cpp \
     $$PWD/propertycontroller.cpp \
     $$PWD/undocontroller.cpp \
-    $$PWD/soundsetcontroller.cpp \
     $$PWD/mainpropertycontroller.cpp \
     $$PWD/miniscenecontroller.cpp \
     $$PWD/layerscontroller.cpp
@@ -19,7 +18,6 @@ HEADERS  += \
     $$PWD/tabcontroller.h \
     $$PWD/propertycontroller.h \
     $$PWD/undocontroller.h \
-    $$PWD/soundsetcontroller.h \
     $$PWD/mainpropertycontroller.h \
     $$PWD/miniscenecontroller.h \
     $$PWD/layerscontroller.h

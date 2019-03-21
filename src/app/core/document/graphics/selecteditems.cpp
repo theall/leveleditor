@@ -35,6 +35,9 @@ void TSelectedItems::setObjectItemList(const TObjectItemList &objectItemList)
 
 void TSelectedItems::setObjectItem(TObjectItem *objectItem)
 {
+    if(!objectItem)
+        return;
+
     TObjectItemList objectItemList;
     objectItemList.append(objectItem);
     setObjectItemList(objectItemList);
@@ -42,6 +45,9 @@ void TSelectedItems::setObjectItem(TObjectItem *objectItem)
 
 int TSelectedItems::addObjectItem(TObjectItem *objectItem)
 {
+    if(!objectItem)
+        return -1;
+
     TSelectedItem *selectedItem = new TSelectedItem(this);
     selectedItem->setObjectItem(objectItem);
     mObjectItemMap.insert(objectItem, selectedItem);

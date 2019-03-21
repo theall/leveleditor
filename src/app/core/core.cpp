@@ -8,6 +8,11 @@ TCore::TCore(QObject *parent) :
   , mFileWatcher(new TFileSystemWatcher(this))
 {
     TPreferences::instance();
+
+    connect(mFileWatcher,
+            SIGNAL(fileChanged(QString)),
+            this,
+            SIGNAL(documentFileChanged(QString)));
 }
 
 TCore::~TCore()

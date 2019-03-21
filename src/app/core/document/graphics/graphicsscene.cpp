@@ -129,6 +129,13 @@ void TGraphicsScene::setSceneModel(TSceneModel *sceneModel)
     }
 }
 
+void TGraphicsScene::removeSelectedItems()
+{
+    TObjectList objectList = mSelectedItems->getSelectedObjectList();
+    if(objectList.size() < 1)
+        return;
+}
+
 qreal TGraphicsScene::scale() const
 {
     return mScale;
@@ -260,6 +267,8 @@ void TGraphicsScene::keyPressEvent(QKeyEvent *event)
             }
             pushObjectMoveCommand(objectList, offset);
         }
+    } else if(key==Qt::Key_Delete) {
+        removeSelectedItems();
     }
     QGraphicsScene::keyPressEvent(event);
 }
@@ -339,7 +348,7 @@ TObject *TGraphicsScene::getTopMostObject(const QPointF &pos) const
 
 TObjectItem *TGraphicsScene::getTopMostObjectItem(const QPointF &pos) const
 {
-    const QList<QGraphicsItem *> &itemList = items(pos);
+    const QList<QGraphicsItem *> &itemList = items(pos, Qt::IntersectsItemBoundingRect);
 
     for (QGraphicsItem *item : itemList) {
         if (!item->isEnabled())

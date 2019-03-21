@@ -1,7 +1,7 @@
 #include "tabcontroller.h"
-#include "../core/document/base/pixmap.h"
-#include "../core/document/base/filesystemwatcher.h"
-#include "../core/document/graphicsscene.h"
+#include "../core/assets/pixmap.h"
+#include "../core/shared/filesystemwatcher.h"
+#include "../core/document/graphics/graphicsscene.h"
 #include "../gui/component/tabwidget/tabwidget.h"
 
 #include <QMessageBox>
@@ -31,7 +31,7 @@ bool TTabController::joint(TMainWindow *mainWindow, TCore *core)
     connect(mTabWidget, SIGNAL(requestCloseDocument(void*)), this, SLOT(slotRequestCloseDocument(void*)));
     connect(mTabWidget, SIGNAL(requestSwitchToDocument(void*)), this, SLOT(slotRequestSwithToDocument(void*)));
 
-    connect(core->fileWatcher(), SIGNAL(fileChanged(QString)), this, SLOT(slotDocumentFileChanged(QString)));
+    connect(core, SIGNAL(documentFileChanged(QString)), this, SLOT(slotDocumentFileChanged(QString)));
 
     return TAbstractController::joint(mainWindow, core);
 }
@@ -116,7 +116,7 @@ int TTabController::addDocument(TDocument *document)
     if(!document)
         return -1;
 
-    int index = mTabWidget->addTab(document, document->projectName(), document->getIcon());
+    int index = mTabWidget->addTab(document, document->projectName(), QPixmap());
     mTabWidget->setTabToolTip(index, document->fileName());
 
     connect(document, SIGNAL(dirtyFlagChanged(bool)), this, SLOT(slotDocumentDirtyFlagChanged(bool)));

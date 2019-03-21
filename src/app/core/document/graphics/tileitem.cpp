@@ -15,4 +15,5 @@ QRectF TTileItem::boundingRect() const
 void TTileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     painter->drawPixmap(mTile->rect().topLeft(), mTile->pixmap());
+    painter->drawRect(mTile->rect());
 }

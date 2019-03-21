@@ -39,6 +39,8 @@ public:
     void setFps(int fps);
     void setSceneModel(TSceneModel *sceneModel);
 
+    void removeSelectedItems();
+
     TObject *getTopMostObject(const QPointF &pos) const;
     TObjectItem *getTopMostObjectItem(const QPointF &pos) const;
 
