@@ -26,6 +26,8 @@ void TSelectedItems::setObjectItemList(const TObjectItemList &objectItemList)
     mObjectItemMap.clear();
 
     for(TObjectItem *objectItem : objectItemList) {
+        if(!objectItem)
+            continue;
         TSelectedItem *selectedItem = new TSelectedItem(this);
         selectedItem->setObjectItem(objectItem);
         mObjectItemMap.insert(objectItem, selectedItem);
@@ -35,9 +37,6 @@ void TSelectedItems::setObjectItemList(const TObjectItemList &objectItemList)
 
 void TSelectedItems::setObjectItem(TObjectItem *objectItem)
 {
-    if(!objectItem)
-        return;
-
     TObjectItemList objectItemList;
     objectItemList.append(objectItem);
     setObjectItemList(objectItemList);
@@ -45,7 +44,7 @@ void TSelectedItems::setObjectItem(TObjectItem *objectItem)
 
 int TSelectedItems::addObjectItem(TObjectItem *objectItem)
 {
-    if(!objectItem)
+    if(!objectItem || mObjectItemMap.contains(objectItem))
         return -1;
 
     TSelectedItem *selectedItem = new TSelectedItem(this);
@@ -53,6 +52,24 @@ int TSelectedItems::addObjectItem(TObjectItem *objectItem)
     mObjectItemMap.insert(objectItem, selectedItem);
     updateBoundingRect();
     return 0;
+}
+
+int TSelectedItems::addObjectItems(const TObjectItemList &objectItemList)
+{
+    int itemsAdded = 0;
+    for(TObjectItem *objectItem : objectItemList) {
+        if(!objectItem || mObjectItemMap.contains(objectItem))
+            continue;
+
+        TSelectedItem *selectedItem = new TSelectedItem(this);
+        selectedItem->setObjectItem(objectItem);
+        mObjectItemMap.insert(objectItem, selectedItem);
+        itemsAdded++;
+    }
+    if(itemsAdded > 0)
+        updateBoundingRect();
+
+    return itemsAdded;
 }
 
 int TSelectedItems::removeObjectItem(TObjectItem *objectItem)
@@ -84,6 +101,25 @@ TObjectList TSelectedItems::getSelectedObjectList() const
         objectList.append(objectItem->object());
     }
     return objectList;
+}
+
+bool TSelectedItems::isEmpty() const
+{
+    return mObjectItemMap.isEmpty();
+}
+
+TObject::Type TSelectedItems::getObjectType() const
+{
+    TObjectItemList objectItemList = mObjectItemMap.keys();
+    if(objectItemList.size() < 1)
+        return TObject::INVALID;
+
+    TObject::Type t = objectItemList.at(0)->objectType();
+    for(TObjectItem *objectItem : objectItemList) {
+        if(objectItem->objectType() != t)
+            return TObject::INVALID;
+    }
+    return t;
 }
 
 void TSelectedItems::updateBoundingRect()

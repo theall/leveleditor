@@ -50,7 +50,8 @@ SOURCES += \
     $$PWD/document/graphics/selecteditems.cpp \
     $$PWD/document/undocommand/propertyundocommand.cpp \
     $$PWD/document/undocommand/layersundocommand.cpp \
-    $$PWD/document/undocommand/objectundocommand.cpp
+    $$PWD/document/undocommand/objectundocommand.cpp \
+    $$PWD/document/graphics/selectionrectangle.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -106,4 +107,5 @@ HEADERS  += \
     $$PWD/document/undocommand/propertyundocommand.h \
     $$PWD/document/undocommand/layersundocommand.h \
     $$PWD/document/undocommand/objectundocommand.h \
-    $$PWD/document/base/finddoc.h
+    $$PWD/document/base/finddoc.h \
+    $$PWD/document/graphics/selectionrectangle.h

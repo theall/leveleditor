@@ -22,6 +22,7 @@ private:
     // TObject interface
 public:
     QString typeString() const Q_DECL_OVERRIDE;
+    bool isCongener(TObject *object) const Q_DECL_OVERRIDE;
 };
 
 typedef QList<TBox*> TBoxList;

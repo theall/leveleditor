@@ -1,5 +1,5 @@
-#ifndef MOVEMODELSCENE_H
-#define MOVEMODELSCENE_H
+#ifndef GRAPHICSSCENE_H
+#define GRAPHICSSCENE_H
 
 #include <QPair>
 #include <QList>
@@ -10,6 +10,7 @@
 #include "objectitem.h"
 #include "hovereditem.h"
 #include "selecteditems.h"
+#include "selectionrectangle.h"
 #include "../model/scenemodel.h"
 
 class TDocument;
@@ -43,28 +44,45 @@ public:
 
     TObject *getTopMostObject(const QPointF &pos) const;
     TObjectItem *getTopMostObjectItem(const QPointF &pos) const;
+    TObjectItemList getObjectItemList(const QRectF &rect) const;
+    TObjectItemList getObjectItemList(const QRectF &rect, TObject::Type objectType) const;
+    TObjectItemList getObjectItemList(const QRectF &rect, TObjectItem *objectItem) const;
 
 private slots:
     void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);
 
 private:
+    enum Action {
+        NoAction,
+        Selecting,
+        Moving,
+        Resizing
+    };
+
     int mFps;
     bool mStepMode;
     qreal mScale;
     int mTimerId;
     bool mLeftButtonDown;
     QPointF mLeftButtonDownPos;
+    Action mAction;
+    Qt::CursorShape mCursor;
     TSceneModel *mSceneModel;
     TSceneItem *mSceneItem;
     THoveredItem *mHoveredItem;
     TSelectedItems *mSelectedItems;
+    TSelectionRectangle *mSelectionRectangle;
+    TObjectItem *mLastSelectedObjectItem;
     TDocument *mDocument;
 
     void step();
     void pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset);
 
+signals:
+    void needChangeCursor(Qt::CursorShape cursor);
+
 private slots:
-    void refresh();
+    void updateCursor();
 
     // QGraphicsScene interface
 protected:
@@ -90,4 +108,4 @@ protected:
     void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
 };
 
-#endif // MOVEMODELSCENE_H
+#endif // GRAPHICSSCENE_H

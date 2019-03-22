@@ -14,10 +14,19 @@ public:
     void setObjectItem(TObjectItem *objectItem);
 
     int addObjectItem(TObjectItem *objectItem);
+    int addObjectItems(const TObjectItemList &objectItemList);
     int removeObjectItem(TObjectItem *objectItem);
     bool containsObjectItem(TObjectItem *objectItem) const;
     TObjectItemList getSelectedObjectItemList() const;
     TObjectList getSelectedObjectList() const;
+
+    bool isEmpty() const;
+
+    /**
+     * @brief Retrieve object's type if all objects are congeneric.
+     * @return TObject::Type
+     */
+    TObject::Type getObjectType() const;
 
 protected:
     void timerEvent(QTimerEvent *event) override;

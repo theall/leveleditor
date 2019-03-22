@@ -28,10 +28,20 @@ TObject::Type TObjectItem::objectType() const
     return mObject->type();
 }
 
+bool TObjectItem::isCongener(TObjectItem *objectItem) const
+{
+    if(!objectItem)
+        return false;
+
+    return mObject->isCongener(objectItem->object());
+}
+
 void TObjectItem::slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &)
 {
     PropertyID pid = item->propertyId();
     if(pid==PID_OBJECT_POS || pid==PID_OBJECT_SIZE) {
         emit boundingRectChanged();
     }
+
+    propertyValueChanged(pid);
 }

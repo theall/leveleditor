@@ -28,6 +28,8 @@ private:
     int mOffset;
     QRectF mBoundingRect;
     TObjectItem *mObjectItem;
+
+    void setBoundingRect(const QRectF &rect = QRectF());
 };
 
 typedef QList<TSelectedItem*> TSelectedItemList;

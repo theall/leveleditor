@@ -56,5 +56,7 @@ private:
     QColor mColor;      // Cached color of the object
     bool mIsHoveredIndicator;
     QColor color() const;
+
+    void setBoundingRect(const QRectF &rect = QRectF());
 };
 

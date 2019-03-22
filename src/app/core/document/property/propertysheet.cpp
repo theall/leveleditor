@@ -56,7 +56,7 @@ void TPropertySheet::removeProperty(const TPropertyItems &propertyItemList)
         emit propertyItemsRemoved(itemsRemoved);
 }
 
-QVariant TPropertySheet::getValue(const QString &name)
+QVariant TPropertySheet::getValue(const QString &name) const
 {
     TPropertyItem *item = mPropertyMap.value(name, nullptr);
     if(item)
@@ -71,17 +71,17 @@ void TPropertySheet::setValue(const QString &name, const QVariant &value)
         item->setValue(value);
 }
 
-TPropertyItem *TPropertySheet::operator [](const QString &name)
+TPropertyItem *TPropertySheet::operator [](const QString &name) const
 {
     return mPropertyMap.value(name, nullptr);
 }
 
-TPropertyItem *TPropertySheet::get(const QString &name)
+TPropertyItem *TPropertySheet::get(const QString &name) const
 {
     return mPropertyMap.value(name, nullptr);
 }
 
-QVariant TPropertySheet::getValue(const PropertyID &pid)
+QVariant TPropertySheet::getValue(const PropertyID &pid) const
 {
     TPropertyItem *item = mPropertyIdMap.value(pid, nullptr);
     if(item)
@@ -96,12 +96,12 @@ void TPropertySheet::setValue(const PropertyID &pid, const QVariant &value)
         item->setValue(value);
 }
 
-TPropertyItem *TPropertySheet::operator [](const PropertyID &pid)
+TPropertyItem *TPropertySheet::operator [](const PropertyID &pid) const
 {
     return mPropertyIdMap.value(pid, nullptr);
 }
 
-TPropertyItem *TPropertySheet::get(const PropertyID &pid)
+TPropertyItem *TPropertySheet::get(const PropertyID &pid) const
 {
     return mPropertyIdMap.value(pid, nullptr);
 }

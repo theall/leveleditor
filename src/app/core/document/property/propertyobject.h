@@ -14,6 +14,15 @@ public:
     TPropertySheet *propertySheet() const;
     TPropertyItems propertyItems() const;
 
+    QVariant getValue(const QString &name) const;
+    void setValue(const QString &name, const QVariant &value);
+    TPropertyItem *operator [](const QString &name) const;
+    TPropertyItem *get(const QString &name) const;
+    QVariant getValue(const PropertyID &pid) const;
+    void setValue(const PropertyID &pid, const QVariant &value);
+    TPropertyItem *operator [](const PropertyID &pid) const;
+    TPropertyItem *get(const PropertyID &pid) const;
+
 protected:
     TPropertySheet *mPropertySheet;
 };

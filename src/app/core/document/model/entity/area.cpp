@@ -51,3 +51,8 @@ QString TArea::typeString() const
 {
     return T("Area");
 }
+
+bool TArea::isCongener(TObject *object) const
+{
+    return static_cast<TArea*>(object);
+}

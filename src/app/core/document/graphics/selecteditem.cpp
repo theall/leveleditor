@@ -21,6 +21,9 @@ TSelectedItem::~TSelectedItem()
 
 void TSelectedItem::setObjectItem(TObjectItem *objectItem)
 {
+    if(mObjectItem == objectItem)
+        return;
+
     if(mObjectItem) {
         mObjectItem->disconnect(this);
     }
@@ -28,7 +31,7 @@ void TSelectedItem::setObjectItem(TObjectItem *objectItem)
     mObjectItem = objectItem;
 
     if(mObjectItem) {
-        mBoundingRect = mObjectItem->boundingRect();
+        setBoundingRect(mObjectItem->boundingRect());
         connect(mObjectItem,
                 SIGNAL(boundingRectChanged()),
                 this,
@@ -37,7 +40,7 @@ void TSelectedItem::setObjectItem(TObjectItem *objectItem)
         if(!isVisible())
             setVisible(true);
     } else {
-        mBoundingRect = QRectF();
+        setBoundingRect();
         if(isVisible())
             setVisible(false);
     }
@@ -62,9 +65,9 @@ void TSelectedItem::paint(QPainter *painter,
 
     const QLineF lines[4] = {
         QLineF(mBoundingRect.topLeft(), mBoundingRect.topRight()),
-        QLineF(mBoundingRect.bottomLeft(), mBoundingRect.bottomRight()),
-        QLineF(mBoundingRect.topLeft(), mBoundingRect.bottomLeft()),
-        QLineF(mBoundingRect.topRight(), mBoundingRect.bottomRight())
+        QLineF(mBoundingRect.topRight(), mBoundingRect.bottomRight()),
+        QLineF(mBoundingRect.bottomRight(), mBoundingRect.bottomLeft()),
+        QLineF(mBoundingRect.bottomLeft(), mBoundingRect.topLeft())
     };
 
     // Draw solid white lines
@@ -88,5 +91,11 @@ void TSelectedItem::paint(QPainter *painter,
 void TSelectedItem::slotObjectBoundingRectChanged()
 {
     if(mObjectItem)
-        mBoundingRect = mObjectItem->boundingRect();
+        setBoundingRect(mObjectItem->boundingRect());
+}
+
+void TSelectedItem::setBoundingRect(const QRectF &rect)
+{
+    prepareGeometryChange();
+    mBoundingRect = rect;
 }

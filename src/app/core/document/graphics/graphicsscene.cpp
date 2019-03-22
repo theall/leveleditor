@@ -15,26 +15,35 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
   , mStepMode(false)
   , mTimerId(-1)
   , mLeftButtonDown(false)
+  , mAction(NoAction)
+  , mCursor(Qt::ArrowCursor)
   , mSceneModel(nullptr)
   , mSceneItem(nullptr)
   , mHoveredItem(new THoveredItem)
   , mSelectedItems(new TSelectedItems)
+  , mSelectionRectangle(new TSelectionRectangle)
+  , mLastSelectedObjectItem(nullptr)
   , mDocument(nullptr)
 {
     setSize(640, 480);
 
-    mHoveredItem->setZValue(TOP_Z_VALUE);
+    mHoveredItem->setZValue(TOP_Z_VALUE-2);
     addItem(mHoveredItem);
 
-    mSelectedItems->setZValue(TOP_Z_VALUE+1);
+    mSelectedItems->setZValue(TOP_Z_VALUE-1);
     addItem(mSelectedItems);
+
+    mSelectionRectangle->setZValue(TOP_Z_VALUE);
+    addItem(mSelectionRectangle);
 
     FIND_DOCUMENT;
 }
 
 TGraphicsScene::~TGraphicsScene()
 {
-
+    delete mHoveredItem;
+    delete mSelectedItems;
+    delete mSelectionRectangle;
 }
 
 void TGraphicsScene::setSize(qreal w, qreal h)
@@ -126,6 +135,8 @@ void TGraphicsScene::setSceneModel(TSceneModel *sceneModel)
                 SLOT(slotPropertyItemValueChanged(TPropertyItem*,QVariant)));
 
         setBackgroundColor(mSceneModel->getBackgroundColor());
+        QRectF rect = mSceneItem->boundingRect();
+        setSize(rect.size());
     }
 }
 
@@ -160,9 +171,29 @@ void TGraphicsScene::pushObjectMoveCommand(const TObjectList &objectList, const 
     mDocument->addUndoCommand(command);
 }
 
-void TGraphicsScene::refresh()
+void TGraphicsScene::updateCursor()
 {
+    Qt::CursorShape cursorShape = Qt::ArrowCursor;
 
+    switch (mAction) {
+    case NoAction:
+    {
+        if(mHoveredItem->isVisible())
+            cursorShape = Qt::SizeAllCursor;
+        break;
+    }
+    case Moving:
+        cursorShape = Qt::SizeAllCursor;
+        break;
+    default:
+        break;
+    }
+
+    if(mCursor != cursorShape)
+    {
+        emit needChangeCursor(cursorShape);
+        mCursor = cursorShape;
+    }
 }
 
 void TGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
@@ -187,51 +218,114 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             stop();
     } else if(button == Qt::LeftButton) {
         mLeftButtonDownPos = event->scenePos();
-        TObjectItem *objectItem = getTopMostObjectItem(mLeftButtonDownPos);
-        TObjectItemList objectItemList = mSelectedItems->getSelectedObjectItemList();
-        if(objectItemList.contains(objectItem)) {
-
-        } else {
-
+        Qt::KeyboardModifiers modifers = event->modifiers();
+        if(modifers&Qt::ShiftModifier) {
+            TObjectItem *objectItem = getTopMostObjectItem(mLeftButtonDownPos);
+            if(mLastSelectedObjectItem && mLastSelectedObjectItem->isCongener(objectItem)) {
+                qreal leftButtonDownX = mLeftButtonDownPos.x();
+                qreal leftButtonDownY = mLeftButtonDownPos.y();
+                QRectF lastObjectItemRect = mLastSelectedObjectItem->boundingRect();
+                QPointF centerPos = lastObjectItemRect.center();
+                qreal left = qMin(leftButtonDownX, centerPos.x());
+                qreal top = qMin(leftButtonDownY, centerPos.y());
+                qreal right = qMax(leftButtonDownX, centerPos.x());
+                qreal bottom = qMax(leftButtonDownY, centerPos.y());
+                TObjectItemList objectItemList = getObjectItemList(QRectF(left,top,right-left,bottom-top), mLastSelectedObjectItem);
+                if(objectItemList.size() > 0)
+                    mSelectedItems->setObjectItemList(objectItemList);
+            }
         }
     }
 }
 
 void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
     if(!mLeftButtonDown) {
-        TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
-        mHoveredItem->setObjectItem(objectItem);
-        update();
+        if(mSelectedItems->containsObjectItem(objectItem))
+            mHoveredItem->setObjectItem(nullptr);
+        else
+            mHoveredItem->setObjectItem(objectItem);
+        mAction = NoAction;
     } else {
-        TObjectList objectList = mSelectedItems->getSelectedObjectList();
-        if(objectList.size() > 0) {
-            QPointF offset = event->scenePos() - event->lastScenePos();
-            if(!offset.isNull()) {
-                pushObjectMoveCommand(objectList, offset);
+        if(mAction == NoAction) {
+            if(objectItem) {
+                QPointF lastScenePos = event->lastScenePos();
+                // Check whether need to add object item under mouse to selected items
+                if(lastScenePos == mLeftButtonDownPos) {
+                    mAction = Moving;
+                    if(!mSelectedItems->containsObjectItem(objectItem)) {
+                        mSelectedItems->setObjectItem(objectItem);
+                    }
+                }
+            } else {
+                mAction = Selecting;
+                mSelectionRectangle->setVisible(true);
             }
         }
+        if(mAction == Moving) {
+            // Move selected object item
+            TObjectList objectList = mSelectedItems->getSelectedObjectList();
+            if(objectList.size() > 0) {
+                QPointF offset = event->scenePos() - event->lastScenePos();
+                if(!offset.isNull()) {
+                    pushObjectMoveCommand(objectList, offset);
+                }
+            }
+        } else if(mAction == Selecting) {
+            mSelectionRectangle->setRectangle(QRectF(mLeftButtonDownPos, event->scenePos()));
+        }
     }
+    updateCursor();
+    update();
 }
 
 void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if(mLeftButtonDown) {
         mLeftButtonDown = false;
-        QPointF mousePos = event->scenePos();
-        if(mLeftButtonDownPos==mousePos) {
-            Qt::KeyboardModifiers modifers = event->modifiers();
-            TObjectItem *objectItem = getTopMostObjectItem(mLeftButtonDownPos);
-            if(modifers&Qt::ControlModifier) {
-                if(!mSelectedItems->containsObjectItem(objectItem))
-                    mSelectedItems->addObjectItem(objectItem);
-                else
-                    mSelectedItems->removeObjectItem(objectItem);
+        if(mAction == NoAction) {
+            TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
+            if(objectItem) {
+                Qt::KeyboardModifiers modifers = event->modifiers();
+                if(modifers&Qt::ControlModifier) {
+                    if(mLeftButtonDownPos==event->scenePos()) {
+                        // The mouse pos is not equal to mLeftButtonDownPos after selected items moved
+                        if(!mSelectedItems->containsObjectItem(objectItem)) {
+                            mSelectedItems->addObjectItem(objectItem);
+                        } else {
+                            mSelectedItems->removeObjectItem(objectItem);
+                        }
+                    }
+                    mLastSelectedObjectItem = objectItem;
+                } else if(modifers&Qt::ShiftModifier) {
+                    if(!mLastSelectedObjectItem)
+                        mLastSelectedObjectItem = objectItem;
+                } else {
+                    mSelectedItems->setObjectItem(objectItem);
+                    mLastSelectedObjectItem = objectItem;
+                }
             } else {
-                mSelectedItems->setObjectItem(objectItem);
+                mSelectedItems->setObjectItem(nullptr);
+                mLastSelectedObjectItem = nullptr;
             }
-            update();
+        } else if(mAction == Moving) {
+            mAction = NoAction;
+        } else if(mAction == Selecting) {
+            mAction = NoAction;
+
+            QRectF selectionRect = mSelectionRectangle->boundingRect();
+            TObjectItemList objectItemList = getObjectItemList(selectionRect);
+            Qt::KeyboardModifiers modifers = event->modifiers();
+            if(modifers&Qt::ControlModifier) {
+                mSelectedItems->addObjectItems(objectItemList);
+            } else {
+                mSelectedItems->setObjectItemList(objectItemList);
+            }
+            mSelectionRectangle->setVisible(false);
         }
+
+        update();
     }
 }
 
@@ -348,7 +442,7 @@ TObject *TGraphicsScene::getTopMostObject(const QPointF &pos) const
 
 TObjectItem *TGraphicsScene::getTopMostObjectItem(const QPointF &pos) const
 {
-    const QList<QGraphicsItem *> &itemList = items(pos, Qt::IntersectsItemBoundingRect);
+    const QList<QGraphicsItem *> &itemList = items(pos);
 
     for (QGraphicsItem *item : itemList) {
         if (!item->isEnabled())
@@ -359,4 +453,53 @@ TObjectItem *TGraphicsScene::getTopMostObjectItem(const QPointF &pos) const
             return objectItem;
     }
     return nullptr;
+}
+
+TObjectItemList TGraphicsScene::getObjectItemList(const QRectF &rect) const
+{
+    const QList<QGraphicsItem *> &itemList = items(rect);
+    TObjectItemList objectItemList;
+    for (QGraphicsItem *item : itemList) {
+        if (!item->isEnabled())
+            continue;
+
+        TObjectItem *objectItem = qgraphicsitem_cast<TObjectItem*>(item);
+        if (objectItem)
+            objectItemList.append(objectItem);
+    }
+    return objectItemList;
+}
+
+TObjectItemList TGraphicsScene::getObjectItemList(const QRectF &rect, TObject::Type objectType) const
+{
+    const QList<QGraphicsItem *> &itemList = items(rect);
+    TObjectItemList objectItemList;
+    for (QGraphicsItem *item : itemList) {
+        if (!item->isEnabled())
+            continue;
+
+        TObjectItem *objectItem = qgraphicsitem_cast<TObjectItem*>(item);
+        if (objectItem && objectItem->objectType()==objectType)
+            objectItemList.append(objectItem);
+    }
+    return objectItemList;
+}
+
+TObjectItemList TGraphicsScene::getObjectItemList(const QRectF &rect, TObjectItem *objectItem) const
+{
+    TObjectItemList objectItemList;
+    if(!objectItem)
+        return objectItemList;
+
+    const QList<QGraphicsItem *> &itemList = items(rect);
+    TObject *object = objectItem->object();
+    for (QGraphicsItem *item : itemList) {
+        if (!item->isEnabled())
+            continue;
+
+        TObjectItem *objectItem = qgraphicsitem_cast<TObjectItem*>(item);
+        if (objectItem && object->isCongener(objectItem->object()))
+            objectItemList.append(objectItem);
+    }
+    return objectItemList;
 }

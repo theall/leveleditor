@@ -110,15 +110,19 @@ void TTile::readFromStream(QDataStream &stream)
 
     TTileId *tileId = mDocument->getTileId(setNumber, number);
     if(tileId) {
-        TPixmap *pixmap = tileId->pixmap();
-        mPropertySheet->setValue(P_IMAGE, pixmap->fileName());
-        mPixmap = pixmap->pixmap();
+        mPixmap = tileId->pixmap();
+        mPropertySheet->setValue(P_IMAGE, mPixmap->fileName());
         setPos(pos1);
-        setSize(mPixmap.size());
+        setSize(mPixmap->pixmap().size());
     }
 }
 
 QPixmap TTile::pixmap() const
+{
+    return mPixmap->pixmap();
+}
+
+TPixmap *TTile::primitive() const
 {
     return mPixmap;
 }
@@ -142,4 +146,14 @@ void TTile::initPropertySheet()
 QString TTile::typeString() const
 {
     return T("Tile");
+}
+
+bool TTile::isCongener(TObject *object) const
+{
+    TTile *tile = static_cast<TTile*>(object);
+    if(!tile)
+        return false;
+
+    TPixmap *pixmap = tile->primitive();
+    return mPixmap==pixmap || mPixmap->pixmap().size()==pixmap->pixmap().size();
 }

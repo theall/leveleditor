@@ -17,6 +17,9 @@ public:
 
     TObject *object() const;
     TObject::Type objectType() const;
+    bool isCongener(TObjectItem *objectItem) const;
+
+    virtual void propertyValueChanged(PropertyID pid) = 0;
 
 signals:
     void boundingRectChanged();

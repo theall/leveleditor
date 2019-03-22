@@ -36,6 +36,8 @@ public:
 
     void move(const QPointF &offset);
 
+    virtual bool isCongener(TObject *object) const = 0;
+
 protected:
     virtual void initPropertySheet();
 

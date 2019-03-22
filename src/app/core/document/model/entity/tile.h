@@ -7,6 +7,7 @@
 #include "object.h"
 #include "../../base/io.h"
 
+class TPixmap;
 class TDocument;
 class TTile : public TObject, TIO
 {
@@ -19,15 +20,17 @@ public:
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
 
     QPixmap pixmap() const;
+    TPixmap *primitive() const;
 
 private:
-    QPixmap mPixmap;
+    TPixmap *mPixmap;
     TDocument *mDocument;
     void initPropertySheet();
 
     // TObject interface
 public:
     QString typeString() const Q_DECL_OVERRIDE;
+    bool isCongener(TObject *object) const Q_DECL_OVERRIDE;
 };
 
 typedef QList<TTile*> TTileList;

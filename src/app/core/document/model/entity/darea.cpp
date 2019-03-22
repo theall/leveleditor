@@ -51,3 +51,8 @@ QString TDArea::typeString() const
 {
     return T("Danger Area");
 }
+
+bool TDArea::isCongener(TObject *object) const
+{
+    return static_cast<TDArea*>(object);
+}

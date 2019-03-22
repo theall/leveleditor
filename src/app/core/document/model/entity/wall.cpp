@@ -35,3 +35,8 @@ QString TWall::typeString() const
 {
     return T("Wall");
 }
+
+bool TWall::isCongener(TObject *object) const
+{
+    return static_cast<TWall*>(object);
+}

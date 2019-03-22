@@ -5,18 +5,49 @@
 #include "objectitem.h"
 #include "../model/entity/tile.h"
 
-class TTileItem : public TObjectItem
+class TDoorItem : public TObjectItem
 {
 public:
-    TTileItem(TTile *tile, QGraphicsItem *parent = Q_NULLPTR);
+    TDoorItem(TTile *tile, QGraphicsItem *parent = Q_NULLPTR);
 
 private:
     TTile *mTile;
+    QRectF mBoundingRect;
+
+    void updateBoundingRect();
 
     // QGraphicsItem interface
 public:
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
+
+    // TObjectItem interface
+public:
+    void propertyValueChanged(PropertyID pid) Q_DECL_OVERRIDE;
+};
+
+class TTileItem : public TObjectItem
+{
+    Q_OBJECT
+
+public:
+    TTileItem(TTile *tile, QGraphicsItem *parent = Q_NULLPTR);
+    ~TTileItem();
+
+private:
+    TTile *mTile;
+    QRectF mBoundingRect;
+    TDoorItem *mDoorItem;
+
+    // QGraphicsItem interface
+public:
+    QRectF boundingRect() const Q_DECL_OVERRIDE;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
+    QPainterPath shape() const Q_DECL_OVERRIDE;
+
+    // TObjectItem interface
+public:
+    void propertyValueChanged(PropertyID pid) Q_DECL_OVERRIDE;
 };
 
 typedef QList<TTileItem*> TTileItemList;

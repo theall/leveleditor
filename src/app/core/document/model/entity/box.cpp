@@ -140,3 +140,8 @@ QString TBox::typeString() const
 {
     return T("Box");
 }
+
+bool TBox::isCongener(TObject *object) const
+{
+    return static_cast<TBox*>(object);
+}

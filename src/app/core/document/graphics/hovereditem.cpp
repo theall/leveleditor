@@ -90,7 +90,7 @@ void THoveredItem::paint(QPainter *painter,
 void THoveredItem::slotObjectBoundingRectChanged()
 {
     if(mObjectItem)
-        mBoundingRect = mObjectItem->boundingRect();
+        setBoundingRect(mObjectItem->boundingRect());
 }
 
 TObjectItem *THoveredItem::objectItem() const
@@ -100,6 +100,9 @@ TObjectItem *THoveredItem::objectItem() const
 
 void THoveredItem::setObjectItem(TObjectItem *objectItem)
 {
+    if(mObjectItem == objectItem)
+        return;
+
     if(mObjectItem) {
         mObjectItem->disconnect(this);
     }
@@ -107,7 +110,7 @@ void THoveredItem::setObjectItem(TObjectItem *objectItem)
     mObjectItem = objectItem;
 
     if(mObjectItem) {
-        mBoundingRect = mObjectItem->boundingRect();
+        setBoundingRect(mObjectItem->boundingRect());
         connect(mObjectItem,
                 SIGNAL(boundingRectChanged()),
                 this,
@@ -117,10 +120,16 @@ void THoveredItem::setObjectItem(TObjectItem *objectItem)
     } else {
         if(isVisible())
             setVisible(false);
-        mBoundingRect = QRectF();
+        setBoundingRect();
     }
 }
 
 QColor THoveredItem::color() const {
     return mColor;
+}
+
+void THoveredItem::setBoundingRect(const QRectF &rect)
+{
+    prepareGeometryChange();
+    mBoundingRect = rect;
 }
