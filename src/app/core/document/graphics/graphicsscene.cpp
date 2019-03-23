@@ -240,6 +240,8 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    QGraphicsScene::mouseMoveEvent(event);
+
     TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
     if(!mLeftButtonDown) {
         if(mSelectedItems->containsObjectItem(objectItem))

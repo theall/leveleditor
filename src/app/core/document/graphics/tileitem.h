@@ -26,6 +26,29 @@ public:
     void propertyValueChanged(PropertyID pid) Q_DECL_OVERRIDE;
 };
 
+class TTrackItem : public TObjectItem
+{
+    Q_OBJECT
+
+public:
+    TTrackItem(TTile *tile, QGraphicsItem *parent = Q_NULLPTR);
+    ~TTrackItem();
+
+private:
+    TTile *mTile;
+    QPointF mVector;
+    QRectF mBoundingRect;
+
+    // QGraphicsItem interface
+public:
+    QRectF boundingRect() const Q_DECL_OVERRIDE;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
+
+    // TObjectItem interface
+public:
+    void propertyValueChanged(PropertyID pid) Q_DECL_OVERRIDE;
+};
+
 class TTileItem : public TObjectItem
 {
     Q_OBJECT

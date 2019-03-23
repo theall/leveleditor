@@ -37,7 +37,7 @@ QSize TObject::size() const
 
 void TObject::setSize(const QSize &size)
 {
-    QSizeF currentSize = mPropertySheet->getValue(PID_OBJECT_SIZE).toSizeF();
+    QSize currentSize = mPropertySheet->getValue(PID_OBJECT_SIZE).toSize();
     if(currentSize == size)
         return;
 
@@ -64,5 +64,5 @@ void TObject::move(const QPointF &offset)
 void TObject::initPropertySheet()
 {
     mPropertySheet->addProperty(PT_VECTORF, P_POS, PID_OBJECT_POS);
-    mPropertySheet->addProperty(PT_SIZE, P_POS, PID_OBJECT_SIZE);
+    mPropertySheet->addProperty(PT_SIZE, P_SIZE, PID_OBJECT_SIZE);
 }

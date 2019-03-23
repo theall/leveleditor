@@ -23,6 +23,8 @@ public:
     TPropertyItem *operator [](const PropertyID &pid) const;
     TPropertyItem *get(const PropertyID &pid) const;
 
+    QString toString() const;
+
 protected:
     TPropertySheet *mPropertySheet;
 };

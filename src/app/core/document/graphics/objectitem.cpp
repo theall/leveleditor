@@ -11,6 +11,8 @@ TObjectItem::TObjectItem(TObject *object, QGraphicsItem *parent) :
             this,
             SLOT(slotPropertyItemValueChanged(TPropertyItem*,QVariant))
             );
+
+    setToolTip(object->toString());
 }
 
 int TObjectItem::type() const
