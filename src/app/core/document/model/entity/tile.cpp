@@ -21,8 +21,111 @@ static const QString P_FOLLOW_TYPE = T("Follow Type");
 static const QString P_TARGET = T("Target");
 static const QString P_SCREEN_SPEED = T("Screen Speed");
 
+TTileMoveModel::TTileMoveModel(QObject *parent) :
+    QObject(parent)
+{
+
+}
+
+TTileMoveModel::Type TTileMoveModel::type() const
+{
+    return mType;
+}
+
+void TTileMoveModel::setType(const Type &type)
+{
+    mType = type;
+}
+
+TStartPoint::TStartPoint(QObject *parent) :
+    TObject(TObject::POINT, parent)
+{
+    setSize(QSize(1,1));
+    TPropertyItem *propertyItem = get(PID_OBJECT_SIZE);
+    if(propertyItem)
+        propertyItem->setAttribute(PA_TEXT_VISIBLE, false);
+}
+
+QString TStartPoint::typeString() const
+{
+    return "Start Pos";
+}
+
+bool TStartPoint::isCongener(TObject *) const
+{
+    return false;
+}
+
+TDoor::TDoor(QObject *parent) :
+    TObject(TObject::DOOR, parent)
+  , mDir(None)
+{
+
+}
+
+TDoor::Dir TDoor::dir() const
+{
+    return mDir;
+}
+
+void TDoor::setDir(const Dir &dir)
+{
+    mDir = dir;
+}
+
+void TDoor::move(qreal offset, const Edge &edge)
+{
+    QRectF r = rect();
+    qreal dx1 = 0;
+    qreal dy1 = 0;
+    qreal dx2 = 0;
+    qreal dy2 = 0;
+    if(mDir == Horizontal) {
+        if(edge&Left) {
+            dx1 = offset;
+        }
+        if(edge&Right){
+            dx2 = offset;
+        }
+    } else if(mDir == Vertical) {
+        if(edge&Left) {
+            dy1 = offset;
+        }
+        if(edge&Right){
+            dy2 = offset;
+        }
+    }
+    r.adjust(dx1, dy1, dx2, dy2);
+    setRect(r);
+}
+
+void TDoor::slide(const QPointF &offset)
+{
+    QPointF distance(offset);
+    if(mDir == Horizontal) {
+        distance.setX(0);
+    } else if(mDir == Vertical) {
+        distance.setY(0);
+    }
+    TObject::move(distance);
+}
+
+QString TDoor::typeString() const
+{
+    return "Door";
+}
+
+bool TDoor::isCongener(TObject *) const
+{
+    return false;
+}
+
 TTile::TTile(QObject *parent) :
     TObject(TObject::TILE, parent)
+  , mPixmap(nullptr)
+  , mDocument(nullptr)
+  , mStartPoint(nullptr)
+  , mDoor(nullptr)
 {
     FIND_DOCUMENT;
 
@@ -95,14 +198,24 @@ void TTile::readFromStream(QDataStream &stream)
     QPoint startPos(xStart, yStart);
     QPointF screenSpeed(xScrSpeed, yScrSpeed);
 
+    TDoor::Dir moveDir = TDoor::None;
+    if(xSpeed>=0.1 || xScrSpeed>=0.1)
+        moveDir = TDoor::Horizontal;
+    else if(ySpeed>=0.1 || yScrSpeed>=0.1) {
+        moveDir = TDoor::Vertical;
+    }
+    if(moveDir!=TDoor::None && !end1.isNull() && !end2.isNull()) {
+        // Has move on tile
+        mHasMoveModel = true;
+    } else {
+        mHasMoveModel = false;
+    }
+
     mPropertySheet->setValue(P_POS_1, pos1);
     mPropertySheet->setValue(P_POS_2, pos2);
-    mPropertySheet->setValue(P_END_1, end1);
-    mPropertySheet->setValue(P_END_2, end2);
     mPropertySheet->setValue(P_RAND_1, rand1);
     mPropertySheet->setValue(P_RAND_2, rand2);
     mPropertySheet->setValue(P_SPEED, speed);
-    mPropertySheet->setValue(P_START_POS, startPos);
     mPropertySheet->setValue(P_FOLLOW, follow);
     mPropertySheet->setValue(P_FOLLOW_TYPE, followType);
     mPropertySheet->setValue(P_TARGET, target);
@@ -115,6 +228,30 @@ void TTile::readFromStream(QDataStream &stream)
         setPos(pos1);
         setSize(mPixmap->pixmap().size());
     }
+    if(mHasMoveModel) {
+        mStartPoint = new TStartPoint(this);
+        mStartPoint->setPos(startPos);
+
+        mDoor = new TDoor(this);
+        QPointF tilePos = pos();
+        qreal tileTop = tilePos.y();
+        qreal tileLeft = tilePos.x();
+        if(end1.y() < 0.1) {
+            end1.setY(tileTop);
+        }
+        if(end1.x() < 0.1) {
+            end1.setX(tileLeft);
+        }
+
+        QSize tileSize = size();
+        if(end2.y() < 1)
+            end2.setY(tileTop + tileSize.height());
+        if(end2.x() < 1)
+            end2.setX(tileLeft + tileSize.width());
+        mDoor->setDir(moveDir);
+        mDoor->setPos(end1);
+        mDoor->setSize(QSize(end2.x()-end1.x(),end2.y()-end1.y()));
+    }
 }
 
 QPixmap TTile::pixmap() const
@@ -125,6 +262,33 @@ QPixmap TTile::pixmap() const
 TPixmap *TTile::primitive() const
 {
     return mPixmap;
+}
+
+TStartPoint *TTile::startPoint() const
+{
+    return mStartPoint;
+}
+
+TDoor *TTile::door() const
+{
+    return mDoor;
+}
+
+bool TTile::hasMoveModel() const
+{
+    return mHasMoveModel;
+}
+
+void TTile::slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue)
+{
+    PropertyID pid = item->propertyId();
+    if(pid == PID_OBJECT_POS) {
+        if(mDoor) {
+            QPointF offset = item->value().toPointF();
+            offset -= oldValue.toPointF();
+            mDoor->slide(offset);
+        }
+    }
 }
 
 void TTile::initPropertySheet()
@@ -141,6 +305,12 @@ void TTile::initPropertySheet()
     mPropertySheet->addProperty(PT_INT, P_FOLLOW_TYPE, PID_TILE_FOLLOW_TYPE);
     mPropertySheet->addProperty(PT_INT, P_TARGET, PID_TILE_TARGET);
     mPropertySheet->addProperty(PT_VECTOR, P_SCREEN_SPEED, PID_TILE_SCREEN_SPEED);
+
+    connect(mPropertySheet,
+            SIGNAL(propertyItemValueChanged(TPropertyItem*,QVariant)),
+            this,
+            SLOT(slotPropertyItemValueChanged(TPropertyItem*,QVariant)));
+
 }
 
 QString TTile::typeString() const

@@ -5,13 +5,15 @@
 #include "objectitem.h"
 #include "../model/entity/tile.h"
 
-class TDoorItem : public TObjectItem
+class TTileItem;
+class TStartPointItem : public TObjectItem
 {
 public:
-    TDoorItem(TTile *tile, QGraphicsItem *parent = Q_NULLPTR);
+    TStartPointItem(TTileItem *tileItem);
+    ~TStartPointItem();
 
 private:
-    TTile *mTile;
+    TStartPoint *mStartPoint;
     QRectF mBoundingRect;
 
     void updateBoundingRect();
@@ -26,18 +28,33 @@ public:
     void propertyValueChanged(PropertyID pid) Q_DECL_OVERRIDE;
 };
 
-class TTrackItem : public TObjectItem
+class TDoorItem : public TObjectItem
 {
-    Q_OBJECT
-
 public:
-    TTrackItem(TTile *tile, QGraphicsItem *parent = Q_NULLPTR);
-    ~TTrackItem();
+    TDoorItem(TTileItem *tileItem);
 
 private:
-    TTile *mTile;
-    QPointF mVector;
+    enum MouseRegion
+    {
+        LEFT,
+        RIGHT,
+        BLANK,
+        OUT
+    };
+
+    TDoor *mDoor;
+    MouseRegion mMouseRegion;
+    bool mLeftButtonDown;
+    bool mResizeHovered;
+    bool mIsVertical;
+    QPointF mLeftButtonDownPos;
+    QPointF mMovingPos;
+    QRectF mMovingRect;
     QRectF mBoundingRect;
+    QRectF mRealRect;
+
+    void updateBoundingRect();
+    MouseRegion checkMouseRegion(const QPointF &pos);
 
     // QGraphicsItem interface
 public:
@@ -47,6 +64,29 @@ public:
     // TObjectItem interface
 public:
     void propertyValueChanged(PropertyID pid) Q_DECL_OVERRIDE;
+
+    // QGraphicsItem interface
+protected:
+    void mousePressed(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoved(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseReleased(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
+};
+
+class TTrackItem : public QGraphicsItem
+{
+public:
+    TTrackItem(TTileItem *tileItem, TDoorItem *doorItem);
+    ~TTrackItem();
+
+private:
+    TTileItem *mTileItem;
+    TDoorItem *mDoorItem;
+    QRectF mBoundingRect;
+
+    // QGraphicsItem interface
+public:
+    QRectF boundingRect() const Q_DECL_OVERRIDE;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
 };
 
 class TTileItem : public TObjectItem
@@ -57,10 +97,16 @@ public:
     TTileItem(TTile *tile, QGraphicsItem *parent = Q_NULLPTR);
     ~TTileItem();
 
+    TTile *tile() const;
+    TStartPoint *startPoint() const;
+    TDoor *door() const;
+
 private:
     TTile *mTile;
     QRectF mBoundingRect;
     TDoorItem *mDoorItem;
+    TTrackItem *mTrackItem;
+    TStartPointItem *mStartPointItem;
 
     // QGraphicsItem interface
 public:

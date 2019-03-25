@@ -33,6 +33,7 @@ public:
     void setValue(const PropertyID &pid, const QVariant &value);
     TPropertyItem *operator [](const PropertyID &pid) const;
     TPropertyItem *get(const PropertyID &pid) const;
+    void setNewValue(const PropertyID &pid, const QVariant &value);
 
     void clear();
 

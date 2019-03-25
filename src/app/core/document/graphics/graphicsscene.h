@@ -64,6 +64,7 @@ private:
     qreal mScale;
     int mTimerId;
     bool mLeftButtonDown;
+    bool mUnderMouse;
     QPointF mLeftButtonDownPos;
     Action mAction;
     Qt::CursorShape mCursor;
@@ -86,6 +87,7 @@ private slots:
 
     // QGraphicsScene interface
 protected:
+    bool event(QEvent *event) Q_DECL_OVERRIDE;
     void drawBackground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
     void drawForeground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
     void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;

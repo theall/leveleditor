@@ -51,6 +51,15 @@ QRectF TObject::rect() const
     return QRectF(pos, size);
 }
 
+void TObject::setRect(const QRectF &rect)
+{
+    if(rect.isEmpty())
+        return;
+
+    mPropertySheet->setValue(PID_OBJECT_POS, rect.topLeft());
+    mPropertySheet->setValue(PID_OBJECT_SIZE, rect.size());
+}
+
 void TObject::move(const QPointF &offset)
 {
     if(offset.isNull())

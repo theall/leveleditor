@@ -15,6 +15,7 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
   , mStepMode(false)
   , mTimerId(-1)
   , mLeftButtonDown(false)
+  , mUnderMouse(false)
   , mAction(NoAction)
   , mCursor(Qt::ArrowCursor)
   , mSceneModel(nullptr)
@@ -196,6 +197,27 @@ void TGraphicsScene::updateCursor()
     }
 }
 
+
+bool TGraphicsScene::event(QEvent *event)
+{
+    switch (event->type()) {
+    case QEvent::Enter:
+        mUnderMouse = true;
+//        if (mActiveTool)
+//            mActiveTool->mouseEntered();
+        break;
+    case QEvent::Leave:
+        mUnderMouse = false;
+//        if (mActiveTool)
+//            mActiveTool->mouseLeft();
+        break;
+    default:
+        break;
+    }
+
+    return QGraphicsScene::event(event);
+}
+
 void TGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
     QGraphicsScene::drawBackground(painter, rect);
@@ -208,6 +230,25 @@ void TGraphicsScene::drawForeground(QPainter *painter, const QRectF &rect)
 
 void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    QGraphicsScene::mouseMoveEvent(event);
+
+    TObjectItem *autonomyObjectitem = nullptr;
+    TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
+    if(mLastSelectedObjectItem && mLastSelectedObjectItem->needGrabMouse()) {
+        autonomyObjectitem = mLastSelectedObjectItem;
+    }
+    if(!autonomyObjectitem) {
+        if(objectItem && objectItem->autonomy())
+            autonomyObjectitem = objectItem;
+    }
+    if(autonomyObjectitem)
+    {
+        autonomyObjectitem->mousePressed(event);
+        mLastSelectedObjectItem = autonomyObjectitem;
+        if(event->isAccepted())
+            return;
+    }
+
     Qt::MouseButton button = event->button();
     mLeftButtonDown = (button==Qt::LeftButton);
     if(button == Qt::RightButton)
@@ -242,7 +283,22 @@ void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mouseMoveEvent(event);
 
+    TObjectItem *autonomyObjectitem = nullptr;
     TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
+    if(mLastSelectedObjectItem && mLastSelectedObjectItem->needGrabMouse()) {
+        autonomyObjectitem = mLastSelectedObjectItem;
+    }
+    if(!autonomyObjectitem) {
+        if(objectItem && objectItem->autonomy())
+            autonomyObjectitem = objectItem;
+    }
+    if(autonomyObjectitem)
+    {
+        autonomyObjectitem->mouseMoved(event);
+        if(event->isAccepted())
+            return;
+    }
+
     if(!mLeftButtonDown) {
         if(mSelectedItems->containsObjectItem(objectItem))
             mHoveredItem->setObjectItem(nullptr);
@@ -284,6 +340,24 @@ void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    QGraphicsScene::mouseMoveEvent(event);
+
+    TObjectItem *autonomyObjectitem = nullptr;
+    TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
+    if(mLastSelectedObjectItem && mLastSelectedObjectItem->needGrabMouse()) {
+        autonomyObjectitem = mLastSelectedObjectItem;
+    }
+    if(!autonomyObjectitem) {
+        if(objectItem && objectItem->autonomy())
+            autonomyObjectitem = objectItem;
+    }
+    if(autonomyObjectitem)
+    {
+        autonomyObjectitem->mouseReleased(event);
+        if(event->isAccepted())
+            return;
+    }
+
     if(mLeftButtonDown) {
         mLeftButtonDown = false;
         if(mAction == NoAction) {

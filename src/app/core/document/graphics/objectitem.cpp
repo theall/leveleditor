@@ -3,6 +3,8 @@
 TObjectItem::TObjectItem(TObject *object, QGraphicsItem *parent) :
     QGraphicsObject(parent)
   , mObject(object)
+  , mAutonomy(false)
+  , mNeedGrabMouse(false)
 {
     Q_ASSERT(mObject);
 
@@ -46,4 +48,39 @@ void TObjectItem::slotPropertyItemValueChanged(TPropertyItem *item, const QVaria
     }
 
     propertyValueChanged(pid);
+}
+
+bool TObjectItem::needGrabMouse() const
+{
+    return mNeedGrabMouse;
+}
+
+void TObjectItem::setNeedGrabMouse(bool needGrabMouse)
+{
+    mNeedGrabMouse = needGrabMouse;
+}
+
+void TObjectItem::mousePressed(QGraphicsSceneMouseEvent *event)
+{
+    event->accept();
+}
+
+void TObjectItem::mouseMoved(QGraphicsSceneMouseEvent *event)
+{
+    event->accept();
+}
+
+void TObjectItem::mouseReleased(QGraphicsSceneMouseEvent *event)
+{
+    event->accept();
+}
+
+bool TObjectItem::autonomy() const
+{
+    return mAutonomy;
+}
+
+void TObjectItem::setAutonomy(bool autonomy)
+{
+    mAutonomy = autonomy;
 }

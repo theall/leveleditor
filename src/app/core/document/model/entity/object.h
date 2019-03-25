@@ -18,6 +18,8 @@ public:
         PLAT,
         TILE,
         WALL,
+        POINT,
+        DOOR,
         INVALID
     };
 
@@ -33,6 +35,7 @@ public:
     void setSize(const QSize &size);
 
     QRectF rect() const;
+    void setRect(const QRectF &rect);
 
     void move(const QPointF &offset);
 

@@ -3,6 +3,8 @@
 
 #include <QList>
 #include <QGraphicsObject>
+#include <QGraphicsSceneMouseEvent>
+
 #include "../model/entity/object.h"
 
 class TObjectItem : public QGraphicsObject
@@ -21,6 +23,16 @@ public:
 
     virtual void propertyValueChanged(PropertyID pid) = 0;
 
+    bool autonomy() const;
+    void setAutonomy(bool autonomy);
+
+    virtual void mousePressed(QGraphicsSceneMouseEvent *event);
+    virtual void mouseMoved(QGraphicsSceneMouseEvent *event);
+    virtual void mouseReleased(QGraphicsSceneMouseEvent *event);
+
+    bool needGrabMouse() const;
+    void setNeedGrabMouse(bool needGrabMouse);
+
 signals:
     void boundingRectChanged();
 
@@ -29,6 +41,8 @@ private slots:
 
 private:
     TObject *mObject;
+    bool mAutonomy;
+    bool mNeedGrabMouse;
 };
 
 typedef QList<TObjectItem*> TObjectItemList;

@@ -106,6 +106,13 @@ TPropertyItem *TPropertySheet::get(const PropertyID &pid) const
     return mPropertyIdMap.value(pid, nullptr);
 }
 
+void TPropertySheet::setNewValue(const PropertyID &pid, const QVariant &value)
+{
+    TPropertyItem *item = mPropertyIdMap.value(pid, nullptr);
+    if(item)
+        item->setNewValue(value);
+}
+
 void TPropertySheet::clear()
 {
     mPropertyMap.clear();
