@@ -5,9 +5,9 @@
 
 const qreal GAP = 4.0;
 
-TStartPointItem::TStartPointItem(TTileItem *tileItem) :
-    TObjectItem(tileItem->startPoint(), tileItem)
-  , mStartPoint(tileItem->startPoint())
+TStartPointItem::TStartPointItem(TDoorItem *doorItem) :
+    TObjectItem(doorItem->startPoint(), doorItem)
+  , mStartPoint(doorItem->startPoint())
 {
     Q_ASSERT(mStartPoint);
 
@@ -86,11 +86,37 @@ TDoorItem::TDoorItem(TTileItem *tileItem) :
   , mMouseRegion(OUT)
   , mLeftButtonDown(false)
   , mResizeHovered(false)
+  , mStartPointItem(nullptr)
+  , mDoorStartPointTrackItem(nullptr)
+  , mFollowTileTrackItem(nullptr)
 {
     Q_ASSERT(mDoor);
 
     setAutonomy(true);
     updateBoundingRect();
+
+    TDoor::Type doorType = mDoor->type();
+    if(doorType == TDoor::Recycle) {
+        mStartPointItem = new TStartPointItem(this);
+        mDoorStartPointTrackItem = new TTrackItem(this, mStartPointItem);
+    } else if(doorType == TDoor::Random) {
+
+    } else if(doorType == TDoor::Follow) {
+        mFollowTileTrackItem = new TTrackItem(this);
+    }
+}
+
+TDoorItem::~TDoorItem()
+{
+    if(mStartPointItem)
+        delete mStartPointItem;
+    if(mDoorStartPointTrackItem)
+        delete mDoorStartPointTrackItem;
+}
+
+TStartPoint *TDoorItem::startPoint() const
+{
+    return mDoor->startPoint();
 }
 
 void TDoorItem::updateBoundingRect()
@@ -190,6 +216,8 @@ void TDoorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidg
         painter->drawLine(p1, p2);
     }
     if(!mMovingRect.isNull()) {
+        QPen pen(Qt::black, 1, Qt::DotLine);
+        painter->setPen(pen);
         painter->drawRect(mMovingRect);
     }
 }
@@ -309,13 +337,13 @@ void TDoorItem::mouseReleased(QGraphicsSceneMouseEvent *event)
     event->accept();
 }
 
-TTrackItem::TTrackItem(TTileItem *tileItem, TDoorItem *doorItem) :
-    QGraphicsItem(tileItem)
-  , mTileItem(tileItem)
-  , mDoorItem(doorItem)
+TTrackItem::TTrackItem(TObjectItem *parent, TObjectItem *child) :
+    QGraphicsItem(parent)
+  , mHostObjectItem(parent)
+  , mChildObjectItem(child)
 {
-    Q_ASSERT(mTileItem);
-    Q_ASSERT(mDoorItem);
+    Q_ASSERT(mHostObjectItem);
+    Q_ASSERT(mChildObjectItem);
 }
 
 TTrackItem::~TTrackItem()
@@ -325,13 +353,13 @@ TTrackItem::~TTrackItem()
 
 QRectF TTrackItem::boundingRect() const
 {
-    return mTileItem->boundingRect().united(mDoorItem->boundingRect());
+    return mHostObjectItem->boundingRect().united(mChildObjectItem->boundingRect());
 }
 
 void TTrackItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    QPointF p1 = mTileItem->boundingRect().center();
-    QPointF p2 = mDoorItem->boundingRect().center();
+    QPointF p1 = mHostObjectItem->boundingRect().center();
+    QPointF p2 = mChildObjectItem->boundingRect().center();
     QLineF trackLine(p1, p2);
     QColor gray(Qt::gray);
     gray.setAlpha(128);
@@ -345,7 +373,7 @@ TTileItem::TTileItem(TTile *tile, QGraphicsItem *parent) :
     TObjectItem(tile, parent)
   , mTile(tile)
   , mDoorItem(nullptr)
-  , mTrackItem(nullptr)
+  , mTileDoorTrackItem(nullptr)
 {
     Q_ASSERT(mTile);
 
@@ -353,8 +381,7 @@ TTileItem::TTileItem(TTile *tile, QGraphicsItem *parent) :
 
     if(mTile->hasMoveModel()) {
         mDoorItem = new TDoorItem(this);
-        mTrackItem = new TTrackItem(this, mDoorItem);
-        mStartPointItem = new TStartPointItem(this);
+        mTileDoorTrackItem = new TTrackItem(this, mDoorItem);
     }
 }
 
@@ -362,8 +389,9 @@ TTileItem::~TTileItem()
 {
     if(mDoorItem)
         delete mDoorItem;
-    if(mTrackItem)
-        delete mTrackItem;
+    if(mTileDoorTrackItem)
+        delete mTileDoorTrackItem;
+
 }
 
 TTile *TTileItem::tile() const
@@ -371,14 +399,19 @@ TTile *TTileItem::tile() const
     return mTile;
 }
 
-TStartPoint *TTileItem::startPoint() const
-{
-    return mTile->startPoint();
-}
-
 TDoor *TTileItem::door() const
 {
     return mTile->door();
+}
+
+TTileItem *TTileItem::targetTileItem() const
+{
+    return mTargetTileItem;
+}
+
+void TTileItem::setTargetTileItem(TTileItem *targetTileItem)
+{
+    mTargetTileItem = targetTileItem;
 }
 
 QRectF TTileItem::boundingRect() const

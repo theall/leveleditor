@@ -10,6 +10,11 @@ TLayerItem::TLayerItem(TLayer *layer, QGraphicsItem *parent) :
         TTileItem *tileItem = new TTileItem(tile, this);
         mTileItemList.append(tileItem);
     }
+
+    // Process follow target
+    for(TTileItem *tileItem : mTileItemList) {
+
+    }
 }
 
 QRectF TLayerItem::calcBoundingRect()

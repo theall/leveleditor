@@ -45,6 +45,14 @@ void TLayer::readFromStream(QDataStream &stream)
         tile->readFromStream(stream);
         mTileList.append(tile);
     }
+
+    // Process tile target
+    for(TTile *tile : mTileList) {
+        int tileTarget = tile->targetNumber();
+        if(tileTarget>=0 && tileTarget<mTileList.size()) {
+            tile->setTarget(mTileList.at(tileTarget));
+        }
+    }
 }
 
 TTileList TLayer::tileList() const

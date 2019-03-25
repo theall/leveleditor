@@ -59,6 +59,8 @@ bool TStartPoint::isCongener(TObject *) const
 TDoor::TDoor(QObject *parent) :
     TObject(TObject::DOOR, parent)
   , mDir(None)
+  , mType(TDoor::Recycle)
+  , mStartPoint(new TStartPoint(this))
 {
 
 }
@@ -110,6 +112,32 @@ void TDoor::slide(const QPointF &offset)
     TObject::move(distance);
 }
 
+TDoor::Type TDoor::type() const
+{
+    return mType;
+}
+
+void TDoor::setType(const Type &type)
+{
+    mType = type;
+}
+
+void TDoor::setPos(const QPointF &pos)
+{
+
+    TObject::setPos(pos);
+}
+
+TStartPoint *TDoor::startPoint() const
+{
+    return mStartPoint;
+}
+
+void TDoor::setStartPos(const QPointF &pos)
+{
+    mStartPoint->setPos(pos);
+}
+
 QString TDoor::typeString() const
 {
     return "Door";
@@ -124,8 +152,9 @@ TTile::TTile(QObject *parent) :
     TObject(TObject::TILE, parent)
   , mPixmap(nullptr)
   , mDocument(nullptr)
-  , mStartPoint(nullptr)
   , mDoor(nullptr)
+  , mTarget(nullptr)
+  , mTargetNumber(-1)
 {
     FIND_DOCUMENT;
 
@@ -188,6 +217,8 @@ void TTile::readFromStream(QDataStream &stream)
     stream >> xScrSpeed;
     stream >> yScrSpeed;
 
+    mTargetNumber = target;
+
     QPointF pos1(x, y);
     QPoint pos2(x2, y2);
     QPoint end1(xEnd1, yEnd1);
@@ -229,10 +260,8 @@ void TTile::readFromStream(QDataStream &stream)
         setSize(mPixmap->pixmap().size());
     }
     if(mHasMoveModel) {
-        mStartPoint = new TStartPoint(this);
-        mStartPoint->setPos(startPos);
-
         mDoor = new TDoor(this);
+        mDoor->setStartPos(startPos);
         QPointF tilePos = pos();
         qreal tileTop = tilePos.y();
         qreal tileLeft = tilePos.x();
@@ -249,6 +278,12 @@ void TTile::readFromStream(QDataStream &stream)
         if(end2.x() < 1)
             end2.setX(tileLeft + tileSize.width());
         mDoor->setDir(moveDir);
+        if(rand1.x() > 0) {
+            mDoor->setType(TDoor::Random);
+        } else if(follow) {
+            mDoor->setType(TDoor::Follow);
+        }
+
         mDoor->setPos(end1);
         mDoor->setSize(QSize(end2.x()-end1.x(),end2.y()-end1.y()));
     }
@@ -262,11 +297,6 @@ QPixmap TTile::pixmap() const
 TPixmap *TTile::primitive() const
 {
     return mPixmap;
-}
-
-TStartPoint *TTile::startPoint() const
-{
-    return mStartPoint;
 }
 
 TDoor *TTile::door() const
@@ -284,11 +314,27 @@ void TTile::slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &ol
     PropertyID pid = item->propertyId();
     if(pid == PID_OBJECT_POS) {
         if(mDoor) {
+            // Slide door with tile
             QPointF offset = item->value().toPointF();
             offset -= oldValue.toPointF();
             mDoor->slide(offset);
         }
     }
+}
+
+int TTile::targetNumber() const
+{
+    return mTargetNumber;
+}
+
+TTile *TTile::target() const
+{
+    return mTarget;
+}
+
+void TTile::setTarget(TTile *target)
+{
+    mTarget = target;
 }
 
 void TTile::initPropertySheet()

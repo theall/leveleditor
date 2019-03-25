@@ -56,7 +56,11 @@ public:
         Right = 0x2,
         LeftRight = Left|Right,
     };
-
+    enum Type {
+        Recycle,
+        Random,
+        Follow
+    };
     TDoor(QObject *parent = nullptr);
     Dir dir() const;
     void setDir(const Dir &dir);
@@ -64,8 +68,18 @@ public:
     void move(qreal offset, const Edge &edge);
     void slide(const QPointF &offset);
 
+    Type type() const;
+    void setType(const Type &type);
+
+    void setPos(const QPointF &pos);
+    TStartPoint *startPoint() const;
+
+    void setStartPos(const QPointF &pos);
+
 private:
     Dir mDir;
+    Type mType;
+    TStartPoint *mStartPoint;
 
     // TObject interface
 public:
@@ -85,9 +99,12 @@ public:
 
     QPixmap pixmap() const;
     TPixmap *primitive() const;
-    TStartPoint *startPoint() const;
     TDoor *door() const;
     bool hasMoveModel() const;
+
+    TTile *target() const;
+    void setTarget(TTile *target);
+    int targetNumber() const;
 
 private slots:
     void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);
@@ -95,9 +112,10 @@ private slots:
 private:
     TPixmap *mPixmap;
     TDocument *mDocument;
-    TStartPoint *mStartPoint;
     TDoor *mDoor;
+    TTile *mTarget;
     bool mHasMoveModel;
+    int mTargetNumber;
 
     void initPropertySheet();
 

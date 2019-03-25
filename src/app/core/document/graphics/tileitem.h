@@ -6,10 +6,12 @@
 #include "../model/entity/tile.h"
 
 class TTileItem;
+class TTrackItem;
+class TDoorItem;
 class TStartPointItem : public TObjectItem
 {
 public:
-    TStartPointItem(TTileItem *tileItem);
+    TStartPointItem(TDoorItem *doorItem);
     ~TStartPointItem();
 
 private:
@@ -28,10 +30,22 @@ public:
     void propertyValueChanged(PropertyID pid) Q_DECL_OVERRIDE;
 };
 
+class TRandomRegionItem : public TObjectItem
+{
+public:
+    TRandomRegionItem(TDoorItem *doorItem);
+
+private:
+    QRectF mBoundingRect;
+};
+
 class TDoorItem : public TObjectItem
 {
 public:
     TDoorItem(TTileItem *tileItem);
+    ~TDoorItem();
+
+    TStartPoint *startPoint() const;
 
 private:
     enum MouseRegion
@@ -52,6 +66,9 @@ private:
     QRectF mMovingRect;
     QRectF mBoundingRect;
     QRectF mRealRect;
+    TStartPointItem *mStartPointItem;
+    TTrackItem *mDoorStartPointTrackItem;
+    TTrackItem *mFollowTileTrackItem;
 
     void updateBoundingRect();
     MouseRegion checkMouseRegion(const QPointF &pos);
@@ -75,12 +92,12 @@ protected:
 class TTrackItem : public QGraphicsItem
 {
 public:
-    TTrackItem(TTileItem *tileItem, TDoorItem *doorItem);
+    TTrackItem(TObjectItem *parent, TObjectItem *child);
     ~TTrackItem();
 
 private:
-    TTileItem *mTileItem;
-    TDoorItem *mDoorItem;
+    TObjectItem *mHostObjectItem;
+    TObjectItem *mChildObjectItem;
     QRectF mBoundingRect;
 
     // QGraphicsItem interface
@@ -98,15 +115,17 @@ public:
     ~TTileItem();
 
     TTile *tile() const;
-    TStartPoint *startPoint() const;
     TDoor *door() const;
+
+    TTileItem *targetTileItem() const;
+    void setTargetTileItem(TTileItem *targetTileItem);
 
 private:
     TTile *mTile;
     QRectF mBoundingRect;
     TDoorItem *mDoorItem;
-    TTrackItem *mTrackItem;
-    TStartPointItem *mStartPointItem;
+    TTrackItem *mTileDoorTrackItem;
+    TTileItem *mTargetTileItem;
 
     // QGraphicsItem interface
 public:

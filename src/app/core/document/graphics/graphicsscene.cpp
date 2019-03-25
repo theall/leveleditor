@@ -518,7 +518,7 @@ TObject *TGraphicsScene::getTopMostObject(const QPointF &pos) const
 
 TObjectItem *TGraphicsScene::getTopMostObjectItem(const QPointF &pos) const
 {
-    const QList<QGraphicsItem *> &itemList = items(pos);
+    const QList<QGraphicsItem *> &itemList = items(pos, Qt::IntersectsItemBoundingRect);
 
     for (QGraphicsItem *item : itemList) {
         if (!item->isEnabled())
@@ -533,7 +533,7 @@ TObjectItem *TGraphicsScene::getTopMostObjectItem(const QPointF &pos) const
 
 TObjectItemList TGraphicsScene::getObjectItemList(const QRectF &rect) const
 {
-    const QList<QGraphicsItem *> &itemList = items(rect);
+    const QList<QGraphicsItem *> &itemList = items(rect, Qt::IntersectsItemBoundingRect);
     TObjectItemList objectItemList;
     for (QGraphicsItem *item : itemList) {
         if (!item->isEnabled())
@@ -548,7 +548,7 @@ TObjectItemList TGraphicsScene::getObjectItemList(const QRectF &rect) const
 
 TObjectItemList TGraphicsScene::getObjectItemList(const QRectF &rect, TObject::Type objectType) const
 {
-    const QList<QGraphicsItem *> &itemList = items(rect);
+    const QList<QGraphicsItem *> &itemList = items(rect, Qt::IntersectsItemBoundingRect);
     TObjectItemList objectItemList;
     for (QGraphicsItem *item : itemList) {
         if (!item->isEnabled())
