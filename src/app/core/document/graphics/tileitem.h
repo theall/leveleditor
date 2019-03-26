@@ -37,6 +37,15 @@ public:
 
 private:
     QRectF mBoundingRect;
+
+    // QGraphicsItem interface
+public:
+    QRectF boundingRect() const Q_DECL_OVERRIDE;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
+
+    // TObjectItem interface
+public:
+    void propertyValueChanged(PropertyID pid) Q_DECL_OVERRIDE;
 };
 
 class TDoorItem : public TObjectItem
@@ -69,6 +78,8 @@ private:
     TStartPointItem *mStartPointItem;
     TTrackItem *mDoorStartPointTrackItem;
     TTrackItem *mFollowTileTrackItem;
+    TRandomRegionItem *mRandomRegionItem;
+    TTileItem *mFollowTileItem;
 
     void updateBoundingRect();
     MouseRegion checkMouseRegion(const QPointF &pos);
@@ -94,6 +105,11 @@ class TTrackItem : public QGraphicsItem
 public:
     TTrackItem(TObjectItem *parent, TObjectItem *child);
     ~TTrackItem();
+
+    TObjectItem *hostObjectItem() const;
+    void setHostObjectItem(TObjectItem *hostObjectItem);
+    TObjectItem *childObjectItem() const;
+    void setChildObjectItem(TObjectItem *childObjectItem);
 
 private:
     TObjectItem *mHostObjectItem;

@@ -100,9 +100,9 @@ TDoorItem::TDoorItem(TTileItem *tileItem) :
         mStartPointItem = new TStartPointItem(this);
         mDoorStartPointTrackItem = new TTrackItem(this, mStartPointItem);
     } else if(doorType == TDoor::Random) {
-
+        mRandomRegionItem = new TRandomRegionItem(this);
     } else if(doorType == TDoor::Follow) {
-        mFollowTileTrackItem = new TTrackItem(this);
+        mFollowTileTrackItem = new TTrackItem(this, mFollowTileItem);
     }
 }
 
@@ -351,6 +351,26 @@ TTrackItem::~TTrackItem()
 
 }
 
+TObjectItem *TTrackItem::childObjectItem() const
+{
+    return mChildObjectItem;
+}
+
+void TTrackItem::setChildObjectItem(TObjectItem *childObjectItem)
+{
+    mChildObjectItem = childObjectItem;
+}
+
+TObjectItem *TTrackItem::hostObjectItem() const
+{
+    return mHostObjectItem;
+}
+
+void TTrackItem::setHostObjectItem(TObjectItem *hostObjectItem)
+{
+    mHostObjectItem = hostObjectItem;
+}
+
 QRectF TTrackItem::boundingRect() const
 {
     return mHostObjectItem->boundingRect().united(mChildObjectItem->boundingRect());
@@ -438,4 +458,25 @@ void TTileItem::propertyValueChanged(PropertyID pid)
     if(pid==PID_OBJECT_POS) {
         // Position changed, synchrony update door's position
     }
+}
+
+TRandomRegionItem::TRandomRegionItem(TDoorItem *doorItem) :
+    TObjectItem(nullptr, doorItem)
+{
+
+}
+
+QRectF TRandomRegionItem::boundingRect() const
+{
+
+}
+
+void TRandomRegionItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+
+}
+
+void TRandomRegionItem::propertyValueChanged(PropertyID pid)
+{
+
 }
