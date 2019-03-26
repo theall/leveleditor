@@ -2,10 +2,13 @@
 #include "../utils/preferences.h"
 
 #include "../gui/dialogs/newprojectdialog.h"
+#include "../gui/dialogs/loadingdialog.h"
 #include "../gui/component/tabwidget/tabwidget.h"
+#include "../core/assets/assetsmanager.h"
 
 #include <QProcess>
 #include <QMessageBox>
+#include <QCoreApplication>
 
 TMainController::TMainController(QObject *parent) :
     TAbstractController(parent)
@@ -26,6 +29,8 @@ TMainController::TMainController(QObject *parent) :
             SIGNAL(propertyItemActived(TPropertyItem*)),
             this,
             SLOT(slotPropertyItemActived(TPropertyItem*)));
+
+    connect(TAssetsManager::getInstance(), SIGNAL(onProgress(int,int)), this, SLOT(slotOnProgress(int,int)));
 }
 
 TMainController::~TMainController()
@@ -63,6 +68,10 @@ bool TMainController::joint(TMainWindow *mainWindow, TCore *core)
         connect(mainWindow, SIGNAL(requestDisplayProjectProperties()), this, SLOT(slotRequestDisplayProjectProperties()));
         connect(mainWindow, SIGNAL(requestExitApp(bool&)), this, SLOT(slotRequestExitApp(bool&)));
         connect(mainWindow, SIGNAL(requestRunCurrentProject()), this, SLOT(slotRequestRunCurrentProject()));
+
+        QStringList arguments = QCoreApplication::arguments();
+        if(arguments.size() > 1)
+            core->loadResource(arguments.at(1));
         mainWindow->show();
 
         TPreferences *prefs = TPreferences::instance();
@@ -199,6 +208,13 @@ void TMainController::slotPropertyItemActived(TPropertyItem *propertyItem)
         return;
 }
 
+void TMainController::slotOnProgress(int progress, int total)
+{
+    if(mMainWindow) {
+        mMainWindow->getLoadingDialog()->setProgress(progress, total);
+    }
+}
+
 bool TMainController::confirmAllSaved()
 {
     if(mCore->hasDirtyDocument())
@@ -220,10 +236,10 @@ bool TMainController::confirmAllSaved()
 void TMainController::createNewDocument(
         const QString &projectRoot,
         const QString &projectName,
-        const QString &projectVersion,
-        const QString &projectAuthor,
-        const QString &projectContact,
-        const QString &projectComment)
+        const QString &,
+        const QString &,
+        const QString &,
+        const QString &)
 {
     TDocument *document = mCore->newDocument(projectRoot, projectName);
     setCurrentDocument(document);

@@ -110,4 +110,5 @@ HEADERS  += \
     $$PWD/document/undocommand/objectundocommand.h \
     $$PWD/document/base/finddoc.h \
     $$PWD/document/graphics/selectionrectangle.h \
-    $$PWD/document/graphics/tools/abstracttool.h
+    $$PWD/document/graphics/tools/abstracttool.h \
+    $$PWD/assets/interface.h

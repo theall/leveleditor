@@ -29,17 +29,28 @@ void TMainPropertyController::setPropertySheet(TPropertySheet *propertySheet)
 
 void TMainPropertyController::setCurrentDocument(TDocument *document)
 {
-    if(mDocument==document)
+    if(mDocument == document)
         return;
+
+    if(mDocument)
+        mDocument->disconnect(this);
 
     if(document)
     {
+        connect(document->graphicsScene(), SIGNAL(selectedObjectChanged(TObject*,TObject*)), this, SLOT(slotOnSelectedObjectChanged(TObject*,TObject*)));
         TPropertySheet *propertySheet = document->propertySheet();
         if(!propertySheet)
             return;
 
         setPropertySheet(document->propertySheet());
+
     } else {
         setPropertySheet(nullptr);
     }
+}
+
+void TMainPropertyController::slotOnSelectedObjectChanged(TObject *, TObject *current)
+{
+    if(current)
+        setPropertySheet(current->propertySheet());
 }

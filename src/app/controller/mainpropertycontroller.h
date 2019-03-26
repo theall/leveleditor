@@ -16,6 +16,9 @@ public:
 
     void setCurrentDocument(TDocument *document) Q_DECL_OVERRIDE;
 
+private slots:
+    void slotOnSelectedObjectChanged(TObject *prev, TObject *current);
+
 public slots:
     void setPropertySheet(TPropertySheet *propertySheet);
 

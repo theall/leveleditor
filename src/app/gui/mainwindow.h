@@ -42,6 +42,7 @@ class TMiniSceneDock;
 class TPropertiesDock;
 class TTabWidget;
 class TCentralWidget;
+class TLoadingDialog;
 
 class TMainWindow : public QMainWindow
 {
@@ -65,12 +66,15 @@ public:
 
     void addRecentFile(const QString &file);
     void setStatusMessage(const QString &message, int timeOut = 3000);
+    void show();
 
     TUndoDock *undoDock() const;
     TSoundDock *soundDock() const;
     TMoveDock *vectorDock() const;
     TPropertiesDock *propertyDock() const;
     TTabWidget *tabWidget() const;
+
+    TLoadingDialog *getLoadingDialog() const;
 
 signals:
     void requestOpenProject(const QString &file);
@@ -144,6 +148,7 @@ private:
     TPropertiesDock *mPropertyDock;
 
     TAboutDialog *mAboutDialog;
+    TLoadingDialog *mLoadingDialog;
 
     TZoomComboBox *mZoomComboBox;
 
@@ -153,6 +158,7 @@ private:
     void updateRecentFiles();
     void loadConfig();
     void saveConfig();
+    void raiseLoadingDialog();
 
     // QWidget interface
 protected:

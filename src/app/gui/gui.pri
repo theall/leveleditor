@@ -47,7 +47,8 @@ SOURCES += \
     $$PWD/component/propertydock/widget/pixmapedit.cpp \
     $$PWD/component/propertydock/widget/sounditemedit.cpp \
     $$PWD/component/propertydock/widget/sounditemsourceedit.cpp \
-    $$PWD/component/propertydock/widget/soundsetedit.cpp
+    $$PWD/component/propertydock/widget/soundsetedit.cpp \
+    $$PWD/dialogs/loadingdialog.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -87,14 +88,16 @@ HEADERS += \
     $$PWD/component/propertydock/widget/pixmapedit.h \
     $$PWD/component/propertydock/widget/sounditemedit.h \
     $$PWD/component/propertydock/widget/sounditemsourceedit.h \
-    $$PWD/component/propertydock/widget/soundsetedit.h
+    $$PWD/component/propertydock/widget/soundsetedit.h \
+    $$PWD/dialogs/loadingdialog.h
 
 FORMS += \
     $$PWD/mainwindow.ui \
     $$PWD/dialogs/aboutdialog.ui \
     $$PWD/dialogs/preferencesdialog.ui \
     $$PWD/dialogs/newprojectdialog.ui \
-    $$PWD/dialogs/soundresourcedialog.ui
+    $$PWD/dialogs/soundresourcedialog.ui \
+    $$PWD/dialogs/loadingdialog.ui
 
 RESOURCES += $$PWD/resource/editor.qrc
 

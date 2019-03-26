@@ -48,6 +48,10 @@ public:
     TObjectItemList getObjectItemList(const QRectF &rect, TObject::Type objectType) const;
     TObjectItemList getObjectItemList(const QRectF &rect, TObjectItem *objectItem) const;
 
+signals:
+    void needChangeCursor(Qt::CursorShape cursor);
+    void selectedObjectChanged(TObject *prev, TObject *current);
+
 private slots:
     void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);
 
@@ -77,10 +81,9 @@ private:
     TDocument *mDocument;
 
     void step();
+    void setSelectedObjectItem(TObjectItem *objectItem);
     void pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset);
 
-signals:
-    void needChangeCursor(Qt::CursorShape cursor);
 
 private slots:
     void updateCursor();

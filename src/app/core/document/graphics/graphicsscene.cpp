@@ -163,6 +163,20 @@ void TGraphicsScene::step()
 
 }
 
+void TGraphicsScene::setSelectedObjectItem(TObjectItem *objectItem)
+{
+    if(mLastSelectedObjectItem == objectItem)
+        return;
+
+    TObjectItem *prevObjectItem = mLastSelectedObjectItem;
+    mLastSelectedObjectItem = objectItem;
+
+    TObject *prevObject, *currentObject;
+    prevObject = prevObjectItem?prevObjectItem->object():nullptr;
+    currentObject = objectItem?objectItem->object():nullptr;
+    emit selectedObjectChanged(prevObject, currentObject);
+}
+
 void TGraphicsScene::pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset)
 {
     TObjectUndoCommand *command = new TObjectUndoCommand(
@@ -244,7 +258,7 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if(autonomyObjectitem)
     {
         autonomyObjectitem->mousePressed(event);
-        mLastSelectedObjectItem = autonomyObjectitem;
+        setSelectedObjectItem(autonomyObjectitem);
         if(event->isAccepted())
             return;
     }
@@ -373,17 +387,17 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                             mSelectedItems->removeObjectItem(objectItem);
                         }
                     }
-                    mLastSelectedObjectItem = objectItem;
+                    setSelectedObjectItem(objectItem);
                 } else if(modifers&Qt::ShiftModifier) {
                     if(!mLastSelectedObjectItem)
-                        mLastSelectedObjectItem = objectItem;
+                        setSelectedObjectItem(objectItem);
                 } else {
                     mSelectedItems->setObjectItem(objectItem);
-                    mLastSelectedObjectItem = objectItem;
+                    setSelectedObjectItem(objectItem);
                 }
             } else {
                 mSelectedItems->setObjectItem(nullptr);
-                mLastSelectedObjectItem = nullptr;
+                setSelectedObjectItem(nullptr);
             }
         } else if(mAction == Moving) {
             mAction = NoAction;

@@ -36,6 +36,7 @@ public:
     void undo() Q_DECL_OVERRIDE;
     void redo() Q_DECL_OVERRIDE;
     bool mergeWith(const QUndoCommand *other) Q_DECL_OVERRIDE;
+    int id() const;
 };
 
 #endif // TOBJECTUNDOCOMMAND_H

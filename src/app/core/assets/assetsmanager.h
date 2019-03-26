@@ -1,7 +1,7 @@
 #ifndef TASSETSMANAGER_H
 #define TASSETSMANAGER_H
 
-#include <QObject>
+#include <QThread>
 #include <QPixmap>
 #include <utils/macro.h>
 
@@ -13,16 +13,16 @@
 class TCachedSound;
 class TCachedPixmap;
 
-typedef (*LoadCallback)(int progress, int total);
-class TAssetsManager : public QObject
+class TAssetsManager : public QThread
 {
+    Q_OBJECT
     DECL_SINGLE_INSTANCE(TAssetsManager)
 
 public:
     TAssetsManager(QObject *parent=Q_NULLPTR);
     ~TAssetsManager();
 
-    void load(const QString &path, LoadCallback callback = nullptr);
+    void load(const QString &path);
     TFaceId *getFace(int id) const;
     TTileId *getTile(int tileSetId, int tileId) const;
 
@@ -31,14 +31,20 @@ public:
 
     TileSetList getTileSetList() const;
 
+signals:
+    void onProgress(int value, int maxValue);
+
 private:
     QString mPath;
     TFaceList mFaceList;
     TCachedPixmap *mCachedPixmaps;
     TCachedSound *mCachedSounds;
     TileSetList mTileSetList;
-    LoadCallback mCallback;
     void loadAssets();
+
+    // QThread interface
+protected:
+    void run();
 };
 
 #endif // TASSETSMANAGER_H

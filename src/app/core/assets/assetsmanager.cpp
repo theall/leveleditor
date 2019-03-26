@@ -18,10 +18,9 @@ bool faceIdCompare(TFaceId *face1, TFaceId *face2)
 
 IMPL_SINGLE_INSTANCE(TAssetsManager)
 TAssetsManager::TAssetsManager(QObject *parent) :
-    QObject(parent)
+    QThread(parent)
   , mCachedPixmaps(new TCachedPixmap(this))
   , mCachedSounds(new TCachedSound(this))
-  , mCallback(nullptr)
 {
 
 }
@@ -32,15 +31,15 @@ TAssetsManager::~TAssetsManager()
     FREE_CONTAINER(mTileSetList);
 }
 
-void TAssetsManager::load(const QString &path, LoadCallback callback)
+void TAssetsManager::load(const QString &path)
 {
     if(mPath==path)
         return;
 
     mPath = path;
-    mCallback = callback;
 
-    loadAssets();
+    moveToThread(this);
+    start();
 }
 
 TFaceId *TAssetsManager::getFace(int id) const
@@ -145,6 +144,8 @@ void TAssetsManager::loadAssets()
         tileBitmapList.append(tileFileInfo.absoluteFilePath());
     }
 
+    int assetsLoaded = 0;
+    int totalAssets = faceFileList.size() + tileSetIdList.size();
     // real load face bitmap
     for(int i=0;i<faceFileList.size();i++) {
         int faceId = faceIdList.at(i);
@@ -155,6 +156,9 @@ void TAssetsManager::loadAssets()
             mFaceList.append(new TFaceId(faceId, pixmap));
         else
             delete pixmap;
+        assetsLoaded++;
+        if(assetsLoaded%10 == 0)
+            emit onProgress(assetsLoaded, totalAssets);
     }
     // Sort
     qSort(mFaceList.begin(), mFaceList.end(), faceIdCompare);
@@ -164,6 +168,9 @@ void TAssetsManager::loadAssets()
     for(int i=0;i<tileSetIdList.size();i++) {
         TPixmap *pixmap = new TPixmap(this);
         pixmap->load(tileBitmapList.at(i));
+        assetsLoaded++;
+        if(assetsLoaded%10 == 0)
+            emit onProgress(assetsLoaded, totalAssets);
         if(!pixmap->isValid()) {
             delete pixmap;
             continue;
@@ -192,4 +199,10 @@ void TAssetsManager::loadAssets()
         }
         qSort(mTileSetList.begin(), mTileSetList.end(), tileSetIdCompare);
     }
+    emit onProgress(assetsLoaded, totalAssets);
+}
+
+void TAssetsManager::run()
+{
+    loadAssets();
 }

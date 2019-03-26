@@ -44,6 +44,9 @@ private slots:
     void slotPropertyItemValueChanged(TPropertyItem *propertyItem, const QVariant &newValue);
     void slotPropertyItemActived(TPropertyItem *propertyItem);
 
+    // From assets loader
+    void slotOnProgress(int progress, int total);
+
 private:
     TOptionsController *mOptionsController;
     TTabController *mTabController;

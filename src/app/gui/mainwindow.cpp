@@ -4,6 +4,7 @@
 #include "dialogs/aboutdialog.h"
 #include "dialogs/preferencesdialog.h"
 #include "dialogs/newprojectdialog.h"
+#include "dialogs/loadingdialog.h"
 
 #include "component/centralwidget.h"
 #include "component/undodock/undodock.h"
@@ -35,6 +36,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
   , mMiniSceneDock(new TMiniSceneDock(this))
   , mPropertyDock(new TPropertiesDock(this))
   , mAboutDialog(new TAboutDialog(this))
+  , mLoadingDialog(new TLoadingDialog(this))
   , mZoomComboBox(new TZoomComboBox(this))
   , mHideMenu(false)
   , mActionGroup(new QActionGroup(this))
@@ -223,10 +225,16 @@ void TMainWindow::setStatusMessage(const QString &message, int timeOut)
     statusBar()->showMessage(message, timeOut);
 }
 
+void TMainWindow::show()
+{
+    QMainWindow::show();
+    raiseLoadingDialog();
+}
+
 void TMainWindow::on_actionOpen_triggered()
 {
     QString filter = tr("All Files (*);;");
-    QString selectedFilter = tr("Scenes (*.json)");
+    QString selectedFilter = tr("Maps (*.dat)");
     filter += selectedFilter;
     QStringList fileNames = QFileDialog::getOpenFileNames(
                 this,
@@ -354,6 +362,17 @@ void TMainWindow::saveConfig()
     TPreferences *preferences = TPreferences::instance();
     preferences->setWindowGeometryState(saveGeometry(), saveState());
     preferences->setSceneScale(mZoomComboBox->scaleValue());
+}
+
+void TMainWindow::raiseLoadingDialog()
+{
+    if(mLoadingDialog->isEnd())
+        return;
+
+    int retCode = mLoadingDialog->exec();
+    if(retCode == QDialog::Rejected) {
+        close();
+    }
 }
 
 void TMainWindow::closeEvent(QCloseEvent *event)
@@ -597,6 +616,11 @@ void TMainWindow::on_actionRun_triggered()
         return;
 
     TPreferencesDialog::showPreferences(this, TPreferencesDialog::DEBUG);
+}
+
+TLoadingDialog *TMainWindow::getLoadingDialog() const
+{
+    return mLoadingDialog;
 }
 
 TMoveDock *TMainWindow::vectorDock() const

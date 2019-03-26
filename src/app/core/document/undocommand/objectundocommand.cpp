@@ -26,12 +26,6 @@ TObjectUndoCommand::TObjectUndoCommand(
                 context += "...";
         }
     }
-    QString tmp = QString::number(objectList.size()) + " ";
-    if(objectList.size() > 1)
-        tmp += T("objects");
-    else
-        tmp += T("object");
-    context += tmp;
     setText(g_commandText[command].arg(context));
 
     if(command == Move) {
@@ -82,5 +76,13 @@ void TObjectUndoCommand::redo()
 bool TObjectUndoCommand::mergeWith(const QUndoCommand *other)
 {
     const TObjectUndoCommand *command = static_cast<const TObjectUndoCommand*>(other);
-    return command && (mCommand==command->command()) && (mOffset==command->offset()) && (mObjectList==command->objectList());
+    bool canMerge = command && (mCommand==command->command()) && (mObjectList==command->objectList());
+    if(canMerge)
+        mOffset += command->offset();
+    return canMerge;
+}
+
+int TObjectUndoCommand::id() const
+{
+    return mCommand;
 }

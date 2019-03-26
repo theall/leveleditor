@@ -6,14 +6,21 @@
 #include "../gui/component/propertydock/variantpropertymanager.h"
 #include "../gui/dialogs/soundresourcedialog.h"
 
+#include <QDebug>
+
 const int g_propertyTypeMap[PT_COUNT] = {
     QVariant::Int,//PT_INT
     QVariant::Bool,//PT_BOOL
     QVariant::String,//PT_STRING
     QVariant::Double,//PT_DOUBLE
-    QVariant::PointF,//PT_VECTOR
-    QVariant::SizeF,//PT_SIZE
-    QVariant::RectF,//PT_RECT
+    QVariant::Point,//PT_VECTOR
+    QVariant::PointF,//PT_VECTORF
+    QVariant::Point,//PT_POINT
+    QVariant::PointF,//PT_POINTF
+    QVariant::Size,//PT_SIZE
+    QVariant::SizeF,//PT_SIZEF
+    QVariant::Rect,//PT_RECT
+    QVariant::RectF,//PT_RECTF
     QVariant::Color,//PT_COLOR
     TVariantPropertyManager::enumTypeId(),//PT_ENUM
     TVariantPropertyManager::flagTypeId(),//PT_FLAG
@@ -183,6 +190,11 @@ QtVariantProperty *TPropertyController::createProperty(TPropertyItem *propertyIt
 
     PropertyType propertyType = (PropertyType)propertyItem->type();
     QtVariantProperty *p = mPropertyManager->addProperty(g_propertyTypeMap[propertyType], propertyItem->name());
+    if(!p) {
+        qDebug() << "Failed to create property with property type" << propertyType;
+        return nullptr;
+    }
+
     QMap<QString, QVariant> attributes = propertyItem->attributes();
     for(QString attrName : attributes.keys())
     {
