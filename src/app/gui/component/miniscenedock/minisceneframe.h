@@ -1,30 +1,34 @@
-#ifndef MINISCENE_H
-#define MINISCENE_H
+#ifndef MINISCENEFRAME_H
+#define MINISCENEFRAME_H
 
 #include <QFrame>
 #include <QImage>
 #include <QTimer>
 #include <QFlags>
 
-class TMiniScene : public QFrame
+class TMiniSceneFrame : public QFrame
 {
     Q_OBJECT
 
 public:
-    TMiniScene(QWidget *parent);
-    ~TMiniScene();
+    TMiniSceneFrame(QWidget *parent);
+    ~TMiniSceneFrame();
 
     QSize sizeHint() const Q_DECL_OVERRIDE;
 
     QImage sceneImage() const;
     void setSceneImage(const QImage &sceneImage);
 
+    void setBackgroundColor(const QColor &backgroundColor);
+
+    QRect viewPortRect() const;
+    void setViewPortRect(const QRect &viewPortRect);
+
     QRect imageRect() const;
-    void setImageRect(const QRect &imageRect);
 
 signals:
     void resized();
-    void wheeled(const QPoint &pos, int delta);
+    void requestLocatePoint(const QPoint &point, int delta = 0);
 
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
@@ -36,11 +40,14 @@ protected:
 
 private:
     QRect mImageRect;
-    QRect mViewRect;
+    QRect mViewPortRect;
     QImage mSceneImage;
     bool mIsDragging;
     QPoint mDragOffset;
     bool mMouseMoveCursorState;
+    QColor mBackgroundColor;
+
+    void updateImageRect();
 };
 
-#endif // MINISCENE_H
+#endif // MINISCENEFRAME_H

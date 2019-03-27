@@ -2,7 +2,6 @@ SOURCES += \
     $$PWD/abstractcontroller.cpp \
     $$PWD/maincontroller.cpp \
     $$PWD/optionscontroller.cpp \
-    $$PWD/module/zoomable.cpp \
     $$PWD/tabcontroller.cpp \
     $$PWD/propertycontroller.cpp \
     $$PWD/undocontroller.cpp \
@@ -14,7 +13,6 @@ HEADERS  += \
     $$PWD/abstractcontroller.h \
     $$PWD/maincontroller.h \
     $$PWD/optionscontroller.h \
-    $$PWD/module/zoomable.h \
     $$PWD/tabcontroller.h \
     $$PWD/propertycontroller.h \
     $$PWD/undocontroller.h \

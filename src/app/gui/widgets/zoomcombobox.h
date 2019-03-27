@@ -13,7 +13,7 @@ public:
     ~TZoomComboBox();
 
     qreal scaleValue() const;
-    void setScaleValue(qreal scaleValue);
+    void setScaleValue(qreal scaleValue, bool emitSignal = true);
 
     void zoomIn();
     void zoomOut();

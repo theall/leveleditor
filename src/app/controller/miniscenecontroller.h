@@ -6,22 +6,13 @@
 #include "abstractcontroller.h"
 
 class TGraphicsView;
-class TMiniScene;
-
+class TMiniSceneFrame;
+class TZoomComboBox;
 class TMiniSceneController : public TAbstractController
 {
     Q_OBJECT
 
 public:
-    enum DrawFlag {
-        DrawObjects             = 0x0001,
-        DrawTiles               = 0x0002,
-        DrawImages              = 0x0004,
-        IgnoreInvisibleLayer    = 0x0008,
-        DrawGrid                = 0x0010,
-        DrawAll = 0xffffffff
-    };
-    Q_DECLARE_FLAGS(DrawFlags, DrawFlag)
 
     TMiniSceneController(QObject *parent = nullptr);
     ~TMiniSceneController();
@@ -30,35 +21,31 @@ public:
     bool joint(TMainWindow *mainWindow, TCore *core) Q_DECL_OVERRIDE;
     void setCurrentDocument(TDocument *document) Q_DECL_OVERRIDE;
 
-    DrawFlags getDrawFlags() const;
-    void setDrawFlags(const DrawFlags &drawFlags);
-
 public slots:
-    void scheduleUpdateSceneImage();
+    void delayUpdateSceneImage();
 
 protected slots:
     void slotTimerEvent() Q_DECL_OVERRIDE;
 
 private slots:
+    void slotScaleChanged(qreal scale);
     void slotRedrawTimeout();
-    void slotUpdateMiniScene();
+    void slotGraphicsViewScrollBarValueChanged();
     void slotMiniSceneResized();
-    void slotMiniSceneWheeled(const QPoint &cursorPos, int delta);
+    void slotGraphicsViewResized();
+    void slotRequestLocatePoint(const QPoint &point, int delta = 0);
 
 private:
     TGraphicsView *mGraphicsView;
-    TMiniScene *mMiniScene;
+    TMiniSceneFrame *mMiniScene;
     QTimer mSceneImageUpdateTimer;
     bool mNeedRedraw;
-    DrawFlags mDrawFlags;
+    QRectF mImageRect;
+    TZoomComboBox *mZoomComboBox;
 
-    QRect getViewPortRect() const;
     QPointF mapToScene(const QPoint &p) const;
-    void updateImageRect();
     QImage convertSceneToImage();
-    void centerViewOnLocalPixel(const QPoint &centerPos, int delta = 0);
+    void updateViewPortRect() const;
 };
-
-Q_DECLARE_OPERATORS_FOR_FLAGS(TMiniSceneController::DrawFlags)
 
 #endif // MINISCENECONTROLLER_H

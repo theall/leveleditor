@@ -73,7 +73,7 @@ qreal TZoomComboBox::scaleValue() const
     return mScaleValue;
 }
 
-void TZoomComboBox::setScaleValue(qreal scale)
+void TZoomComboBox::setScaleValue(qreal scale, bool emitSignal)
 {
     if (scale == mScaleValue)
         return;
@@ -81,10 +81,16 @@ void TZoomComboBox::setScaleValue(qreal scale)
     mScaleValue = scale;
 
     // For a custom scale, the current index must be set to -1
-    setCurrentIndex(findData(scale));
+    int findIndex = findData(scale);
+    if(findIndex < 0)
+        findIndex = findData(1.0);
+    if(findIndex < 0)
+        findIndex = 6;
+    setCurrentIndex(findIndex);
     setEditText(scaleToString(mScaleValue));
 
-    emit scaleChanged(mScaleValue);
+    if(emitSignal)
+        emit scaleChanged(mScaleValue);
 }
 
 bool TZoomComboBox::canZoomIn() const

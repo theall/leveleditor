@@ -107,6 +107,7 @@ TPreferences::TPreferences(QObject *parent):
     mRecentOpenedFiles = listValue(SEC_GUI_RECENTOPENEDFILES);
     mLastActiveFile = stringValue(SEC_GUI_LASTACTIVEFILE);
     mSceneScale = doubleValue(SEC_GUI_SCENE_SCALE, 1.0);
+    mSceneScale = QString::number(mSceneScale, 'f', 2).toDouble();
     mSettings->endGroup();
 
     //// Options
@@ -278,7 +279,8 @@ qreal TPreferences::sceneScale() const
 
 void TPreferences::setSceneScale(const qreal &sceneScale)
 {
-    SET_VALUE(sceneScale, mSceneScale, SEC_GUI, SEC_GUI_SCENE_SCALE);
+    qreal scale = QString::number(sceneScale, 'f', 2).toDouble();
+    SET_VALUE(scale, mSceneScale, SEC_GUI, SEC_GUI_SCENE_SCALE);
 }
 
 

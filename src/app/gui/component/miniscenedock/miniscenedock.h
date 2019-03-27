@@ -22,8 +22,7 @@
 #define MINIMAPDOCK_H
 
 #include "../basedock.h"
-
-class TMiniScene;
+#include "minisceneframe.h"
 
 /**
  * Shows a mini-scene.
@@ -36,13 +35,15 @@ public:
     TMiniSceneDock(QWidget *parent = nullptr);
     ~TMiniSceneDock();
 
+    TMiniSceneFrame *miniScene() const;
+
 protected:
     void changeEvent(QEvent *e) override;
 
 private:
     void retranslateUi();    
 
-    TMiniScene *mMiniScene;
+    TMiniSceneFrame *mMiniScene;
 };
 
 #endif // MINIMAPDOCK_H

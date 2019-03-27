@@ -120,6 +120,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
     mViewsAndToolbarsMenu->setMenu(createPopupMenu());
 
     setCentralWidget(mCentralWidget);
+    connect(mCentralWidget->tabWidget(), SIGNAL(currentChanged(int)), this, SLOT(slotOnTabIndexChanged(int)));
     connect(mCentralWidget->tabWidget(), SIGNAL(onTabCountChanged(int)), this, SLOT(slotOnTabCountChanged(int)));
     connect(mCentralWidget->tabWidget(), SIGNAL(onActionSaveTriggered()), this, SLOT(slotOnActionSaveTriggered()));
 
@@ -290,8 +291,8 @@ void TMainWindow::slotOpenRecentFile()
 void TMainWindow::slotSceneScaleChanged(qreal scale)
 {
     if(TTabContainer *tabContainer = tabWidget()->currentContainer())
-        if(QGraphicsView *graphicsView = tabContainer->graphicsView())
-            graphicsView->setTransform(QTransform::fromScale(scale, scale));
+        if(TGraphicsView *graphicsView = tabContainer->graphicsView())
+            graphicsView->setScale(scale);
 }
 
 void TMainWindow::slotHideMenuBarChanged(bool checked)
@@ -442,6 +443,14 @@ void TMainWindow::slotOnTabCountChanged(int count)
 void TMainWindow::slotOnActionSaveTriggered()
 {
     ui->actionSave->trigger();
+}
+
+void TMainWindow::slotOnTabIndexChanged(int)
+{
+    TGraphicsView *graphicsView = mCentralWidget->tabWidget()->currentGraphicsView();
+    if(graphicsView) {
+        mZoomComboBox->setScaleValue(graphicsView->scale(), false);
+    }
 }
 
 void TMainWindow::on_actionSave_triggered()
@@ -616,6 +625,16 @@ void TMainWindow::on_actionRun_triggered()
         return;
 
     TPreferencesDialog::showPreferences(this, TPreferencesDialog::DEBUG);
+}
+
+TZoomComboBox *TMainWindow::getZoomComboBox() const
+{
+    return mZoomComboBox;
+}
+
+TMiniSceneDock *TMainWindow::getMiniSceneDock() const
+{
+    return mMiniSceneDock;
 }
 
 TLoadingDialog *TMainWindow::getLoadingDialog() const

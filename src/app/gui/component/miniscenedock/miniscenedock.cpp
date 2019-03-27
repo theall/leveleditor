@@ -1,11 +1,10 @@
 #include "miniscenedock.h"
-#include "miniscene.h"
 
 #include <QEvent>
 
 TMiniSceneDock::TMiniSceneDock(QWidget *parent) :
     TBaseDock(QLatin1String("miniSceneDock"), parent)
-  , mMiniScene(new TMiniScene(this))
+  , mMiniScene(new TMiniSceneFrame(this))
 {
     setWidget(mMiniScene);
     retranslateUi();
@@ -26,6 +25,11 @@ void TMiniSceneDock::changeEvent(QEvent *e)
 void TMiniSceneDock::retranslateUi()
 {
     setWindowTitle(tr("Miniscene"));
+}
+
+TMiniSceneFrame *TMiniSceneDock::miniScene() const
+{
+    return mMiniScene;
 }
 
 TMiniSceneDock::~TMiniSceneDock()

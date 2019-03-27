@@ -109,6 +109,21 @@ void TTabWidget::setDocumentDirty(void *document, bool isDirty)
     setTabDirty(index, isDirty);
 }
 
+QGraphicsScene *TTabWidget::currentGraphicsScene() const
+{
+    TGraphicsView *view = currentGraphicsView();
+    return view?view->scene():nullptr;
+}
+
+void TTabWidget::setGraphicsScene(int index, QGraphicsScene *scene)
+{
+    TTabContainer *tabContainer = static_cast<TTabContainer*>(widget(index));
+    if(!tabContainer)
+        return;
+
+    tabContainer->setGraphicsScene(scene);
+}
+
 void TTabWidget::setDocumentIcon(void *document, const QIcon &icon)
 {
     int index = findDocumentIndex(document);
@@ -118,12 +133,12 @@ void TTabWidget::setDocumentIcon(void *document, const QIcon &icon)
     setTabIcon(index, icon);
 }
 
-TTabContainer *TTabWidget::currentContainer()
+TTabContainer *TTabWidget::currentContainer() const
 {
     return static_cast<TTabContainer*>(currentWidget());
 }
 
-TGraphicsView *TTabWidget::currentGraphicsView()
+TGraphicsView *TTabWidget::currentGraphicsView() const
 {
     TTabContainer *tabContainer = static_cast<TTabContainer*>(currentWidget());
     return tabContainer?tabContainer->graphicsView():nullptr;

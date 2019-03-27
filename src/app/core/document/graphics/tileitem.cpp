@@ -383,7 +383,7 @@ void TTrackItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     QLineF trackLine(p1, p2);
     QColor gray(Qt::gray);
     gray.setAlpha(128);
-    QPen pen(gray, 2, Qt::DotLine);
+    QPen pen(gray, 1, Qt::DotLine);
     pen.setCosmetic(true);
     painter->setPen(pen);
     painter->drawLine(trackLine);

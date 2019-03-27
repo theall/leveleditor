@@ -52,6 +52,7 @@ private:
     TTabController *mTabController;
     TMainPropertyController *mMainPropertyController;
     TUndoController *mUndoController;
+    TMiniSceneController *mMiniSceneController;
 
     bool confirmAllSaved();
     void createNewDocument(const QString &projectRoot,

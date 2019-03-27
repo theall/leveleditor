@@ -16,6 +16,7 @@ TMainController::TMainController(QObject *parent) :
   , mTabController(new TTabController(this))
   , mMainPropertyController(new TMainPropertyController(this))
   , mUndoController(new TUndoController(this))
+  , mMiniSceneController(new TMiniSceneController(this))
 {
     connect(mTabController, SIGNAL(requestCloseDocument(TDocument*)), this, SLOT(slotRequestCloseDocument(TDocument*)));
     connect(mTabController, SIGNAL(requestSwitchToDocument(TDocument*)), this, SLOT(slotRequestSwitchToDocument(TDocument*)));
@@ -77,15 +78,39 @@ bool TMainController::joint(TMainWindow *mainWindow, TCore *core)
         TPreferences *prefs = TPreferences::instance();
         if(prefs->openLastFile())
         {
+            bool showErrorDialog = true;
             for(QString file : prefs->recentOpenedFiles())
             {
-                slotRequestOpenProject(file);
+                TDocument *document = nullptr;
+                try {
+                    document = mCore->open(file);
+                } catch(QString s) {
+                    if(showErrorDialog) {
+                        int dialogCode = QMessageBox::critical(mMainWindow,
+                                              tr("Error"),
+                                              tr("Fail to open file %1:\n\n%2").arg(file).arg(s),
+                                              QMessageBox::Ok|QMessageBox::Ignore);
+                        if(dialogCode == QMessageBox::Ignore)
+                            showErrorDialog = false;
+                    }
+                    continue;
+                } catch(...) {
+                    if(showErrorDialog) {
+                        int dialogCode = QMessageBox::critical(mMainWindow,
+                                          tr("Error"),
+                                          tr("Unknown error."),
+                                          QMessageBox::Ok|QMessageBox::Ignore);
+                        if(dialogCode == QMessageBox::Ignore)
+                            showErrorDialog = false;
+                    }
+                    continue;
+                }
+                mTabController->addDocument(document);
             }
             TDocument *document = mCore->find(prefs->lastActiveFile());
-            if(document)
-                slotRequestSwitchToDocument(document);
-        } else {
-
+            if(document) {
+                setCurrentDocument(document);
+            }
         }
 
     }
@@ -167,6 +192,7 @@ void TMainController::slotRequestSwitchToDocument(TDocument *document)
 {
     mUndoController->setCurrentDocument(document);
     mMainPropertyController->setCurrentDocument(document);
+    mMiniSceneController->setCurrentDocument(document);
 
     mMainWindow->enableSaveAction(document&&document->isDirty());
     mMainWindow->enableRunAction(document!=nullptr);

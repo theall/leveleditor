@@ -76,6 +76,10 @@ public:
 
     TLoadingDialog *getLoadingDialog() const;
 
+    TMiniSceneDock *getMiniSceneDock() const;
+
+    TZoomComboBox *getZoomComboBox() const;
+
 signals:
     void requestOpenProject(const QString &file);
     void requestCreateNewProject(TNewProjectDialog *);
@@ -95,6 +99,7 @@ private slots:
     // From TTabWidget
     void slotOnTabCountChanged(int count);
     void slotOnActionSaveTriggered();
+    void slotOnTabIndexChanged(int index);
 
     // From self
     void slotOpenRecentFile();

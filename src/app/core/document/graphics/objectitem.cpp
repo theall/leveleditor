@@ -43,11 +43,14 @@ bool TObjectItem::isCongener(TObjectItem *objectItem) const
 void TObjectItem::slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &)
 {
     PropertyID pid = item->propertyId();
+
+    // The inheired class may update bounding rect in propertyValueChanged
+    propertyValueChanged(pid);
+
+    // Notify to selection item or hovering item
     if(pid==PID_OBJECT_POS || pid==PID_OBJECT_SIZE) {
         emit boundingRectChanged();
     }
-
-    propertyValueChanged(pid);
 }
 
 bool TObjectItem::needGrabMouse() const

@@ -19,10 +19,11 @@ public:
     void removeDocument(TDocument *document);
     TDocument *currentDocument();
     TGraphicsScene *currentGraphicsScene() const;
+    int addDocument(TDocument *document);
 
 public slots:
     // From main controler
-    void setGraphicsScene(TGraphicsScene *scene);
+    void setGraphicsScene(int index, TGraphicsScene *scene);
     void play();
     void stop();
 
@@ -38,8 +39,6 @@ private:
     QDateTime mLastCheckTime;
     int mLastListCount;
     bool mLock;
-
-    int addDocument(TDocument *document);
 
 private slots:
     // From TTabWidget

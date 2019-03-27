@@ -45,7 +45,6 @@ void TTabController::setCurrentDocument(TDocument *document)
     if(index == -1)
     {
         index = addDocument(document);
-        setGraphicsScene(document->graphicsScene());
     } else if(index == mTabWidget->currentIndex()) {
         return;
     }
@@ -73,22 +72,19 @@ TGraphicsScene *TTabController::currentGraphicsScene() const
     if(mTabWidget->count() < 1)
         return nullptr;
 
-    return static_cast<TGraphicsScene*>(mTabWidget->currentContainer()->graphicsScene());
+    return static_cast<TGraphicsScene*>(mTabWidget->currentGraphicsScene());
 }
 
-void TTabController::setGraphicsScene(TGraphicsScene *scene)
+void TTabController::setGraphicsScene(int index, TGraphicsScene *scene)
 {
     if(mTabWidget->count() < 1)
         return;
 
-    TGraphicsScene *oldScene = static_cast<TGraphicsScene*>(mTabWidget->currentContainer()->graphicsScene());
-    if(oldScene==scene)
-        return;
-
+    TGraphicsScene *oldScene = static_cast<TGraphicsScene*>(mTabWidget->currentGraphicsScene());
     if(oldScene && oldScene->isPlaying())
         oldScene->stop();
 
-    mTabWidget->currentContainer()->setGraphicsScene(scene);
+    mTabWidget->setGraphicsScene(index, scene);
 }
 
 void TTabController::play()
@@ -96,7 +92,7 @@ void TTabController::play()
     if(mTabWidget->count() < 1)
         return;
 
-    TGraphicsScene *scene = static_cast<TGraphicsScene*>(mTabWidget->currentContainer()->graphicsScene());
+    TGraphicsScene *scene = static_cast<TGraphicsScene*>(mTabWidget->currentGraphicsScene());
     if(scene)
         scene->play();
 }
@@ -106,7 +102,7 @@ void TTabController::stop()
     if(mTabWidget->count() < 1)
         return;
 
-    TGraphicsScene *scene = static_cast<TGraphicsScene*>(mTabWidget->currentContainer()->graphicsScene());
+    TGraphicsScene *scene = static_cast<TGraphicsScene*>(mTabWidget->currentGraphicsScene());
     if(scene)
         scene->stop();
 }
@@ -118,6 +114,7 @@ int TTabController::addDocument(TDocument *document)
 
     int index = mTabWidget->addTab(document, document->projectName(), QPixmap());
     mTabWidget->setTabToolTip(index, document->fileName());
+    setGraphicsScene(index, document->graphicsScene());
 
     connect(document, SIGNAL(dirtyFlagChanged(bool)), this, SLOT(slotDocumentDirtyFlagChanged(bool)));
     connect(document, SIGNAL(iconChanged(TPixmap*)), this, SLOT(slotDocumentIconChanged(TPixmap*)));

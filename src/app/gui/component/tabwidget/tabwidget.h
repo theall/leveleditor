@@ -21,8 +21,10 @@ public:
     bool removeTab(void *document);
     void *currentDocument();
     void setDocumentDirty(void *document, bool isDirty);
-    TTabContainer *currentContainer();
-    TGraphicsView *currentGraphicsView();
+    TTabContainer *currentContainer() const;
+    TGraphicsView *currentGraphicsView() const;
+    QGraphicsScene *currentGraphicsScene() const;
+    void setGraphicsScene(int index, QGraphicsScene *scene);
 
     void setDocumentIcon(void *document, const QIcon &icon);
     void moveTab(int from, int to);

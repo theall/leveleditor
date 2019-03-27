@@ -34,7 +34,6 @@ SOURCES += \
     $$PWD/dialogs/preferencesdialog/module/shortkeymanager.cpp \
     $$PWD/dialogs/preferencesdialog/shortcutmodel.cpp \
     $$PWD/component/tabwidget/tabcontainer.cpp \
-    $$PWD/component/miniscenedock/miniscene.cpp \
     $$PWD/component/miniscenedock/miniscenedock.cpp \
     $$PWD/component/layerdock/layerdock.cpp \
     $$PWD/component/layerdock/layerview.cpp \
@@ -48,7 +47,8 @@ SOURCES += \
     $$PWD/component/propertydock/widget/sounditemedit.cpp \
     $$PWD/component/propertydock/widget/sounditemsourceedit.cpp \
     $$PWD/component/propertydock/widget/soundsetedit.cpp \
-    $$PWD/dialogs/loadingdialog.cpp
+    $$PWD/dialogs/loadingdialog.cpp \
+    $$PWD/component/miniscenedock/minisceneframe.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -75,7 +75,6 @@ HEADERS += \
     $$PWD/dialogs/preferencesdialog/module/shortkeymanager.h \
     $$PWD/dialogs/preferencesdialog/shortcutmodel.h \
     $$PWD/component/tabwidget/tabcontainer.h \
-    $$PWD/component/miniscenedock/miniscene.h \
     $$PWD/component/miniscenedock/miniscenedock.h \
     $$PWD/component/layerdock/layerdock.h \
     $$PWD/component/layerdock/layerview.h \
@@ -89,7 +88,8 @@ HEADERS += \
     $$PWD/component/propertydock/widget/sounditemedit.h \
     $$PWD/component/propertydock/widget/sounditemsourceedit.h \
     $$PWD/component/propertydock/widget/soundsetedit.h \
-    $$PWD/dialogs/loadingdialog.h
+    $$PWD/dialogs/loadingdialog.h \
+    $$PWD/component/miniscenedock/minisceneframe.h
 
 FORMS += \
     $$PWD/mainwindow.ui \

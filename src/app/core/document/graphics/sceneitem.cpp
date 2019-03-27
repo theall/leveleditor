@@ -34,7 +34,9 @@ QRectF TSceneItem::boundingRect() const
     return mBoundingRect;
 }
 
-void TSceneItem::paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *)
+void TSceneItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-
+    QPen pen(Qt::green, 1, Qt::SolidLine);
+    painter->setPen(pen);
+    painter->drawRect(mBoundingRect);
 }
