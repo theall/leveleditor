@@ -291,7 +291,9 @@ void TTile::readFromStream(QDataStream &stream)
 
 QPixmap TTile::pixmap() const
 {
-    return mPixmap->pixmap();
+    if(mPixmap)
+        return mPixmap->pixmap();
+    return QPixmap();
 }
 
 TPixmap *TTile::primitive() const

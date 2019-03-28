@@ -102,7 +102,7 @@ TDoorItem::TDoorItem(TTileItem *tileItem) :
     } else if(doorType == TDoor::Random) {
         mRandomRegionItem = new TRandomRegionItem(this);
     } else if(doorType == TDoor::Follow) {
-        mFollowTileTrackItem = new TTrackItem(this, mFollowTileItem);
+        //mFollowTileTrackItem = new TTrackItem(this, mFollowTileItem);
     }
 }
 

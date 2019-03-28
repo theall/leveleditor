@@ -49,7 +49,7 @@ TDocument *TDocument::create(const QString &projectRoot, const QString &projectN
     document->setProjectRoot(projectRoot);
     document->setProjectName(projectName);
 
-    QString fillFullName = projectRoot + "/" + projectName + ".json";
+    QString fillFullName = projectRoot + "/" + projectName + ".dat";
 
     document->save(fillFullName);
 

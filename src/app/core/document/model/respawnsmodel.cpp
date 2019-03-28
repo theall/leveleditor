@@ -15,6 +15,8 @@ void TRespawnsModel::readFromStream(QDataStream &stream)
 {
     int respawnPointAmount = 0;
     stream >> respawnPointAmount;
+    if(respawnPointAmount > 0xffff)
+        throw tr("Invalid map format!");
     mRespawnPointList.clear();
     for(int i=0;i<respawnPointAmount;i++) {
         QPoint respawnPoint;

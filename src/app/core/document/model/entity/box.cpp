@@ -87,6 +87,10 @@ void TBox::readFromStream(QDataStream &stream)
     stream >> sound;
     stream >> breakable;
     stream >> eventN2;
+    for(int i=0;i<pointsAmount;i++) {
+        QPoint point;
+        stream >> point;
+    }
 
     QPointF pos(x, y);
     QPointF speed(xSpeed, ySpeed);

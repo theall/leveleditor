@@ -23,13 +23,13 @@ TNewProjectDialog::TNewProjectDialog(QWidget *parent, QStringList recentFiles) :
 
     QDir dir(ui->leDir->text());
     QString nameBase = "New Scene";
-    QString nameWithExt = nameBase + ".json";
+    QString nameWithExt = nameBase + ".dat";
     if(QFile::exists(dir.absoluteFilePath(nameWithExt)))
     {
         for(int i=1;i<100;i++)
         {
             QString name = nameBase + QString::number(i);
-            nameWithExt = name + ".json";
+            nameWithExt = name + ".dat";
             if(!QFile::exists(dir.absoluteFilePath(nameWithExt)))
             {
                 nameBase = name;
@@ -122,7 +122,7 @@ void TNewProjectDialog::checkProject()
 bool TNewProjectDialog::isProjectFileExist()
 {
     QDir dir(ui->leDir->text());
-    QString projectFile = dir.absoluteFilePath(ui->leName->text() + ".json");
+    QString projectFile = dir.absoluteFilePath(ui->leName->text() + ".dat");
     return QFile::exists(projectFile);
 }
 

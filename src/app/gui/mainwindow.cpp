@@ -237,12 +237,16 @@ void TMainWindow::on_actionOpen_triggered()
     QString filter = tr("All Files (*);;");
     QString selectedFilter = tr("Maps (*.dat)");
     filter += selectedFilter;
+    TPreferences *pref = TPreferences::instance();
     QStringList fileNames = QFileDialog::getOpenFileNames(
                 this,
                 tr("Select scenes"),
-                "",
+                pref->lastOpenPath(),
                 filter,
                 &selectedFilter);
+
+    if(!fileNames.isEmpty())
+        pref->setLastOpenPath(QDir(fileNames.at(0)).absolutePath());
 
     for(QString file : fileNames) {
         emit requestOpenProject(file);
