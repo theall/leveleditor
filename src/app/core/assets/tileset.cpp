@@ -5,18 +5,18 @@ bool idCompare(TTileId *id1, TTileId *id2)
     return id1->id() < id2->id();
 }
 
-TTileSet::TTileSet()
+TTileset::TTileset()
 {
 
 }
 
-TTileSet::TTileSet(int id) :
+TTileset::TTileset(int id) :
     mId(id)
 {
 
 }
 
-TTileSet::~TTileSet()
+TTileset::~TTileset()
 {
     for(auto x : mTileList) {
         delete x;
@@ -24,32 +24,32 @@ TTileSet::~TTileSet()
     mTileList.clear();
 }
 
-int TTileSet::id() const
+int TTileset::id() const
 {
     return mId;
 }
 
-void TTileSet::setId(int id)
+void TTileset::setId(int id)
 {
     mId = id;
 }
 
-TTileIdList TTileSet::tileList() const
+TTileIdList TTileset::tileList() const
 {
     return mTileList;
 }
 
-void TTileSet::setTileList(const TTileIdList &tileList)
+void TTileset::setTileList(const TTileIdList &tileList)
 {
     mTileList = tileList;
 }
 
-void TTileSet::add(TTileId *tile)
+void TTileset::add(TTileId *tile)
 {
     mTileList.append(tile);
 }
 
-void TTileSet::sort()
+void TTileset::sort()
 {
     qSort(mTileList.begin(), mTileList.end(), idCompare);
 }

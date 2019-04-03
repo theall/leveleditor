@@ -13,7 +13,7 @@ public:
     TCore(QObject *parent=nullptr);
     ~TCore();
 
-    void loadResource(const QString &path);
+    bool loadResource(const QString &path) const;
     TDocument *open(const QString &file);    
     TDocument *newDocument(const QString &projectRoot, const QString &projectName);
 

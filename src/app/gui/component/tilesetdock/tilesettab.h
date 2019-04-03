@@ -14,16 +14,16 @@ public:
     ~TTilesetTab();
 
     int addTab(void *tileset, const QString &name, const QPixmap &icon=QPixmap());
-    int findTileSetIndex(void *tileSet);
+    int findTilesetIndex(void *tileSet);
     bool removeTab(void *tileSet);
-    void *currentTileSet();
+    void *currentTileset();
 
-    void setTileSetIcon(void *tileSet, const QIcon &icon);
+    void setTilesetIcon(void *tileSet, const QIcon &icon);
 
 signals:
     // To TTabController
-    void requestSwitchToTileSet(void *tileSet);
-    void requestCloseTileSet(void *tileSet);
+    void requestSwitchToTileset(void *tileSet);
+    void requestCloseTileset(void *tileSet);
 
     // To main window
     void onTabCountChanged(int count);
@@ -38,10 +38,10 @@ private slots:
     void slotActionRemoveTilesTriggered();
 
 private:
-    QList<void*> mTileSets;
+    QList<void*> mTilesets;
     QMenu *mContextMenu;
     QAction *mActionAddTiles;
-    QAction *mActionAddTileSet;
+    QAction *mActionAddTileset;
 
     void switchTo(int diff);
     void retranslateUi();

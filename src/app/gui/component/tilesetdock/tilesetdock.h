@@ -3,13 +3,15 @@
 
 #include "../basedock.h"
 #include "tilesettab.h"
-class TTileSetDock : public TBaseDock
+class TTilesetDock : public TBaseDock
 {
     Q_OBJECT
 
 public:
-    TTileSetDock(QWidget *parent = nullptr);
-    ~TTileSetDock();
+    TTilesetDock(QWidget *parent = nullptr);
+    ~TTilesetDock();
+
+    TTilesetTab *tilesetTab() const;
 
 protected:
     void changeEvent(QEvent *e) override;

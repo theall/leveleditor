@@ -2,8 +2,8 @@
 #include <QToolBar>
 #include <QVBoxLayout>
 
-TTileSetDock::TTileSetDock(QWidget *parent) :
-    TBaseDock(QLatin1String("TileSetDock"), parent)
+TTilesetDock::TTilesetDock(QWidget *parent) :
+    TBaseDock(QLatin1String("TilesetDock"), parent)
 {
     CREATE_ACTION(mActionAddTileset, ":/actionsdock/images/add.png", slotAddTilesetTriggered);
     CREATE_ACTION(mActionRemoveTileset, ":/actionsdock/images/remove.png", slotRemoveTilesetTriggered);
@@ -32,7 +32,7 @@ TTileSetDock::TTileSetDock(QWidget *parent) :
     retranslateUi();
 }
 
-void TTileSetDock::changeEvent(QEvent *e)
+void TTilesetDock::changeEvent(QEvent *e)
 {
     QDockWidget::changeEvent(e);
     switch (e->type()) {
@@ -44,22 +44,27 @@ void TTileSetDock::changeEvent(QEvent *e)
     }
 }
 
-void TTileSetDock::slotAddTilesetTriggered()
+void TTilesetDock::slotAddTilesetTriggered()
 {
 
 }
 
-void TTileSetDock::slotRemoveTilesetTriggered()
+void TTilesetDock::slotRemoveTilesetTriggered()
 {
 
 }
 
-void TTileSetDock::retranslateUi()
+TTilesetTab *TTilesetDock::tilesetTab() const
 {
-    setWindowTitle(tr("TileSet"));
+    return mTilesetTab;
 }
 
-TTileSetDock::~TTileSetDock()
+void TTilesetDock::retranslateUi()
+{
+    setWindowTitle(tr("Tileset"));
+}
+
+TTilesetDock::~TTilesetDock()
 {
 
 }

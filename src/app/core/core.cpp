@@ -20,9 +20,9 @@ TCore::~TCore()
 
 }
 
-void TCore::loadResource(const QString &path)
+bool TCore::loadResource(const QString &path) const
 {
-    TAssetsManager::getInstance()->load(path);
+    return TAssetsManager::getInstance()->load(path);
 }
 
 TDocument *TCore::open(const QString &file)

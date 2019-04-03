@@ -50,6 +50,7 @@ static const char *SEC_GUI_SCENE_SCALE = "SceneScale";
 // Install
 static const char *SEC_INSTALL = "Install";
 static const char *SEC_INSTALL_RUN_COUNT = "RunCount";
+static const char *SEC_INSTALL_GAME_ROOT = "GameRoot";
 
 // Options
 static const char *SEC_OPTIONS = "Options";
@@ -134,6 +135,7 @@ TPreferences::TPreferences(QObject *parent):
         mSettings->setValue(SEC_INSTALL_RUN_COUNT, mRunCount);
     }
 
+    mRoot = stringValue(SEC_INSTALL_GAME_ROOT);
     mSettings->endGroup();
 }
 
@@ -302,6 +304,16 @@ bool TPreferences::enableDebugMultiInstances() const
 void TPreferences::setEnableDebugMultiInstances(bool enableDebugMultiInstances)
 {
     SET_VALUE2(enableDebugMultiInstances, mEnableDebugMultiInstances, SEC_OPTIONS, SEC_OPTION_DEBUG, SEC_OPTION_DEBUG_MULTI_INSTANCES);
+}
+
+QString TPreferences::root() const
+{
+    return mRoot;
+}
+
+void TPreferences::setRoot(const QString &root)
+{
+    SET_VALUE(root, mRoot, SEC_INSTALL, SEC_INSTALL_GAME_ROOT);
 }
 
 void TPreferences::windowGeometryState(QByteArray *g, QByteArray *s)

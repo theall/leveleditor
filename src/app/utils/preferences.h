@@ -105,6 +105,9 @@ public:
     bool enableDebugMultiInstances() const;
     void setEnableDebugMultiInstances(bool enableDebugMultiInstances);
 
+    QString root() const;
+    void setRoot(const QString &root);
+
 signals:
     void hideMenuBarChanged(bool);
     void toolbarIconSizeChanged(int);
@@ -132,6 +135,7 @@ private:
     qreal mSceneScale;
     QString mEnginePath;
     bool mEnableDebugMultiInstances;
+    QString mRoot;
 
     void setValue(const QString &section, const QVariant &value);
     QVariant value(const QString &section, const QVariant &defValue=QVariant());

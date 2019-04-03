@@ -6,7 +6,7 @@
 #include <QFileInfo>
 #include <QStringList>
 
-bool tileSetIdCompare(TTileSet *tileSet1, TTileSet *tileSet2)
+bool tileSetIdCompare(TTileset *tileSet1, TTileset *tileSet2)
 {
     return tileSet1->id() < tileSet2->id();
 }
@@ -28,18 +28,19 @@ TAssetsManager::TAssetsManager(QObject *parent) :
 TAssetsManager::~TAssetsManager()
 {
     FREE_CONTAINER(mFaceList);
-    FREE_CONTAINER(mTileSetList);
+    FREE_CONTAINER(mTilesetList);
 }
 
-void TAssetsManager::load(const QString &path)
+bool TAssetsManager::load(const QString &path)
 {
-    if(mPath==path)
-        return;
+    if(mPath == path)
+        return isValidpath();
 
     mPath = path;
 
     moveToThread(this);
     start();
+    return isValidpath();
 }
 
 TFaceId *TAssetsManager::getFace(int id) const
@@ -53,7 +54,7 @@ TFaceId *TAssetsManager::getFace(int id) const
 
 TTileId *TAssetsManager::getTile(int tileSetId, int tileId) const
 {
-    foreach (TTileSet *tileSet, mTileSetList) {
+    foreach (TTileset *tileSet, mTilesetList) {
         if(tileSet->id() == tileSetId) {
             foreach (TTileId *tile, tileSet->tileList()) {
                 if(tile->id() == tileId)
@@ -74,9 +75,9 @@ TCachedSound *TAssetsManager::getCachedSounds() const
     return mCachedSounds;
 }
 
-TileSetList TAssetsManager::getTileSetList() const
+TilesetList TAssetsManager::getTilesetList() const
 {
-    return mTileSetList;
+    return mTilesetList;
 }
 
 void TAssetsManager::loadAssets()
@@ -178,28 +179,44 @@ void TAssetsManager::loadAssets()
 
         int tileId = tileIdList.at(i);
         int tileSetId = tileSetIdList.at(i);
-        TTileSet *targetTileSet = nullptr;
-        foreach (TTileSet *tileSet, mTileSetList) {
+        TTileset *targetTileset = nullptr;
+        foreach (TTileset *tileSet, mTilesetList) {
             if(tileSet->id() == tileSetId) {
-                targetTileSet = tileSet;
+                targetTileset = tileSet;
                 break;
             }
         }
 
-        if(targetTileSet == nullptr) {
-            targetTileSet = new TTileSet(tileSetId);
-            mTileSetList.append(targetTileSet);
+        if(targetTileset == nullptr) {
+            targetTileset = new TTileset(tileSetId);
+            mTilesetList.append(targetTileset);
         }
 
         TTileId *tile = new TTileId(tileId, pixmap);
-        targetTileSet->add(tile);
+        targetTileset->add(tile);
         // Sorting
-        foreach (TTileSet *tileSet, mTileSetList) {
+        foreach (TTileset *tileSet, mTilesetList) {
             tileSet->sort();
         }
-        qSort(mTileSetList.begin(), mTileSetList.end(), tileSetIdCompare);
+        qSort(mTilesetList.begin(), mTilesetList.end(), tileSetIdCompare);
     }
     emit onProgress(assetsLoaded, totalAssets);
+    emit loadCompleted();
+}
+
+bool TAssetsManager::isValidpath() const
+{
+    QString path = mPath.trimmed();
+    if(path.isEmpty())
+        return false;
+    QDir dir(path);
+    if(!dir.exists())
+        return false;
+
+    if(!dir.cd("gfx"))
+        return false;
+
+    return true;
 }
 
 void TAssetsManager::run()

@@ -34,7 +34,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
   , mSoundDock(new TSoundDock(this))
   , mMiniSceneDock(new TMiniSceneDock(this))
   , mPropertyDock(new TPropertiesDock(this))
-  , mTileSetDock(new TTileSetDock(this))
+  , mTilesetDock(new TTilesetDock(this))
   , mAboutDialog(new TAboutDialog(this))
   , mLoadingDialog(new TLoadingDialog(this))
   , mZoomComboBox(new TZoomComboBox(this))
@@ -112,7 +112,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
     // copyPositionShortcut->activated->connect(mActionHandler->copyPosition);
 
     addDockWidget(Qt::LeftDockWidgetArea, mSoundDock);
-    addDockWidget(Qt::LeftDockWidgetArea, mTileSetDock);
+    addDockWidget(Qt::LeftDockWidgetArea, mTilesetDock);
     addDockWidget(Qt::LeftDockWidgetArea, mUndoDock);
     addDockWidget(Qt::RightDockWidgetArea, mMiniSceneDock);
     addDockWidget(Qt::RightDockWidgetArea, mPropertyDock);
@@ -329,11 +329,7 @@ void TMainWindow::slotStyleChanged(const QString &style)
 
 void TMainWindow::on_actionNew_triggered()
 {
-    TSelectRootDialog dialog(this);
-    if(dialog.exec() == QDialog::Accepted)
-    {
-        emit requestSelectRoot(&dialog);
-    }
+    QMessageBox::information(this, "Information", "Not implement yet!");
 }
 
 TSoundDock *TMainWindow::getSoundDock() const
@@ -636,9 +632,9 @@ void TMainWindow::on_actionRun_triggered()
     TPreferencesDialog::showPreferences(this, TPreferencesDialog::DEBUG);
 }
 
-TTileSetDock *TMainWindow::getTileSetDock() const
+TTilesetDock *TMainWindow::getTilesetDock() const
 {
-    return mTileSetDock;
+    return mTilesetDock;
 }
 
 TZoomComboBox *TMainWindow::getZoomComboBox() const

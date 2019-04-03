@@ -42,7 +42,7 @@ class TPropertiesDock;
 class TTabWidget;
 class TCentralWidget;
 class TLoadingDialog;
-class TTileSetDock;
+class TTilesetDock;
 
 class TMainWindow : public QMainWindow
 {
@@ -75,11 +75,10 @@ public:
     TLoadingDialog *getLoadingDialog() const;
     TMiniSceneDock *getMiniSceneDock() const;
     TZoomComboBox *getZoomComboBox() const;
-    TTileSetDock *getTileSetDock() const;
+    TTilesetDock *getTilesetDock() const;
 
 signals:
     void requestOpenProject(const QString &file);
-    void requestSelectRoot(TSelectRootDialog *);
     void requestSaveCurrentProject();
     void requestSaveAllProjects();
     void requestUndo();
@@ -147,7 +146,7 @@ private:
     TSoundDock *mSoundDock;
     TMiniSceneDock *mMiniSceneDock;
     TPropertiesDock *mPropertyDock;
-    TTileSetDock *mTileSetDock;
+    TTilesetDock *mTilesetDock;
 
     TAboutDialog *mAboutDialog;
     TLoadingDialog *mLoadingDialog;

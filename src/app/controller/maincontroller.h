@@ -8,6 +8,7 @@
 #include "undocontroller.h"
 #include "miniscenecontroller.h"
 #include "optionscontroller.h"
+#include "tilesetcontroller.h"
 
 class TMainController : public TAbstractController
 {
@@ -27,7 +28,6 @@ private slots:
     void slotRequestOpenProject(const QString &file);
     void slotRequestSaveCurrentProject();
     void slotRequestSaveAllProjects();
-    void slotRequestSelectRoot(TSelectRootDialog *dialog);
     void slotRequestExitApp(bool &approved);
     void slotRequestCloseCurrentProject();
     void slotRequestCloseAllProjects();
@@ -53,14 +53,10 @@ private:
     TMainPropertyController *mMainPropertyController;
     TUndoController *mUndoController;
     TMiniSceneController *mMiniSceneController;
+    TTilesetController *mTilesetController;
 
     bool confirmAllSaved();
-    void createNewDocument(const QString &projectRoot,
-                           const QString &projectName,
-                           const QString &projectVersion,
-                           const QString &projectAuthor,
-                           const QString &projectContact,
-                           const QString &projectComment);
+    void createNewDocument(const QString &projectRoot, const QString &projectName);
 
 protected slots:
     void slotTimerEvent() Q_DECL_OVERRIDE;

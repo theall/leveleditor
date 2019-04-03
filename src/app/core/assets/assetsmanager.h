@@ -22,16 +22,18 @@ public:
     TAssetsManager(QObject *parent=Q_NULLPTR);
     ~TAssetsManager();
 
-    void load(const QString &path);
+    bool load(const QString &path);
     TFaceId *getFace(int id) const;
     TTileId *getTile(int tileSetId, int tileId) const;
 
     TCachedPixmap *getCachedPixmaps() const;
     TCachedSound *getCachedSounds() const;
 
-    TileSetList getTileSetList() const;
+    TilesetList getTilesetList() const;
 
 signals:
+    // Notify external object
+    void loadCompleted();
     void onProgress(int value, int maxValue);
 
 private:
@@ -39,8 +41,10 @@ private:
     TFaceList mFaceList;
     TCachedPixmap *mCachedPixmaps;
     TCachedSound *mCachedSounds;
-    TileSetList mTileSetList;
+    TilesetList mTilesetList;
+
     void loadAssets();
+    bool isValidpath() const;
 
     // QThread interface
 protected:

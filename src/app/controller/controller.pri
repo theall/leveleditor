@@ -7,7 +7,8 @@ SOURCES += \
     $$PWD/undocontroller.cpp \
     $$PWD/mainpropertycontroller.cpp \
     $$PWD/miniscenecontroller.cpp \
-    $$PWD/layerscontroller.cpp
+    $$PWD/layerscontroller.cpp \
+    $$PWD/tilesetcontroller.cpp
 
 HEADERS  += \
     $$PWD/abstractcontroller.h \
@@ -18,4 +19,5 @@ HEADERS  += \
     $$PWD/undocontroller.h \
     $$PWD/mainpropertycontroller.h \
     $$PWD/miniscenecontroller.h \
-    $$PWD/layerscontroller.h
+    $$PWD/layerscontroller.h \
+    $$PWD/tilesetcontroller.h

@@ -4,11 +4,11 @@
 #include <QHeaderView>
 #include <QContextMenuEvent>
 
-TTileSetView::TTileSetView(QWidget *parent) :
+TTilesetView::TTilesetView(QWidget *parent) :
     QTableView(parent)
   , mContextMenu(new QMenu(this))
 {
-    setObjectName(QStringLiteral("TileSetView"));
+    setObjectName(QStringLiteral("TilesetView"));
     setFrameShape(QFrame::Panel);
     setFrameShadow(QFrame::Sunken);
 
@@ -31,12 +31,12 @@ TTileSetView::TTileSetView(QWidget *parent) :
     retranslateUi();
 }
 
-TTileSetView::~TTileSetView()
+TTilesetView::~TTilesetView()
 {
 
 }
 
-QList<int> TTileSetView::getSelectedIndexes()
+QList<int> TTilesetView::getSelectedIndexes()
 {
     QSet<int> selectedRows;
     for(QModelIndex index : selectionModel()->selectedIndexes())
@@ -46,12 +46,12 @@ QList<int> TTileSetView::getSelectedIndexes()
     return selectedRows.toList();
 }
 
-int TTileSetView::currentRow()
+int TTilesetView::currentRow()
 {
     return currentIndex().row();
 }
 
-void TTileSetView::selectRow(int row)
+void TTilesetView::selectRow(int row)
 {
     if(model())
     {
@@ -60,33 +60,33 @@ void TTileSetView::selectRow(int row)
     }
 }
 
-int TTileSetView::rowCount()
+int TTilesetView::rowCount()
 {
     QAbstractItemModel *m = model();
     return m?m->rowCount():0;
 }
 
-void TTileSetView::slotActionShowGridTriggered(bool checked)
+void TTilesetView::slotActionShowGridTriggered(bool checked)
 {
     setShowGrid(checked);
 }
 
-void TTileSetView::slotActionAddTilesTriggered()
+void TTilesetView::slotActionAddTilesTriggered()
 {
 
 }
 
-void TTileSetView::slotActionRemoveTilesTriggered()
+void TTilesetView::slotActionRemoveTilesTriggered()
 {
 
 }
 
-void TTileSetView::slotActionRenameTriggered()
+void TTilesetView::slotActionRenameTriggered()
 {
 
 }
 
-void TTileSetView::slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+void TTilesetView::slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
     Q_UNUSED(selected);
     Q_UNUSED(deselected);
@@ -94,14 +94,14 @@ void TTileSetView::slotSelectionChanged(const QItemSelection &selected, const QI
     emit hasSelectionChanged(getSelectedIndexes().size()>0);
 }
 
-void TTileSetView::retranslateUi()
+void TTilesetView::retranslateUi()
 {
     mActionAddTiles->setText(tr("Add tiles"));
     mActionRemoveTiles->setText(tr("Remove tiles"));
     mActionShowGrid->setText("Show grid");
 }
 
-void TTileSetView::setModel(QAbstractItemModel *model)
+void TTilesetView::setModel(QAbstractItemModel *model)
 {
     QTableView::setModel(model);
     emit validChanged(model!=nullptr);
@@ -115,13 +115,13 @@ void TTileSetView::setModel(QAbstractItemModel *model)
     }
 }
 
-void TTileSetView::mousePressEvent(QMouseEvent *event)
+void TTilesetView::mousePressEvent(QMouseEvent *event)
 {
     emit rowSelected(indexAt(event->pos()).row());
     QTableView::mousePressEvent(event);
 }
 
-void TTileSetView::contextMenuEvent(QContextMenuEvent *event)
+void TTilesetView::contextMenuEvent(QContextMenuEvent *event)
 {
     mContextMenu->popup(event->globalPos());
 }

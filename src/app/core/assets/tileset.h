@@ -3,12 +3,12 @@
 
 #include "tileid.h"
 
-class TTileSet
+class TTileset
 {
 public:
-    TTileSet();
-    TTileSet(int id);
-    ~TTileSet();
+    TTileset();
+    TTileset(int id);
+    ~TTileset();
 
     int id() const;
     void setId(int id);
@@ -24,5 +24,5 @@ private:
     TTileIdList mTileList;
 };
 
-typedef QList<TTileSet*> TileSetList;
+typedef QList<TTileset*> TilesetList;
 #endif // TTILESET_H

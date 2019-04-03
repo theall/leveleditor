@@ -18,19 +18,19 @@ TTilesetTab::TTilesetTab(QWidget *parent) :
     connect(bar, SIGNAL(currentChanged(int)), this, SLOT(slotOnCurrentIndexChanged(int)));
     connect(bar, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCustomContextMenuRequested(QPoint)));
 
-    QShortcut *switchToLeftTileSet = new QShortcut(tr("Alt+Left"), this);
-    QShortcut *switchToLeftTileSet1 = new QShortcut(tr("Ctrl+Shift+Tab"), this);
-    connect(switchToLeftTileSet, SIGNAL(activated()), this, SLOT(slotSwitchToLeft()));
-    connect(switchToLeftTileSet1, SIGNAL(activated()), this, SLOT(slotSwitchToLeft()));
+    QShortcut *switchToLeftTileset = new QShortcut(tr("Alt+Left"), this);
+    QShortcut *switchToLeftTileset1 = new QShortcut(tr("Ctrl+Shift+Tab"), this);
+    connect(switchToLeftTileset, SIGNAL(activated()), this, SLOT(slotSwitchToLeft()));
+    connect(switchToLeftTileset1, SIGNAL(activated()), this, SLOT(slotSwitchToLeft()));
 
-    QShortcut *switchToRightTileSet = new QShortcut(tr("Alt+Right"), this);
-    QShortcut *switchToRightTileSet1 = new QShortcut(tr("Ctrl+Tab"), this);
-    connect(switchToRightTileSet, SIGNAL(activated()), this, SLOT(slotSwitchToRight()));
-    connect(switchToRightTileSet1, SIGNAL(activated()), this, SLOT(slotSwitchToRight()));
+    QShortcut *switchToRightTileset = new QShortcut(tr("Alt+Right"), this);
+    QShortcut *switchToRightTileset1 = new QShortcut(tr("Ctrl+Tab"), this);
+    connect(switchToRightTileset, SIGNAL(activated()), this, SLOT(slotSwitchToRight()));
+    connect(switchToRightTileset1, SIGNAL(activated()), this, SLOT(slotSwitchToRight()));
 
     mActionAddTiles = mContextMenu->addAction(QString(), this, SLOT(slotActionAddTilesTriggered()));
     mContextMenu->addSeparator();
-    mActionAddTileSet = mContextMenu->addAction(QString(), this, SLOT(slotActionRemoveTilesTriggered()));
+    mActionAddTileset = mContextMenu->addAction(QString(), this, SLOT(slotActionRemoveTilesTriggered()));
 
     retranslateUi();
 }
@@ -42,19 +42,19 @@ TTilesetTab::~TTilesetTab()
 
 int TTilesetTab::addTab(void *tileSet, const QString &name, const QPixmap &icon)
 {
-    mTileSets.append(tileSet);
+    mTilesets.append(tileSet);
 
-    TTileSetView *view = new TTileSetView(this);
+    TTilesetView *view = new TTilesetView(this);
     int i =  QTabWidget::addTab(view, QIcon(icon), name);
     emit onTabCountChanged(count());
     return i;
 }
 
-int TTilesetTab::findTileSetIndex(void *tileSet)
+int TTilesetTab::findTilesetIndex(void *tileSet)
 {
-    for(int i=0;i<mTileSets.size();i++)
+    for(int i=0;i<mTilesets.size();i++)
     {
-        if(mTileSets[i]==tileSet)
+        if(mTilesets[i]==tileSet)
             return i;
     }
     return -1;
@@ -62,10 +62,10 @@ int TTilesetTab::findTileSetIndex(void *tileSet)
 
 bool TTilesetTab::removeTab(void *tileSet)
 {
-    int index = findTileSetIndex(tileSet);
+    int index = findTilesetIndex(tileSet);
     if(index != -1)
     {
-        mTileSets.takeAt(index);
+        mTilesets.takeAt(index);
         QTabWidget::removeTab(index);
         emit onTabCountChanged(count());
         return true;
@@ -73,17 +73,17 @@ bool TTilesetTab::removeTab(void *tileSet)
     return false;
 }
 
-void *TTilesetTab::currentTileSet()
+void *TTilesetTab::currentTileset()
 {
-    void *tileSet = mTileSets.at(currentIndex());
+    void *tileSet = mTilesets.at(currentIndex());
     Q_ASSERT(tileSet);
 
     return tileSet;
 }
 
-void TTilesetTab::setTileSetIcon(void *tileSet, const QIcon &icon)
+void TTilesetTab::setTilesetIcon(void *tileSet, const QIcon &icon)
 {
-    int index = findTileSetIndex(tileSet);
+    int index = findTilesetIndex(tileSet);
     if(index == -1)
         return;
 
@@ -93,12 +93,12 @@ void TTilesetTab::setTileSetIcon(void *tileSet, const QIcon &icon)
 void TTilesetTab::slotOnCurrentIndexChanged(int index)
 {
     void *tileSet = nullptr;
-    if(index>-1 && index < mTileSets.size())
+    if(index>-1 && index < mTilesets.size())
     {
-        tileSet = mTileSets.at(index);
+        tileSet = mTilesets.at(index);
         Q_ASSERT(tileSet);
     }
-    emit requestSwitchToTileSet(tileSet);
+    emit requestSwitchToTileset(tileSet);
 }
 
 void TTilesetTab::slotSwitchToLeft()
@@ -144,5 +144,5 @@ void TTilesetTab::switchTo(int diff)
 void TTilesetTab::retranslateUi()
 {
     mActionAddTiles->setText(tr("Add tiles"));
-    mActionAddTileSet->setText(tr("Add tileset"));
+    mActionAddTileset->setText(tr("Add tileset"));
 }

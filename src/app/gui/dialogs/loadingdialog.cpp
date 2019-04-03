@@ -15,6 +15,7 @@ TLoadingDialog::TLoadingDialog(QWidget *parent) :
 
     setWindowTitle(tr("Loading..."));
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowModality(Qt::WindowModal);
 }
 
 TLoadingDialog::~TLoadingDialog()

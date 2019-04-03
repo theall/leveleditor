@@ -5,13 +5,13 @@
 #include <QAction>
 #include <QTableView>
 
-class TTileSetView : public QTableView
+class TTilesetView : public QTableView
 {
     Q_OBJECT
 
 public:
-    TTileSetView(QWidget *parent=nullptr);
-    ~TTileSetView();
+    TTilesetView(QWidget *parent=nullptr);
+    ~TTilesetView();
 
     QList<int> getSelectedIndexes();
     int currentRow();

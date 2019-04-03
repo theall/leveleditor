@@ -1,7 +1,6 @@
 #include "maincontroller.h"
 #include "../utils/preferences.h"
-
-#include "../gui/dialogs/newprojectdialog.h"
+#include "../gui/dialogs/selectrootdialog.h"
 #include "../gui/dialogs/loadingdialog.h"
 #include "../gui/component/tabwidget/tabwidget.h"
 #include "../core/assets/assetsmanager.h"
@@ -17,6 +16,7 @@ TMainController::TMainController(QObject *parent) :
   , mMainPropertyController(new TMainPropertyController(this))
   , mUndoController(new TUndoController(this))
   , mMiniSceneController(new TMiniSceneController(this))
+  , mTilesetController(new TTilesetController(this))
 {
     connect(mTabController, SIGNAL(requestCloseDocument(TDocument*)), this, SLOT(slotRequestCloseDocument(TDocument*)));
     connect(mTabController, SIGNAL(requestSwitchToDocument(TDocument*)), this, SLOT(slotRequestSwitchToDocument(TDocument*)));
@@ -63,19 +63,29 @@ bool TMainController::joint(TMainWindow *mainWindow, TCore *core)
         connect(mainWindow, SIGNAL(requestOpenProject(QString)), this, SLOT(slotRequestOpenProject(QString)));
         connect(mainWindow, SIGNAL(requestSaveCurrentProject()), this, SLOT(slotRequestSaveCurrentProject()));
         connect(mainWindow, SIGNAL(requestSaveAllProjects()), this, SLOT(slotRequestSaveAllProjects()));
-        connect(mainWindow, SIGNAL(requestSelectRoot(TSelectRootDialog*)), this, SLOT(slotRequestSelectRoot(TSelectRootDialog*)));
         connect(mainWindow, SIGNAL(requestCloseCurrentProject()), this, SLOT(slotRequestCloseCurrentProject()));
         connect(mainWindow, SIGNAL(requestCloseAllProjects()), this, SLOT(slotRequestCloseAllProjects()));
         connect(mainWindow, SIGNAL(requestDisplayProjectProperties()), this, SLOT(slotRequestDisplayProjectProperties()));
         connect(mainWindow, SIGNAL(requestExitApp(bool&)), this, SLOT(slotRequestExitApp(bool&)));
         connect(mainWindow, SIGNAL(requestRunCurrentProject()), this, SLOT(slotRequestRunCurrentProject()));
-
+        TPreferences *prefs = TPreferences::instance();
+        QString gameRoot = prefs->root();
         QStringList arguments = QCoreApplication::arguments();
         if(arguments.size() > 1)
-            core->loadResource(arguments.at(1));
+            gameRoot = arguments.at(1);
+        bool success = core->loadResource(gameRoot);
+        while(!success) {
+            gameRoot = TSelectRootDialog::getSelectedRoot(mainWindow);
+            if(gameRoot.isEmpty())
+                return false;
+            success = core->loadResource(gameRoot);
+        }
+        if(success) {
+            prefs->setRoot(gameRoot);
+        }
         mainWindow->show();
 
-        TPreferences *prefs = TPreferences::instance();
+
         if(prefs->openLastFile())
         {
             bool showErrorDialog = true;
@@ -259,30 +269,11 @@ bool TMainController::confirmAllSaved()
     return true;
 }
 
-void TMainController::createNewDocument(
-        const QString &projectRoot,
-        const QString &projectName,
-        const QString &,
-        const QString &,
-        const QString &,
-        const QString &)
+void TMainController::createNewDocument(const QString &projectRoot, const QString &projectName)
 {
     TDocument *document = mCore->newDocument(projectRoot, projectName);
     setCurrentDocument(document);
     mMainWindow->addRecentFile(document->fileName());
-}
-
-void TMainController::slotRequestSelectRoot(TSelectRootDialog *dialog)
-{
-    if(!dialog)
-        return;
-
-    createNewDocument(dialog->getProjectPath(),
-                      dialog->getProjectName(),
-                      dialog->getProjectVersion(),
-                      dialog->getProjectAuthor(),
-                      dialog->getProjectContact(),
-                      dialog->getProjectComment());
 }
 
 void TMainController::slotRequestExitApp(bool &approved)
