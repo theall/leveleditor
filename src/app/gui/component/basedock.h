@@ -1,6 +1,7 @@
 #ifndef BASEDOCK_H
 #define BASEDOCK_H
 
+#include <QEvent>
 #include <QDockWidget>
 
 #define CREATE_ACTION(action,image,func) \

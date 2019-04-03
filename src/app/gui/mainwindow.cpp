@@ -3,18 +3,18 @@
 
 #include "dialogs/aboutdialog.h"
 #include "dialogs/preferencesdialog.h"
-#include "dialogs/newprojectdialog.h"
+#include "dialogs/selectrootdialog.h"
 #include "dialogs/loadingdialog.h"
 
 #include "component/centralwidget.h"
 #include "component/undodock/undodock.h"
 #include "component/sounddock/sounddock.h"
 #include "component/miniscenedock/miniscenedock.h"
-#include "component/movedock/movedock.h"
 #include "component/layerdock/layerdock.h"
 #include "component/tabwidget/tabwidget.h"
 #include "component/characterdock/characterdock.h"
 #include "component/propertydock/propertiesdock.h"
+#include "component/tilesetdock/tilesetdock.h"
 
 #include "widgets/zoomcombobox.h"
 
@@ -32,9 +32,9 @@ TMainWindow::TMainWindow(QWidget *parent) :
   , mCentralWidget(new TCentralWidget(this))
   , mUndoDock(new TUndoDock(this))
   , mSoundDock(new TSoundDock(this))
-  , mMoveDock(new TMoveDock(this))
   , mMiniSceneDock(new TMiniSceneDock(this))
   , mPropertyDock(new TPropertiesDock(this))
+  , mTileSetDock(new TTileSetDock(this))
   , mAboutDialog(new TAboutDialog(this))
   , mLoadingDialog(new TLoadingDialog(this))
   , mZoomComboBox(new TZoomComboBox(this))
@@ -112,7 +112,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
     // copyPositionShortcut->activated->connect(mActionHandler->copyPosition);
 
     addDockWidget(Qt::LeftDockWidgetArea, mSoundDock);
-    addDockWidget(Qt::LeftDockWidgetArea, mMoveDock);
+    addDockWidget(Qt::LeftDockWidgetArea, mTileSetDock);
     addDockWidget(Qt::LeftDockWidgetArea, mUndoDock);
     addDockWidget(Qt::RightDockWidgetArea, mMiniSceneDock);
     addDockWidget(Qt::RightDockWidgetArea, mPropertyDock);
@@ -229,7 +229,10 @@ void TMainWindow::setStatusMessage(const QString &message, int timeOut)
 void TMainWindow::show()
 {
     QMainWindow::show();
+
+#ifndef GUI_STAND_ALONE
     raiseLoadingDialog();
+#endif
 }
 
 void TMainWindow::on_actionOpen_triggered()
@@ -294,7 +297,7 @@ void TMainWindow::slotOpenRecentFile()
 
 void TMainWindow::slotSceneScaleChanged(qreal scale)
 {
-    if(TTabContainer *tabContainer = tabWidget()->currentContainer())
+    if(TTabContainer *tabContainer = getTabWidget()->currentContainer())
         if(TGraphicsView *graphicsView = tabContainer->graphicsView())
             graphicsView->setScale(scale);
 }
@@ -326,19 +329,19 @@ void TMainWindow::slotStyleChanged(const QString &style)
 
 void TMainWindow::on_actionNew_triggered()
 {
-    TNewProjectDialog dialog(this);
+    TSelectRootDialog dialog(this);
     if(dialog.exec() == QDialog::Accepted)
     {
-        emit requestCreateNewProject(&dialog);
+        emit requestSelectRoot(&dialog);
     }
 }
 
-TSoundDock *TMainWindow::soundDock() const
+TSoundDock *TMainWindow::getSoundDock() const
 {
     return mSoundDock;
 }
 
-TUndoDock *TMainWindow::undoDock() const
+TUndoDock *TMainWindow::getUndoDock() const
 {
     return mUndoDock;
 }
@@ -428,12 +431,12 @@ void TMainWindow::on_actionAboutQt_triggered()
     QMessageBox::aboutQt(this);
 }
 
-TPropertiesDock *TMainWindow::propertyDock() const
+TPropertiesDock *TMainWindow::getPropertyDock() const
 {
     return mPropertyDock;
 }
 
-TTabWidget *TMainWindow::tabWidget() const
+TTabWidget *TMainWindow::getTabWidget() const
 {
     return mCentralWidget->tabWidget();
 }
@@ -515,6 +518,8 @@ void TMainWindow::loadConfig()
         ui->actionAlwaysOnTop->trigger();
 
     mZoomComboBox->setScaleValue(prefs->sceneScale());
+
+    slotStyleChanged(prefs->style());
     updateRecentFiles();
 }
 
@@ -631,6 +636,11 @@ void TMainWindow::on_actionRun_triggered()
     TPreferencesDialog::showPreferences(this, TPreferencesDialog::DEBUG);
 }
 
+TTileSetDock *TMainWindow::getTileSetDock() const
+{
+    return mTileSetDock;
+}
+
 TZoomComboBox *TMainWindow::getZoomComboBox() const
 {
     return mZoomComboBox;
@@ -644,9 +654,4 @@ TMiniSceneDock *TMainWindow::getMiniSceneDock() const
 TLoadingDialog *TMainWindow::getLoadingDialog() const
 {
     return mLoadingDialog;
-}
-
-TMoveDock *TMainWindow::vectorDock() const
-{
-    return mMoveDock;
 }

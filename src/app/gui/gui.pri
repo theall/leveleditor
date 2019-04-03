@@ -15,7 +15,6 @@ SOURCES += \
     $$PWD/dialogs/aboutdialog.cpp \
     $$PWD/dialogs/abstractdialog.cpp \
     $$PWD/component/tabwidget/tabwidget.cpp \
-    $$PWD/dialogs/newprojectdialog.cpp \
     $$PWD/component/undodock/undodock.cpp \
     $$PWD/component/basedock.cpp \
     $$PWD/component/propertydock/propertiesdock.cpp \
@@ -37,7 +36,6 @@ SOURCES += \
     $$PWD/component/miniscenedock/miniscenedock.cpp \
     $$PWD/component/layerdock/layerdock.cpp \
     $$PWD/component/layerdock/layerview.cpp \
-    $$PWD/component/movedock/movedock.cpp \
     $$PWD/component/sounddock/sounddock.cpp \
     $$PWD/component/sounddock/soundsetview.cpp \
     $$PWD/widgets/zoomcombobox.cpp \
@@ -48,7 +46,11 @@ SOURCES += \
     $$PWD/component/propertydock/widget/sounditemsourceedit.cpp \
     $$PWD/component/propertydock/widget/soundsetedit.cpp \
     $$PWD/dialogs/loadingdialog.cpp \
-    $$PWD/component/miniscenedock/minisceneframe.cpp
+    $$PWD/component/miniscenedock/minisceneframe.cpp \
+    $$PWD/component/tilesetdock/tilesetdock.cpp \
+    $$PWD/component/tilesetdock/tilesetview.cpp \
+    $$PWD/component/tilesetdock/tilesettab.cpp \
+    $$PWD/dialogs/selectrootdialog.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -56,7 +58,6 @@ HEADERS += \
     $$PWD/dialogs/aboutdialog.h \
     $$PWD/dialogs/abstractdialog.h \
     $$PWD/component/tabwidget/tabwidget.h \
-    $$PWD/dialogs/newprojectdialog.h \
     $$PWD/component/undodock/undodock.h \
     $$PWD/component/basedock.h \
     $$PWD/component/propertydock/propertiesdock.h \
@@ -78,7 +79,6 @@ HEADERS += \
     $$PWD/component/miniscenedock/miniscenedock.h \
     $$PWD/component/layerdock/layerdock.h \
     $$PWD/component/layerdock/layerview.h \
-    $$PWD/component/movedock/movedock.h \
     $$PWD/component/sounddock/sounddock.h \
     $$PWD/component/sounddock/soundsetview.h \
     $$PWD/widgets/zoomcombobox.h \
@@ -89,15 +89,19 @@ HEADERS += \
     $$PWD/component/propertydock/widget/sounditemsourceedit.h \
     $$PWD/component/propertydock/widget/soundsetedit.h \
     $$PWD/dialogs/loadingdialog.h \
-    $$PWD/component/miniscenedock/minisceneframe.h
+    $$PWD/component/miniscenedock/minisceneframe.h \
+    $$PWD/component/tilesetdock/tilesetdock.h \
+    $$PWD/component/tilesetdock/tilesetview.h \
+    $$PWD/component/tilesetdock/tilesettab.h \
+    $$PWD/dialogs/selectrootdialog.h
 
 FORMS += \
     $$PWD/mainwindow.ui \
     $$PWD/dialogs/aboutdialog.ui \
     $$PWD/dialogs/preferencesdialog.ui \
-    $$PWD/dialogs/newprojectdialog.ui \
     $$PWD/dialogs/soundresourcedialog.ui \
-    $$PWD/dialogs/loadingdialog.ui
+    $$PWD/dialogs/loadingdialog.ui \
+    $$PWD/dialogs/selectrootdialog.ui
 
 RESOURCES += $$PWD/resource/editor.qrc
 

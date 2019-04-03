@@ -25,7 +25,7 @@ bool TTabController::joint(TMainWindow *mainWindow, TCore *core)
     Q_ASSERT(mainWindow);
     Q_ASSERT(core);
 
-    mTabWidget = mainWindow->tabWidget();
+    mTabWidget = mainWindow->getTabWidget();
     Q_ASSERT(mTabWidget);
 
     connect(mTabWidget, SIGNAL(requestCloseDocument(void*)), this, SLOT(slotRequestCloseDocument(void*)));

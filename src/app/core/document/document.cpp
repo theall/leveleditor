@@ -223,7 +223,7 @@ void TDocument::load(const QString &file)
 
 void TDocument::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_STRING, P_NAME, PID_NAME, tr("New Scene"));
+    mPropertySheet->addProperty(PT_STRING, P_NAME, PID_NAME, tr("New Map"));
 }
 
 bool TDocument::isDirty() const

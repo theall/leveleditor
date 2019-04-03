@@ -20,7 +20,7 @@ bool TUndoController::joint(TMainWindow *mainWindow, TCore *core)
     Q_ASSERT(mainWindow);
     Q_ASSERT(core);
 
-    mainWindow->undoDock()->setUndoGroup(mUndoGroup);
+    mainWindow->getUndoDock()->setUndoGroup(mUndoGroup);
 
     connect(mainWindow, SIGNAL(requestUndo()), this, SLOT(slotRequestUndo()));
     connect(mainWindow, SIGNAL(requestRedo()), this, SLOT(slotRequestRedo()));

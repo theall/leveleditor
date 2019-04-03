@@ -34,15 +34,15 @@ namespace Ui {
 
 class TZoomComboBox;
 class TAboutDialog;
-class TNewProjectDialog;
+class TSelectRootDialog;
 class TUndoDock;
 class TSoundDock;
-class TMoveDock;
 class TMiniSceneDock;
 class TPropertiesDock;
 class TTabWidget;
 class TCentralWidget;
 class TLoadingDialog;
+class TTileSetDock;
 
 class TMainWindow : public QMainWindow
 {
@@ -68,21 +68,18 @@ public:
     void setStatusMessage(const QString &message, int timeOut = 3000);
     void show();
 
-    TUndoDock *undoDock() const;
-    TSoundDock *soundDock() const;
-    TMoveDock *vectorDock() const;
-    TPropertiesDock *propertyDock() const;
-    TTabWidget *tabWidget() const;
-
+    TUndoDock *getUndoDock() const;
+    TSoundDock *getSoundDock() const;
+    TPropertiesDock *getPropertyDock() const;
+    TTabWidget *getTabWidget() const;
     TLoadingDialog *getLoadingDialog() const;
-
     TMiniSceneDock *getMiniSceneDock() const;
-
     TZoomComboBox *getZoomComboBox() const;
+    TTileSetDock *getTileSetDock() const;
 
 signals:
     void requestOpenProject(const QString &file);
-    void requestCreateNewProject(TNewProjectDialog *);
+    void requestSelectRoot(TSelectRootDialog *);
     void requestSaveCurrentProject();
     void requestSaveAllProjects();
     void requestUndo();
@@ -148,9 +145,9 @@ private:
     TCentralWidget *mCentralWidget;
     TUndoDock *mUndoDock;
     TSoundDock *mSoundDock;
-    TMoveDock *mMoveDock;
     TMiniSceneDock *mMiniSceneDock;
     TPropertiesDock *mPropertyDock;
+    TTileSetDock *mTileSetDock;
 
     TAboutDialog *mAboutDialog;
     TLoadingDialog *mLoadingDialog;

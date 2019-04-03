@@ -11,6 +11,13 @@ TCentralWidget::TCentralWidget(QWidget *parent) :
     vbl->setMargin(0);
     vbl->addWidget(mTabWidget);
     setLayout(vbl);
+
+#ifdef GUI_STAND_ALONE
+    for(int i=0;i<10;i++)
+    {
+        mTabWidget->addTab((void*)(i+0xffff), QString("Map %1").arg(i+1));
+    }
+#endif
 }
 
 TCentralWidget::~TCentralWidget()

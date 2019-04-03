@@ -17,14 +17,14 @@ bool TMainPropertyController::joint(TMainWindow *mainWindow, TCore *core)
     Q_ASSERT(mainWindow);
 
     bool ret = TPropertyController::joint(mainWindow, core);
-    setPropertyBrowser(mainWindow->propertyDock()->propertyBrowser());
+    setPropertyBrowser(mainWindow->getPropertyDock()->propertyBrowser());
     return ret;
 }
 
 void TMainPropertyController::setPropertySheet(TPropertySheet *propertySheet)
 {
     TPropertyController::setPropertySheet(propertySheet);
-    mMainWindow->propertyDock()->setText(propertySheet!=nullptr?propertySheet->getContextName():"");
+    mMainWindow->getPropertyDock()->setText(propertySheet!=nullptr?propertySheet->getContextName():"");
 }
 
 void TMainPropertyController::setCurrentDocument(TDocument *document)

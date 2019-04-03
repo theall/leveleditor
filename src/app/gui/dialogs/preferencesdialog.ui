@@ -419,7 +419,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../resource/chreditor.qrc">
+        <iconset resource="../resource/editor.qrc">
          <normaloff>:/other/images/open2.png</normaloff>:/other/images/open2.png</iconset>
        </property>
       </widget>
@@ -564,7 +564,7 @@
   <tabstop>ckbOpenLastFiles</tabstop>
  </tabstops>
  <resources>
-  <include location="../resource/chreditor.qrc"/>
+  <include location="../resource/editor.qrc"/>
  </resources>
  <connections/>
 </ui>

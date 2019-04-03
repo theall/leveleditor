@@ -5,7 +5,7 @@
 #include <QVBoxLayout>
 
 TUndoDock::TUndoDock(QWidget *parent)
-    : TBaseDock(QLatin1String("undoViewDock"), parent)
+    : TBaseDock(QLatin1String("UndoViewDock"), parent)
 {
     mUndoView = new QUndoView(this);
     mUndoView->setFrameShape(QFrame::Panel);

@@ -27,7 +27,7 @@ private slots:
     void slotRequestOpenProject(const QString &file);
     void slotRequestSaveCurrentProject();
     void slotRequestSaveAllProjects();
-    void slotRequestCreateNewProject(TNewProjectDialog *dialog);
+    void slotRequestSelectRoot(TSelectRootDialog *dialog);
     void slotRequestExitApp(bool &approved);
     void slotRequestCloseCurrentProject();
     void slotRequestCloseAllProjects();

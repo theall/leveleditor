@@ -63,7 +63,7 @@ bool TMainController::joint(TMainWindow *mainWindow, TCore *core)
         connect(mainWindow, SIGNAL(requestOpenProject(QString)), this, SLOT(slotRequestOpenProject(QString)));
         connect(mainWindow, SIGNAL(requestSaveCurrentProject()), this, SLOT(slotRequestSaveCurrentProject()));
         connect(mainWindow, SIGNAL(requestSaveAllProjects()), this, SLOT(slotRequestSaveAllProjects()));
-        connect(mainWindow, SIGNAL(requestCreateNewProject(TNewProjectDialog*)), this, SLOT(slotRequestCreateNewProject(TNewProjectDialog*)));
+        connect(mainWindow, SIGNAL(requestSelectRoot(TSelectRootDialog*)), this, SLOT(slotRequestSelectRoot(TSelectRootDialog*)));
         connect(mainWindow, SIGNAL(requestCloseCurrentProject()), this, SLOT(slotRequestCloseCurrentProject()));
         connect(mainWindow, SIGNAL(requestCloseAllProjects()), this, SLOT(slotRequestCloseAllProjects()));
         connect(mainWindow, SIGNAL(requestDisplayProjectProperties()), this, SLOT(slotRequestDisplayProjectProperties()));
@@ -154,7 +154,7 @@ void TMainController::slotRequestOpenProject(const QString &file)
 
 void TMainController::slotRequestSaveCurrentProject()
 {
-    TDocument *document = (TDocument*)mMainWindow->tabWidget()->currentDocument();
+    TDocument *document = (TDocument*)mMainWindow->getTabWidget()->currentDocument();
     if(!document)
         return;
 
@@ -272,7 +272,7 @@ void TMainController::createNewDocument(
     mMainWindow->addRecentFile(document->fileName());
 }
 
-void TMainController::slotRequestCreateNewProject(TNewProjectDialog *dialog)
+void TMainController::slotRequestSelectRoot(TSelectRootDialog *dialog)
 {
     if(!dialog)
         return;

@@ -1,14 +1,14 @@
-#include "soundsetview.h"
+#include "tilesetview.h"
 
 #include <QMouseEvent>
 #include <QHeaderView>
 #include <QContextMenuEvent>
 
-TSoundSetView::TSoundSetView(QWidget *parent) :
+TTileSetView::TTileSetView(QWidget *parent) :
     QTableView(parent)
   , mContextMenu(new QMenu(this))
 {
-    setObjectName(QStringLiteral("SoundSetView"));
+    setObjectName(QStringLiteral("TileSetView"));
     setFrameShape(QFrame::Panel);
     setFrameShadow(QFrame::Sunken);
 
@@ -23,21 +23,20 @@ TSoundSetView::TSoundSetView(QWidget *parent) :
     setSortingEnabled(false);
     setShowGrid(true);
 
-    mActionClone = mContextMenu->addAction(QString(), this, SLOT(slotActionCloneTriggered()));
-    mActionCopy = mContextMenu->addAction(QString(), this, SLOT(slotActionCopyTriggered()));
-    mActionRemove = mContextMenu->addAction(QString(), this, SLOT(slotActionRemoveTriggered()));
-    // mContextMenu->addSeparator();
-    // mActionShowGrid = mContextMenu->addAction(QString(), this, SLOT(slotActionShowGridTriggered(bool)));
+    mActionAddTiles = mContextMenu->addAction(QString(), this, SLOT(slotActionAddTilesTriggered()));
+    mActionRemoveTiles = mContextMenu->addAction(QString(), this, SLOT(slotActionRemoveTilesTriggered()));
+    mContextMenu->addSeparator();
+    mActionShowGrid = mContextMenu->addAction(QString(), this, SLOT(slotActionShowGridTriggered(bool)));
 
     retranslateUi();
 }
 
-TSoundSetView::~TSoundSetView()
+TTileSetView::~TTileSetView()
 {
 
 }
 
-QList<int> TSoundSetView::getSelectedIndexes()
+QList<int> TTileSetView::getSelectedIndexes()
 {
     QSet<int> selectedRows;
     for(QModelIndex index : selectionModel()->selectedIndexes())
@@ -47,12 +46,12 @@ QList<int> TSoundSetView::getSelectedIndexes()
     return selectedRows.toList();
 }
 
-int TSoundSetView::currentRow()
+int TTileSetView::currentRow()
 {
     return currentIndex().row();
 }
 
-void TSoundSetView::selectRow(int row)
+void TTileSetView::selectRow(int row)
 {
     if(model())
     {
@@ -61,38 +60,33 @@ void TSoundSetView::selectRow(int row)
     }
 }
 
-int TSoundSetView::rowCount()
+int TTileSetView::rowCount()
 {
     QAbstractItemModel *m = model();
     return m?m->rowCount():0;
 }
 
-void TSoundSetView::slotActionRemoveTriggered()
-{
-
-}
-
-void TSoundSetView::slotActionShowGridTriggered(bool checked)
+void TTileSetView::slotActionShowGridTriggered(bool checked)
 {
     setShowGrid(checked);
 }
 
-void TSoundSetView::slotActionCloneTriggered()
+void TTileSetView::slotActionAddTilesTriggered()
 {
 
 }
 
-void TSoundSetView::slotActionCopyTriggered()
+void TTileSetView::slotActionRemoveTilesTriggered()
 {
 
 }
 
-void TSoundSetView::slotActionRenameTriggered()
+void TTileSetView::slotActionRenameTriggered()
 {
-    edit(currentIndex());
+
 }
 
-void TSoundSetView::slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+void TTileSetView::slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
     Q_UNUSED(selected);
     Q_UNUSED(deselected);
@@ -100,15 +94,14 @@ void TSoundSetView::slotSelectionChanged(const QItemSelection &selected, const Q
     emit hasSelectionChanged(getSelectedIndexes().size()>0);
 }
 
-void TSoundSetView::retranslateUi()
+void TTileSetView::retranslateUi()
 {
-    mActionCopy->setText(tr("Copy"));
-    mActionRemove->setText(tr("Remove"));
-    mActionClone->setText(tr("Clone"));
-    // mActionShowGrid->setText(tr("Show grid"));
+    mActionAddTiles->setText(tr("Add tiles"));
+    mActionRemoveTiles->setText(tr("Remove tiles"));
+    mActionShowGrid->setText("Show grid");
 }
 
-void TSoundSetView::setModel(QAbstractItemModel *model)
+void TTileSetView::setModel(QAbstractItemModel *model)
 {
     QTableView::setModel(model);
     emit validChanged(model!=nullptr);
@@ -122,13 +115,13 @@ void TSoundSetView::setModel(QAbstractItemModel *model)
     }
 }
 
-void TSoundSetView::mousePressEvent(QMouseEvent *event)
+void TTileSetView::mousePressEvent(QMouseEvent *event)
 {
     emit rowSelected(indexAt(event->pos()).row());
     QTableView::mousePressEvent(event);
 }
 
-void TSoundSetView::contextMenuEvent(QContextMenuEvent *event)
+void TTileSetView::contextMenuEvent(QContextMenuEvent *event)
 {
     mContextMenu->popup(event->globalPos());
 }

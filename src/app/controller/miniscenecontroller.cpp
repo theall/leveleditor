@@ -48,7 +48,7 @@ void TMiniSceneController::setCurrentDocument(TDocument *document)
         mGraphicsView->verticalScrollBar()->disconnect(this);
     }
 
-    mGraphicsView = mMainWindow->tabWidget()->currentGraphicsView();
+    mGraphicsView = mMainWindow->getTabWidget()->currentGraphicsView();
 
     if(document) {
         connect(document->undoStack(), SIGNAL(indexChanged(int)), this, SLOT(delayUpdateSceneImage()));
