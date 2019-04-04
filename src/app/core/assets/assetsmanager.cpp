@@ -80,6 +80,11 @@ TilesetList TAssetsManager::getTilesetList() const
     return mTilesetList;
 }
 
+TTilesetModelList TAssetsManager::getTilesetModelList() const
+{
+    return mTilesetModelList;
+}
+
 void TAssetsManager::loadAssets()
 {
     FREE_CONTAINER(mFaceList);
@@ -199,6 +204,13 @@ void TAssetsManager::loadAssets()
             tileSet->sort();
         }
         qSort(mTilesetList.begin(), mTilesetList.end(), tileSetIdCompare);
+    }
+
+    // Create tileset models
+    FREE_CONTAINER(mTilesetModelList);
+    for(TTileset *tileset : mTilesetList) {
+        TTilesetModel *tilesetModel = new TTilesetModel(tileset, this);
+        mTilesetModelList.append(tilesetModel);
     }
     emit onProgress(assetsLoaded, totalAssets);
     emit loadCompleted();

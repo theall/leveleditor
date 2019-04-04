@@ -40,11 +40,12 @@ TTilesetTab::~TTilesetTab()
 
 }
 
-int TTilesetTab::addTab(void *tileSet, const QString &name, const QPixmap &icon)
+int TTilesetTab::addTab(QAbstractItemModel *tilesetModel, const QString &name, const QPixmap &icon)
 {
-    mTilesets.append(tileSet);
+    mTilesets.append(tilesetModel);
 
     TTilesetView *view = new TTilesetView(this);
+    view->setModel(tilesetModel);
     int i =  QTabWidget::addTab(view, QIcon(icon), name);
     emit onTabCountChanged(count());
     return i;

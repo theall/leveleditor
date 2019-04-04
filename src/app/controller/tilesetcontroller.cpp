@@ -31,8 +31,8 @@ void TTilesetController::setCurrentDocument(TDocument *)
 void TTilesetController::slotOnResourceLoadCompleted()
 {
     int index = 1;
-    for(TTileset *tileset : TAssetsManager::getInstance()->getTilesetList()) {
-        mTilesetTab->addTab(tileset, QString::number(index++));
+    for(TTilesetModel *tilesetModel : TAssetsManager::getInstance()->getTilesetModelList()) {
+        mTilesetTab->addTab(tilesetModel, QString::number(index++));
     }
 }
 

@@ -21,7 +21,7 @@ TTilesetView::TTilesetView(QWidget *parent) :
     verticalHeader()->setVisible(false);
 
     setSortingEnabled(false);
-    setShowGrid(true);
+    setShowGrid(false);
 
     mActionAddTiles = mContextMenu->addAction(QString(), this, SLOT(slotActionAddTilesTriggered()));
     mActionRemoveTiles = mContextMenu->addAction(QString(), this, SLOT(slotActionRemoveTilesTriggered()));
@@ -115,6 +115,40 @@ void TTilesetView::setModel(QAbstractItemModel *model)
     }
 }
 
+int TTilesetView::sizeHintForRow(int row) const
+{
+    QAbstractItemModel *m = model();
+    if(!m)
+        return 0;
+
+    int imageMaxHeight = 0;
+    int columnCount = m->columnCount();
+    for(int i=0;i<columnCount;i++) {
+        QPixmap p = m->data(m->index(row,i), Qt::DecorationRole).value<QPixmap>();
+        int pixmapHeight = p.height();
+        if(imageMaxHeight < pixmapHeight)
+            imageMaxHeight = pixmapHeight;
+    }
+    return imageMaxHeight;
+}
+
+int TTilesetView::sizeHintForColumn(int column) const
+{
+    QAbstractItemModel *m = model();
+    if(!m)
+        return 0;
+
+    int imageMaxWidth = 0;
+    int columnCount = m->rowCount();
+    for(int i=0;i<columnCount;i++) {
+        QPixmap p = m->data(m->index(i,column), Qt::DecorationRole).value<QPixmap>();
+        int pixmapHeight = p.height();
+        if(imageMaxWidth < pixmapHeight)
+            imageMaxWidth = pixmapHeight;
+    }
+    return imageMaxWidth;
+}
+
 void TTilesetView::mousePressEvent(QMouseEvent *event)
 {
     emit rowSelected(indexAt(event->pos()).row());
@@ -124,4 +158,9 @@ void TTilesetView::mousePressEvent(QMouseEvent *event)
 void TTilesetView::contextMenuEvent(QContextMenuEvent *event)
 {
     mContextMenu->popup(event->globalPos());
+}
+
+QSize TTilesetView::sizeHint() const
+{
+    return QSize(240,480);
 }

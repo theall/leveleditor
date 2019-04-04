@@ -52,7 +52,8 @@ SOURCES += \
     $$PWD/document/undocommand/layersundocommand.cpp \
     $$PWD/document/undocommand/objectundocommand.cpp \
     $$PWD/document/graphics/selectionrectangle.cpp \
-    $$PWD/document/graphics/tools/abstracttool.cpp
+    $$PWD/document/graphics/tools/abstracttool.cpp \
+    $$PWD/assets/tilesetmodel.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -111,4 +112,5 @@ HEADERS  += \
     $$PWD/document/base/finddoc.h \
     $$PWD/document/graphics/selectionrectangle.h \
     $$PWD/document/graphics/tools/abstracttool.h \
-    $$PWD/assets/interface.h
+    $$PWD/assets/interface.h \
+    $$PWD/assets/tilesetmodel.h

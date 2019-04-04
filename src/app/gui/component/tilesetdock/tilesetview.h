@@ -44,10 +44,16 @@ private:
     // QAbstractItemView interface
 public:
     void setModel(QAbstractItemModel *model) Q_DECL_OVERRIDE;
+    int sizeHintForRow(int row) const;
+    int sizeHintForColumn(int column) const;
 
     // QWidget interface
 protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
+
+    // QWidget interface
+public:
+    QSize sizeHint() const;
 };
 #endif // SOUNDSETVIEW_H

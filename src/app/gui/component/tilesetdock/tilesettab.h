@@ -4,6 +4,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QTabWidget>
+#include <QAbstractItemModel>
 
 class TTilesetTab : public QTabWidget
 {
@@ -13,7 +14,7 @@ public:
     TTilesetTab(QWidget *parent = nullptr);
     ~TTilesetTab();
 
-    int addTab(void *tileset, const QString &name, const QPixmap &icon=QPixmap());
+    int addTab(QAbstractItemModel *tilesetModel, const QString &name, const QPixmap &icon=QPixmap());
     int findTilesetIndex(void *tileSet);
     bool removeTab(void *tileSet);
     void *currentTileset();
