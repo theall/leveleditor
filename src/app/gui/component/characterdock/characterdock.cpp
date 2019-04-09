@@ -18,14 +18,11 @@ TCharacterDock::TCharacterDock(QWidget *parent) :
     toolBar->addAction(mActionShowIcon);
 
     QWidget *container = new QWidget(this);
-    QSplitter *splitter = new QSplitter(this);
-    splitter->setOrientation(Qt::Vertical);
-    splitter->addWidget(mCharacterView);
     QVBoxLayout *vBoxLayout = new QVBoxLayout;
-    vBoxLayout->setContentsMargins(5, 5, 5, 5);
+    vBoxLayout->setContentsMargins(0, 0, 0, 0);
     vBoxLayout->setSpacing(0);
     vBoxLayout->addWidget(toolBar);
-    vBoxLayout->addWidget(splitter);
+    vBoxLayout->addWidget(mCharacterView);
     container->setLayout(vBoxLayout);
     setWidget(container);
 

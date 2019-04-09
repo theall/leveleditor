@@ -8,7 +8,7 @@
 
 #include "component/centralwidget.h"
 #include "component/undodock/undodock.h"
-#include "component/sounddock/sounddock.h"
+#include "component/mapsdock/mapsdock.h"
 #include "component/miniscenedock/miniscenedock.h"
 #include "component/layerdock/layerdock.h"
 #include "component/tabwidget/tabwidget.h"
@@ -31,7 +31,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
   , ui(new Ui::MainWindow)
   , mCentralWidget(new TCentralWidget(this))
   , mUndoDock(new TUndoDock(this))
-  , mSoundDock(new TSoundDock(this))
+  , mMapsDock(new TMapsDock(this))
   , mMiniSceneDock(new TMiniSceneDock(this))
   , mPropertyDock(new TPropertiesDock(this))
   , mTilesetDock(new TTilesetDock(this))
@@ -100,14 +100,14 @@ TMainWindow::TMainWindow(QWidget *parent) :
     ui->menuView->insertAction(ui->actionShowGrid, mViewsAndToolbarsMenu);
     ui->menuView->insertSeparator(ui->actionShowGrid);
 
-    addDockWidget(Qt::LeftDockWidgetArea, mSoundDock);
+    addDockWidget(Qt::LeftDockWidgetArea, mMapsDock);
     addDockWidget(Qt::LeftDockWidgetArea, mTilesetDock);
     addDockWidget(Qt::LeftDockWidgetArea, mCharacterDock);
     addDockWidget(Qt::LeftDockWidgetArea, mUndoDock);
     addDockWidget(Qt::RightDockWidgetArea, mMiniSceneDock);
     addDockWidget(Qt::RightDockWidgetArea, mPropertyDock);
+    tabifyDockWidget(mMapsDock, mTilesetDock);
     tabifyDockWidget(mTilesetDock, mCharacterDock);
-    tabifyDockWidget(mCharacterDock, mSoundDock);
 
     mViewsAndToolbarsMenu->setMenu(createPopupMenu());
 
@@ -324,9 +324,9 @@ void TMainWindow::on_actionNew_triggered()
     QMessageBox::information(this, "Information", "Not implement yet!");
 }
 
-TSoundDock *TMainWindow::getSoundDock() const
+TMapsDock *TMainWindow::getMapsDock() const
 {
-    return mSoundDock;
+    return mMapsDock;
 }
 
 TUndoDock *TMainWindow::getUndoDock() const

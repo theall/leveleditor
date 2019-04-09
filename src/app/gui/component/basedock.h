@@ -12,7 +12,7 @@
 
 #define CREATE_ACTION_TOGGLED(action,image,func) \
     action = new QAction(this);\
-    action->setEnabled(false);\
+    action->setCheckable(true);\
     action->setIcon(QIcon(image));\
     connect(action, SIGNAL(toggled(bool)), this, SLOT(func(bool)))
 

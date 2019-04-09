@@ -36,8 +36,6 @@ SOURCES += \
     $$PWD/component/miniscenedock/miniscenedock.cpp \
     $$PWD/component/layerdock/layerdock.cpp \
     $$PWD/component/layerdock/layerview.cpp \
-    $$PWD/component/sounddock/sounddock.cpp \
-    $$PWD/component/sounddock/soundsetview.cpp \
     $$PWD/widgets/zoomcombobox.cpp \
     $$PWD/component/tabwidget/graphicsview.cpp \
     $$PWD/dialogs/soundresourcedialog.cpp \
@@ -52,7 +50,14 @@ SOURCES += \
     $$PWD/component/tilesetdock/tilesettab.cpp \
     $$PWD/dialogs/selectrootdialog.cpp \
     $$PWD/component/characterdock/characterdock.cpp \
-    $$PWD/component/characterdock/characterview.cpp
+    $$PWD/component/characterdock/characterview.cpp \
+    $$PWD/component/mapsdock/mapsdock.cpp \
+    $$PWD/component/mapsdock/mapstab.cpp \
+    $$PWD/component/mapsdock/mapsproxyview.cpp \
+    $$PWD/component/mapsdock/modstab.cpp \
+    $$PWD/component/mapsdock/modstree.cpp \
+    $$PWD/component/mapsdock/mapsviewmodel.cpp \
+    $$PWD/component/mapsdock/mapview.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -81,8 +86,6 @@ HEADERS += \
     $$PWD/component/miniscenedock/miniscenedock.h \
     $$PWD/component/layerdock/layerdock.h \
     $$PWD/component/layerdock/layerview.h \
-    $$PWD/component/sounddock/sounddock.h \
-    $$PWD/component/sounddock/soundsetview.h \
     $$PWD/widgets/zoomcombobox.h \
     $$PWD/component/tabwidget/graphicsview.h \
     $$PWD/dialogs/soundresourcedialog.h \
@@ -97,7 +100,14 @@ HEADERS += \
     $$PWD/component/tilesetdock/tilesettab.h \
     $$PWD/dialogs/selectrootdialog.h \
     $$PWD/component/characterdock/characterdock.h \
-    $$PWD/component/characterdock/characterview.h
+    $$PWD/component/characterdock/characterview.h \
+    $$PWD/component/mapsdock/mapsdock.h \
+    $$PWD/component/mapsdock/mapstab.h \
+    $$PWD/component/mapsdock/mapsproxyview.h \
+    $$PWD/component/mapsdock/modstab.h \
+    $$PWD/component/mapsdock/modstree.h \
+    $$PWD/component/mapsdock/mapsviewmodel.h \
+    $$PWD/component/mapsdock/mapview.h
 
 FORMS += \
     $$PWD/mainwindow.ui \

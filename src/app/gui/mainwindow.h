@@ -36,7 +36,7 @@ class TZoomComboBox;
 class TAboutDialog;
 class TSelectRootDialog;
 class TUndoDock;
-class TSoundDock;
+class TMapsDock;
 class TMiniSceneDock;
 class TPropertiesDock;
 class TTabWidget;
@@ -70,7 +70,7 @@ public:
     void show();
 
     TUndoDock *getUndoDock() const;
-    TSoundDock *getSoundDock() const;
+    TMapsDock *getMapsDock() const;
     TPropertiesDock *getPropertyDock() const;
     TTabWidget *getTabWidget() const;
     TLoadingDialog *getLoadingDialog() const;
@@ -146,7 +146,7 @@ private:
 
     TCentralWidget *mCentralWidget;
     TUndoDock *mUndoDock;
-    TSoundDock *mSoundDock;
+    TMapsDock *mMapsDock;
     TMiniSceneDock *mMiniSceneDock;
     TPropertiesDock *mPropertyDock;
     TTilesetDock *mTilesetDock;

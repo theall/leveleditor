@@ -3,26 +3,34 @@
 #include <QResizeEvent>
 #include <QGridLayout>
 
+#ifdef GUI_STAND_ALONE
+#include <QDebug>
+#include <QPainter>
+#endif
+
 #define ICON_SMALL 32
 #define ICON_LARGE 64
 #define ICON_MARGIN 0
+
 TCharacterView::TCharacterView(QWidget *parent) :
     QWidget(parent)
   , mCols(1)
   , mIconSize(ICON_SMALL)
+  , mResizeIgnored(false)
   , mLastPushedButton(nullptr)
-  , mBottomSpacer(new QSpacerItem(1, 2, QSizePolicy::Minimum, QSizePolicy::Expanding))
+  , mBottomSpacer(new QSpacerItem(1, 2, QSizePolicy::Minimum, QSizePolicy::MinimumExpanding))
   , mLeftSpacer(new QSpacerItem(2, 1, QSizePolicy::MinimumExpanding, QSizePolicy::Minimum))
   , mRightSpacer(new QSpacerItem(2, 1, QSizePolicy::MinimumExpanding, QSizePolicy::Minimum))
 {
     QGridLayout *gridLayout = new QGridLayout;
     gridLayout->setContentsMargins(0, 0, 0, 0);
     gridLayout->setMargin(ICON_MARGIN);
+    gridLayout->setSpacing(0);
     gridLayout->setHorizontalSpacing(ICON_MARGIN);
     gridLayout->setVerticalSpacing(ICON_MARGIN);
-    gridLayout->addItem(mBottomSpacer, 1, 0, 1, 1);
-    gridLayout->addItem(mLeftSpacer, 0, 0, 1, 1);
-    gridLayout->addItem(mRightSpacer, 0, mCols+1, 1, 1);
+    gridLayout->addItem(mBottomSpacer, 1, 0);
+    gridLayout->addItem(mLeftSpacer, 0, 0);
+    gridLayout->addItem(mRightSpacer, 0, mCols+1);
     setLayout(gridLayout);
     calcRowsAndCols();
 }
@@ -62,7 +70,12 @@ void TCharacterView::calcRowsAndCols()
     int newCols = (currentSize.width() - 1 + ICON_MARGIN - mLeftSpacer->minimumSize().width() - mRightSpacer->minimumSize().width()) / (mIconSize + ICON_MARGIN);
     if(newCols <= 0)
         newCols = 1;
+
     if(newCols != mCols) {
+        if(newCols > mCols) {
+            currentSize.setHeight(qCeil((float)mButtonList.size() / mCols) * (mIconSize + ICON_MARGIN));
+            resize(currentSize);
+        }
         mCols = newCols;
         reArrange();
     }
@@ -72,12 +85,12 @@ void TCharacterView::reArrange()
 {
     QGridLayout *gridLayout = static_cast<QGridLayout*>(layout());
     if(gridLayout && !mButtonList.isEmpty()) {
-        gridLayout->removeItem(mLeftSpacer);
-        gridLayout->removeItem(mRightSpacer);
-        gridLayout->removeItem(mBottomSpacer);
         for(QPushButton *button : mButtonList) {
             gridLayout->removeWidget(button);
         }
+        gridLayout->removeItem(mLeftSpacer);
+        gridLayout->removeItem(mRightSpacer);
+        gridLayout->removeItem(mBottomSpacer);
 
         int rows = qCeil((float)mButtonList.size() / mCols);
         int index = 0;
@@ -93,6 +106,8 @@ void TCharacterView::reArrange()
         gridLayout->addItem(mBottomSpacer, rows, 0);
         gridLayout->addItem(mLeftSpacer, 0, 0);
         gridLayout->addItem(mRightSpacer, 0, mCols+1);
+
+        mResizeIgnored = true;
     }
 }
 
@@ -113,12 +128,21 @@ void TCharacterView::slotOnFaceButtonToggled(bool toggled)
 void TCharacterView::resizeEvent(QResizeEvent *event)
 {
     event->accept();
-    int oldWidth = event->oldSize().width();
-    int newWidth = event->size().width();
-    if((newWidth-oldWidth)%mIconSize==0)
+    if(mResizeIgnored)
     {
+        mResizeIgnored = false;
         return;
     }
 
     calcRowsAndCols();
+}
+
+void TCharacterView::paintEvent(QPaintEvent *event)
+{
+    QWidget::paintEvent(event);
+
+#ifdef GUI_STAND_ALONE
+    QPainter p(this);
+    p.drawRect(rect());
+#endif
 }

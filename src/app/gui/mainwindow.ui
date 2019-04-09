@@ -79,9 +79,6 @@
     <addaction name="actionSave"/>
     <addaction name="actionSaveAll"/>
     <addaction name="separator"/>
-    <addaction name="actionExport"/>
-    <addaction name="actionExportAs"/>
-    <addaction name="separator"/>
     <addaction name="actionClose"/>
     <addaction name="actionCloseAll"/>
     <addaction name="separator"/>
@@ -98,8 +95,6 @@
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
     <addaction name="actionDelete"/>
-    <addaction name="separator"/>
-    <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -113,7 +108,7 @@
     <addaction name="actionZoomOut"/>
     <addaction name="actionZoomNormal"/>
     <addaction name="separator"/>
-    <addaction name="actionDocumentProperties"/>
+    <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
@@ -184,6 +179,8 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionSelect"/>
+   <addaction name="actionInsertTile"/>
+   <addaction name="actionInsertArea"/>
   </widget>
   <action name="actionHelp">
    <property name="icon">
@@ -990,6 +987,30 @@
    </property>
    <property name="text">
     <string>Run</string>
+   </property>
+  </action>
+  <action name="actionInsertTile">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/insert_tile.png</normaloff>:/toolbar/images/insert_tile.png</iconset>
+   </property>
+   <property name="text">
+    <string>Insert Tile</string>
+   </property>
+  </action>
+  <action name="actionInsertArea">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/insert_area.png</normaloff>:/toolbar/images/insert_area.png</iconset>
+   </property>
+   <property name="text">
+    <string>Insert Area</string>
    </property>
   </action>
  </widget>

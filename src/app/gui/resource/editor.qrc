@@ -25,6 +25,8 @@
         <file>images/find.png</file>
         <file>images/setting.png</file>
         <file>images/run.png</file>
+        <file>images/insert_area.png</file>
+        <file>images/insert_tile.png</file>
     </qresource>
     <qresource prefix="/undodock">
         <file>images/empty.png</file>
@@ -54,5 +56,8 @@
         <file>images/controller.png</file>
         <file>images/default.png</file>
         <file>images/open2.png</file>
+    </qresource>
+    <qresource prefix="/mapsdock">
+        <file>images/tree.png</file>
     </qresource>
 </RCC>

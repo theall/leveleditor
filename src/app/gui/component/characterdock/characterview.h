@@ -20,6 +20,7 @@ signals:
 private:
     int mCols;
     int mIconSize;
+    bool mResizeIgnored;
     QPushButton *mLastPushedButton;
     QSpacerItem *mBottomSpacer;
     QSpacerItem *mLeftSpacer;
@@ -34,6 +35,7 @@ private slots:
     // QWidget interface
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 };
 
 #endif // TCHARACTERVIEW_H

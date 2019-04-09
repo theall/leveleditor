@@ -11,7 +11,7 @@ class TTilesetTab : public QTabWidget
     Q_OBJECT
 
 public:
-    TTilesetTab(QWidget *parent = nullptr);
+    explicit TTilesetTab(QWidget *parent = nullptr);
     ~TTilesetTab();
 
     int addTab(QAbstractItemModel *tilesetModel, const QString &name, const QPixmap &icon=QPixmap());
