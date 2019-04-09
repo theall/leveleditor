@@ -10,6 +10,12 @@
     action->setIcon(QIcon(image));\
     connect(action, SIGNAL(triggered()), this, SLOT(func()))
 
+#define CREATE_ACTION_TOGGLED(action,image,func) \
+    action = new QAction(this);\
+    action->setEnabled(false);\
+    action->setIcon(QIcon(image));\
+    connect(action, SIGNAL(toggled(bool)), this, SLOT(func(bool)))
+
 class TBaseDock : public QDockWidget
 {
 public:

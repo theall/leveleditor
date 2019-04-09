@@ -50,7 +50,9 @@ SOURCES += \
     $$PWD/component/tilesetdock/tilesetdock.cpp \
     $$PWD/component/tilesetdock/tilesetview.cpp \
     $$PWD/component/tilesetdock/tilesettab.cpp \
-    $$PWD/dialogs/selectrootdialog.cpp
+    $$PWD/dialogs/selectrootdialog.cpp \
+    $$PWD/component/characterdock/characterdock.cpp \
+    $$PWD/component/characterdock/characterview.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -93,7 +95,9 @@ HEADERS += \
     $$PWD/component/tilesetdock/tilesetdock.h \
     $$PWD/component/tilesetdock/tilesetview.h \
     $$PWD/component/tilesetdock/tilesettab.h \
-    $$PWD/dialogs/selectrootdialog.h
+    $$PWD/dialogs/selectrootdialog.h \
+    $$PWD/component/characterdock/characterdock.h \
+    $$PWD/component/characterdock/characterview.h
 
 FORMS += \
     $$PWD/mainwindow.ui \

@@ -5,7 +5,7 @@
 #include <QFileDialog>
 
 TSoundDock::TSoundDock(QWidget *parent) :
-    TBaseDock(QLatin1String("FramesDock"), parent)
+    TBaseDock(QLatin1String("SoundDock"), parent)
   , mSoundSetView(new TSoundSetView(this))
   , mPropertyBrowser(new TPropertyBrowser(this))
 {

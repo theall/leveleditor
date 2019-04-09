@@ -1,6 +1,9 @@
 #include "tilesetdock.h"
 #include <QToolBar>
 #include <QVBoxLayout>
+#ifdef GUI_STAND_ALONE
+#include <QStringListModel>
+#endif
 
 TTilesetDock::TTilesetDock(QWidget *parent) :
     TBaseDock(QLatin1String("TilesetDock"), parent)
@@ -13,7 +16,7 @@ TTilesetDock::TTilesetDock(QWidget *parent) :
 #ifdef GUI_STAND_ALONE
     for(int i=0;i<10;i++)
     {
-        mTilesetTab->addTab((void*)(i+0x10000), QString::number(i));
+        mTilesetTab->addTab(new QStringListModel(this), QString::number(i+1));
     }
 #endif
     QToolBar *toolBar = new QToolBar(container);

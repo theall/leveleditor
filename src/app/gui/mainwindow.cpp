@@ -35,6 +35,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
   , mMiniSceneDock(new TMiniSceneDock(this))
   , mPropertyDock(new TPropertiesDock(this))
   , mTilesetDock(new TTilesetDock(this))
+  , mCharacterDock(new TCharacterDock(this))
   , mAboutDialog(new TAboutDialog(this))
   , mLoadingDialog(new TLoadingDialog(this))
   , mZoomComboBox(new TZoomComboBox(this))
@@ -91,31 +92,22 @@ TMainWindow::TMainWindow(QWidget *parent) :
     keys += QKeySequence(tr("-"));
     ui->actionZoomOut->setShortcuts(keys);
     ui->menuEdit->insertSeparator(ui->actionCut);
-    // ui->menuEdit->insertAction(actionPreferences, mActionHandler->actionSelectAll());
-    // ui->menuEdit->insertAction(actionPreferences, mActionHandler->actionSelectNone());
     ui->menuEdit->insertSeparator(ui->actionPreferences);
     ui->MainToolBar->addSeparator();
-    // menuCharacter->insertAction(actionOffsetMap, mActionHandler->actionCropToSelection());
     // Add the 'Views and Toolbars' submenu.This needs to happen after all
     // the dock widgets and toolbars have been added to the main window
     mViewsAndToolbarsMenu = new QAction(tr("Views and Toolbars"), this);
     ui->menuView->insertAction(ui->actionShowGrid, mViewsAndToolbarsMenu);
     ui->menuView->insertSeparator(ui->actionShowGrid);
-//    ClipboardManager->instance()->hasMapChanged->connect(updateActions);
-//    mDocumentManager->currentDocumentChanged->connect(onDocumentChanged);
-//    mDocumentManager->documentCloseRequested->connect(closeDocument);
-    // QShortcut(tr("X"),  flipHorizontally);
-    // QShortcut(tr("Y"),  flipVertically);
-    // QShortcut(tr("Z"),  rotateRight);
-    // QShortcut(tr("Shift+Z"),  rotateLeft);
-    // copyPositionShortcut = QShortcut(tr("Alt+C"), this);
-    // copyPositionShortcut->activated->connect(mActionHandler->copyPosition);
 
     addDockWidget(Qt::LeftDockWidgetArea, mSoundDock);
     addDockWidget(Qt::LeftDockWidgetArea, mTilesetDock);
+    addDockWidget(Qt::LeftDockWidgetArea, mCharacterDock);
     addDockWidget(Qt::LeftDockWidgetArea, mUndoDock);
     addDockWidget(Qt::RightDockWidgetArea, mMiniSceneDock);
     addDockWidget(Qt::RightDockWidgetArea, mPropertyDock);
+    tabifyDockWidget(mTilesetDock, mCharacterDock);
+    tabifyDockWidget(mCharacterDock, mSoundDock);
 
     mViewsAndToolbarsMenu->setMenu(createPopupMenu());
 
@@ -630,6 +622,11 @@ void TMainWindow::on_actionRun_triggered()
         return;
 
     TPreferencesDialog::showPreferences(this, TPreferencesDialog::DEBUG);
+}
+
+TCharacterDock *TMainWindow::getCharacterDock() const
+{
+    return mCharacterDock;
 }
 
 TTilesetDock *TMainWindow::getTilesetDock() const

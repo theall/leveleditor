@@ -43,6 +43,7 @@ class TTabWidget;
 class TCentralWidget;
 class TLoadingDialog;
 class TTilesetDock;
+class TCharacterDock;
 
 class TMainWindow : public QMainWindow
 {
@@ -76,6 +77,8 @@ public:
     TMiniSceneDock *getMiniSceneDock() const;
     TZoomComboBox *getZoomComboBox() const;
     TTilesetDock *getTilesetDock() const;
+
+    TCharacterDock *getCharacterDock() const;
 
 signals:
     void requestOpenProject(const QString &file);
@@ -147,6 +150,7 @@ private:
     TMiniSceneDock *mMiniSceneDock;
     TPropertiesDock *mPropertyDock;
     TTilesetDock *mTilesetDock;
+    TCharacterDock *mCharacterDock;
 
     TAboutDialog *mAboutDialog;
     TLoadingDialog *mLoadingDialog;

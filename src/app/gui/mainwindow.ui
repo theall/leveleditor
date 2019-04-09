@@ -12,7 +12,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Scene Editor</string>
+   <string>Level Editor</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resource/editor.qrc">

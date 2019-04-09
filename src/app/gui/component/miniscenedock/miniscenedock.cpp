@@ -3,7 +3,7 @@
 #include <QEvent>
 
 TMiniSceneDock::TMiniSceneDock(QWidget *parent) :
-    TBaseDock(QLatin1String("miniSceneDock"), parent)
+    TBaseDock(QLatin1String("MiniSceneDock"), parent)
   , mMiniScene(new TMiniSceneFrame(this))
 {
     setWidget(mMiniScene);

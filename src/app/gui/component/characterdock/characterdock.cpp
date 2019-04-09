@@ -1,29 +1,26 @@
-#include "sounddock.h"
+#include "characterdock.h"
 
 #include <QSplitter>
 #include <QVBoxLayout>
-#include <QFileDialog>
 
-TSoundDock::TSoundDock(QWidget *parent) :
-    TBaseDock(QLatin1String("FramesDock"), parent)
-  , mSoundSetView(new TSoundSetView(this))
-  , mPropertyBrowser(new TPropertyBrowser(this))
+TCharacterDock::TCharacterDock(QWidget *parent) :
+    TBaseDock(QLatin1String("CharacterDock"), parent)
+  , mCharacterView(new TCharacterView(this))
 {
-    CREATE_ACTION(mActionNewSoundItem, ":/actionsdock/images/add.png", slotActionNewSoundItemTriggered);
-    CREATE_ACTION(mActionRemoveSoundItem, ":/actionsdock/images/remove.png", slotActionRemoveSoundItemTriggered);
+    CREATE_ACTION_TOGGLED(mActionShowIcon, ":/actionsdock/images/add.png", slotActionShowIconToggled);
+
+    mActionShowIcon->setCheckable(true);
 
     QToolBar *toolBar = new QToolBar(this);
     toolBar->setFloatable(false);
     toolBar->setMovable(false);
     toolBar->setIconSize(QSize(16, 16));
-    toolBar->addAction(mActionNewSoundItem);
-    toolBar->addAction(mActionRemoveSoundItem);
+    toolBar->addAction(mActionShowIcon);
 
     QWidget *container = new QWidget(this);
     QSplitter *splitter = new QSplitter(this);
     splitter->setOrientation(Qt::Vertical);
-    splitter->addWidget(mSoundSetView);
-    splitter->addWidget(mPropertyBrowser);
+    splitter->addWidget(mCharacterView);
     QVBoxLayout *vBoxLayout = new QVBoxLayout;
     vBoxLayout->setContentsMargins(5, 5, 5, 5);
     vBoxLayout->setSpacing(0);
@@ -32,58 +29,30 @@ TSoundDock::TSoundDock(QWidget *parent) :
     container->setLayout(vBoxLayout);
     setWidget(container);
 
-    connect(mSoundSetView,
-            SIGNAL(hasSelectionChanged(bool)),
-            this,
-            SLOT(slotSoundItemSelectionChanged(bool)));
-    connect(mSoundSetView,
-            SIGNAL(validChanged(bool)),
-            this,
-            SLOT(slotSoundModelValidChanged(bool)));
     retranslateUi();
+
+#ifdef GUI_STAND_ALONE
+    for(int i=0;i<45;i++) {
+        mCharacterView->add(QPixmap());
+    }
+#endif
 }
 
-TSoundDock::~TSoundDock()
+TCharacterDock::~TCharacterDock()
 {
 
 }
 
-void TSoundDock::slotActionNewSoundItemTriggered()
+void TCharacterDock::slotActionShowIconToggled(bool toggled)
 {
-    emit requestAddSoundItems();
+    if(toggled) {
+
+    } else {
+
+    }
 }
 
-void TSoundDock::slotActionRemoveSoundItemTriggered()
+void TCharacterDock::retranslateUi()
 {
-    emit requestRemoveSoundItems(mSoundSetView->getSelectedIndexes());
-}
-
-void TSoundDock::slotSoundModelValidChanged(bool valid)
-{
-    mActionNewSoundItem->setEnabled(valid);
-}
-
-void TSoundDock::slotSoundItemSelectionChanged(bool hasSelection)
-{
-    mActionRemoveSoundItem->setEnabled(hasSelection);
-}
-
-TPropertyBrowser *TSoundDock::propertyBrowser() const
-{
-    return mPropertyBrowser;
-}
-
-TSoundSetView *TSoundDock::soundSetView() const
-{
-    return mSoundSetView;
-}
-
-void TSoundDock::retranslateUi()
-{
-    setWindowTitle(tr("SoundSet"));
-    setToolTip(tr("SoundSet edit."));
-    mActionNewSoundItem->setToolTip(tr("New Sound item"));
-    mActionNewSoundItem->setText(tr("New SoundItem"));
-    mActionRemoveSoundItem->setToolTip(tr("Remove sound item."));
-    mActionRemoveSoundItem->setText(tr("Remove current sound item"));
+    setWindowTitle(tr("Character"));
 }

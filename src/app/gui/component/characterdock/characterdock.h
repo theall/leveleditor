@@ -1,44 +1,32 @@
-#ifndef SOUNDDOCK_H
-#define SOUNDDOCK_H
+#ifndef CHARACTERDOCK_H
+#define CHARACTERDOCK_H
 
 #include <QAction>
 #include <QToolBar>
 
-#include "soundsetview.h"
 #include "../basedock.h"
-#include "../propertydock/propertybrowser.h"
+#include "characterview.h"
 
-class TSoundDock : public TBaseDock
+class TCharacterDock : public TBaseDock
 {
     Q_OBJECT
 
 public:
-    TSoundDock(QWidget *parent = nullptr);
-    ~TSoundDock();
-
-    TSoundSetView *soundSetView() const;
-    TPropertyBrowser *propertyBrowser() const;
+    TCharacterDock(QWidget *parent = nullptr);
+    ~TCharacterDock();
 
 signals:
-    void requestAddSoundItems();
-    void requestRemoveSoundItems(const QList<int> &indexList);
 
 private slots:
-    void slotActionNewSoundItemTriggered();
-    void slotActionRemoveSoundItemTriggered();
-    void slotSoundModelValidChanged(bool valid);
-    void slotSoundItemSelectionChanged(bool hasSelection);
+    void slotActionShowIconToggled(bool);
 
 private:
-    QAction *mActionNewSoundItem;
-    QAction *mActionRemoveSoundItem;
-
-    TSoundSetView *mSoundSetView;
-    TPropertyBrowser *mPropertyBrowser;
+    QAction *mActionShowIcon;
+    TCharacterView *mCharacterView;
 
     // TBaseDock interface
 public:
     void retranslateUi() Q_DECL_OVERRIDE;
 };
 
-#endif // SOUNDDOCK_H
+#endif // CHARACTERDOCK_H
