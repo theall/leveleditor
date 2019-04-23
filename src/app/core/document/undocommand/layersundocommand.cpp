@@ -31,9 +31,9 @@ void TLayersUndoCommand::undo()
 {
     if(mCommand==Add)
     {
-        mIndex = mLayersModel->removeLayer(mLayer);
+
     } else if(mCommand==Remove) {
-        mLayersModel->addLayer(mLayer, mIndex);
+
     }
 }
 
@@ -41,8 +41,8 @@ void TLayersUndoCommand::redo()
 {
     if(mCommand==Add)
     {
-        mLayersModel->addLayer(mLayer, mIndex);
+
     } else if(mCommand==Remove) {
-        mIndex = mLayersModel->removeLayer(mLayer);
+
     }
 }

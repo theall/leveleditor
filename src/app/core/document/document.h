@@ -27,10 +27,6 @@ public:
     QUndoStack *undoStack() const;
     void addUndoCommand(QUndoCommand *command);
 
-    void cmdAddLayer(const QString &name);
-    void cmdRemoveLayer(TLayer *layer);
-    void cmdRemoveLayer(int layerIndex);
-
     QDir projectDir() const;
 
     bool save(const QString &fileName = QString());

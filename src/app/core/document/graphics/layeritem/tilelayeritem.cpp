@@ -1,7 +1,7 @@
-#include "layeritem.h"
+#include "tilelayeritem.h"
 
-TLayerItem::TLayerItem(TLayer *layer, QGraphicsItem *parent) :
-    QGraphicsObject(parent)
+TTileLayerItem::TTileLayerItem(TLayer *layer, QGraphicsItem *parent) :
+    TLayerItem(parent)
   , mLayer(layer)
 {
     Q_ASSERT(mLayer);
@@ -20,26 +20,15 @@ TLayerItem::TLayerItem(TLayer *layer, QGraphicsItem *parent) :
             tileItem->setTargetTileItem(tileItemMap[target]);
         }
     }
+
+    calcBoundingRect();
 }
 
-QRectF TLayerItem::calcBoundingRect()
+QRectF TTileLayerItem::calcBoundingRect()
 {
-    mBoundingRect.setLeft(0);
-    mBoundingRect.setRight(0);
-    mBoundingRect.setTop(0);
-    mBoundingRect.setBottom(0);
+    mBoundingRect = QRectF();
     foreach (TTileItem *tileItem, mTileItemList) {
         mBoundingRect = mBoundingRect.united(tileItem->boundingRect());
     }
     return mBoundingRect;
-}
-
-QRectF TLayerItem::boundingRect() const
-{
-    return mBoundingRect;
-}
-
-void TLayerItem::paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *)
-{
-
 }

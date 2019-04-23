@@ -23,7 +23,7 @@ public:
     TAssetsManager(QObject *parent=Q_NULLPTR);
     ~TAssetsManager();
 
-    bool load(const QString &path);
+    bool load(const QString &path, bool asynLoad = true);
     TFaceId *getFace(int id) const;
     TTileId *getTile(int tileSetId, int tileId) const;
 

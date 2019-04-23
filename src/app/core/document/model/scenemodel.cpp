@@ -28,8 +28,6 @@ TSceneModel::TSceneModel(QObject *parent) :
   , mWallsModel(new TWallsModel(this))
 {
     initPropertySheet();
-
-    mLayersModel->addLayer(tr("Default"));
 }
 
 TLayersModel *TSceneModel::layersModel() const
@@ -43,6 +41,51 @@ QColor TSceneModel::getBackgroundColor() const
     if(item)
         return item->value().value<QColor>();
     return QColor();
+}
+
+TWallsModel *TSceneModel::getWallsModel() const
+{
+    return mWallsModel;
+}
+
+TTriggersModel *TSceneModel::getTriggersModel() const
+{
+    return mTriggersModel;
+}
+
+TRespawnsModel *TSceneModel::getRespawnsModel() const
+{
+    return mRespawnsModel;
+}
+
+TPlatformsModel *TSceneModel::getPlatformsModel() const
+{
+    return mPlatformsModel;
+}
+
+TLayersModel *TSceneModel::getLayersModel() const
+{
+    return mLayersModel;
+}
+
+TEventsModel *TSceneModel::getEventsModel() const
+{
+    return mEventsModel;
+}
+
+TDAreasModel *TSceneModel::getDAreasModel() const
+{
+    return mDAreasModel;
+}
+
+TBoxesModel *TSceneModel::getBoxesModel() const
+{
+    return mBoxesModel;
+}
+
+TAreasModel *TSceneModel::getAreasModel() const
+{
+    return mAreasModel;
 }
 
 void TSceneModel::initPropertySheet()

@@ -1,5 +1,7 @@
 #include "sceneitem.h"
 
+#define ZINDEX_BASE 1000
+
 TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
     QGraphicsObject(parent)
   , mSceneModel(sceneModel)
@@ -10,10 +12,24 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
     setFlag(QGraphicsItem::ItemHasNoContents);
     setAcceptHoverEvents(true);
 
-    foreach (TLayer *layer, mSceneModel->layersModel()->layerList()) {
-        TLayerItem *layerItem = new TLayerItem(layer, this);
+    for(TLayer *layer : mSceneModel->layersModel()->getBackgroundLayerList()) {
+        TTileLayerItem *layerItem = new TTileLayerItem(layer, this);
         mLayerItemList.append(layerItem);
     }
+
+    mLayerItemList.append(new TMainLayerItem(mSceneModel, this));
+
+    for(TLayer *layer : mSceneModel->layersModel()->getForegroundLayerList()) {
+        TTileLayerItem *layerItem = new TTileLayerItem(layer, this);
+        mLayerItemList.append(layerItem);
+    }
+
+    int index = 0;
+    for(TLayerItem *layerItem : mLayerItemList) {
+        layerItem->setZValue(index++);
+    }
+
+    calcBoundingRect();
 }
 
 TSceneItem::~TSceneItem()
@@ -24,9 +40,10 @@ TSceneItem::~TSceneItem()
 void TSceneItem::calcBoundingRect()
 {
     mBoundingRect.intersected(QRectF(0,0,0,0));
-    foreach (TLayerItem *layerItem, mLayerItemList) {
+    for(TLayerItem *layerItem : mLayerItemList) {
         mBoundingRect = mBoundingRect.united(layerItem->calcBoundingRect());
     }
+    mBoundingRect.adjust(-100, -100, 100, 100);
 }
 
 QRectF TSceneItem::boundingRect() const

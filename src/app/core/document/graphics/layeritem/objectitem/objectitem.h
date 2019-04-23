@@ -5,7 +5,7 @@
 #include <QGraphicsObject>
 #include <QGraphicsSceneMouseEvent>
 
-#include "../model/entity/object.h"
+#include "../../../model/entity/object.h"
 
 class TObjectItem : public QGraphicsObject
 {
@@ -39,10 +39,18 @@ signals:
 private slots:
     void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);
 
+protected:
+    QRectF mBoundingRect;
+
 private:
     TObject *mObject;
     bool mAutonomy;
     bool mNeedGrabMouse;
+
+    // QGraphicsItem interface
+public:
+    QRectF boundingRect() const Q_DECL_OVERRIDE;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
 };
 
 typedef QList<TObjectItem*> TObjectItemList;

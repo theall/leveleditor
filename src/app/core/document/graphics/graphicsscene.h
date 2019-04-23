@@ -7,11 +7,11 @@
 #include <QGraphicsScene>
 
 #include "sceneitem.h"
-#include "objectitem.h"
-#include "hovereditem.h"
-#include "selecteditems.h"
-#include "selectionrectangle.h"
+#include "uiitem/hovereditem.h"
+#include "uiitem/selecteditems.h"
+#include "uiitem/selectionrectangle.h"
 #include "../model/scenemodel.h"
+#include "layeritem/objectitem/objectitem.h"
 
 class TDocument;
 class TGraphicsScene : public QGraphicsScene
@@ -51,6 +51,10 @@ public:
 signals:
     void needChangeCursor(Qt::CursorShape cursor);
     void selectedObjectChanged(TObject *prev, TObject *current);
+
+    // Send to document
+    void requestUndo();
+    void requestRedo();
 
 private slots:
     void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);

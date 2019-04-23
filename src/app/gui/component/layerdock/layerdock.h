@@ -2,12 +2,8 @@
 #define LAYERDOCK_H
 
 #include <QLabel>
-#include <QSlider>
-#include <QTreeView>
 #include <QDockWidget>
-#include <QToolButton>
-
-class TLayerView;
+#include "layerview.h"
 
 /**
  * The dock widget that displays scene layers.
@@ -35,13 +31,11 @@ private slots:
     void slotSliderValueChanged(int opacity);
 
 private:
-    void retranslateUi();
-
-    QLabel *mOpacityLabel;
-    QSlider *mOpacitySlider;
     TLayerView *mLayerView;
     bool mUpdatingSlider;
     bool mChangingLayerOpacity;
+
+    void retranslateUi();
 };
 
 #endif // LAYERDOCK_H

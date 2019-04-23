@@ -23,6 +23,13 @@ private:
 public:
     QString typeString() const Q_DECL_OVERRIDE;
     bool isCongener(TObject *object) const Q_DECL_OVERRIDE;
+    QRectF rect() const Q_DECL_OVERRIDE;
+    QPointF pos() const Q_DECL_OVERRIDE;
+    void setPos(const QPointF &pos) Q_DECL_OVERRIDE;
+    QSize size() const Q_DECL_OVERRIDE;
+    void setSize(const QSize &size) Q_DECL_OVERRIDE;
+    void setRect(const QRectF &rect) Q_DECL_OVERRIDE;
+    void move(const QPointF &offset) Q_DECL_OVERRIDE;
 };
 
 typedef QList<TArea*> TAreaList;

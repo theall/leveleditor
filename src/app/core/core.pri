@@ -39,21 +39,31 @@ SOURCES += \
     $$PWD/assets/tileset.cpp \
     $$PWD/assets/tileid.cpp \
     $$PWD/document/graphics/graphicsscene.cpp \
-    $$PWD/document/graphics/hovereditem.cpp \
-    $$PWD/document/graphics/selecteditem.cpp \
+    $$PWD/document/graphics/uiitem/hovereditem.cpp \
+    $$PWD/document/graphics/uiitem/selecteditem.cpp \
     $$PWD/document/model/entity/object.cpp \
-    $$PWD/document/graphics/mousetraceitem.cpp \
-    $$PWD/document/graphics/layeritem.cpp \
+    $$PWD/document/graphics/uiitem/mousetraceitem.cpp \
     $$PWD/document/graphics/sceneitem.cpp \
-    $$PWD/document/graphics/tileitem.cpp \
-    $$PWD/document/graphics/objectitem.cpp \
-    $$PWD/document/graphics/selecteditems.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/tileitem.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/objectitem.cpp \
+    $$PWD/document/graphics/uiitem/selecteditems.cpp \
     $$PWD/document/undocommand/propertyundocommand.cpp \
     $$PWD/document/undocommand/layersundocommand.cpp \
     $$PWD/document/undocommand/objectundocommand.cpp \
-    $$PWD/document/graphics/selectionrectangle.cpp \
+    $$PWD/document/graphics/uiitem/selectionrectangle.cpp \
     $$PWD/document/graphics/tools/abstracttool.cpp \
-    $$PWD/assets/tilesetmodel.cpp
+    $$PWD/assets/tilesetmodel.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/areaitem.cpp \
+    $$PWD/document/graphics/layeritem/tilelayeritem.cpp \
+    $$PWD/document/graphics/layeritem/layeritem.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/tileitem/startpointitem.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/tileitem/randomregionitem.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/tileitem/dooritem.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/tileitem/trackitem.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/dareaitem.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/boxitem.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/platitem.cpp \
+    $$PWD/document/graphics/layeritem/mainlayeritem.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -96,21 +106,31 @@ HEADERS  += \
     $$PWD/assets/faceid.h \
     $$PWD/assets/tileset.h \
     $$PWD/assets/tileid.h \
-    $$PWD/document/graphics/hovereditem.h \
-    $$PWD/document/graphics/selecteditem.h \
+    $$PWD/document/graphics/uiitem/hovereditem.h \
+    $$PWD/document/graphics/uiitem/selecteditem.h \
     $$PWD/document/model/entity/object.h \
     $$PWD/document/graphics/graphicsscene.h \
-    $$PWD/document/graphics/mousetraceitem.h \
-    $$PWD/document/graphics/layeritem.h \
+    $$PWD/document/graphics/uiitem/mousetraceitem.h \
     $$PWD/document/graphics/sceneitem.h \
-    $$PWD/document/graphics/tileitem.h \
-    $$PWD/document/graphics/objectitem.h \
-    $$PWD/document/graphics/selecteditems.h \
+    $$PWD/document/graphics/layeritem/objectitem/tileitem.h \
+    $$PWD/document/graphics/layeritem/objectitem/objectitem.h \
+    $$PWD/document/graphics/uiitem/selecteditems.h \
     $$PWD/document/undocommand/propertyundocommand.h \
     $$PWD/document/undocommand/layersundocommand.h \
     $$PWD/document/undocommand/objectundocommand.h \
     $$PWD/document/base/finddoc.h \
-    $$PWD/document/graphics/selectionrectangle.h \
+    $$PWD/document/graphics/uiitem/selectionrectangle.h \
     $$PWD/document/graphics/tools/abstracttool.h \
     $$PWD/assets/interface.h \
-    $$PWD/assets/tilesetmodel.h
+    $$PWD/assets/tilesetmodel.h \
+    $$PWD/document/graphics/layeritem/objectitem/areaitem.h \
+    $$PWD/document/graphics/layeritem/tilelayeritem.h \
+    $$PWD/document/graphics/layeritem/layeritem.h \
+    $$PWD/document/graphics/layeritem/objectitem/tileitem/startpointitem.h \
+    $$PWD/document/graphics/layeritem/objectitem/tileitem/randomregionitem.h \
+    $$PWD/document/graphics/layeritem/objectitem/tileitem/dooritem.h \
+    $$PWD/document/graphics/layeritem/objectitem/tileitem/trackitem.h \
+    $$PWD/document/graphics/layeritem/objectitem/dareaitem.h \
+    $$PWD/document/graphics/layeritem/objectitem/boxitem.h \
+    $$PWD/document/graphics/layeritem/objectitem/platitem.h \
+    $$PWD/document/graphics/layeritem/mainlayeritem.h

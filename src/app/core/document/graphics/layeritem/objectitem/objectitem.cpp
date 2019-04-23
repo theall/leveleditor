@@ -53,6 +53,16 @@ void TObjectItem::slotPropertyItemValueChanged(TPropertyItem *item, const QVaria
     }
 }
 
+QRectF TObjectItem::boundingRect() const
+{
+    return mBoundingRect;
+}
+
+void TObjectItem::paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *)
+{
+
+}
+
 bool TObjectItem::needGrabMouse() const
 {
     return mNeedGrabMouse;

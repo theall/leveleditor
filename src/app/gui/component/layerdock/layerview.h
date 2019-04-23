@@ -4,8 +4,8 @@
 #include <QMenu>
 #include <QAction>
 #include <QTreeView>
-#include <QModelIndex>
 #include <QKeyEvent>
+#include <QModelIndex>
 
 /**
  * This view makes sure the size hint makes sense and implements the context
@@ -39,16 +39,9 @@ private slots:
     void slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 private:
-    QAction *mActionAddForeLayer;
-    QAction *mActionAddBackLayer;
-    QAction *mActionRemoveLayer;
-
-    QAction *mActionDuplicateLayer;
-    QAction *mActionMergeLayerDown;
     QAction *mActionMoveLayerUp;
     QAction *mActionMoveLayerDown;
     QAction *mActionToggleOtherLayers;
-    QAction *mActionLayerProperties;
 
     QMenu *mContextMenu;
 };

@@ -44,6 +44,7 @@ class TCentralWidget;
 class TLoadingDialog;
 class TTilesetDock;
 class TCharacterDock;
+class TLayerDock;
 
 class TMainWindow : public QMainWindow
 {

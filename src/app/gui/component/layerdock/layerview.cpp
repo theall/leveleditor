@@ -4,11 +4,6 @@
 
 TLayerView::TLayerView(QWidget *parent):
     QTreeView(parent),
-    mActionAddForeLayer(new QAction(this)),
-    mActionAddBackLayer(new QAction(this)),
-    mActionRemoveLayer(new QAction(this)),
-    mActionDuplicateLayer(new QAction(this)),
-    mActionMergeLayerDown(new QAction(this)),
     mActionMoveLayerUp(new QAction(this)),
     mActionMoveLayerDown(new QAction(this)),
     mActionToggleOtherLayers(new QAction(this)),

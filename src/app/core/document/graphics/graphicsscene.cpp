@@ -1,4 +1,3 @@
-#include <QDebug>
 #include <QPainter>
 #include <QWheelEvent>
 #include <QCoreApplication>
@@ -137,7 +136,7 @@ void TGraphicsScene::setSceneModel(TSceneModel *sceneModel)
 
         setBackgroundColor(mSceneModel->getBackgroundColor());
         QRectF rect = mSceneItem->boundingRect();
-        setSize(rect.size());
+        setSceneRect(rect);
     }
 }
 
@@ -244,7 +243,7 @@ void TGraphicsScene::drawForeground(QPainter *painter, const QRectF &rect)
 
 void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    QGraphicsScene::mouseMoveEvent(event);
+    QGraphicsScene::mousePressEvent(event);
 
     TObjectItem *autonomyObjectitem = nullptr;
     TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
@@ -354,7 +353,7 @@ void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    QGraphicsScene::mouseMoveEvent(event);
+    QGraphicsScene::mouseReleaseEvent(event);
 
     TObjectItem *autonomyObjectitem = nullptr;
     TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
@@ -427,6 +426,7 @@ void TGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 void TGraphicsScene::keyPressEvent(QKeyEvent *event)
 {
     int key = event->key();
+    Qt::KeyboardModifiers keyboardModifiers = event->modifiers();
     if(key == Qt::Key_Space)
     {
         if(!mStepMode) {
@@ -453,6 +453,10 @@ void TGraphicsScene::keyPressEvent(QKeyEvent *event)
         }
     } else if(key==Qt::Key_Delete) {
         removeSelectedItems();
+    } else if(key==Qt::Key_Z && (keyboardModifiers&Qt::ControlModifier)) {
+        emit requestUndo();
+    } else if(key==Qt::Key_Y && (keyboardModifiers&Qt::ControlModifier)) {
+        emit requestRedo();
     }
     QGraphicsScene::keyPressEvent(event);
 }

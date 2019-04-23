@@ -23,21 +23,21 @@ public:
         INVALID
     };
 
-    TObject(Type type, QObject *parent = nullptr);
+    TObject(Type type, QObject *parent = nullptr, bool createPosProperty = true);
 
     Type type() const;
     virtual QString typeString() const = 0;
 
-    QPointF pos() const;
-    void setPos(const QPointF &pos);
+    virtual QPointF pos() const;
+    virtual void setPos(const QPointF &pos);
 
-    QSize size() const;
-    void setSize(const QSize &size);
+    virtual QSize size() const;
+    virtual void setSize(const QSize &size);
 
-    QRectF rect() const;
-    void setRect(const QRectF &rect);
+    virtual QRectF rect() const;
+    virtual void setRect(const QRectF &rect);
 
-    void move(const QPointF &offset);
+    virtual void move(const QPointF &offset);
 
     virtual bool isCongener(TObject *object) const = 0;
 

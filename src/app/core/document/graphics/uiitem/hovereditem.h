@@ -21,7 +21,7 @@
 #pragma once
 
 #include <QGraphicsObject>
-#include "objectitem.h"
+#include "../layeritem/objectitem/objectitem.h"
 
 /**
  * Graphics item for displaying a rectangle on hovered map object.

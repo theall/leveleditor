@@ -31,15 +31,20 @@ TAssetsManager::~TAssetsManager()
     FREE_CONTAINER(mTilesetList);
 }
 
-bool TAssetsManager::load(const QString &path)
+bool TAssetsManager::load(const QString &path, bool asynLoad)
 {
     if(mPath == path)
         return isValidpath();
 
     mPath = path;
 
-    moveToThread(this);
-    start();
+    if(asynLoad) {
+        moveToThread(this);
+        start();
+    } else {
+        run();
+    }
+
     return isValidpath();
 }
 

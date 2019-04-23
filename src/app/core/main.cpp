@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     QGraphicsView gv;
     TCore core;
-    core.loadResource(argv[1]);
+    core.loadResource(argv[1], false);
     core.open(argv[2]);
     QGraphicsScene *scene;
     scene = core.documents().at(0)->graphicsScene();

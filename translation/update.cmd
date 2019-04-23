@@ -1,0 +1,1 @@
+lupdate %~dp0/../src/leveleditor.pro

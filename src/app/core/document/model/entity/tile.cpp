@@ -41,8 +41,7 @@ TStartPoint::TStartPoint(QObject *parent) :
     TObject(TObject::POINT, parent)
 {
     setSize(QSize(1,1));
-    TPropertyItem *propertyItem = get(PID_OBJECT_SIZE);
-    if(propertyItem)
+    if(TPropertyItem *propertyItem = get(PID_OBJECT_SIZE))
         propertyItem->setAttribute(PA_TEXT_VISIBLE, false);
 }
 

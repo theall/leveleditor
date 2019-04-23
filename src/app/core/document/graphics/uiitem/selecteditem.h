@@ -3,7 +3,7 @@
 
 #include <QList>
 #include <QGraphicsObject>
-#include "objectitem.h"
+#include "../layeritem/objectitem/objectitem.h"
 
 class TSelectedItem : public QGraphicsObject
 {

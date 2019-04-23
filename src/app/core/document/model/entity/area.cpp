@@ -10,7 +10,7 @@ static const QString P_EDGES = T("Edges");
 static const QString P_MOVE_BY = T("Move By");
 
 TArea::TArea(QObject *parent) :
-    TObject(TObject::AREA, parent)
+    TObject(TObject::AREA, parent, false)
 {
     initPropertySheet();
 }
@@ -55,4 +55,60 @@ QString TArea::typeString() const
 bool TArea::isCongener(TObject *object) const
 {
     return static_cast<TArea*>(object);
+}
+
+QRectF TArea::rect() const
+{
+    return mPropertySheet->getValue(PID_AREA_RECT).toRectF();
+}
+
+QPointF TArea::pos() const
+{
+    return mPropertySheet->getValue(PID_AREA_RECT).toRectF().topLeft();
+}
+
+void TArea::setPos(const QPointF &pos)
+{
+    QRectF currentRect = mPropertySheet->getValue(PID_AREA_RECT).toRectF();
+    QPointF currentPos = currentRect.topLeft();
+    if(currentPos == pos)
+        return;
+
+    currentRect.moveTo(pos);
+    mPropertySheet->setValue(PID_AREA_RECT, currentRect);
+}
+
+QSize TArea::size() const
+{
+    return mPropertySheet->getValue(PID_AREA_RECT).toRectF().size().toSize();
+}
+
+void TArea::setSize(const QSize &size)
+{
+    QRectF currentRect = mPropertySheet->getValue(PID_AREA_RECT).toRectF();
+    QSize currentSize = currentRect.size().toSize();
+    if(currentSize == size)
+        return;
+
+    currentRect.setSize(currentSize);
+    mPropertySheet->setValue(PID_AREA_RECT, currentRect);
+}
+
+void TArea::setRect(const QRectF &rect)
+{
+    QRectF currentRect = mPropertySheet->getValue(PID_AREA_RECT).toRectF();
+    if(currentRect == rect)
+        return;
+
+    mPropertySheet->setValue(PID_AREA_RECT, rect);
+}
+
+void TArea::move(const QPointF &offset)
+{
+    if(offset.isNull())
+        return;
+
+    QRectF currentRect = mPropertySheet->getValue(PID_AREA_RECT).toRectF();
+    currentRect.moveTopLeft(currentRect.topLeft()+offset);
+    mPropertySheet->setValue(PID_AREA_RECT, currentRect);
 }

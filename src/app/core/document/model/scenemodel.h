@@ -22,6 +22,15 @@ public:
     TSceneModel(QObject *parent = nullptr);
 
     TLayersModel *layersModel() const;
+    TAreasModel *getAreasModel() const;
+    TBoxesModel *getBoxesModel() const;
+    TDAreasModel *getDAreasModel() const;
+    TEventsModel *getEventsModel() const;
+    TLayersModel *getLayersModel() const;
+    TPlatformsModel *getPlatformsModel() const;
+    TRespawnsModel *getRespawnsModel() const;
+    TTriggersModel *getTriggersModel() const;
+    TWallsModel *getWallsModel() const;
 
     QColor getBackgroundColor() const;
 

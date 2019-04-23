@@ -22,6 +22,8 @@ public:
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
+    TAreaList areaList() const;
+
 private:
     TAreaList mAreaList;
 };

@@ -48,9 +48,14 @@ QVariant TAreasModel::data(const QModelIndex &index, int role) const
     {
         if(role==Qt::DisplayRole)
         {
-            return tr("Area %d").arg(row+1);
+            return tr("Area (%1)").arg(mAreaList.at(row)->toString());
         }
     }
     return QVariant();
+}
+
+TAreaList TAreasModel::areaList() const
+{
+    return mAreaList;
 }
 

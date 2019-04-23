@@ -3,8 +3,9 @@
 
 #include <QGraphicsObject>
 
-#include "layeritem.h"
-#include "hovereditem.h"
+#include "layeritem/tilelayeritem.h"
+#include "layeritem/mainlayeritem.h"
+#include "uiitem/hovereditem.h"
 #include "../model/scenemodel.h"
 
 class TSceneItem : QGraphicsObject

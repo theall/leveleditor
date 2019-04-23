@@ -23,6 +23,9 @@ TDocument::TDocument(const QString &file, QObject *parent) :
     connect(mUndoStack, SIGNAL(cleanChanged(bool)), this, SLOT(slotModificationChanged(bool)));
     mUndoStack->setClean();
 
+    connect(mGraphicsScene, SIGNAL(requestUndo()), mUndoStack, SLOT(undo()));
+    connect(mGraphicsScene, SIGNAL(requestRedo()), mUndoStack, SLOT(redo()));
+
     connect(mFileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(slotFileChanged(QString)));
     connect(mFileWatcher, SIGNAL(directoryChanged(QString)), this, SLOT(slotDirectoryChanged(QString)));
 
@@ -64,36 +67,6 @@ QUndoStack *TDocument::undoStack() const
 void TDocument::addUndoCommand(QUndoCommand *command)
 {
     mUndoStack->push(command);
-}
-
-void TDocument::cmdAddLayer(const QString &name)
-{
-    TLayer *layer = new TLayer(this, name);
-    TLayersUndoCommand *command = new TLayersUndoCommand(
-                TLayersUndoCommand::Add,
-                mSceneModel->layersModel(),
-                layer);
-    mUndoStack->push(command);
-}
-
-void TDocument::cmdRemoveLayer(TLayer *layer)
-{
-    if(!layer)
-        return;
-
-    TLayersUndoCommand *command = new TLayersUndoCommand(
-                TLayersUndoCommand::Remove,
-                mSceneModel->layersModel(),
-                layer);
-    mUndoStack->push(command);
-}
-
-void TDocument::cmdRemoveLayer(int layerIndex)
-{
-    TLayer *layer = mSceneModel->layersModel()->getLayer(layerIndex);
-    if(!layer)
-        return;
-    cmdRemoveLayer(layer);
 }
 
 QString TDocument::baseName() const

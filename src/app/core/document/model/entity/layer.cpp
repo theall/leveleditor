@@ -5,6 +5,7 @@
 
 TLayer::TLayer(QObject *parent, const QString &name) :
     TPropertyObject(parent)
+  , mType(Background)
   , mName(name)
   , mDocument(nullptr)
 {
@@ -58,4 +59,14 @@ void TLayer::readFromStream(QDataStream &stream)
 TTileList TLayer::tileList() const
 {
     return mTileList;
+}
+
+TLayer::Type TLayer::type() const
+{
+    return mType;
+}
+
+void TLayer::setType(const Type &type)
+{
+    mType = type;
 }

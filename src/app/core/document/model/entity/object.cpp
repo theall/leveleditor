@@ -4,11 +4,12 @@
 static const QString P_POS = T("Position");
 static const QString P_SIZE = T("Size");
 
-TObject::TObject(Type type, QObject *parent) :
+TObject::TObject(Type type, QObject *parent, bool createPosProperty) :
     TPropertyObject(parent)
   , mType(type)
 {
-    initPropertySheet();
+    if(createPosProperty)
+        initPropertySheet();
 }
 
 TObject::Type TObject::type() const

@@ -8,8 +8,6 @@
 
 TLayerDock::TLayerDock(QWidget *parent) :
     QDockWidget(parent)
-  , mOpacityLabel(new QLabel(this))
-  , mOpacitySlider(new QSlider(Qt::Horizontal))
   , mLayerView(new TLayerView(this))
   , mUpdatingSlider(false)
   , mChangingLayerOpacity(false)
@@ -21,16 +19,9 @@ TLayerDock::TLayerDock(QWidget *parent) :
     layout->setMargin(5);
 
     QHBoxLayout *opacityLayout = new QHBoxLayout;
-    mOpacitySlider->setRange(0, 100);
-    mOpacitySlider->setEnabled(false);
     opacityLayout->addWidget(mOpacityLabel);
     opacityLayout->addWidget(mOpacitySlider);
     mOpacityLabel->setBuddy(mOpacitySlider);
-
-    QMenu *newLayerMenu = new QMenu(this);
-//    newLayerMenu->addAction(handler->actionAddTileLayer());
-//    newLayerMenu->addAction(handler->actionAddObjectGroup());
-//    newLayerMenu->addAction(handler->actionAddImageLayer());
 
     const QIcon newIcon(QLatin1String(":/images/16x16/document-new.png"));
     QToolButton *newLayerButton = new QToolButton;
