@@ -19,6 +19,7 @@ public:
            Command command,
            const TObjectList &objectList,
            const QVariant &parameter = QVariant(),
+           int commandSequenceId = -1,
            QUndoCommand *parent = Q_NULLPTR);
     ~TObjectUndoCommand();
 
@@ -27,6 +28,7 @@ public:
     TObjectList objectList() const;
 
 private:
+    int mId;
     Command mCommand;
     QPointF mOffset;
     TObjectList mObjectList;

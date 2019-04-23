@@ -176,12 +176,13 @@ void TGraphicsScene::setSelectedObjectItem(TObjectItem *objectItem)
     emit selectedObjectChanged(prevObject, currentObject);
 }
 
-void TGraphicsScene::pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset)
+void TGraphicsScene::pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset, int commandId)
 {
     TObjectUndoCommand *command = new TObjectUndoCommand(
                 TObjectUndoCommand::Move,
                 objectList,
-                offset);
+                offset,
+                commandId);
     mDocument->addUndoCommand(command);
 }
 
@@ -272,6 +273,7 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             stop();
     } else if(button == Qt::LeftButton) {
         mLeftButtonDownPos = event->scenePos();
+        mCommandId = qAbs(((int)mLeftButtonDownPos.x())<<16) + qAbs(mLeftButtonDownPos.y());
         Qt::KeyboardModifiers modifers = event->modifiers();
         if(modifers&Qt::ShiftModifier) {
             TObjectItem *objectItem = getTopMostObjectItem(mLeftButtonDownPos);
@@ -340,7 +342,7 @@ void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             if(objectList.size() > 0) {
                 QPointF offset = event->scenePos() - event->lastScenePos();
                 if(!offset.isNull()) {
-                    pushObjectMoveCommand(objectList, offset);
+                    pushObjectMoveCommand(objectList, offset, mCommandId);
                 }
             }
         } else if(mAction == Selecting) {
@@ -449,7 +451,7 @@ void TGraphicsScene::keyPressEvent(QKeyEvent *event)
             } else if(key == Qt::Key_Down) {
                 offset.setY(1);
             }
-            pushObjectMoveCommand(objectList, offset);
+            pushObjectMoveCommand(objectList, offset, mCommandId);
         }
     } else if(key==Qt::Key_Delete) {
         removeSelectedItems();
@@ -457,6 +459,9 @@ void TGraphicsScene::keyPressEvent(QKeyEvent *event)
         emit requestUndo();
     } else if(key==Qt::Key_Y && (keyboardModifiers&Qt::ControlModifier)) {
         emit requestRedo();
+    } else if(key==Qt::Key_Escape) {
+        mSelectedItems->setObjectItem(nullptr);
+        update();
     }
     QGraphicsScene::keyPressEvent(event);
 }

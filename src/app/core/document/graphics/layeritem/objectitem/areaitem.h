@@ -13,20 +13,9 @@ public:
     ~TAreaItem();
 
     TArea *area() const;
-    void setArea(TArea *area);
-
-    QColor color() const;
-    void setColor(const QColor &color);
 
 private:
     TArea *mArea;
-    QColor mColor;
-
-    // QGraphicsItem interface
-public:
-    QRectF boundingRect() const Q_DECL_OVERRIDE;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
-    QPainterPath shape() const Q_DECL_OVERRIDE;
 
     // TObjectItem interface
 public:

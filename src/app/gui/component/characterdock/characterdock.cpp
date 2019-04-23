@@ -2,6 +2,7 @@
 
 #include <QSplitter>
 #include <QVBoxLayout>
+#include <QScrollArea>
 
 TCharacterDock::TCharacterDock(QWidget *parent) :
     TBaseDock(QLatin1String("CharacterDock"), parent)
@@ -17,13 +18,14 @@ TCharacterDock::TCharacterDock(QWidget *parent) :
     toolBar->setIconSize(QSize(16, 16));
     toolBar->addAction(mActionShowIcon);
 
-    QWidget *container = new QWidget(this);
-    QVBoxLayout *vBoxLayout = new QVBoxLayout;
-    vBoxLayout->setContentsMargins(0, 0, 0, 0);
-    vBoxLayout->setSpacing(0);
-    vBoxLayout->addWidget(toolBar);
-    vBoxLayout->addWidget(mCharacterView);
-    container->setLayout(vBoxLayout);
+    QScrollArea *container = new QScrollArea(this);
+    container->setWidgetResizable(true);
+
+    QVBoxLayout *scrollAreaLayout = new QVBoxLayout(container);
+    scrollAreaLayout->setContentsMargins(0, 0, 0, 0);
+    scrollAreaLayout->setSpacing(0);
+    scrollAreaLayout->addWidget(toolBar);
+    scrollAreaLayout->addWidget(mCharacterView);
     setWidget(container);
 
     retranslateUi();
@@ -47,6 +49,11 @@ void TCharacterDock::slotActionShowIconToggled(bool toggled)
     } else {
 
     }
+}
+
+TCharacterView *TCharacterDock::characterView() const
+{
+    return mCharacterView;
 }
 
 void TCharacterDock::retranslateUi()

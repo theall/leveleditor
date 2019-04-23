@@ -10,8 +10,10 @@ TObjectUndoCommand::TObjectUndoCommand(
         Command command,
         const TObjectList &objectList,
         const QVariant &parameter,
+        int commandSequenceId,
         QUndoCommand *parent) :
     QUndoCommand(parent)
+  , mId(commandSequenceId)
   , mCommand(command)
   , mObjectList(objectList)
 {
@@ -84,5 +86,5 @@ bool TObjectUndoCommand::mergeWith(const QUndoCommand *other)
 
 int TObjectUndoCommand::id() const
 {
-    return mCommand;
+    return mId;
 }

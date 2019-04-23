@@ -15,7 +15,10 @@ public:
     TRespawnsModel(QObject *parent = Q_NULLPTR);
 
     void clear();
+    QList<QPoint> respawnPointList() const;
 
+    // TIO interface
+public:
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
 

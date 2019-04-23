@@ -1,11 +1,27 @@
 #include "plat.h"
 #include "../../document.h"
+#include "../../base/finddoc.h"
+#include "../../base/tr.h"
+
+static const QString P_SPEED = T("Speed");
+static const QString P_DANGER = T("Danger");
+static const QString P_DRAW = T("Draw");
+static const QString P_CURRENT_POINT = T("Current point");
+static const QString P_TILE = T("Tile");
+static const QString P_USE_TRIGGER = T("Use trigger");
+static const QString P_EVENT_NUMBER = T("Event number");
+static const QString P_FINAL_POINT = T("Final point");
+static const QString P_BREAK = T("Break");
+static const QString P_CHUNK = T("Chunk");
+static const QString P_SOUND = T("Sound");
+static const QString P_BREAKABLE = T("Breakable");
+static const QString P_EVENT_NUMBER_2 = T("Event number 2");
 
 TPlat::TPlat(QObject *parent) :
-    TPropertyObject(parent)
+    TObject(TObject::PLAT, parent)
   , mDocument(nullptr)
 {
-
+    FIND_DOCUMENT;
 }
 
 void TPlat::saveToStream(QDataStream &stream) const
@@ -58,6 +74,20 @@ void TPlat::readFromStream(QDataStream &stream)
         QPoint point;
         stream >> point;
     }
+    setRect(QRectF(x, y, width, height));
+    mPropertySheet->setValue(PID_PLAT_SPEED, QSizeF(xSpeed, ySpeed));
+    mPropertySheet->setValue(PID_PLAT_DANGER, danger);
+    mPropertySheet->setValue(PID_PLAT_DRAW, draw);
+    mPropertySheet->setValue(PID_PLAT_CURRENT_POINT, curPoint);
+    mPropertySheet->setValue(PID_PLAT_TILE, pic);
+    mPropertySheet->setValue(PID_PLAT_USE_TRIGGER, useTrigger);
+    mPropertySheet->setValue(PID_PLAT_EVENT_NUMBER, eventN);
+    mPropertySheet->setValue(PID_PLAT_FINAL_POINT, finalDest);
+    mPropertySheet->setValue(PID_PLAT_BREAK, break_);
+    mPropertySheet->setValue(PID_PLAT_CHUNK, chunk);
+    mPropertySheet->setValue(PID_PLAT_SOUND, sound);
+    mPropertySheet->setValue(PID_PLAT_BREAKABLE, breakable);
+    mPropertySheet->setValue(PID_PLAT_EVENT_NUMBER_2, eventN2);
     if(mDocument) {
         //mPixmap = mDocument->getPixmap(QString::asprintf("plat%d.bmp", pic))->pixmap();
     }
@@ -65,5 +95,27 @@ void TPlat::readFromStream(QDataStream &stream)
 
 void TPlat::initPropertySheet()
 {
+    mPropertySheet->addProperty(PT_INT, P_SPEED, PID_PLAT_SPEED);
+    mPropertySheet->addProperty(PT_INT, P_DANGER, PID_PLAT_DANGER);
+    mPropertySheet->addProperty(PT_INT, P_DRAW, PID_PLAT_DRAW);
+    mPropertySheet->addProperty(PT_INT, P_CURRENT_POINT, PID_PLAT_CURRENT_POINT);
+    mPropertySheet->addProperty(PT_INT, P_TILE, PID_PLAT_TILE);
+    mPropertySheet->addProperty(PT_INT, P_USE_TRIGGER, PID_PLAT_USE_TRIGGER);
+    mPropertySheet->addProperty(PT_INT, P_EVENT_NUMBER, PID_PLAT_EVENT_NUMBER);
+    mPropertySheet->addProperty(PT_INT, P_FINAL_POINT, PID_PLAT_FINAL_POINT);
+    mPropertySheet->addProperty(PT_INT, P_BREAK, PID_PLAT_BREAK);
+    mPropertySheet->addProperty(PT_INT, P_CHUNK, PID_PLAT_CHUNK);
+    mPropertySheet->addProperty(PT_INT, P_SOUND, PID_PLAT_SOUND);
+    mPropertySheet->addProperty(PT_INT, P_BREAKABLE, PID_PLAT_BREAKABLE);
+    mPropertySheet->addProperty(PT_INT, P_EVENT_NUMBER_2, PID_PLAT_EVENT_NUMBER_2);
+}
 
+QString TPlat::typeString() const
+{
+    return tr("Platform");
+}
+
+bool TPlat::isCongener(TObject *) const
+{
+    return false;
 }

@@ -15,7 +15,7 @@
 TCharacterView::TCharacterView(QWidget *parent) :
     QWidget(parent)
   , mCols(1)
-  , mIconSize(ICON_SMALL)
+  , mIconSize(ICON_LARGE)
   , mResizeIgnored(false)
   , mLastPushedButton(nullptr)
   , mBottomSpacer(new QSpacerItem(1, 2, QSizePolicy::Minimum, QSizePolicy::MinimumExpanding))
@@ -45,6 +45,7 @@ int TCharacterView::add(const QPixmap &face)
     QPushButton *button = new QPushButton(this);
     button->setCheckable(true);
     button->setIcon(QIcon(face));
+    button->setIconSize(QSize(mIconSize, mIconSize));
     button->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     button->setMinimumSize(1, mIconSize);
     button->setMaximumSize(mIconSize, mIconSize);
@@ -53,14 +54,19 @@ int TCharacterView::add(const QPixmap &face)
     int buttonCount = mButtonList.size();
     QGridLayout *gridLayout = static_cast<QGridLayout*>(layout());
     if(gridLayout) {
-        bool needRemove = (buttonCount-1)%mCols==0;
+        int colIndex = buttonCount%mCols;
+        bool needRemove = colIndex==1;
         int row = qFloor((float)buttonCount/mCols);
-        if(needRemove)
+        if(needRemove) {
             gridLayout->removeItem(mBottomSpacer);
-        gridLayout->addWidget(button, row, buttonCount%mCols+1);
-        if(needRemove)
+        }
+        gridLayout->addWidget(button, row, colIndex+1);
+        if(needRemove) {
             gridLayout->addItem(mBottomSpacer, row+1, 0);
+        }
+        reArrange();
     }
+
     return buttonCount;
 }
 

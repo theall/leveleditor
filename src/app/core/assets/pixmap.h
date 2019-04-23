@@ -19,6 +19,7 @@ public:
     QString fileFullName() const;
 
     QPixmap pixmap() const;
+    QPixmap content();
     QPixmap thumbnail() const;
     TPixmap &operator=(const TPixmap &pixmap);
 

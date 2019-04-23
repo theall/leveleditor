@@ -33,6 +33,14 @@ public:
     bool needGrabMouse() const;
     void setNeedGrabMouse(bool needGrabMouse);
 
+    QColor borderColor() const;
+    void setBorderColor(const QColor &borderColor);
+
+    bool drawBorder() const;
+    void setDrawBorder(bool drawBorder);
+
+    void setBoundingRect(const QRectF &boundingRect);
+
 signals:
     void boundingRectChanged();
 
@@ -46,6 +54,8 @@ private:
     TObject *mObject;
     bool mAutonomy;
     bool mNeedGrabMouse;
+    bool mDrawBorder;
+    QColor mBorderColor;
 
     // QGraphicsItem interface
 public:

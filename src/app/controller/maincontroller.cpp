@@ -17,6 +17,7 @@ TMainController::TMainController(QObject *parent) :
   , mUndoController(new TUndoController(this))
   , mMiniSceneController(new TMiniSceneController(this))
   , mTilesetController(new TTilesetController(this))
+  , mCharacterController(new TCharacterPanelController(this))
 {
     connect(mTabController, SIGNAL(requestCloseDocument(TDocument*)), this, SLOT(slotRequestCloseDocument(TDocument*)));
     connect(mTabController, SIGNAL(requestSwitchToDocument(TDocument*)), this, SLOT(slotRequestSwitchToDocument(TDocument*)));

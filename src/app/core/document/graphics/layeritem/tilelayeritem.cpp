@@ -27,7 +27,7 @@ TTileLayerItem::TTileLayerItem(TLayer *layer, QGraphicsItem *parent) :
 QRectF TTileLayerItem::calcBoundingRect()
 {
     mBoundingRect = QRectF();
-    foreach (TTileItem *tileItem, mTileItemList) {
+    for(TTileItem *tileItem : mTileItemList) {
         mBoundingRect = mBoundingRect.united(tileItem->boundingRect());
     }
     return mBoundingRect;

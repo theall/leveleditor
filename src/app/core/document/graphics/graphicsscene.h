@@ -74,6 +74,7 @@ private:
     bool mLeftButtonDown;
     bool mUnderMouse;
     QPointF mLeftButtonDownPos;
+    int mCommandId;
     Action mAction;
     Qt::CursorShape mCursor;
     TSceneModel *mSceneModel;
@@ -86,7 +87,7 @@ private:
 
     void step();
     void setSelectedObjectItem(TObjectItem *objectItem);
-    void pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset);
+    void pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset, int commandId);
 
 
 private slots:

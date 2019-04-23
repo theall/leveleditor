@@ -14,9 +14,10 @@ public:
 
     void clear();
 
+    // TIO interface
+public:
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
-
 
     // QAbstractItemModel interface
 public:

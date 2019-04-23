@@ -13,20 +13,9 @@ public:
     ~TBoxItem();
 
     TBox *box() const;
-    void setBox(TBox *box);
-
-    QColor color() const;
-    void setColor(const QColor &color);
 
 private:
     TBox *mBox;
-    QColor mColor;
-
-    // QGraphicsItem interface
-public:
-    QRectF boundingRect() const Q_DECL_OVERRIDE;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
-    QPainterPath shape() const Q_DECL_OVERRIDE;
 
     // TObjectItem interface
 public:

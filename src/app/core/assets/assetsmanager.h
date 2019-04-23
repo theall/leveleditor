@@ -33,6 +33,8 @@ public:
     TilesetList getTilesetList() const;
     TTilesetModelList getTilesetModelList() const;
 
+    TFaceList getFaceList() const;
+
 signals:
     // Notify external object
     void loadCompleted();

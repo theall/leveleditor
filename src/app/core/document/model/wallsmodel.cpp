@@ -48,6 +48,11 @@ QVariant TWallsModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+TWallList TWallsModel::wallList() const
+{
+    return mWallList;
+}
+
 void TWallsModel::clear()
 {
     mWallList.clear();

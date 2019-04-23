@@ -46,6 +46,11 @@ QVariant TPlatformsModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+TPlatList TPlatformsModel::platList() const
+{
+    return mPlatList;
+}
+
 void TPlatformsModel::clear()
 {
     mPlatList.clear();

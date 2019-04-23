@@ -15,7 +15,7 @@ public:
     TCharacterDock(QWidget *parent = nullptr);
     ~TCharacterDock();
 
-signals:
+    TCharacterView *characterView() const;
 
 private slots:
     void slotActionShowIconToggled(bool);

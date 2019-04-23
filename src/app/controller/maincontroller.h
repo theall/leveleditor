@@ -9,6 +9,7 @@
 #include "miniscenecontroller.h"
 #include "optionscontroller.h"
 #include "tilesetcontroller.h"
+#include "characterpanelcontroller.h"
 
 class TMainController : public TAbstractController
 {
@@ -54,6 +55,7 @@ private:
     TUndoController *mUndoController;
     TMiniSceneController *mMiniSceneController;
     TTilesetController *mTilesetController;
+    TCharacterPanelController *mCharacterController;
 
     bool confirmAllSaved();
     void createNewDocument(const QString &projectRoot, const QString &projectName);

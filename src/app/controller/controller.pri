@@ -8,7 +8,8 @@ SOURCES += \
     $$PWD/mainpropertycontroller.cpp \
     $$PWD/miniscenecontroller.cpp \
     $$PWD/layerscontroller.cpp \
-    $$PWD/tilesetcontroller.cpp
+    $$PWD/tilesetcontroller.cpp \
+    $$PWD/characterpanelcontroller.cpp
 
 HEADERS  += \
     $$PWD/abstractcontroller.h \
@@ -20,4 +21,5 @@ HEADERS  += \
     $$PWD/mainpropertycontroller.h \
     $$PWD/miniscenecontroller.h \
     $$PWD/layerscontroller.h \
-    $$PWD/tilesetcontroller.h
+    $$PWD/tilesetcontroller.h \
+    $$PWD/characterpanelcontroller.h

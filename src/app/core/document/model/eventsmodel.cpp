@@ -54,3 +54,8 @@ QVariant TEventsModel::data(const QModelIndex &index, int role) const
     }
     return QVariant();
 }
+
+QList<int> TEventsModel::eventList() const
+{
+    return mEventList;
+}

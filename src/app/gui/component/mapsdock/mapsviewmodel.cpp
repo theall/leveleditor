@@ -121,11 +121,11 @@ void TModule::setName(const QString &name)
     mName = name;
 }
 
-TMapBundle *TModule::getMapBundle(const TModule::Type &type) const
+TMapBundle *TModule::getMapBundle(const TMapBundle::Type &type) const
 {
-    if(type==ADV)
+    if(type==TMapBundle::ADV)
         return mAdvBundle;
-    else if(type==CTF)
+    else if(type==TMapBundle::CTF)
         return mCtfBundle;
     return mVsBundle;
 }

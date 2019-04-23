@@ -4,7 +4,7 @@
 #include "../tileitem.h"
 #include <QCursor>
 
-const qreal GAP = 4.0;
+#define GAP 4.0
 
 TDoorItem::TDoorItem(TTileItem *tileItem) :
     TObjectItem(tileItem->door(), tileItem)
@@ -48,7 +48,7 @@ TStartPoint *TDoorItem::startPoint() const
 void TDoorItem::updateBoundingRect()
 {
     mRealRect = mDoor->rect();
-    mBoundingRect = mRealRect.adjusted(-GAP, -GAP, GAP, GAP);
+    setBoundingRect(mRealRect.adjusted(-GAP, -GAP, GAP, GAP));
     mIsVertical = mDoor->dir()==TDoor::Vertical;
     update();
 }
@@ -145,7 +145,7 @@ void TDoorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidg
 
 void TDoorItem::propertyValueChanged(PropertyID pid)
 {
-    if(pid==PID_OBJECT_POS || pid==PID_OBJECT_SIZE) {
+    if(pid==PID_OBJECT_RECT) {
         updateBoundingRect();
     }
 }

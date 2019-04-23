@@ -7,7 +7,7 @@ static const QString P_START = T("Start Point");
 static const QString P_RESPAWN = T("Respawn Point");
 
 TRespawn::TRespawn(QObject *parent) :
-    TPropertyObject(parent)
+    TObject(TObject::POINT, parent)
 {
     initPropertySheet();
 }
@@ -23,8 +23,8 @@ void TRespawn::readFromStream(QDataStream &stream)
     QPoint start, respawn;
     stream >> start;
     stream >> respawn;
-    mPropertySheet->setValue(P_START, start);
-    mPropertySheet->setValue(P_RESPAWN, respawn);
+    mPropertySheet->setValue(PID_SPAWN_START, start);
+    mPropertySheet->setValue(PID_SPAWN_RESPAWN, respawn);
 }
 
 void TRespawn::initPropertySheet()

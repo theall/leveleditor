@@ -3,10 +3,10 @@
 
 #include <QList>
 
+#include "object.h"
 #include "../../base/io.h"
-#include "../../property/propertyobject.h"
 
-class TTrigger : public TPropertyObject, TIO
+class TTrigger : public TObject, TIO
 {
     Q_OBJECT
 

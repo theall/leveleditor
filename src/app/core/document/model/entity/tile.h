@@ -94,9 +94,6 @@ class TTile : public TObject, TIO
 public:
     TTile(QObject *parent = nullptr);
 
-    void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
-    void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
-
     QPixmap pixmap() const;
     TPixmap *primitive() const;
     TDoor *door() const;
@@ -123,6 +120,11 @@ private:
 public:
     QString typeString() const Q_DECL_OVERRIDE;
     bool isCongener(TObject *object) const Q_DECL_OVERRIDE;
+
+    // TIO interface
+public:
+    void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
+    void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
 };
 
 typedef QList<TTile*> TTileList;

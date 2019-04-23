@@ -4,6 +4,8 @@
 #include <QPointF>
 #include <QSize>
 #include <QSizeF>
+#include <QRect>
+#include <QRectF>
 
 TPropertyObject::TPropertyObject(QObject *parent) :
     QObject(parent)
@@ -88,6 +90,18 @@ QString TPropertyObject::toString() const
         case QVariant::SizeF:
             vs = QString("(%1,%2)").arg(v.toSizeF().width()).arg(v.toSizeF().height());
             break;
+        case QVariant::Rect:
+        {
+            QRect rect = v.toRect();
+            vs = QString("(%1,%2 %3,%4)").arg(rect.x()).arg(rect.y()).arg(rect.width()).arg(rect.height());
+            break;
+        }
+        case QVariant::RectF:
+        {
+            QRectF rect = v.toRectF();
+            vs = QString("(%1,%2 %3,%4)").arg(rect.x()).arg(rect.y()).arg(rect.width()).arg(rect.height());
+            break;
+        }
         default:
             break;
         }

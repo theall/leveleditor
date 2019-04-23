@@ -9,6 +9,7 @@
 
 class TRect : public QRect, TIO
 {
+    // TIO interface
 public:
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;

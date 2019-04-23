@@ -3,16 +3,18 @@
 
 #include <QList>
 
+#include "object.h"
 #include "../../base/io.h"
-#include "../../property/propertyobject.h"
 
-class TRespawn : public TPropertyObject, TIO
+class TRespawn : public TObject, TIO
 {
     Q_OBJECT
 
 public:
-    TRespawn(QObject *parent = nullptr);
+    explicit TRespawn(QObject *parent = nullptr);
 
+    // TIO interface
+public:
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
 

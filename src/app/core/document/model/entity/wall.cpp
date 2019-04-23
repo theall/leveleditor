@@ -3,8 +3,6 @@
 
 #include <QRect>
 
-static const QString P_RECT = T("Area");
-
 TWall::TWall(QObject *parent) :
     TObject(TObject::WALL, parent)
 {
@@ -23,12 +21,12 @@ void TWall::readFromStream(QDataStream &stream)
     stream >> y;
     stream >> w;
     stream >> h;
-    mPropertySheet->setValue(P_RECT, QRect(x,y,w,h));
+    mPropertySheet->setValue(PID_OBJECT_RECT, QRectF(x,y,w,h));
 }
 
 void TWall::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_RECT, P_RECT, PID_WALL_RECT);
+
 }
 
 QString TWall::typeString() const

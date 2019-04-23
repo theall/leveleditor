@@ -54,3 +54,8 @@ QVariant TRespawnsModel::data(const QModelIndex &index, int role) const
     }
     return QVariant();
 }
+
+QList<QPoint> TRespawnsModel::respawnPointList() const
+{
+    return mRespawnPointList;
+}

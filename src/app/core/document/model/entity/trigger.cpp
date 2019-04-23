@@ -4,7 +4,6 @@
 #include <QRect>
 #include <QPoint>
 
-static const QString P_RECT = T("Rect");
 static const QString P_WAY = T("Way");
 static const QString P_ON = T("On");
 static const QString P_ACTION = T("Action");
@@ -22,7 +21,7 @@ static const QString P_ON_STATUS = T("On Status");
 static const QString P_OFF_STATUS = T("Off Status");
 
 TTrigger::TTrigger(QObject *parent) :
-    TPropertyObject(parent)
+    TObject(TObject::INVALID, parent)
 {
     initPropertySheet();
 }
@@ -66,27 +65,25 @@ void TTrigger::readFromStream(QDataStream &stream)
     stream >> platPos;
     stream >> onStatus;
     stream >> offStatus;
-    mPropertySheet->setValue(P_RECT, rect);
-    mPropertySheet->setValue(P_WAY, way);
-    mPropertySheet->setValue(P_ON, on);
-    mPropertySheet->setValue(P_ACTION, action);
-    mPropertySheet->setValue(P_PASS_BY, passBy);
-    mPropertySheet->setValue(P_OBJECT_HIT, objHit);
-    mPropertySheet->setValue(P_EVENT, event);
-    mPropertySheet->setValue(P_DRAW, draw);
-    mPropertySheet->setValue(P_IMAGE_NO, imageN);
-    mPropertySheet->setValue(P_IMAGE_POS, imagePos);
-    mPropertySheet->setValue(P_AFFECT, affect);
-    mPropertySheet->setValue(P_SOUND, sound);
-    mPropertySheet->setValue(P_FOLLOW, follow);
-    mPropertySheet->setValue(P_PLATFORM_POS, platPos);
-    mPropertySheet->setValue(P_ON_STATUS, onStatus);
-    mPropertySheet->setValue(P_OFF_STATUS, offStatus);
+    mPropertySheet->setValue(PID_TRIGGER_WAY, way);
+    mPropertySheet->setValue(PID_TRIGGER_ON, on);
+    mPropertySheet->setValue(PID_TRIGGER_ACTION, action);
+    mPropertySheet->setValue(PID_TRIGGER_PASS_BY, passBy);
+    mPropertySheet->setValue(PID_TRIGGER_OBJECT_HIT, objHit);
+    mPropertySheet->setValue(PID_TRIGGER_EVENT, event);
+    mPropertySheet->setValue(PID_TRIGGER_DRAW, draw);
+    mPropertySheet->setValue(PID_TRIGGER_IMAGE_NO, imageN);
+    mPropertySheet->setValue(PID_TRIGGER_IMAGE_POS, imagePos);
+    mPropertySheet->setValue(PID_TRIGGER_AFFECT, affect);
+    mPropertySheet->setValue(PID_TRIGGER_SOUND, sound);
+    mPropertySheet->setValue(PID_TRIGGER_FOLLOW, follow);
+    mPropertySheet->setValue(PID_TRIGGER_PLATFORM_POS, platPos);
+    mPropertySheet->setValue(PID_TRIGGER_ON_STATUS, onStatus);
+    mPropertySheet->setValue(PID_TRIGGER_OFF_STATUS, offStatus);
 }
 
 void TTrigger::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_RECT, P_RECT, PID_TRIGGER_RECT);
     mPropertySheet->addProperty(PT_INT, P_WAY, PID_TRIGGER_WAY);
     mPropertySheet->addProperty(PT_INT, P_ON, PID_TRIGGER_ON);
     mPropertySheet->addProperty(PT_INT, P_ACTION, PID_TRIGGER_ACTION);

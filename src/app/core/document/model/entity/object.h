@@ -23,7 +23,7 @@ public:
         INVALID
     };
 
-    TObject(Type type, QObject *parent = nullptr, bool createPosProperty = true);
+    TObject(Type type, QObject *parent = nullptr);
 
     Type type() const;
     virtual QString typeString() const = 0;

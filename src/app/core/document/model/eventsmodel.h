@@ -13,7 +13,10 @@ public:
     TEventsModel(QObject *parent = Q_NULLPTR);
 
     void clear();
+    QList<int> eventList() const;
 
+    // TIO interface
+public:
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
 

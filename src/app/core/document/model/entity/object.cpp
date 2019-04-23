@@ -1,15 +1,13 @@
 #include "object.h"
 #include "../../base/tr.h"
 
-static const QString P_POS = T("Position");
-static const QString P_SIZE = T("Size");
+static const QString P_RECT = T("Rect");
 
-TObject::TObject(Type type, QObject *parent, bool createPosProperty) :
+TObject::TObject(Type type, QObject *parent) :
     TPropertyObject(parent)
   , mType(type)
 {
-    if(createPosProperty)
-        initPropertySheet();
+    initPropertySheet();
 }
 
 TObject::Type TObject::type() const
@@ -17,48 +15,50 @@ TObject::Type TObject::type() const
     return mType;
 }
 
+QRectF TObject::rect() const
+{
+    return mPropertySheet->getValue(PID_OBJECT_RECT).toRectF();
+}
+
 QPointF TObject::pos() const
 {
-    return mPropertySheet->getValue(PID_OBJECT_POS).toPointF();
+    return mPropertySheet->getValue(PID_OBJECT_RECT).toRectF().topLeft();
 }
 
 void TObject::setPos(const QPointF &pos)
 {
-    QPointF currentPos = mPropertySheet->getValue(PID_OBJECT_POS).toPointF();
+    QRectF currentRect = mPropertySheet->getValue(PID_OBJECT_RECT).toRectF();
+    QPointF currentPos = currentRect.topLeft();
     if(currentPos == pos)
         return;
 
-    mPropertySheet->setValue(PID_OBJECT_POS, pos);
+    currentRect.moveTo(pos);
+    mPropertySheet->setValue(PID_OBJECT_RECT, currentRect);
 }
 
 QSize TObject::size() const
 {
-    return mPropertySheet->getValue(PID_OBJECT_SIZE).toSize();
+    return mPropertySheet->getValue(PID_OBJECT_RECT).toRectF().size().toSize();
 }
 
 void TObject::setSize(const QSize &size)
 {
-    QSize currentSize = mPropertySheet->getValue(PID_OBJECT_SIZE).toSize();
+    QRectF currentRect = mPropertySheet->getValue(PID_OBJECT_RECT).toRectF();
+    QSize currentSize = currentRect.size().toSize();
     if(currentSize == size)
         return;
 
-    mPropertySheet->setValue(PID_OBJECT_SIZE, size);
-}
-
-QRectF TObject::rect() const
-{
-    QPointF pos = mPropertySheet->getValue(PID_OBJECT_POS).toPointF();
-    QSizeF size = mPropertySheet->getValue(PID_OBJECT_SIZE).toSizeF();
-    return QRectF(pos, size);
+    currentRect.setSize(currentSize);
+    mPropertySheet->setValue(PID_OBJECT_RECT, currentRect);
 }
 
 void TObject::setRect(const QRectF &rect)
 {
-    if(rect.isEmpty())
+    QRectF currentRect = mPropertySheet->getValue(PID_OBJECT_RECT).toRectF();
+    if(currentRect == rect)
         return;
 
-    mPropertySheet->setValue(PID_OBJECT_POS, rect.topLeft());
-    mPropertySheet->setValue(PID_OBJECT_SIZE, rect.size());
+    mPropertySheet->setValue(PID_OBJECT_RECT, rect);
 }
 
 void TObject::move(const QPointF &offset)
@@ -66,13 +66,12 @@ void TObject::move(const QPointF &offset)
     if(offset.isNull())
         return;
 
-    QPointF pos = mPropertySheet->getValue(PID_OBJECT_POS).toPointF();
-    pos += offset;
-    mPropertySheet->setValue(PID_OBJECT_POS, pos);
+    QRectF currentRect = mPropertySheet->getValue(PID_OBJECT_RECT).toRectF();
+    currentRect.moveTopLeft(currentRect.topLeft()+offset);
+    mPropertySheet->setValue(PID_OBJECT_RECT, currentRect);
 }
 
 void TObject::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_VECTORF, P_POS, PID_OBJECT_POS);
-    mPropertySheet->addProperty(PT_SIZE, P_SIZE, PID_OBJECT_SIZE);
+    mPropertySheet->addProperty(PT_VECTORF, P_RECT, PID_OBJECT_RECT);
 }

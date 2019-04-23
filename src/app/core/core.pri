@@ -63,7 +63,8 @@ SOURCES += \
     $$PWD/document/graphics/layeritem/objectitem/dareaitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/boxitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/platitem.cpp \
-    $$PWD/document/graphics/layeritem/mainlayeritem.cpp
+    $$PWD/document/graphics/layeritem/mainlayeritem.cpp \
+    $$PWD/assets/mapsmodel.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -133,4 +134,5 @@ HEADERS  += \
     $$PWD/document/graphics/layeritem/objectitem/dareaitem.h \
     $$PWD/document/graphics/layeritem/objectitem/boxitem.h \
     $$PWD/document/graphics/layeritem/objectitem/platitem.h \
-    $$PWD/document/graphics/layeritem/mainlayeritem.h
+    $$PWD/document/graphics/layeritem/mainlayeritem.h \
+    $$PWD/assets/mapsmodel.h

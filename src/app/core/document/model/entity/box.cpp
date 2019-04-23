@@ -94,33 +94,30 @@ void TBox::readFromStream(QDataStream &stream)
 
     QPointF pos(x, y);
     QPointF speed(xSpeed, ySpeed);
-    QPoint size(width, height);
+    QSizeF size(width, height);
 
-    mPropertySheet->setValue(P_POS, pos);
-    mPropertySheet->setValue(P_SIZE, size);
-    mPropertySheet->setValue(P_SPEED, speed);
-    mPropertySheet->setValue(P_TARGET, target);
-    mPropertySheet->setValue(P_DRAW, draw);
-    mPropertySheet->setValue(P_TYPE, type);
-    mPropertySheet->setValue(P_CHUNK_TYPE, chunkType);
-    mPropertySheet->setValue(P_HIT_MODE, hitMode);
-    mPropertySheet->setValue(P_HIT_TIME, hitTime);
-    mPropertySheet->setValue(P_HIT_SPEED, hitSpeed);
-    mPropertySheet->setValue(P_HIT_Y_SPEED, hitYSpeed);
-    mPropertySheet->setValue(P_DAMAGE, damage);
-    mPropertySheet->setValue(P_HIT_SOUND, hitSound);
-    mPropertySheet->setValue(P_USE_TRIGGER, useTrigger);
-    mPropertySheet->setValue(P_BREAK, _break);
-    mPropertySheet->setValue(P_SOUND, sound);
-    mPropertySheet->setValue(P_BREAKABLE, breakable);
-    mPropertySheet->setValue(P_EVENTN, eventN);
-    mPropertySheet->setValue(P_EVENTN2, eventN2);
+    mPropertySheet->setValue(PID_OBJECT_RECT, QRectF(pos, size));
+    mPropertySheet->setValue(PID_BOX_SPEED, speed);
+    mPropertySheet->setValue(PID_BOX_TARGET, target);
+    mPropertySheet->setValue(PID_BOX_DRAW, draw);
+    mPropertySheet->setValue(PID_BOX_TYPE, type);
+    mPropertySheet->setValue(PID_BOX_CHUNK_TYPE, chunkType);
+    mPropertySheet->setValue(PID_BOX_HIT_MODE, hitMode);
+    mPropertySheet->setValue(PID_BOX_HIT_TIME, hitTime);
+    mPropertySheet->setValue(PID_BOX_HIT_SPEED, hitSpeed);
+    mPropertySheet->setValue(PID_BOX_HIT_Y_SPEED, hitYSpeed);
+    mPropertySheet->setValue(PID_BOX_DAMAGE, damage);
+    mPropertySheet->setValue(PID_BOX_HIT_SOUND, hitSound);
+    mPropertySheet->setValue(PID_BOX_USE_TRIGGER, useTrigger);
+    mPropertySheet->setValue(PID_BOX_BREAK, _break);
+    mPropertySheet->setValue(PID_BOX_SOUND, sound);
+    mPropertySheet->setValue(PID_BOX_BREAKABLE, breakable);
+    mPropertySheet->setValue(PID_BOX_EVENTN, eventN);
+    mPropertySheet->setValue(PID_BOX_EVENTN2, eventN2);
 }
 
 void TBox::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_VECTORF, P_POS, PID_BOX_POS);
-    mPropertySheet->addProperty(PT_SIZE, P_SIZE, PID_BOX_SIZE);
     mPropertySheet->addProperty(PT_VECTORF, P_SPEED, PID_BOX_SPEED);
     mPropertySheet->addProperty(PT_INT, P_TARGET, PID_BOX_TARGET);
     mPropertySheet->addProperty(PT_INT, P_DRAW, PID_BOX_DRAW);

@@ -1,13 +1,18 @@
 #include "objectitem.h"
+#include <QPen>
+#include <QPainter>
 
 TObjectItem::TObjectItem(TObject *object, QGraphicsItem *parent) :
     QGraphicsObject(parent)
   , mObject(object)
   , mAutonomy(false)
   , mNeedGrabMouse(false)
+  , mDrawBorder(true)
+  , mBorderColor(Qt::black)
 {
     Q_ASSERT(mObject);
 
+    setBoundingRect(mObject->rect());
     connect(mObject->propertySheet(),
             SIGNAL(propertyItemValueChanged(TPropertyItem*,QVariant)),
             this,
@@ -48,9 +53,39 @@ void TObjectItem::slotPropertyItemValueChanged(TPropertyItem *item, const QVaria
     propertyValueChanged(pid);
 
     // Notify to selection item or hovering item
-    if(pid==PID_OBJECT_POS || pid==PID_OBJECT_SIZE) {
+    if(pid==PID_OBJECT_RECT) {
+        mBoundingRect = item->value().toRectF();
         emit boundingRectChanged();
     }
+}
+
+void TObjectItem::setBoundingRect(const QRectF &boundingRect)
+{
+    mBoundingRect = boundingRect;
+}
+
+bool TObjectItem::drawBorder() const
+{
+    return mDrawBorder;
+}
+
+void TObjectItem::setDrawBorder(bool drawBorder)
+{
+    mDrawBorder = drawBorder;
+}
+
+QColor TObjectItem::borderColor() const
+{
+    return mBorderColor;
+}
+
+void TObjectItem::setBorderColor(const QColor &borderColor)
+{
+    if(mBorderColor == borderColor)
+        return;
+
+    mBorderColor = borderColor;
+    update(mBoundingRect);
 }
 
 QRectF TObjectItem::boundingRect() const
@@ -58,9 +93,13 @@ QRectF TObjectItem::boundingRect() const
     return mBoundingRect;
 }
 
-void TObjectItem::paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *)
+void TObjectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-
+    if(mDrawBorder) {
+        QPen pen(mBorderColor);
+        painter->setPen(pen);
+        painter->drawRect(mBoundingRect);
+    }
 }
 
 bool TObjectItem::needGrabMouse() const

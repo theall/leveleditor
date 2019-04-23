@@ -60,6 +60,11 @@ QPixmap TPixmap::pixmap() const
     return mPixmap;
 }
 
+QPixmap TPixmap::content()
+{
+    return mPixmap;
+}
+
 void TPixmap::load(const QString &file)
 {
     mFileFullName = file;

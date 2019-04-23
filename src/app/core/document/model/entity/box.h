@@ -11,10 +11,7 @@ class TBox : public TObject, TIO
     Q_OBJECT
 
 public:
-    TBox(QObject *parent = nullptr);
-
-    void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
-    void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
+    explicit TBox(QObject *parent = nullptr);
 
 private:
     void initPropertySheet();
@@ -23,6 +20,11 @@ private:
 public:
     QString typeString() const Q_DECL_OVERRIDE;
     bool isCongener(TObject *object) const Q_DECL_OVERRIDE;
+
+    // TIO interface
+public:
+    void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
+    void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
 };
 
 typedef QList<TBox*> TBoxList;

@@ -18,7 +18,7 @@ TStartPointItem::~TStartPointItem()
 
 void TStartPointItem::updateBoundingRect()
 {
-    QPointF _pos = mStartPoint->getValue(PID_OBJECT_POS).toPointF();
+    QPointF _pos = mStartPoint->getValue(PID_OBJECT_RECT).toRectF().topLeft();
     mBoundingRect.setSize(QSize(20,30));
     mBoundingRect.moveTop(_pos.y()-mBoundingRect.height());
     mBoundingRect.moveLeft(_pos.x()-mBoundingRect.width()/2);
@@ -68,6 +68,6 @@ void TStartPointItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
 
 void TStartPointItem::propertyValueChanged(PropertyID pid)
 {
-    if(pid == PID_OBJECT_POS)
+    if(pid == PID_OBJECT_RECT)
         updateBoundingRect();
 }

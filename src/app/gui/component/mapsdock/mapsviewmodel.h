@@ -38,6 +38,12 @@ class TMapBundle : public QObject
     Q_OBJECT
 
 public:
+    enum Type {
+        ADV,
+        CTF,
+        VS
+    };
+
     explicit TMapBundle(QObject *parent = Q_NULLPTR);
     ~TMapBundle();
 
@@ -61,19 +67,13 @@ class TModule : public QObject
     Q_OBJECT
 
 public:
-    enum Type {
-        ADV,
-        CTF,
-        VS
-    };
-
     explicit TModule(QObject *parent = Q_NULLPTR);
     ~TModule();
 
     QString name() const;
     void setName(const QString &name);
 
-    TMapBundle *getMapBundle(const Type &type) const;
+    TMapBundle *getMapBundle(const TMapBundle::Type &type) const;
     TMapBundle *getAdvBundle() const;
     TMapBundle *getVsBundle() const;
     TMapBundle *getCtfBundle() const;

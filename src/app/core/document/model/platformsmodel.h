@@ -14,7 +14,10 @@ public:
     TPlatformsModel(QObject *parent = Q_NULLPTR);
 
     void clear();
+    TPlatList platList() const;
 
+    // TIO interface
+public:
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
 

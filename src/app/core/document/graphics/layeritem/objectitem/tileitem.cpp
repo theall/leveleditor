@@ -11,8 +11,6 @@ TTileItem::TTileItem(TTile *tile, QGraphicsItem *parent) :
 {
     Q_ASSERT(mTile);
 
-    mBoundingRect = mTile->rect();
-
     if(mTile->hasMoveModel()) {
         mDoorItem = new TDoorItem(this);
         mTileDoorTrackItem = new TTrackItem(this, mDoorItem);
@@ -48,16 +46,12 @@ void TTileItem::setTargetTileItem(TTileItem *targetTileItem)
     mTargetTileItem = targetTileItem;
 }
 
-QRectF TTileItem::boundingRect() const
-{
-    return mTile->rect();
-}
-
-void TTileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void TTileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRectF r = mTile->rect();
     painter->drawPixmap(r.topLeft(), mTile->pixmap());
-    painter->drawRect(r);
+
+    TObjectItem::paint(painter, option, widget);
 }
 
 QPainterPath TTileItem::shape() const
@@ -69,7 +63,7 @@ QPainterPath TTileItem::shape() const
 
 void TTileItem::propertyValueChanged(PropertyID pid)
 {
-    if(pid==PID_OBJECT_POS) {
+    if(pid==PID_OBJECT_RECT) {
         // Position changed, synchrony update door's position
     }
 }
