@@ -1,39 +1,12 @@
-#ifndef TMAPSVIEWMODEL_H
-#define TMAPSVIEWMODEL_H
+#ifndef TMAPS_H
+#define TMAPS_H
 
 #include <QList>
 #include <QObject>
 #include <QPixmap>
 
+class TDocument;
 class TMap : public QObject
-{
-    Q_OBJECT
-
-public:
-    explicit TMap(QObject *parent = Q_NULLPTR);
-    ~TMap();
-
-    QString name() const;
-    void setName(const QString &name);
-
-    QPixmap thumbnail() const;
-    void setThumbnail(const QPixmap &thumbnail);
-
-    bool dirty() const;
-    void setDirty(bool dirty);
-
-signals:
-    void dirtyChanged(bool);
-    void thumbChanged(const QPixmap &newThumb);
-
-private:
-    bool mDirty;
-    QString mName;
-    QPixmap mThumbnail;
-};
-typedef QList<TMap*> TMapList;
-
-class TMapBundle : public QObject
 {
     Q_OBJECT
 
@@ -43,7 +16,40 @@ public:
         CTF,
         VS
     };
+    TMap(const Type &type, QObject *parent = Q_NULLPTR);
+    ~TMap();
 
+    QString name() const;
+    void setName(const QString &name);
+
+    QPixmap thumbnail() const;
+    void setThumbnail(const QPixmap &thumbnail);
+
+    bool isOpened() const;
+
+    Type type() const;
+    void setType(const Type &type);
+
+    int id() const;
+    void setId(int id);
+
+signals:
+    void thumbChanged(const QPixmap &newThumb);
+
+private:
+    Type mType;
+    int mId;
+    QString mName;
+    QPixmap mThumbnail;
+    TDocument *mDocument;
+};
+typedef QList<TMap*> TMapList;
+
+class TMapBundle : public QObject
+{
+    Q_OBJECT
+
+public:
     explicit TMapBundle(QObject *parent = Q_NULLPTR);
     ~TMapBundle();
 
@@ -73,7 +79,7 @@ public:
     QString name() const;
     void setName(const QString &name);
 
-    TMapBundle *getMapBundle(const TMapBundle::Type &type) const;
+    TMapBundle *getMapBundle(const TMap::Type &type) const;
     TMapBundle *getAdvBundle() const;
     TMapBundle *getVsBundle() const;
     TMapBundle *getCtfBundle() const;
@@ -86,27 +92,4 @@ private:
 };
 typedef QList<TModule*> TModuleList;
 
-class TMapsViewModel : public QObject
-{
-    Q_OBJECT
-
-public:
-    explicit TMapsViewModel(QObject *parent = Q_NULLPTR);
-    ~TMapsViewModel();
-
-    TModuleList moduleList() const;
-    void setModuleList(const TModuleList &moduleList);
-
-    int add(TModule *module, int index = -1);
-    int remove(int index);
-    int remove(TModule *module);
-
-signals:
-    void moduleAdded(TModule *module, int index);
-    void moduleRemoved(TModule *module, int index);
-
-private:
-    TModuleList mModuleList;
-};
-
-#endif // TMAPSVIEWMODEL_H
+#endif // TMAPS_H

@@ -29,7 +29,7 @@ QPixmap TMap::thumbnail() const
 void TMap::setThumbnail(const QPixmap &thumbnail)
 {
     mThumbnail = thumbnail;
-    emit thumbnailChanged(thumbnail);
+    emit thumbChanged(thumbnail);
 }
 
 bool TMap::dirty() const

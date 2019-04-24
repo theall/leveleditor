@@ -20,7 +20,7 @@ public:
     void setCurrentDocument(TDocument *document);
 
 private slots:
-    void slotOnResourceLoadCompleted();
+    void slotOnCoreReady();
 
 protected slots:
     void slotTimerEvent();

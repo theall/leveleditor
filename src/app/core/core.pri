@@ -52,7 +52,7 @@ SOURCES += \
     $$PWD/document/undocommand/objectundocommand.cpp \
     $$PWD/document/graphics/uiitem/selectionrectangle.cpp \
     $$PWD/document/graphics/tools/abstracttool.cpp \
-    $$PWD/assets/tilesetmodel.cpp \
+    $$PWD/model/tilesetmodel.cpp \
     $$PWD/document/graphics/layeritem/objectitem/areaitem.cpp \
     $$PWD/document/graphics/layeritem/tilelayeritem.cpp \
     $$PWD/document/graphics/layeritem/layeritem.cpp \
@@ -64,7 +64,9 @@ SOURCES += \
     $$PWD/document/graphics/layeritem/objectitem/boxitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/platitem.cpp \
     $$PWD/document/graphics/layeritem/mainlayeritem.cpp \
-    $$PWD/assets/mapsmodel.cpp
+    $$PWD/model/mapsmodel.cpp \
+    $$PWD/model/charactermodel.cpp \
+    $$PWD/assets/maps.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -123,7 +125,7 @@ HEADERS  += \
     $$PWD/document/graphics/uiitem/selectionrectangle.h \
     $$PWD/document/graphics/tools/abstracttool.h \
     $$PWD/assets/interface.h \
-    $$PWD/assets/tilesetmodel.h \
+    $$PWD/model/tilesetmodel.h \
     $$PWD/document/graphics/layeritem/objectitem/areaitem.h \
     $$PWD/document/graphics/layeritem/tilelayeritem.h \
     $$PWD/document/graphics/layeritem/layeritem.h \
@@ -135,4 +137,6 @@ HEADERS  += \
     $$PWD/document/graphics/layeritem/objectitem/boxitem.h \
     $$PWD/document/graphics/layeritem/objectitem/platitem.h \
     $$PWD/document/graphics/layeritem/mainlayeritem.h \
-    $$PWD/assets/mapsmodel.h
+    $$PWD/model/mapsmodel.h \
+    $$PWD/model/charactermodel.h \
+    $$PWD/assets/maps.h

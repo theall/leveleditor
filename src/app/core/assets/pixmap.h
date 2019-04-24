@@ -10,6 +10,7 @@ class TPixmap : public QObject
 
 public:
     TPixmap(QObject *parent = nullptr);
+    TPixmap(const QString &file, QObject *parent = nullptr);
     ~TPixmap();
 
     void load(const QString &file);
@@ -36,6 +37,6 @@ private:
     QPixmap mThumbnail;
 };
 
-typedef QList<TPixmap*> TPixmaps;
+typedef QList<TPixmap*> TPixmapList;
 
 #endif // DOCUMENT_PIXMAP_H

@@ -1,18 +1,17 @@
-#ifndef TTILESETCONTROLLER_H
-#define TTILESETCONTROLLER_H
+#ifndef TMAPSDOCKCONTROLLER_H
+#define TMAPSDOCKCONTROLLER_H
 
 #include "abstractcontroller.h"
-class TTilesetTab;
-class TTilesetController : public TAbstractController
+
+class TMapsDockController : public TAbstractController
 {
     Q_OBJECT
 
 public:
-    TTilesetController(QObject *parent = 0);
-    ~TTilesetController();
+    explicit TMapsDockController(QObject *parent = 0);
+    ~TMapsDockController();
 
 private:
-    TTilesetTab *mTilesetTab;
 
     // TAbstractController interface
 public:
@@ -26,4 +25,4 @@ protected slots:
     void slotTimerEvent();
 };
 
-#endif // TTILESETCONTROLLER_H
+#endif // TMAPSDOCKCONTROLLER_H

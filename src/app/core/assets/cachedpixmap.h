@@ -22,7 +22,7 @@ public:
     TPixmap *getPixmap(const QString &file);
     void sync();
 
-    TPixmaps getPixmapList();
+    TPixmapList getPixmapList();
 
     QString getPath() const;
 

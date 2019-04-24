@@ -6,6 +6,40 @@
 #include <QFileInfo>
 #include <QStringList>
 
+int getThumbId(const QString &mapName) {
+    QString idStr;
+    for(int i=mapName.size()-1;i>=0;i--) {
+        QChar c = mapName.at(i);
+        if(!c.isNumber()) {
+            break;
+        }
+        idStr.insert(0, c);
+    }
+    int id = -1;
+    if(!idStr.isEmpty()) {
+        id = idStr.toInt();
+    }
+    return id;
+}
+
+QString getThumbName(const QString &mapName) {
+    int i = 0;
+    int nameLength = mapName.length();
+    QString result = mapName;
+    for(i=0;i<nameLength;i++) {
+        if(mapName.at(i).isNumber()) {
+            result.insert(i, '_');
+            break;
+        }
+    }
+    int dotIndex = result.indexOf('.');
+    if(dotIndex != -1) {
+        result.chop(nameLength - dotIndex);
+    }
+    result.append(".jpg");
+    return result;
+}
+
 bool tileSetIdCompare(TTileset *tileSet1, TTileset *tileSet2)
 {
     return tileSet1->id() < tileSet2->id();
@@ -85,14 +119,14 @@ TilesetList TAssetsManager::getTilesetList() const
     return mTilesetList;
 }
 
-TTilesetModelList TAssetsManager::getTilesetModelList() const
-{
-    return mTilesetModelList;
-}
-
 TFaceList TAssetsManager::getFaceList() const
 {
     return mFaceList;
+}
+
+TModuleList TAssetsManager::getModuleList() const
+{
+    return mModuleList;
 }
 
 void TAssetsManager::loadAssets()
@@ -160,7 +194,8 @@ void TAssetsManager::loadAssets()
     }
 
     // Enumate map thumbnail
-    QStringList mapThumbFileList;
+    FREE_CONTAINER(mModuleList);
+    TPixmapList mapThumbFileList;
     QString mapsPath = mPath + "/Maps";
     QDir mapsDir(mapsPath);
     mapsDir.setFilter(QDir::Dirs);
@@ -170,17 +205,44 @@ void TAssetsManager::loadAssets()
         if(!moduleFileInfo.isDir())
             continue;
 
+        TModule *module = new TModule(this);
+        module->setName(moduleFileInfo.baseName());
+        TMapBundle *advBundle = module->getAdvBundle();
+        TMapBundle *vsBundle = module->getVsBundle();
+        TMapBundle *ctfBundle = module->getCtfBundle();
+
         QDir moduleDir(moduleFileInfo.absoluteFilePath());
         moduleDir.setFilter(QDir::Files | QDir::Hidden);
         QFileInfoList mapFileInfoList = moduleDir.entryInfoList();
         for (int j = 0; j < mapFileInfoList.size(); j++) {
             QFileInfo fileInfo = mapFileInfoList.at(j);
-            QString fileName = fileInfo.baseName().trimmed().toLower();
-            if(fileName.endsWith(".jpg")) {
-                mapThumbFileList.append(fileInfo.absoluteFilePath());
-                break;
+            QString baseName = fileInfo.baseName();
+            QString fileName = baseName.toLower();
+            QString ext = fileInfo.suffix().toLower();
+            if(ext == "dat") {
+                if(fileName.at(fileName.size()-1).isNumber()) {
+                    TMap *map = nullptr;
+                    TMapBundle *mapBundle = nullptr;
+                    if(fileName.startsWith("amap")) {
+                        map = new TMap(TMap::ADV, advBundle);
+                        mapBundle = advBundle;
+                    } else if(fileName.startsWith("map")) {
+                        map = new TMap(TMap::ADV, advBundle);
+                        mapBundle = vsBundle;
+                    } else if(fileName.startsWith("ctfmap")) {
+                        map = new TMap(TMap::ADV, advBundle);
+                        mapBundle = ctfBundle;
+                    }
+                    if(map && mapBundle) {
+                        map->setId(getThumbId(baseName));
+                        map->setName(baseName);
+                        mapBundle->add(map);
+                        mapThumbFileList.append(new TPixmap(moduleDir.absoluteFilePath(getThumbName(baseName)), map));
+                    }
+                }
             }
         }
+        mModuleList.append(module);
     }
 
     int assetsLoaded = 0;
@@ -201,7 +263,6 @@ void TAssetsManager::loadAssets()
     }
     // Sort
     qSort(mFaceList.begin(), mFaceList.end(), faceIdCompare);
-
 
     // Real load tile bitmap
     for(int i=0;i<tileSetIdList.size();i++) {
@@ -239,29 +300,14 @@ void TAssetsManager::loadAssets()
         qSort(mTilesetList.begin(), mTilesetList.end(), tileSetIdCompare);
     }
 
-    // Create tileset models
-    FREE_CONTAINER(mTilesetModelList);
-    for(TTileset *tileset : mTilesetList) {
-        TTilesetModel *tilesetModel = new TTilesetModel(tileset, this);
-        mTilesetModelList.append(tilesetModel);
-    }
-
     // Load map thumbnails
     for(int i=0;i<mapThumbFileList.size();i++) {
-        QString faceName = mapThumbFileList.at(i);
-        TPixmap *pixmap = new TPixmap(this);
-        pixmap->load(faceName);
-        if(pixmap->isValid())
-            ;
-        else
-            delete pixmap;
+        TPixmap *pixmap = mapThumbFileList.at(i);
+        pixmap->reload();
         assetsLoaded++;
         if(assetsLoaded%10 == 0)
             emit onProgress(assetsLoaded, totalAssets);
     }
-
-    // Sort
-    qSort(mFaceList.begin(), mFaceList.end(), faceIdCompare);
 
     emit onProgress(assetsLoaded, totalAssets);
     emit loadCompleted();

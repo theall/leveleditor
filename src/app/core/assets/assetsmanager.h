@@ -9,7 +9,7 @@
 #include "pixmap.h"
 #include "faceid.h"
 #include "tileset.h"
-#include "tilesetmodel.h"
+#include "maps.h"
 
 class TCachedSound;
 class TCachedPixmap;
@@ -31,9 +31,10 @@ public:
     TCachedSound *getCachedSounds() const;
 
     TilesetList getTilesetList() const;
-    TTilesetModelList getTilesetModelList() const;
 
     TFaceList getFaceList() const;
+
+    TModuleList getModuleList() const;
 
 signals:
     // Notify external object
@@ -46,7 +47,7 @@ private:
     TCachedPixmap *mCachedPixmaps;
     TCachedSound *mCachedSounds;
     TilesetList mTilesetList;
-    TTilesetModelList mTilesetModelList;
+    TModuleList mModuleList;
 
     void loadAssets();
     bool isValidpath() const;

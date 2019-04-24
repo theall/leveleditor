@@ -9,7 +9,8 @@ SOURCES += \
     $$PWD/miniscenecontroller.cpp \
     $$PWD/layerscontroller.cpp \
     $$PWD/tilesetcontroller.cpp \
-    $$PWD/characterpanelcontroller.cpp
+    $$PWD/characterpanelcontroller.cpp \
+    $$PWD/mapsdockcontroller.cpp
 
 HEADERS  += \
     $$PWD/abstractcontroller.h \
@@ -22,4 +23,5 @@ HEADERS  += \
     $$PWD/miniscenecontroller.h \
     $$PWD/layerscontroller.h \
     $$PWD/tilesetcontroller.h \
-    $$PWD/characterpanelcontroller.h
+    $$PWD/characterpanelcontroller.h \
+    $$PWD/mapsdockcontroller.h

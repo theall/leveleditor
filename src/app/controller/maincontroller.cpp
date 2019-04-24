@@ -32,7 +32,7 @@ TMainController::TMainController(QObject *parent) :
             this,
             SLOT(slotPropertyItemActived(TPropertyItem*)));
 
-    connect(TAssetsManager::getInstance(), SIGNAL(onProgress(int,int)), this, SLOT(slotOnProgress(int,int)));
+    connect(TAssetsManager::getInstance(), SIGNAL(onProgress(int,int)), this, SLOT(slotOnResourceLoadProgress(int,int)));
 }
 
 TMainController::~TMainController()
@@ -245,7 +245,7 @@ void TMainController::slotPropertyItemActived(TPropertyItem *propertyItem)
         return;
 }
 
-void TMainController::slotOnProgress(int progress, int total)
+void TMainController::slotOnResourceLoadProgress(int progress, int total)
 {
     if(mMainWindow) {
         mMainWindow->getLoadingDialog()->setProgress(progress, total);

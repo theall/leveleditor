@@ -39,6 +39,17 @@ void TModsTab::setMapsViewModel(TMapsViewModel *mapsViewModel)
     }
 }
 
+void TModsTab::setModel(QAbstractItemModel *model)
+{
+    if(!model)
+        return;
+
+    int moduleCount = model->rowCount();
+    for(int i=0;i<moduleCount;i++) {
+        TMapsTab *mapsTab = new TMapsTab(this);
+    }
+}
+
 void TModsTab::slotOnModuleAdded(TModule *module, int index)
 {
     if(!module)
@@ -60,3 +71,9 @@ void TModsTab::slotOnModuleRemoved(TModule *module, int index)
 
     removeTab(index);
 }
+
+void TModsTab::internalSetModel(QAbstractItemModel *model, const QModelIndex &index, QTabWidget *tabWidget)
+{
+
+}
+

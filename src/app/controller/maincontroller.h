@@ -46,7 +46,7 @@ private slots:
     void slotPropertyItemActived(TPropertyItem *propertyItem);
 
     // From assets loader
-    void slotOnProgress(int progress, int total);
+    void slotOnResourceLoadProgress(int progress, int total);
 
 private:
     TOptionsController *mOptionsController;

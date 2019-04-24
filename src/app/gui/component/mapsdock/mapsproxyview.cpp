@@ -108,3 +108,9 @@ void TMapsProxyView::setMapsViewModel(TMapsViewModel *mapsViewModel)
     mModsTab->setMapsViewModel(mapsViewModel);
     mModsTree->setMapsViewModel(mapsViewModel);
 }
+
+void TMapsProxyView::setModel(QAbstractItemModel *model)
+{
+    mModsTab->setModel(model);
+    mModsTree->setModel(model);
+}

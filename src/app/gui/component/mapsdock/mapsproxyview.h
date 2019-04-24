@@ -2,6 +2,7 @@
 #define TMAPSPROXYVIEW_H
 
 #include <QWidget>
+#include <QAbstractItemModel>
 #include "modstab.h"
 #include "modstree.h"
 #include "mapsviewmodel.h"
@@ -19,6 +20,7 @@ public:
 
     void setViewMode(const ViewMode &viewMode);
     void setMapsViewModel(TMapsViewModel *mapsViewModel);
+    void setModel(QAbstractItemModel *model);
 
 private:
     ViewMode mViewMode;

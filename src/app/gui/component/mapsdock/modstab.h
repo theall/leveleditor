@@ -2,6 +2,7 @@
 #define TMODSTAB_H
 
 #include <QTabWidget>
+#include <QAbstractItemView>
 #include "mapsviewmodel.h"
 
 class TModsTab : public QTabWidget
@@ -13,6 +14,7 @@ public:
     ~TModsTab();
 
     void setMapsViewModel(TMapsViewModel *mapsViewModel);
+    void setModel(QAbstractItemModel *model);
 
 private slots:
     void slotOnModuleAdded(TModule *module, int);
@@ -20,6 +22,7 @@ private slots:
 
 private:
     TMapsViewModel *mMapsViewModel;
+    void internalSetModel(QAbstractItemModel *model, const QModelIndex &index, QTabWidget *tabWidget);
 };
 
 #endif // TMODSTAB_H

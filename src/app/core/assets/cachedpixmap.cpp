@@ -71,7 +71,7 @@ void TCachedPixmap::run()
     qDebug() << "Synchrony pixmap cache.";
     mLock.lock();
     // Remove pixmap which is not exist on disk
-    TPixmaps tempList;
+    TPixmapList tempList;
     for(TPixmap *pixmap : mPixmapMap.values())
     {
         if(!QFile::exists(pixmap->fileFullName()))
@@ -122,10 +122,10 @@ QString TCachedPixmap::getPath() const
     return mPath;
 }
 
-TPixmaps TCachedPixmap::getPixmapList()
+TPixmapList TCachedPixmap::getPixmapList()
 {
     mLock.lock();
-    TPixmaps ps = mPixmapMap.values();
+    TPixmapList ps = mPixmapMap.values();
     mLock.unlock();
     return ps;
 }

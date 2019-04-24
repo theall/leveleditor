@@ -3,7 +3,7 @@
 
 #include <QList>
 #include <QAbstractListModel>
-#include "tileset.h"
+#include "../assets/tileset.h"
 
 class TTilesetModel : public QAbstractListModel
 {
@@ -15,8 +15,6 @@ public:
     void setTileset(TTileset *tileset);
 
 private:
-    int mColumns;
-    int mRows;
     TTileset *mTileset;
 
     // QAbstractItemModel interface

@@ -1,5 +1,5 @@
 #include "characterpanelcontroller.h"
-#include "../core/assets/assetsmanager.h"
+#include "../core/core.h"
 #include "../gui/component/characterdock/characterview.h"
 #include "../gui/component/characterdock/characterdock.h"
 
@@ -7,7 +7,7 @@ TCharacterPanelController::TCharacterPanelController(QObject *parent) :
     TAbstractController(parent)
   , mCharacterPanel(nullptr)
 {
-    connect(TAssetsManager::getInstance(), SIGNAL(loadCompleted()), this, SLOT(slotOnResourceLoadCompleted()));
+
 }
 
 TCharacterPanelController::~TCharacterPanelController()
@@ -21,6 +21,7 @@ bool TCharacterPanelController::joint(TMainWindow *mainWindow, TCore *core)
     Q_ASSERT(core);
     mCharacterPanel = mainWindow->getCharacterDock()->characterView();
 
+    connect(core, SIGNAL(ready()), this, SLOT(slotOnCoreReady()));
     return TAbstractController::joint(mainWindow, core);
 }
 
@@ -29,9 +30,9 @@ void TCharacterPanelController::setCurrentDocument(TDocument *)
 
 }
 
-void TCharacterPanelController::slotOnResourceLoadCompleted()
+void TCharacterPanelController::slotOnCoreReady()
 {
-    for(TFaceId *faceId: TAssetsManager::getInstance()->getFaceList()) {
+    for(TFaceId *faceId : mCore->characterModel()->faceList()) {
         mCharacterPanel->add(faceId->pixmap()->content());
     }
 }

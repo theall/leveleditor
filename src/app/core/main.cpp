@@ -1,13 +1,13 @@
 #include "core.h"
+#include <QMessageBox>
 #include <QApplication>
 #include <QGraphicsView>
-#include <QMessageBox>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    if(argc < 2) {
-        QMessageBox::critical(nullptr, "Error", "Need specify map full path!", QMessageBox::Ok);
+    if(argc < 3) {
+        QMessageBox::critical(nullptr, "Error", "Need specify game root and map full path!", QMessageBox::Ok);
         return app.exec();
     }
 

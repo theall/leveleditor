@@ -4,6 +4,9 @@
 #include <QList>
 #include <QString>
 #include "document/document.h"
+#include "model/tilesetmodel.h"
+#include "model/charactermodel.h"
+#include "model/mapsmodel.h"
 
 class TCore : public QObject
 {
@@ -25,12 +28,25 @@ public:
 
     QList<TDocument *> documents() const;
 
+    TTilesetModelList tilesetModelList() const;
+
+    TCharacterModel *characterModel() const;
+
+    TMapsModel *mapsModel() const;
+
 signals:
     void documentFileChanged(const QString &file);
+    void ready();
+
+private slots:
+    void slotOnResourceLoadCompleted();
 
 private:
     QList<TDocument*> mDocuments;
+    TTilesetModelList mTilesetModelList;
     TFileSystemWatcher *mFileWatcher;
+    TCharacterModel *mCharacterModel;
+    TMapsModel *mMapsModel;
 
     void addDocument(TDocument *document);
 };

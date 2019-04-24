@@ -2,9 +2,11 @@
 #define TCHARACTERVIEW_H
 
 #include <QWidget>
+#include <QListWidget>
 #include <QPushButton>
 #include <QSpacerItem>
-class TCharacterView : public QWidget
+
+class TCharacterView : public QListWidget
 {
     Q_OBJECT
 
@@ -18,16 +20,9 @@ signals:
     void characterToggled(int index, bool toggled);
 
 private:
-    int mCols;
     int mIconSize;
-    bool mResizeIgnored;
     QPushButton *mLastPushedButton;
-    QSpacerItem *mBottomSpacer;
-    QSpacerItem *mLeftSpacer;
-    QSpacerItem *mRightSpacer;
     QList<QPushButton*> mButtonList;
-    void calcRowsAndCols();
-    void reArrange();
 
 private slots:
     void slotOnFaceButtonToggled(bool);
@@ -35,7 +30,6 @@ private slots:
     // QWidget interface
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 };
 
 #endif // TCHARACTERVIEW_H

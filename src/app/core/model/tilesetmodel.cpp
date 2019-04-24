@@ -2,8 +2,6 @@
 
 TTilesetModel::TTilesetModel(TTileset *tileset, QObject *parent) :
     QAbstractListModel(parent)
-  , mColumns(0)
-  , mRows(0)
   , mTileset(tileset)
 {
     Q_ASSERT(mTileset);

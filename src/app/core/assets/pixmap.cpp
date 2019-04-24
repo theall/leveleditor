@@ -11,6 +11,15 @@ TPixmap::TPixmap(QObject *parent) :
 
 }
 
+TPixmap::TPixmap(const QString &file, QObject *parent) :
+    QObject(parent)
+  , mIsValid(false)
+  , mFileFullName(file)
+  , mFileName(QFileInfo(file).fileName())
+{
+
+}
+
 TPixmap::~TPixmap()
 {
 
