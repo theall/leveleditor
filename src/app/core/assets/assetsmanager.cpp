@@ -236,12 +236,14 @@ void TAssetsManager::loadAssets()
                     if(map && mapBundle) {
                         map->setId(getThumbId(baseName));
                         map->setName(baseName);
+                        map->setFullFilePath(fileInfo.absoluteFilePath());
                         mapBundle->add(map);
                         mapThumbFileList.append(new TPixmap(moduleDir.absoluteFilePath(getThumbName(baseName)), map));
                     }
                 }
             }
         }
+        module->sort();
         mModuleList.append(module);
     }
 

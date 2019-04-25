@@ -30,7 +30,9 @@ TDocument *TCore::open(const QString &file)
     TDocument *document = find(file);
     if(!document)
     {
-        document = new TDocument(file);
+        TMap *map = mMapsModel->find(file);
+        Q_ASSERT(map);
+        document = map->open();
         addDocument(document);
     }
     return document;

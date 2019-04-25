@@ -15,9 +15,20 @@ public:
 private:
     void retranslateUi();
 
+signals:
+    void modelIndexDoubleClicked(const QModelIndex &index);
+
     // QWidget interface
 protected:
     void changeEvent(QEvent *) Q_DECL_OVERRIDE;
+
+    // QWidget interface
+protected:
+    void mouseDoubleClickEvent(QMouseEvent *event);
+
+    // QAbstractItemView interface
+public:
+    void setModel(QAbstractItemModel *model);
 };
 
 #endif // TMODSTREE_H

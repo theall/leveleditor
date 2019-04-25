@@ -93,6 +93,17 @@ void TMapsModel::setDirtyColor(const QColor &dirtyColor)
     mDirtyColor = dirtyColor;
 }
 
+TMap *TMapsModel::find(const QString &mapFilePath) const
+{
+    TMap *map = nullptr;
+    for(TModule *module : mModuleList) {
+        map = module->find(mapFilePath);
+        if(map)
+            break;
+    }
+    return map;
+}
+
 QColor TMapsModel::openedColor() const
 {
     return mOpenedColor;
@@ -190,14 +201,18 @@ QVariant TMapsModel::data(const QModelIndex &index, int role) const
         }
     } else if(TMap *map = dynamic_cast<TMap*>(data)) {
         if(role == Qt::DisplayRole) {
-            return map->name();
+            if(map->isDirty()) {
+                return map->name().append('*');
+            } else {
+                return map->name();
+            }
         } else if(role == Qt::DecorationRole) {
             return map->thumbnail();
         } else if(role ==Qt::TextColorRole) {
-            if(map->isOpened()) {
-                return mOpenedColor;
-            } else if(map->isDirty()) {
+            if(map->isDirty()) {
                 return mDirtyColor;
+            } else if(map->isOpened()) {
+                return mOpenedColor;
             }
         }
     }

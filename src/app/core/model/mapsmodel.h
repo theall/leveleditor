@@ -25,6 +25,8 @@ public:
     QColor dirtyColor() const;
     void setDirtyColor(const QColor &dirtyColor);
 
+    TMap *find(const QString &mapFilePath) const;
+
 signals:
     void moduleAdded(TModule *module, int index);
     void moduleRemoved(TModule *module, int index);

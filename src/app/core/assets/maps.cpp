@@ -1,6 +1,11 @@
 #include "maps.h"
 #include "../document/document.h"
 
+bool idCompare(TMap *map1, TMap *map2)
+{
+    return map1->id() < map2->id();
+}
+
 TMap::TMap(const TMap::Type &type, TMapBundle *parent) :
     QObject(parent)
   , mType(type)
@@ -83,6 +88,34 @@ int TMap::indexInMapBundle() const
 void TMap::setIndexInMapBundle(int indexInMapBundle)
 {
     mIndexInMapBundle = indexInMapBundle;
+}
+
+QString TMap::fullFilePath() const
+{
+    return mFileFullPath;
+}
+
+void TMap::setFullFilePath(const QString &fullFilePath)
+{
+    mFileFullPath = fullFilePath;
+}
+
+TDocument *TMap::document() const
+{
+    return mDocument;
+}
+
+void TMap::setDocument(TDocument *document)
+{
+    mDocument = document;
+}
+
+TDocument *TMap::open()
+{
+    if(!mDocument) {
+        mDocument = new TDocument(mFileFullPath);
+    }
+    return mDocument;
 }
 
 TMapBundle::TMapBundle(TModule *parent) :
@@ -191,6 +224,21 @@ void TMapBundle::setIndexInModule(int indexInModule)
     mIndexInModule = indexInModule;
 }
 
+void TMapBundle::sort()
+{
+    qSort(mMapList.begin(), mMapList.end(), idCompare);
+}
+
+TMap *TMapBundle::find(const QString &mapFilePath) const
+{
+    for(TMap *map : mMapList) {
+        if(map->fullFilePath() == mapFilePath) {
+            return map;
+        }
+    }
+    return nullptr;
+}
+
 TModule::TModule(QObject *parent) :
     QObject(parent)
   , mHasOpenedMap(false)
@@ -273,4 +321,22 @@ int TModule::getIndexInModel() const
 void TModule::setIndexInModel(int indexInModel)
 {
     mIndexInModel = indexInModel;
+}
+
+void TModule::sort()
+{
+    for(TMapBundle *mapBundle : mMapBundleList) {
+        mapBundle->sort();
+    }
+}
+
+TMap *TModule::find(const QString &mapFilePath) const
+{
+    TMap *map = nullptr;
+    for(TMapBundle *mapBundle : mMapBundleList) {
+        map = mapBundle->find(mapFilePath);
+        if(map)
+            break;
+    }
+    return map;
 }

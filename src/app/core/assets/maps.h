@@ -40,6 +40,14 @@ public:
     int indexInMapBundle() const;
     void setIndexInMapBundle(int indexInMapBundle);
 
+    QString fullFilePath() const;
+    void setFullFilePath(const QString &fullFilePath);
+
+    TDocument *document() const;
+    void setDocument(TDocument *document);
+
+    TDocument *open();
+
 signals:
     void thumbChanged(const QPixmap &newThumb);
 
@@ -47,6 +55,7 @@ private:
     Type mType;
     int mId;
     QString mName;
+    QString mFileFullPath;
     QPixmap mThumbnail;
     TDocument *mDocument;
     TMapBundle *mMapBundle;
@@ -85,6 +94,10 @@ public:
     int getIndexInModule() const;
     void setIndexInModule(int indexInModule);
 
+    void sort();
+
+    TMap *find(const QString &mapFilePath) const;
+
 signals:
     void mapAdded(TMap *map, int index);
     void mapRemoved(TMap *map, int index);
@@ -121,6 +134,11 @@ public:
 
     int getIndexInModel() const;
     void setIndexInModel(int indexInModel);
+
+    void sort();
+
+    TMap *find(const QString &mapFilePath) const;
+
 
 private:
     QString mName;

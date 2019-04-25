@@ -1,5 +1,7 @@
 #include "modstree.h"
 #include <QHeaderView>
+#include <QMouseEvent>
+#include <QAbstractItemModel>
 
 TModsTree::TModsTree(QWidget *parent) :
     QTreeView(parent)
@@ -31,4 +33,21 @@ void TModsTree::changeEvent(QEvent *event)
     }
 
     QTreeView::changeEvent(event);
+}
+
+void TModsTree::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    QAbstractItemModel *m = model();
+    if(!m)
+        return;
+
+    QModelIndex clickedIndex = indexAt(event->pos());
+    emit modelIndexDoubleClicked(clickedIndex);
+}
+
+void TModsTree::setModel(QAbstractItemModel *model)
+{
+    QTreeView::setModel(model);
+
+    expandAll();
 }
