@@ -40,22 +40,9 @@ TDocument::~TDocument()
 
 }
 
-TDocument *TDocument::create(const QString &projectRoot, const QString &projectName)
+TDocument *TDocument::create()
 {
     TDocument *document = new TDocument;
-    QFileInfo fi(projectRoot);
-    if(!fi.isDir() || !fi.exists())
-    {
-        QDir d = fi.absoluteDir();
-        d.mkdir(fi.baseName());
-    }
-    document->setProjectRoot(projectRoot);
-    document->setProjectName(projectName);
-
-    QString fillFullName = projectRoot + "/" + projectName + ".dat";
-
-    document->save(fillFullName);
-
     return document;
 }
 
@@ -72,11 +59,6 @@ void TDocument::addUndoCommand(QUndoCommand *command)
 QString TDocument::baseName() const
 {
     return mBaseName;
-}
-
-QDir TDocument::projectDir() const
-{
-    return mProjectDir;
 }
 
 bool TDocument::save(const QString &fileName)
@@ -127,11 +109,9 @@ QString TDocument::fileName() const
 void TDocument::setFileName(const QString &fileName)
 {
     QFileInfo fileInfo(fileName);
-    setProjectRoot(fileInfo.absolutePath());
 
     mFileName = fileName;
     mBaseName = fileInfo.baseName();
-    mProjectName = mBaseName;
 
     if(!mFileName.isEmpty())
         mFileWatcher->addPath(mFileName);
@@ -145,27 +125,6 @@ void TDocument::setBaseName(const QString &baseName)
 TPropertySheet *TDocument::propertySheet() const
 {
     return mPropertySheet;
-}
-
-QString TDocument::projectRoot() const
-{
-    return mProjectRoot;
-}
-
-void TDocument::setProjectRoot(const QString &projectRoot)
-{
-    mProjectDir.setPath(projectRoot);
-    mProjectRoot = projectRoot;
-}
-
-QString TDocument::projectName() const
-{
-    return mProjectName;
-}
-
-void TDocument::setProjectName(const QString &projectName)
-{
-    mProjectName = projectName;
 }
 
 void TDocument::load(const QString &file)

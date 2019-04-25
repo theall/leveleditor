@@ -6,6 +6,7 @@
 #include <QPixmap>
 
 class TDocument;
+class TMapBundle;
 class TMap : public QObject
 {
     Q_OBJECT
@@ -16,7 +17,7 @@ public:
         CTF,
         VS
     };
-    TMap(const Type &type, QObject *parent = Q_NULLPTR);
+    TMap(const Type &type, TMapBundle *parent);
     ~TMap();
 
     QString name() const;
@@ -26,12 +27,18 @@ public:
     void setThumbnail(const QPixmap &thumbnail);
 
     bool isOpened() const;
+    bool isDirty() const;
 
     Type type() const;
     void setType(const Type &type);
 
     int id() const;
     void setId(int id);
+
+    TMapBundle *mapBundle() const;
+
+    int indexInMapBundle() const;
+    void setIndexInMapBundle(int indexInMapBundle);
 
 signals:
     void thumbChanged(const QPixmap &newThumb);
@@ -42,15 +49,18 @@ private:
     QString mName;
     QPixmap mThumbnail;
     TDocument *mDocument;
+    TMapBundle *mMapBundle;
+    int mIndexInMapBundle;
 };
 typedef QList<TMap*> TMapList;
 
+class TModule;
 class TMapBundle : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit TMapBundle(QObject *parent = Q_NULLPTR);
+    explicit TMapBundle(TModule *parent);
     ~TMapBundle();
 
     TMapList mapList() const;
@@ -60,13 +70,34 @@ public:
     int remove(TMap *map);
     int remove(int index);
 
+    QString name() const;
+    void setName(const QString &name);
+
+    bool hasOpenedMap() const;
+    bool hasDirtyMap() const;
+
+    TMap *getMap(int index) const;
+
+    TModule *getModule() const;
+
+    int size() const;
+
+    int getIndexInModule() const;
+    void setIndexInModule(int indexInModule);
+
 signals:
     void mapAdded(TMap *map, int index);
     void mapRemoved(TMap *map, int index);
 
 private:
+    QString mName;
+    int mIndexInModule;
+    bool mHasOpenedMap;
+    bool mHasDirtyMap;
     TMapList mMapList;
+    TModule *mModule;
 };
+typedef QList<TMapBundle*> TMapBundleList;
 
 class TModule : public QObject
 {
@@ -84,11 +115,22 @@ public:
     TMapBundle *getVsBundle() const;
     TMapBundle *getCtfBundle() const;
 
+    int size() const;
+    bool hasOpenedMap() const;
+    bool hasDirtyMap() const;
+
+    int getIndexInModel() const;
+    void setIndexInModel(int indexInModel);
+
 private:
     QString mName;
+    bool mHasOpenedMap;
+    bool mHasDirtyMap;
+    int mIndexInModel;
     TMapBundle *mAdvBundle;
     TMapBundle *mVsBundle;
     TMapBundle *mCtfBundle;
+    TMapBundleList mMapBundleList;
 };
 typedef QList<TModule*> TModuleList;
 

@@ -1,8 +1,20 @@
 #include "pixmap.h"
 
+#include <QFile>
 #include <QBitmap>
 #include <QPainter>
 #include <QFileInfo>
+
+QByteArray loadImageFile(const QString &file) {
+    QFile readFile(file);
+    QByteArray result;
+    if(readFile.open(QIODevice::ReadOnly))
+    {
+        result = readFile.readAll();
+        readFile.close();
+    }
+    return result;
+}
 
 TPixmap::TPixmap(QObject *parent) :
     QObject(parent)
@@ -84,9 +96,9 @@ void TPixmap::load(const QString &file)
 
 void TPixmap::reload()
 {           
-    mIsValid = false;
-    mPixmap.load(mFileFullName);
-    if(mPixmap.isNull())
+    QByteArray imageData = loadImageFile(mFileFullName);
+    mIsValid = mPixmap.loadFromData(imageData);
+    if(!mIsValid)
         return;
 
     QBitmap mask = mPixmap.createMaskFromColor(Qt::black);
@@ -102,5 +114,4 @@ void TPixmap::reload()
     } else {
         mThumbnail = mPixmap;
     }
-    mIsValid = true;
 }

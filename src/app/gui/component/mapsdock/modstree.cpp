@@ -1,32 +1,19 @@
 #include "modstree.h"
+#include <QHeaderView>
 
 TModsTree::TModsTree(QWidget *parent) :
     QTreeView(parent)
 {
+    setRootIsDecorated(true);
+    setHeaderHidden(true);
+    setItemsExpandable(true);
+    setUniformRowHeights(true);
 
+    setSelectionBehavior(QAbstractItemView::SelectRows);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
 }
 
 TModsTree::~TModsTree()
-{
-
-}
-
-TMapsViewModel *TModsTree::mapsViewModel() const
-{
-    return mMapsViewModel;
-}
-
-void TModsTree::setMapsViewModel(TMapsViewModel *mapsViewModel)
-{
-    mMapsViewModel = mapsViewModel;
-}
-
-void TModsTree::slotOnModuleAdded(TModule *module)
-{
-
-}
-
-void TModsTree::slotOnModuleRemoved(TModule *module, int index)
 {
 
 }

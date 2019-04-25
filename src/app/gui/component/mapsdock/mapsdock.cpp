@@ -41,6 +41,11 @@ void TMapsDock::slotActionShowTreeViewToggled(bool checked)
     mMapsProxyView->setViewMode(checked?TMapsProxyView::Tree:TMapsProxyView::Tab);
 }
 
+TMapsProxyView *TMapsDock::mapsProxyView() const
+{
+    return mMapsProxyView;
+}
+
 void TMapsDock::retranslateUi()
 {
     setWindowTitle(tr("Maps"));

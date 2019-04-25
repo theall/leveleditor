@@ -4,7 +4,6 @@
 #include <QEvent>
 #include <QTabWidget>
 #include "mapview.h"
-#include "mapsviewmodel.h"
 
 class TMapsTab : public QTabWidget
 {
@@ -12,11 +11,11 @@ public:
     explicit TMapsTab(QWidget *parent = Q_NULLPTR);
     ~TMapsTab();
 
-    TModule *module() const;
-    void setModule(TModule *module);
+//    TModule *module() const;
+//    void setModule(TModule *module);
 
 private:
-    TModule *mModule;
+//    TModule *mModule;
     TMapView *mAdvView;
     TMapView *mCtfView;
     TMapView *mVsView;

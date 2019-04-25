@@ -18,7 +18,7 @@ public:
 
     bool loadResource(const QString &path, bool asynLoad = true) const;
     TDocument *open(const QString &file);    
-    TDocument *newDocument(const QString &projectRoot, const QString &projectName);
+    TDocument *newDocument();
 
     TDocument *find(const QString &file);
     void closeDocument(TDocument *document);

@@ -5,7 +5,6 @@
 #include <QAbstractItemModel>
 #include "modstab.h"
 #include "modstree.h"
-#include "mapsviewmodel.h"
 
 class TMapsProxyView : public QWidget
 {
@@ -19,14 +18,12 @@ public:
     ~TMapsProxyView();
 
     void setViewMode(const ViewMode &viewMode);
-    void setMapsViewModel(TMapsViewModel *mapsViewModel);
     void setModel(QAbstractItemModel *model);
 
 private:
     ViewMode mViewMode;
     TModsTab *mModsTab;
     TModsTree *mModsTree;
-    TMapsViewModel *mMapsViewModel;
 };
 
 #endif // TMAPSPROXYVIEW_H

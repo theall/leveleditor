@@ -22,7 +22,7 @@ public:
     TDocument(const QString &file=QString(), QObject *parent=nullptr);
     ~TDocument();
 
-    static TDocument *create(const QString &projectRoot, const QString &projectName);
+    static TDocument *create();
 
     QUndoStack *undoStack() const;
     void addUndoCommand(QUndoCommand *command);
@@ -38,12 +38,6 @@ public:
     void setBaseName(const QString &baseName);
 
     TPropertySheet *propertySheet() const;
-
-    QString projectRoot() const;
-    void setProjectRoot(const QString &projectRoot);
-
-    QString projectName() const;
-    void setProjectName(const QString &projectName);
 
     bool isDirty() const;
     void setDirty(bool isDirty);
@@ -69,11 +63,7 @@ private slots:
 private:
     bool mIsDirty;
     QDateTime mLastSaveTime;
-    QString mLastExportFileName;
     QUndoStack *mUndoStack;
-    QDir mProjectDir;
-    QString mProjectRoot;
-    QString mProjectName;
     QString mFileName;
     QString mBaseName;
 

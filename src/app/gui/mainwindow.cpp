@@ -321,7 +321,7 @@ void TMainWindow::slotStyleChanged(const QString &style)
 
 void TMainWindow::on_actionNew_triggered()
 {
-    QMessageBox::information(this, "Information", "Not implement yet!");
+    emit requestCreateProject();
 }
 
 TMapsDock *TMainWindow::getMapsDock() const

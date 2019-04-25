@@ -82,6 +82,7 @@ public:
     TCharacterDock *getCharacterDock() const;
 
 signals:
+    void requestCreateProject();
     void requestOpenProject(const QString &file);
     void requestSaveCurrentProject();
     void requestSaveAllProjects();

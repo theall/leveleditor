@@ -362,7 +362,7 @@ QString TTile::typeString() const
 
 bool TTile::isCongener(TObject *object) const
 {
-    TTile *tile = static_cast<TTile*>(object);
+    TTile *tile = dynamic_cast<TTile*>(object);
     if(!tile)
         return false;
 

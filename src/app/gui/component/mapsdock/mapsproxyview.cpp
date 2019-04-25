@@ -3,7 +3,7 @@
 
 TMapsProxyView::TMapsProxyView(QWidget *parent) :
     QWidget(parent)
-  , mViewMode(Tree)
+  , mViewMode(Tab)
   , mModsTab(new TModsTab(this))
   , mModsTree(new TModsTree(this))
 {
@@ -15,7 +15,7 @@ TMapsProxyView::TMapsProxyView(QWidget *parent) :
     vboxLayout->setSpacing(0);
     setLayout(vboxLayout);
 
-    setViewMode(Tab);
+    setViewMode(Tree);
 
 #ifdef GUI_STAND_ALONE
     TMapsViewModel *model = new TMapsViewModel(this);
@@ -97,16 +97,6 @@ void TMapsProxyView::setViewMode(const TMapsProxyView::ViewMode &viewMode)
         mModsTab->setVisible(true);
         mModsTree->setVisible(false);
     }
-}
-
-void TMapsProxyView::setMapsViewModel(TMapsViewModel *mapsViewModel)
-{
-    if(mMapsViewModel == mapsViewModel)
-        return;
-
-    mMapsViewModel = mapsViewModel;
-    mModsTab->setMapsViewModel(mapsViewModel);
-    mModsTree->setMapsViewModel(mapsViewModel);
 }
 
 void TMapsProxyView::setModel(QAbstractItemModel *model)

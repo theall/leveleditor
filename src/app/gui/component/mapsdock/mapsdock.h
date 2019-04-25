@@ -15,6 +15,8 @@ public:
     TMapsDock(QWidget *parent = nullptr);
     ~TMapsDock();
 
+    TMapsProxyView *mapsProxyView() const;
+
 signals:
     void requestOpenMap(const QString &mapName);
 

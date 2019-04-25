@@ -18,6 +18,7 @@ TMainController::TMainController(QObject *parent) :
   , mMiniSceneController(new TMiniSceneController(this))
   , mTilesetController(new TTilesetController(this))
   , mCharacterController(new TCharacterPanelController(this))
+  , mMapsDockController(new TMapsDockController(this))
 {
     connect(mTabController, SIGNAL(requestCloseDocument(TDocument*)), this, SLOT(slotRequestCloseDocument(TDocument*)));
     connect(mTabController, SIGNAL(requestSwitchToDocument(TDocument*)), this, SLOT(slotRequestSwitchToDocument(TDocument*)));
@@ -270,9 +271,9 @@ bool TMainController::confirmAllSaved()
     return true;
 }
 
-void TMainController::createNewDocument(const QString &projectRoot, const QString &projectName)
+void TMainController::createNewDocument()
 {
-    TDocument *document = mCore->newDocument(projectRoot, projectName);
+    TDocument *document = mCore->newDocument();
     setCurrentDocument(document);
     mMainWindow->addRecentFile(document->fileName());
 }

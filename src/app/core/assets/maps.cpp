@@ -1,10 +1,13 @@
 #include "maps.h"
 #include "../document/document.h"
 
-TMap::TMap(const TMap::Type &type, QObject *parent) :
+TMap::TMap(const TMap::Type &type, TMapBundle *parent) :
     QObject(parent)
   , mType(type)
+  , mId(-1)
   , mDocument(nullptr)
+  , mMapBundle(parent)
+  , mIndexInMapBundle(-1)
 {
 
 }
@@ -40,6 +43,13 @@ bool TMap::isOpened() const
     return mDocument!=nullptr;
 }
 
+bool TMap::isDirty() const
+{
+    if(mDocument)
+        return mDocument->isDirty();
+    return false;
+}
+
 TMap::Type TMap::type() const
 {
     return mType;
@@ -60,8 +70,27 @@ void TMap::setId(int id)
     mId = id;
 }
 
-TMapBundle::TMapBundle(QObject *parent) :
+TMapBundle *TMap::mapBundle() const
+{
+    return mMapBundle;
+}
+
+int TMap::indexInMapBundle() const
+{
+    return mIndexInMapBundle;
+}
+
+void TMap::setIndexInMapBundle(int indexInMapBundle)
+{
+    mIndexInMapBundle = indexInMapBundle;
+}
+
+TMapBundle::TMapBundle(TModule *parent) :
     QObject(parent)
+  , mIndexInModule(-1)
+  , mHasOpenedMap(false)
+  , mHasDirtyMap(false)
+  , mModule(parent)
 {
 
 }
@@ -96,7 +125,11 @@ int TMapBundle::add(TMap *map, int index)
     } else {
         mMapList.insert(index, map);
         mapIndex = index;
+        for(int i=mapIndex+1;i<mMapList.size();i++) {
+            mMapList.at(i)->setIndexInMapBundle(i);
+        }
     }
+    map->setIndexInMapBundle(mapIndex);
     emit mapAdded(map, mapIndex);
     return mapIndex;
 }
@@ -111,13 +144,71 @@ int TMapBundle::remove(int index)
 
 }
 
+QString TMapBundle::name() const
+{
+    return mName;
+}
+
+void TMapBundle::setName(const QString &name)
+{
+    mName = name;
+}
+
+bool TMapBundle::hasOpenedMap() const
+{
+    return mHasOpenedMap;
+}
+
+bool TMapBundle::hasDirtyMap() const
+{
+    return mHasDirtyMap;
+}
+
+TMap *TMapBundle::getMap(int index) const
+{
+    if(index>=0 && index<mMapList.size())
+        return mMapList.at(index);
+    return nullptr;
+}
+
+TModule *TMapBundle::getModule() const
+{
+    return mModule;
+}
+
+int TMapBundle::size() const
+{
+    return mMapList.size();
+}
+
+int TMapBundle::getIndexInModule() const
+{
+    return mIndexInModule;
+}
+
+void TMapBundle::setIndexInModule(int indexInModule)
+{
+    mIndexInModule = indexInModule;
+}
+
 TModule::TModule(QObject *parent) :
     QObject(parent)
+  , mHasOpenedMap(false)
+  , mHasDirtyMap(false)
+  , mIndexInModel(-1)
   , mAdvBundle(new TMapBundle(this))
   , mVsBundle(new TMapBundle(this))
   , mCtfBundle(new TMapBundle(this))
 {
-
+    mAdvBundle->setName(tr("ADV"));
+    mVsBundle->setName(tr("VS"));
+    mCtfBundle->setName(tr("CTF"));
+    mMapBundleList.append(mAdvBundle);
+    mMapBundleList.append(mVsBundle);
+    mMapBundleList.append(mCtfBundle);
+    for(int i=0;i<mMapBundleList.size();i++) {
+        mMapBundleList.at(i)->setIndexInModule(i);
+    }
 }
 
 TModule::~TModule()
@@ -157,4 +248,29 @@ TMapBundle *TModule::getVsBundle() const
 TMapBundle *TModule::getCtfBundle() const
 {
     return mCtfBundle;
+}
+
+int TModule::size() const
+{
+    return 3;
+}
+
+bool TModule::hasOpenedMap() const
+{
+    return mHasOpenedMap;
+}
+
+bool TModule::hasDirtyMap() const
+{
+    return mHasDirtyMap;
+}
+
+int TModule::getIndexInModel() const
+{
+    return mIndexInModel;
+}
+
+void TModule::setIndexInModel(int indexInModel)
+{
+    mIndexInModel = indexInModel;
 }

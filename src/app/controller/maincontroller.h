@@ -10,6 +10,7 @@
 #include "optionscontroller.h"
 #include "tilesetcontroller.h"
 #include "characterpanelcontroller.h"
+#include "mapsdockcontroller.h"
 
 class TMainController : public TAbstractController
 {
@@ -56,9 +57,10 @@ private:
     TMiniSceneController *mMiniSceneController;
     TTilesetController *mTilesetController;
     TCharacterPanelController *mCharacterController;
+    TMapsDockController *mMapsDockController;
 
     bool confirmAllSaved();
-    void createNewDocument(const QString &projectRoot, const QString &projectName);
+    void createNewDocument();
 
 protected slots:
     void slotTimerEvent() Q_DECL_OVERRIDE;

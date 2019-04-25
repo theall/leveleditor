@@ -2,7 +2,9 @@
 #define TMAPSDOCKCONTROLLER_H
 
 #include "abstractcontroller.h"
+#include "core/model/mapsmodel.h"
 
+class TMapsProxyView;
 class TMapsDockController : public TAbstractController
 {
     Q_OBJECT
@@ -12,6 +14,8 @@ public:
     ~TMapsDockController();
 
 private:
+    TMapsModel *mMapsModel;
+    TMapsProxyView *mMapsProxyView;
 
     // TAbstractController interface
 public:
@@ -20,6 +24,8 @@ public:
 
 private slots:
     void slotOnCoreReady();
+    void slotOnModuleAdded(TModule *module, int);
+    void slotOnModuleRemoved(TModule *module, int index);
 
 protected slots:
     void slotTimerEvent();

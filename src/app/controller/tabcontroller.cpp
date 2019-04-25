@@ -112,7 +112,7 @@ int TTabController::addDocument(TDocument *document)
     if(!document)
         return -1;
 
-    int index = mTabWidget->addTab(document, document->projectName(), QPixmap());
+    int index = mTabWidget->addTab(document, document->baseName(), QPixmap());
     mTabWidget->setTabToolTip(index, document->fileName());
     setGraphicsScene(index, document->graphicsScene());
 

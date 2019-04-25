@@ -199,7 +199,7 @@ void TAssetsManager::loadAssets()
     QString mapsPath = mPath + "/Maps";
     QDir mapsDir(mapsPath);
     mapsDir.setFilter(QDir::Dirs);
-    QFileInfoList moduleInfoList = mapsDir.entryInfoList();
+    QFileInfoList moduleInfoList = mapsDir.entryInfoList(QDir::Dirs|QDir::NoDotAndDotDot);
     for (int i = 0; i < moduleInfoList.size(); i++) {
         QFileInfo moduleFileInfo = moduleInfoList.at(i);
         if(!moduleFileInfo.isDir())
@@ -227,10 +227,10 @@ void TAssetsManager::loadAssets()
                         map = new TMap(TMap::ADV, advBundle);
                         mapBundle = advBundle;
                     } else if(fileName.startsWith("map")) {
-                        map = new TMap(TMap::ADV, advBundle);
+                        map = new TMap(TMap::VS, vsBundle);
                         mapBundle = vsBundle;
                     } else if(fileName.startsWith("ctfmap")) {
-                        map = new TMap(TMap::ADV, advBundle);
+                        map = new TMap(TMap::CTF, ctfBundle);
                         mapBundle = ctfBundle;
                     }
                     if(map && mapBundle) {

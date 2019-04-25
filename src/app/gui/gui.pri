@@ -52,12 +52,11 @@ SOURCES += \
     $$PWD/component/characterdock/characterdock.cpp \
     $$PWD/component/characterdock/characterview.cpp \
     $$PWD/component/mapsdock/mapsdock.cpp \
-    $$PWD/component/mapsdock/mapstab.cpp \
+    $$PWD/component/mapsdock/modstab/mapstab.cpp \
     $$PWD/component/mapsdock/mapsproxyview.cpp \
     $$PWD/component/mapsdock/modstab.cpp \
     $$PWD/component/mapsdock/modstree.cpp \
-    $$PWD/component/mapsdock/mapsviewmodel.cpp \
-    $$PWD/component/mapsdock/mapview.cpp
+    $$PWD/component/mapsdock/modstab/mapview.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -102,12 +101,11 @@ HEADERS += \
     $$PWD/component/characterdock/characterdock.h \
     $$PWD/component/characterdock/characterview.h \
     $$PWD/component/mapsdock/mapsdock.h \
-    $$PWD/component/mapsdock/mapstab.h \
+    $$PWD/component/mapsdock/modstab/mapstab.h \
     $$PWD/component/mapsdock/mapsproxyview.h \
     $$PWD/component/mapsdock/modstab.h \
     $$PWD/component/mapsdock/modstree.h \
-    $$PWD/component/mapsdock/mapsviewmodel.h \
-    $$PWD/component/mapsdock/mapview.h
+    $$PWD/component/mapsdock/modstab/mapview.h
 
 FORMS += \
     $$PWD/mainwindow.ui \

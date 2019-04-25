@@ -5,7 +5,7 @@
 #define INDEX_CTF   2
 TMapsTab::TMapsTab(QWidget *parent) :
     QTabWidget(parent)
-  , mModule(nullptr)
+//  , mModule(nullptr)
   , mAdvView(new TMapView(this))
   , mCtfView(new TMapView(this))
   , mVsView(new TMapView(this))
@@ -28,21 +28,21 @@ TMapsTab::~TMapsTab()
 
 }
 
-TModule *TMapsTab::module() const
-{
-    return mModule;
-}
+//TModule *TMapsTab::module() const
+//{
+//    return mModule;
+//}
 
-void TMapsTab::setModule(TModule *module)
-{
-    if(mModule == module)
-        return;
+//void TMapsTab::setModule(TModule *module)
+//{
+//    if(mModule == module)
+//        return;
 
-    mModule = module;
-    mAdvView->setMapBundle(module->getAdvBundle());
-    mCtfView->setMapBundle(module->getCtfBundle());
-    mVsView->setMapBundle(module->getVsBundle());
-}
+//    mModule = module;
+//    mAdvView->setMapBundle(module->getAdvBundle());
+//    mCtfView->setMapBundle(module->getCtfBundle());
+//    mVsView->setMapBundle(module->getVsBundle());
+//}
 
 void TMapsTab::changeEvent(QEvent *event)
 {

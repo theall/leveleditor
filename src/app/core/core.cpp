@@ -36,9 +36,9 @@ TDocument *TCore::open(const QString &file)
     return document;
 }
 
-TDocument *TCore::newDocument(const QString &projectRoot, const QString &projectName)
+TDocument *TCore::newDocument()
 {
-    TDocument *document = TDocument::create(projectRoot, projectName);
+    TDocument *document = TDocument::create();
     addDocument(document);
     return document;
 }
@@ -100,6 +100,7 @@ void TCore::slotOnResourceLoadCompleted()
     }
 
     mCharacterModel->setFaceList(assetsManager->getFaceList());
+    mMapsModel->setModuleList(assetsManager->getModuleList());
     emit ready();
 }
 
