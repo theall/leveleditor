@@ -1,24 +1,13 @@
 #include "mapstab.h"
 
-#define INDEX_ADV   0
-#define INDEX_VS    1
-#define INDEX_CTF   2
 TMapsTab::TMapsTab(QWidget *parent) :
     QTabWidget(parent)
-//  , mModule(nullptr)
-  , mAdvView(new TMapView(this))
-  , mCtfView(new TMapView(this))
-  , mVsView(new TMapView(this))
 {
     setDocumentMode(true);
     setTabsClosable(false);
 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     resize(240, 320);
-
-    addTab(mAdvView, QString());
-    addTab(mVsView, QString());
-    addTab(mCtfView, QString());
 
     retranslateUi();
 }
@@ -28,21 +17,23 @@ TMapsTab::~TMapsTab()
 
 }
 
-//TModule *TMapsTab::module() const
-//{
-//    return mModule;
-//}
+void TMapsTab::setModel(QAbstractItemModel *model, const QModelIndex &index)
+{
+    if(!model)
+        return;
 
-//void TMapsTab::setModule(TModule *module)
-//{
-//    if(mModule == module)
-//        return;
+    for(int i=0;i<model->rowCount(index);i++) {
+        TMapView *mapView = new TMapView(this);
+        connect(mapView,
+                SIGNAL(modelIndexDoubleClicked(QModelIndex)),
+                this,
+                SIGNAL(modelIndexDoubleClicked(QModelIndex)));
 
-//    mModule = module;
-//    mAdvView->setMapBundle(module->getAdvBundle());
-//    mCtfView->setMapBundle(module->getCtfBundle());
-//    mVsView->setMapBundle(module->getVsBundle());
-//}
+        QModelIndex modelIndex = model->index(i, 0, index);
+        mapView->setModel(model, modelIndex);
+        addTab(mapView, model->data(modelIndex).toString());
+    }
+}
 
 void TMapsTab::changeEvent(QEvent *event)
 {
@@ -56,7 +47,5 @@ void TMapsTab::changeEvent(QEvent *event)
 
 void TMapsTab::retranslateUi()
 {
-    setTabText(INDEX_ADV, tr("ADV"));
-    setTabText(INDEX_VS, tr("VS"));
-    setTabText(INDEX_CTF, tr("CTF"));
+
 }

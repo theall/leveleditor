@@ -7,7 +7,7 @@ TShortcutModel::TShortcutModel(QObject *parent) :
     setHorizontalHeaderItem(1, new QStandardItem(tr("Shortcut")));
 }
 
-void TShortcutModel::setFilter(QString filter)
+void TShortcutModel::setFilter(const QString &filter)
 {
     load(filter);
 }
@@ -60,7 +60,7 @@ void TShortcutModel::updateShortcut()
     setShortcutList(shortcuts);
 }
 
-void TShortcutModel::load(QString filter)
+void TShortcutModel::load(const QString &filter)
 {
     TActionMap *actionMap = TShortKeyManager::instance()->actionMap();
     clear();

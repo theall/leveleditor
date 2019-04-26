@@ -33,6 +33,7 @@ TMainController::TMainController(QObject *parent) :
             this,
             SLOT(slotPropertyItemActived(TPropertyItem*)));
 
+    connect(mMapsDockController, SIGNAL(requestOpenMap(TMap*)), this, SLOT(slotRequestOpenMap(TMap*)));
     connect(TAssetsManager::getInstance(), SIGNAL(onProgress(int,int)), this, SLOT(slotOnResourceLoadProgress(int,int)));
 }
 
@@ -251,6 +252,16 @@ void TMainController::slotOnResourceLoadProgress(int progress, int total)
     if(mMainWindow) {
         mMainWindow->getLoadingDialog()->setProgress(progress, total);
     }
+}
+
+void TMainController::slotRequestOpenMap(TMap *map)
+{
+    if(!map)
+        return;
+
+    TDocument *document = mCore->open(map);
+    setCurrentDocument(document);
+    mMainWindow->addRecentFile(document->fileName());
 }
 
 bool TMainController::confirmAllSaved()

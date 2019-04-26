@@ -1,4 +1,5 @@
 #include "mapsmodel.h"
+#include "../assets/pixmap.h"
 
 TMapsModel::TMapsModel(QObject *parent) :
     QAbstractItemModel(parent)
@@ -6,7 +7,8 @@ TMapsModel::TMapsModel(QObject *parent) :
   , mDirtyColor(QColor(Qt::red))
   , mCurrentModule(nullptr)
 {
-
+    mOpenedColor.setAlpha(32);
+    mDirtyColor.setAlpha(32);
 }
 
 TMapsModel::~TMapsModel()
@@ -180,7 +182,7 @@ QVariant TMapsModel::data(const QModelIndex &index, int role) const
             return module->name();
         } else if (role == Qt::DecorationRole) {
 
-        } else if(role ==Qt::TextColorRole) {
+        } else if(role ==Qt::BackgroundColorRole) {
             if(module->hasOpenedMap()) {
                 return mOpenedColor;
             } else if(module->hasDirtyMap()) {
@@ -192,7 +194,7 @@ QVariant TMapsModel::data(const QModelIndex &index, int role) const
             return mapBundle->name();
         } else if (role == Qt::DecorationRole) {
 
-        } else if(role ==Qt::TextColorRole) {
+        } else if(role ==Qt::BackgroundColorRole) {
             if(mapBundle->hasOpenedMap()) {
                 return mOpenedColor;
             } else if(mapBundle->hasDirtyMap()) {
@@ -207,13 +209,15 @@ QVariant TMapsModel::data(const QModelIndex &index, int role) const
                 return map->name();
             }
         } else if(role == Qt::DecorationRole) {
-            return map->thumbnail();
-        } else if(role ==Qt::TextColorRole) {
+            return map->thumbnailPixmap();
+        } else if(role ==Qt::BackgroundColorRole) {
             if(map->isDirty()) {
                 return mDirtyColor;
             } else if(map->isOpened()) {
                 return mOpenedColor;
             }
+        } else if(role == Qt::SizeHintRole) {
+            return map->thumbnailPixmap().size();
         }
     }
     return QVariant();

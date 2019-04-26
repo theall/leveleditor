@@ -18,7 +18,7 @@ public:
     TMapsProxyView *mapsProxyView() const;
 
 signals:
-    void requestOpenMap(const QString &mapName);
+    void modelIndexDoubleClicked(const QModelIndex &index);
 
 private slots:
     void slotActionShowTreeViewToggled(bool);

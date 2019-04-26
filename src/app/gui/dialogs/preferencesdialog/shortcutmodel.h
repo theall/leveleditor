@@ -10,13 +10,13 @@ class TShortcutModel: public QStandardItemModel
 public:
     TShortcutModel(QObject *parent = 0);
 
-    void setFilter(QString filter=QString());
+    void setFilter(const QString &filter = QString());
     void updateShortcut();
 
 private:
     QString mFilter;
     QStringList mDuplicatedShortcuts;
-    void load(QString filter=QString());
+    void load(const QString &filter = QString());
     void setShortcutList(QStringList shortcuts);
 
     // QAbstractItemModel interface

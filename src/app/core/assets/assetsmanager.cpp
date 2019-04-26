@@ -238,7 +238,10 @@ void TAssetsManager::loadAssets()
                         map->setName(baseName);
                         map->setFullFilePath(fileInfo.absoluteFilePath());
                         mapBundle->add(map);
-                        mapThumbFileList.append(new TPixmap(moduleDir.absoluteFilePath(getThumbName(baseName)), map));
+
+                        TPixmap *thumbnail = map->thumbnail();
+                        thumbnail->setFileFullName(moduleDir.absoluteFilePath(getThumbName(baseName)));
+                        mapThumbFileList.append(thumbnail);
                     }
                 }
             }

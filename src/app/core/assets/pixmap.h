@@ -18,6 +18,7 @@ public:
 
     QString fileName() const;
     QString fileFullName() const;
+    void setFileFullName(const QString &fileFullName);
 
     QPixmap pixmap() const;
     QPixmap content();

@@ -14,8 +14,11 @@ public:
 
     void setModel(QAbstractItemModel *model);
 
+signals:
+    void modelIndexDoubleClicked(const QModelIndex &index);
+
 private:
-    //void setModel(QAbstractItemModel *model, const QModelIndex &parent);
+
 };
 
 #endif // TMODSTAB_H

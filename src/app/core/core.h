@@ -17,7 +17,8 @@ public:
     ~TCore();
 
     bool loadResource(const QString &path, bool asynLoad = true) const;
-    TDocument *open(const QString &file);    
+    TDocument *open(const QString &file);
+    TDocument *open(TMap *map);
     TDocument *newDocument();
 
     TDocument *find(const QString &file);

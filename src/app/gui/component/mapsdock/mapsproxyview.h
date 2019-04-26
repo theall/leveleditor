@@ -8,6 +8,8 @@
 
 class TMapsProxyView : public QWidget
 {
+    Q_OBJECT
+
 public:
     enum ViewMode {
         Tree,
@@ -19,6 +21,9 @@ public:
 
     void setViewMode(const ViewMode &viewMode);
     void setModel(QAbstractItemModel *model);
+
+signals:
+    void modelIndexDoubleClicked(const QModelIndex &index);
 
 private:
     ViewMode mViewMode;

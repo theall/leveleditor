@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QPixmap>
 
+class TPixmap;
 class TDocument;
 class TMapBundle;
 class TMap : public QObject
@@ -23,8 +24,9 @@ public:
     QString name() const;
     void setName(const QString &name);
 
-    QPixmap thumbnail() const;
-    void setThumbnail(const QPixmap &thumbnail);
+    TPixmap *thumbnail() const;
+    void setThumbnail(TPixmap *thumbnail);
+    QPixmap thumbnailPixmap() const;
 
     bool isOpened() const;
     bool isDirty() const;
@@ -56,7 +58,7 @@ private:
     int mId;
     QString mName;
     QString mFileFullPath;
-    QPixmap mThumbnail;
+    TPixmap *mThumbnail;
     TDocument *mDocument;
     TMapBundle *mMapBundle;
     int mIndexInMapBundle;

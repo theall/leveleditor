@@ -49,6 +49,9 @@ private slots:
     // From assets loader
     void slotOnResourceLoadProgress(int progress, int total);
 
+    // From TMapsDockController
+    void slotRequestOpenMap(TMap *map);
+
 private:
     TOptionsController *mOptionsController;
     TTabController *mTabController;

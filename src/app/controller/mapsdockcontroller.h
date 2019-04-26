@@ -13,6 +13,9 @@ public:
     explicit TMapsDockController(QObject *parent = 0);
     ~TMapsDockController();
 
+signals:
+    void requestOpenMap(TMap *map);
+
 private:
     TMapsModel *mMapsModel;
     TMapsProxyView *mMapsProxyView;
@@ -24,6 +27,7 @@ public:
 
 private slots:
     void slotOnCoreReady();
+    void slotOnModelIndexDoubleClicked(const QModelIndex &index);
     void slotOnModuleAdded(TModule *module, int);
     void slotOnModuleRemoved(TModule *module, int index);
 

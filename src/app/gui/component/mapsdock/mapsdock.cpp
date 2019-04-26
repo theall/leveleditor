@@ -27,7 +27,7 @@ TMapsDock::TMapsDock(QWidget *parent) :
     container->setLayout(vBoxLayout);
     setWidget(container);
 
-    mActionShowTreeView->setChecked(false);
+    mActionShowTreeView->setChecked(true);
     retranslateUi();
 }
 

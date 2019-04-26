@@ -9,7 +9,7 @@ TModsTree::TModsTree(QWidget *parent) :
     setRootIsDecorated(true);
     setHeaderHidden(true);
     setItemsExpandable(true);
-    setUniformRowHeights(true);
+    //setUniformRowHeights(true);
 
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::ExtendedSelection);

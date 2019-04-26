@@ -66,6 +66,12 @@ bool TPixmap::isValid() const
     return mIsValid;
 }
 
+void TPixmap::setFileFullName(const QString &fileFullName)
+{
+    mFileFullName = fileFullName;
+    mFileName = QFileInfo(fileFullName).fileName();
+}
+
 QString TPixmap::fileFullName() const
 {
     return mFileFullName;

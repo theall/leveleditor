@@ -1,4 +1,5 @@
 #include "maps.h"
+#include "pixmap.h"
 #include "../document/document.h"
 
 bool idCompare(TMap *map1, TMap *map2)
@@ -10,6 +11,7 @@ TMap::TMap(const TMap::Type &type, TMapBundle *parent) :
     QObject(parent)
   , mType(type)
   , mId(-1)
+  , mThumbnail(new TPixmap(this))
   , mDocument(nullptr)
   , mMapBundle(parent)
   , mIndexInMapBundle(-1)
@@ -32,15 +34,24 @@ void TMap::setName(const QString &name)
     mName = name;
 }
 
-QPixmap TMap::thumbnail() const
+TPixmap *TMap::thumbnail() const
 {
     return mThumbnail;
 }
 
-void TMap::setThumbnail(const QPixmap &thumbnail)
+void TMap::setThumbnail(TPixmap *thumbnail)
 {
+    if(mThumbnail == thumbnail)
+        return;
+
     mThumbnail = thumbnail;
-    emit thumbChanged(thumbnail);
+
+    emit thumbChanged(thumbnail->content());
+}
+
+QPixmap TMap::thumbnailPixmap() const
+{
+    return mThumbnail->content();
 }
 
 bool TMap::isOpened() const

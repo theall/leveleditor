@@ -38,6 +38,16 @@ TDocument *TCore::open(const QString &file)
     return document;
 }
 
+TDocument *TCore::open(TMap *map)
+{
+    if(!map)
+        return nullptr;
+
+    TDocument *document = map->open();
+    addDocument(document);
+    return document;
+}
+
 TDocument *TCore::newDocument()
 {
     TDocument *document = TDocument::create();

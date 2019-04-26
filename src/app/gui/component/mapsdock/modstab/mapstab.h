@@ -7,19 +7,18 @@
 
 class TMapsTab : public QTabWidget
 {
+    Q_OBJECT
+
 public:
     explicit TMapsTab(QWidget *parent = Q_NULLPTR);
     ~TMapsTab();
 
-//    TModule *module() const;
-//    void setModule(TModule *module);
+    void setModel(QAbstractItemModel *model, const QModelIndex &index);
+
+signals:
+    void modelIndexDoubleClicked(const QModelIndex &index);
 
 private:
-//    TModule *mModule;
-    TMapView *mAdvView;
-    TMapView *mCtfView;
-    TMapView *mVsView;
-
     void retranslateUi();
 
     // QWidget interface

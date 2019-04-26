@@ -8,7 +8,11 @@ TMapView::TMapView(QWidget *parent) :
     setFlow(QListView::LeftToRight);
     setMovement(QListView::Static);
     setViewMode(QListView::IconMode);
-    setIconSize(QSize(48,48));
+    setIconSize(QSize(128, 128));
+
+    QPixmap pixmap(96, 48);
+    pixmap.fill(Qt::transparent);
+    mDefaultIcon = pixmap;
 }
 
 TMapView::~TMapView()
@@ -16,56 +20,51 @@ TMapView::~TMapView()
 
 }
 
-//TMapBundle *TMapView::mapBundle() const
-//{
-//    return mMapBundle;
-//}
+void TMapView::setModel(QAbstractItemModel *model, const QModelIndex &index)
+{
+    if(!model)
+        return;
 
-//void TMapView::setMapBundle(TMapBundle *mapBundle)
-//{
-//    if(mMapBundle == mapBundle)
-//        return;
+    mModel = model;
+    mParentIndex = index;
 
-//    if(mMapBundle)
-//        mMapBundle->disconnect(this);
+    for(int i=0;i<model->rowCount(index);i++) {
+        QListWidgetItem *item = new QListWidgetItem(this);
+        QModelIndex modelIndex = model->index(i, 0, index);
+        item->setText(model->data(modelIndex).toString());
 
-//    clear();
-//    mMapBundle = mapBundle;
+        QPixmap icon = model->data(modelIndex, Qt::DecorationRole).value<QPixmap>();
+        if(icon.isNull())
+            icon = mDefaultIcon;
 
-//    if(mMapBundle) {
-//        connect(mMapBundle, SIGNAL(mapAdded(TMap*,int)), this, SLOT(slotOnMapAdded(TMap*,int)));
-//        connect(mMapBundle, SIGNAL(mapRemoved(TMap*,int)), this, SLOT(slotOnMapRemoved(TMap*,int)));
-//    }
-//    for(TMap *map : mMapBundle->mapList()) {
-//        QListWidgetItem *item = new QListWidgetItem(this);
-//        item->setText(map->name());
-//        item->setIcon(map->thumbnail());
-//        addItem(item);
-//    }
-//}
+        int iconWidth = icon.width();
+        if(iconWidth < 64)
+            iconWidth = 64;
 
-//void TMapView::slotOnMapAdded(TMap *map, int)
-//{
-//    if(!map)
-//        return;
+        int iconHeight = icon.height();
+        if(iconHeight < 64)
+            iconHeight = 64;
 
-//    QListWidgetItem *item = new QListWidgetItem(this);
-//    item->setText(map->name());
-//    item->setIcon(map->thumbnail());
-//    addItem(item);
-//}
-
-//void TMapView::slotOnMapRemoved(TMap *map, int index)
-//{
-//    if(!map)
-//        return;
-
-//    removeItemWidget(item(index));
-//}
+        item->setSizeHint(QSize(iconWidth,iconHeight+20));
+        item->setIcon(icon);
+        addItem(item);
+    }
+}
 
 void TMapView::resizeEvent(QResizeEvent *event)
 {
     event->accept();
     setWrapping(false);
     setWrapping(true);
+}
+
+void TMapView::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    QAbstractItemModel *m = model();
+    if(!m || !mModel)
+        return;
+
+    QModelIndex clickedIndex = indexAt(event->pos());
+    clickedIndex = mModel->index(clickedIndex.row(), clickedIndex.column(), mParentIndex);
+    emit modelIndexDoubleClicked(clickedIndex);
 }

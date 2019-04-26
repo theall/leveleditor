@@ -59,5 +59,6 @@
     </qresource>
     <qresource prefix="/mapsdock">
         <file>images/tree.png</file>
+        <file>images/default_thumbnail.png</file>
     </qresource>
 </RCC>

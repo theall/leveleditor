@@ -2,6 +2,7 @@
 #define TMAPVIEW_H
 
 #include <QListWidget>
+#include <QAbstractItemModel>
 
 class TMapView : public QListWidget
 {
@@ -11,19 +12,20 @@ public:
     explicit TMapView(QWidget *parent = Q_NULLPTR);
     ~TMapView();
 
-//    TMapBundle *mapBundle() const;
-//    void setMapBundle(TMapBundle *mapBundle);
+    void setModel(QAbstractItemModel *model, const QModelIndex &index);
 
-//private slots:
-//    void slotOnMapAdded(TMap *map, int);
-//    void slotOnMapRemoved(TMap *map, int index);
+signals:
+    void modelIndexDoubleClicked(const QModelIndex &index);
 
-//private:
-//    TMapBundle *mMapBundle;
+private:
+    QPixmap mDefaultIcon;
+    QAbstractItemModel *mModel;
+    QModelIndex mParentIndex;
 
     // QWidget interface
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void mouseDoubleClickEvent(QMouseEvent *event);
 };
 
 #endif // TMAPVIEW_H
