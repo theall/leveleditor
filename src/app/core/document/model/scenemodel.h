@@ -35,6 +35,8 @@ public:
     QColor getBackgroundColor() const;
 
 private:
+    int mNextMap[5];
+    
     TAnimationsModel *mAnimationsModel;
     TAreasModel *mAreasModel;
     TBoxesModel *mBoxesModel;

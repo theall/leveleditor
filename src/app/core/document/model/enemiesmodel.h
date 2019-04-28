@@ -1,37 +1,33 @@
-#ifndef TDAREASMODEL_H
-#define TDAREASMODEL_H
+#ifndef TENEMIESMODEL_H
+#define TENEMIESMODEL_H
 
 #include "../base/io.h"
-#include "entity/darea.h"
+#include "entity/enemy.h"
 
 #include <QAbstractTableModel>
 
-class TDAreasModel : public QAbstractTableModel, TIO
+class TEnemiesModel : public QAbstractTableModel, TIO
 {
     Q_OBJECT
 
 public:
-    TDAreasModel(QObject *parent = Q_NULLPTR);
-    ~TDAreasModel();
-
-    TDAreaList dAreaList() const;
-    void setDAreaList(const TDAreaList &dAreaList);
+    explicit TEnemiesModel(QObject *parent = Q_NULLPTR);
+    ~TEnemiesModel();
 
     void clear();
 
-    // TIO interface
-public:
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
 
-    // QAbstractItemModel interface
-public:
     int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
-private:
-    TDAreaList mDAreaList;
-};
+    TEnemyList enemyList() const;
 
-#endif // TDAREASMODEL_H
+    void setEnemyList(const TEnemyList &enemyList);
+
+private:
+    TEnemyList mEnemyList;
+};
+#endif // TENEMIESMODEL_H

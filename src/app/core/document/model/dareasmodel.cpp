@@ -6,6 +6,11 @@ TDAreasModel::TDAreasModel(QObject *parent) :
 
 }
 
+TDAreasModel::~TDAreasModel()
+{
+
+}
+
 void TDAreasModel::clear()
 {
 
@@ -52,4 +57,14 @@ QVariant TDAreasModel::data(const QModelIndex &index, int role) const
         }
     }
     return QVariant();
+}
+
+TDAreaList TDAreasModel::dAreaList() const
+{
+    return mDAreaList;
+}
+
+void TDAreasModel::setDAreaList(const TDAreaList &dAreaList)
+{
+    mDAreaList = dAreaList;
 }

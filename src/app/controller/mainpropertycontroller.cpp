@@ -35,22 +35,25 @@ void TMainPropertyController::setCurrentDocument(TDocument *document)
     if(mDocument)
         mDocument->disconnect(this);
 
+    TPropertySheet *propertySheet = nullptr;
     if(document)
     {
-        connect(document->graphicsScene(), SIGNAL(selectedObjectChanged(TObject*,TObject*)), this, SLOT(slotOnSelectedObjectChanged(TObject*,TObject*)));
-        TPropertySheet *propertySheet = document->propertySheet();
-        if(!propertySheet)
-            return;
+        TGraphicsScene *graphicsScene = document->graphicsScene();
+        connect(graphicsScene, SIGNAL(selectedObjectChanged(TObject*,TObject*)), this, SLOT(slotOnSelectedObjectChanged(TObject*,TObject*)));
+        TObjectItem *lastSelectedObject = graphicsScene->getLastSelectedObjectItem();
+        propertySheet = lastSelectedObject?lastSelectedObject->object()->propertySheet():document->getSceneModel()->propertySheet();
 
-        setPropertySheet(document->propertySheet());
-
-    } else {
-        setPropertySheet(nullptr);
     }
+    setPropertySheet(propertySheet);
 }
 
 void TMainPropertyController::slotOnSelectedObjectChanged(TObject *, TObject *current)
 {
-    if(current)
-        setPropertySheet(current->propertySheet());
+    TPropertySheet *propertySheet = nullptr;
+    if(current) {
+        propertySheet = current->propertySheet();
+    } else {
+        propertySheet = mDocument?mDocument->getSceneModel()->propertySheet():nullptr;
+    }
+    setPropertySheet(propertySheet);
 }

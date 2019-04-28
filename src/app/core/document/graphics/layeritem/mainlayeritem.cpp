@@ -2,6 +2,8 @@
 #include "objectitem/areaitem.h"
 #include "objectitem/boxitem.h"
 #include "objectitem/platitem.h"
+#include "objectitem/dareaitem.h"
+#include "objectitem/wallitem.h"
 #include "../../model/scenemodel.h"
 
 TMainLayerItem::TMainLayerItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
@@ -25,6 +27,16 @@ TMainLayerItem::TMainLayerItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
         mObjectItemList.append(platItem);
     }
 
+    for(TDArea *darea : mSceneModel->getDAreasModel()->dAreaList()) {
+        TDAreaItem *dareaItem = new TDAreaItem(darea, this);
+        mObjectItemList.append(dareaItem);
+    }
+
+    for(TWall *wall : mSceneModel->getWallsModel()->wallList()) {
+        TWallItem *wallItem = new TWallItem(wall, this);
+        mObjectItemList.append(wallItem);
+    }
+
     calcBoundingRect();
 }
 
@@ -33,11 +45,10 @@ TMainLayerItem::~TMainLayerItem()
 
 }
 
-
 QRectF TMainLayerItem::calcBoundingRect()
 {
     mBoundingRect = QRectF();
-    foreach (TObjectItem *objectItem, mObjectItemList) {
+    for(TObjectItem *objectItem : mObjectItemList) {
         mBoundingRect = mBoundingRect.united(objectItem->boundingRect());
     }
     return mBoundingRect;

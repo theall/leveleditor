@@ -48,6 +48,8 @@ public:
     TObjectItemList getObjectItemList(const QRectF &rect, TObject::Type objectType) const;
     TObjectItemList getObjectItemList(const QRectF &rect, TObjectItem *objectItem) const;
 
+    TObjectItem *getLastSelectedObjectItem() const;
+
 signals:
     void needChangeCursor(Qt::CursorShape cursor);
     void selectedObjectChanged(TObject *prev, TObject *current);

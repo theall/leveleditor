@@ -37,8 +37,8 @@ TPropertyController::TPropertyController(QObject *parent) :
   , mIsRendering(false)
   , mPropertyManager(new TVariantPropertyManager(this))
   , mPropertyBrowser(nullptr)
+  , mPropertySheet(nullptr)
   , mSoundResourceDialog(nullptr)
-  , mCurrentPropertySheet(nullptr)
 {
     connect(mPropertyManager, SIGNAL(valueChanged(QtProperty*,QVariant)),
             SLOT(slotPropertyValueChanged(QtProperty*,QVariant)));
@@ -89,6 +89,11 @@ void TPropertyController::setPropertyBrowser(TPropertyBrowser *propertyBrowser)
             SLOT(slotGetSelectedSound(QString&,QMediaContent*&)));
 }
 
+TPropertySheet *TPropertyController::propertySheet() const
+{
+    return mPropertySheet;
+}
+
 void TPropertyController::slotGetSelectedSound(QString &text, QMediaContent *&mediaContent)
 {
     if(!mDocument)
@@ -108,14 +113,14 @@ void TPropertyController::slotGetSelectedSound(QString &text, QMediaContent *&me
 
 void TPropertyController::setPropertySheet(TPropertySheet *propertySheet)
 {
-    if(mCurrentPropertySheet == propertySheet)
+    if(mPropertySheet == propertySheet)
         return;
 
-    if(mCurrentPropertySheet)
-        mCurrentPropertySheet->disconnect(this);
+    if(mPropertySheet)
+        mPropertySheet->disconnect(this);
 
     TPropertyItem *currentPropertyItem = findPropertyItem(mPropertyBrowser->currentItem());
-    mCurrentPropertySheet = propertySheet;
+    mPropertySheet = propertySheet;
     mPropertyManager->clear();
 
     if(!propertySheet)
@@ -132,7 +137,11 @@ void TPropertyController::setPropertySheet(TPropertySheet *propertySheet)
     for(TPropertyItem *propertyItem : propertySheet->propertyList())
     {
         QtVariantProperty *property = createProperty(propertyItem);
-        mPropertyBrowser->addProperty(property);
+        if(property) {
+            mPropertyBrowser->addProperty(property);
+        } else {
+            throw tr("Null property created from property item name:").arg(propertyItem->name());
+        }
     }
     if(currentPropertyItem)
     {
@@ -185,7 +194,7 @@ QtBrowserItem *TPropertyController::findBrowserItem(PropertyID propertyId)
 
 QtVariantProperty *TPropertyController::createProperty(TPropertyItem *propertyItem)
 {
-    if(!propertyItem || !mDocument)
+    if(!propertyItem)
         return nullptr;
 
     PropertyType propertyType = (PropertyType)propertyItem->type();

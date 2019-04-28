@@ -25,6 +25,8 @@ public:
     virtual void setPropertySheet(TPropertySheet *propertySheet);
     void setPropertyBrowser(TPropertyBrowser *propertyBrowser);
 
+    TPropertySheet *propertySheet() const;
+
 signals:
     // To parent controller
     void propertyItemValueChanged(TPropertyItem *propertyItem, const QVariant &newValue);
@@ -34,7 +36,7 @@ private:
     bool mIsRendering;
     TVariantPropertyManager *mPropertyManager;
     TPropertyBrowser *mPropertyBrowser;
-    TPropertySheet *mCurrentPropertySheet;
+    TPropertySheet *mPropertySheet;
     TSoundResourceDialog *mSoundResourceDialog;
     QMap<TPropertyItem*, QtVariantProperty*> mItemPropertyMap;
     QMap<QtVariantProperty*, TPropertyItem*> mPropertyItemMap;

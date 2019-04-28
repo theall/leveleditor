@@ -20,6 +20,9 @@ public:
         WALL,
         POINT,
         DOOR,
+        FRAME,
+        ANIMATION,
+        ENEMY,
         INVALID
     };
 

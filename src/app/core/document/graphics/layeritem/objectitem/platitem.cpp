@@ -5,7 +5,7 @@ TPlatItem::TPlatItem(TPlat *plat, QGraphicsItem *parent) :
   , mPlat(plat)
 {
     Q_ASSERT(mPlat);
-    setBorderColor(Qt::magenta);
+    setBorderColor(Qt::blue);
 }
 
 TPlatItem::~TPlatItem()

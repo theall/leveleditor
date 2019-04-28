@@ -531,6 +531,11 @@ void TGraphicsScene::slotPropertyItemValueChanged(TPropertyItem *item, const QVa
     }
 }
 
+TObjectItem *TGraphicsScene::getLastSelectedObjectItem() const
+{
+    return mLastSelectedObjectItem;
+}
+
 TObject *TGraphicsScene::getTopMostObject(const QPointF &pos) const
 {
     TObjectItem *objectItem = getTopMostObjectItem(pos);

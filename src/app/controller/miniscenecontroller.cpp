@@ -39,8 +39,9 @@ bool TMiniSceneController::joint(TMainWindow *mainWindow, TCore *core)
 
 void TMiniSceneController::setCurrentDocument(TDocument *document)
 {
-    if(mDocument)
+    if(mDocument) {
         mDocument->disconnect(this);
+    }
 
     if(mGraphicsView) {
         mGraphicsView->disconnect(this);
@@ -50,8 +51,16 @@ void TMiniSceneController::setCurrentDocument(TDocument *document)
 
     mGraphicsView = mMainWindow->getTabWidget()->currentGraphicsView();
 
+    QColor backgroundColor(Qt::black);
     if(document) {
         connect(document->undoStack(), SIGNAL(indexChanged(int)), this, SLOT(delayUpdateSceneImage()));
+
+        TSceneModel *sceneModel = document->getSceneModel();
+        connect(sceneModel->propertySheet(),
+                SIGNAL(propertyItemValueChanged(TPropertyItem*,QVariant)),
+                this,
+                SLOT(slotSceneModelPropertyItemValueChanged(TPropertyItem *, QVariant)));
+        backgroundColor = sceneModel->getBackgroundColor();
     }
     if(mGraphicsView) {
         connect(mGraphicsView, SIGNAL(resized()), this, SLOT(slotGraphicsViewResized()));
@@ -59,7 +68,7 @@ void TMiniSceneController::setCurrentDocument(TDocument *document)
         connect(mGraphicsView->verticalScrollBar(), SIGNAL(valueChanged(int)), SLOT(slotGraphicsViewScrollBarValueChanged()));
     }
 
-    mMiniScene->setBackgroundColor(document?document->getSceneModel()->getBackgroundColor():Qt::black);
+    mMiniScene->setBackgroundColor(backgroundColor);
     delayUpdateSceneImage();
 }
 
@@ -96,6 +105,17 @@ void TMiniSceneController::slotRequestLocatePoint(const QPoint &point, int delta
         mZoomComboBox->handleWheelDelta(delta);
 
     mGraphicsView->centerOn(mapToScene(point));
+}
+
+void TMiniSceneController::slotSceneModelPropertyItemValueChanged(TPropertyItem *propertyItem, const QVariant &)
+{
+    if(!propertyItem)
+        return;
+
+    PropertyID pid = propertyItem->propertyId();
+    if(pid == PID_SCENE_BACKGROUND_COLOR) {
+        mMiniScene->setBackgroundColor(propertyItem->value().value<QColor>());
+    }
 }
 
 void TMiniSceneController::delayUpdateSceneImage()

@@ -138,9 +138,71 @@ void TSceneModel::readFromStream(QDataStream &stream)
 
     mEventsModel->readFromStream(stream);
     mTriggersModel->readFromStream(stream);
+
+    for(int i=0;i<5;i++) {
+        stream >> mNextMap[i];
+    }
+
+    int xScrStart;
+    int yScrStart;
+    int fightMode;
+    int mapNumber;
+    int scrLock;
+    int vsMode;
+    int yScrCameraLimit;
+    int uScrLimit;
+    int noAirStrike;
+    int var4;
+    int var5;
+    int var6;
+    int var7;
+    int var8;
+    int var9;
+    int var10;
+    qint8 stri1;
+    qint8 stri2;
+    qint8 stri3;
+    int lScrLimit;
+    int rScrLimit;
+    int music1;
+    int music2;
+    stream >> xScrStart;
+    stream >> yScrStart;
+    stream >> fightMode;
+    stream >> mapNumber;
+    stream >> scrLock;
+    stream >> vsMode;
+    stream >> yScrCameraLimit;
+    stream >> uScrLimit;
+    stream >> noAirStrike;
+    stream >> var4;
+    stream >> var5;
+    stream >> var6;
+    stream >> var7;
+    stream >> var8;
+    stream >> var9;
+    stream >> var10;
+    stream >> stri1;
+    stream >> stri2;
+    stream >> stri3;
+    stream >> lScrLimit;
+    stream >> rScrLimit;
+    stream >> music1;
+    stream >> music2;
+
     mAnimationsModel->readFromStream(stream);
 
-    mPropertySheet->setValue(P_BACKGROUND_COLOR, QColor(r,g,b));
-    mPropertySheet->setValue(P_FLAG1, flag1);
-    mPropertySheet->setValue(P_FLAG2, flag2);
+    mPropertySheet->setValue(PID_SCENE_BACKGROUND_COLOR, QColor(r,g,b));
+    mPropertySheet->setValue(PID_SCENE_START_POINT, QPoint(xScrStart, yScrStart));
+    mPropertySheet->setValue(PID_SCENE_FIGHT_MODE, fightMode);
+    mPropertySheet->setValue(PID_SCENE_SCREEN_LOCK, scrLock);
+    mPropertySheet->setValue(PID_SCENE_CAMERA, QRect(QPoint(lScrLimit,uScrLimit), QPoint(rScrLimit, yScrCameraLimit)));
+    mPropertySheet->setValue(PID_SCENE_SCROLLABLE, scrLock);
+    mPropertySheet->setValue(PID_SCENE_NUMBER, mapNumber);
+    mPropertySheet->setValue(PID_SCENE_AIR_STRIKE, noAirStrike);
+    mPropertySheet->setValue(PID_SCENE_MUSIC1, music1);
+    mPropertySheet->setValue(PID_SCENE_MUSIC2, music2);
+
+    mPropertySheet->setValue(PID_SCENE_FLAG1, flag1);
+    mPropertySheet->setValue(PID_SCENE_FLAG2, flag2);
 }

@@ -34,6 +34,7 @@ private slots:
     void slotMiniSceneResized();
     void slotGraphicsViewResized();
     void slotRequestLocatePoint(const QPoint &point, int delta = 0);
+    void slotSceneModelPropertyItemValueChanged(TPropertyItem*, const QVariant &oldValue);
 
 private:
     TGraphicsView *mGraphicsView;
