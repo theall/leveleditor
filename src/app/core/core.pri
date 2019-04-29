@@ -69,8 +69,10 @@ SOURCES += \
     $$PWD/assets/maps.cpp \
     $$PWD/document/graphics/layeritem/objectitem/wallitem.cpp \
     $$PWD/document/model/entity/enemy.cpp \
-    $$PWD/document/model/enemiesmodel.cpp \
-    $$PWD/document/model/entity/enemyfactory.cpp
+    $$PWD/document/model/entity/enemyfactory.cpp \
+    $$PWD/document/model/entity/animation.cpp \
+    $$PWD/document/model/entity/frame.cpp \
+    $$PWD/document/model/enemyfactorymodel.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -146,5 +148,7 @@ HEADERS  += \
     $$PWD/assets/maps.h \
     $$PWD/document/graphics/layeritem/objectitem/wallitem.h \
     $$PWD/document/model/entity/enemy.h \
-    $$PWD/document/model/enemiesmodel.h \
-    $$PWD/document/model/entity/enemyfactory.h
+    $$PWD/document/model/entity/enemyfactory.h \
+    $$PWD/document/model/entity/animation.h \
+    $$PWD/document/model/entity/frame.h \
+    $$PWD/document/model/enemyfactorymodel.h

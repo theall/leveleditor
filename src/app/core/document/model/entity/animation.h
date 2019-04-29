@@ -1,25 +1,25 @@
-#ifndef TENEMYFACTORY_H
-#define TENEMYFACTORY_H
+#ifndef TANIMATION_H
+#define TANIMATION_H
 
 #include <QList>
 
 #include "object.h"
-#include "enemy.h"
+#include "frame.h"
 #include "../../base/io.h"
 
-class TEnemyFactory : public TObject, TIO
+class TAnimation : public TObject, TIO
 {
     Q_OBJECT
 
 public:
-    explicit TEnemyFactory(QObject *parent = nullptr);
-    ~TEnemyFactory();
+    explicit TAnimation(QObject *parent = nullptr);
+    ~TAnimation();
 
-    TEnemyList enemyList() const;
-    void setEnemyList(const TEnemyList &enemyList);
+    TFrameList frameList() const;
+    void setFrameList(const TFrameList &frameList);
 
 private:
-    TEnemyList mEnemyList;
+    TFrameList mFrameList;
     void initPropertySheet();
 
     // TObject interface
@@ -33,6 +33,5 @@ public:
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
 };
 
-typedef QList<TEnemyFactory*> TEnemyFactoryList;
-
-#endif // TENEMYFACTORY_H
+typedef QList<TAnimation*> TAnimationList;
+#endif // TANIMATION_H
