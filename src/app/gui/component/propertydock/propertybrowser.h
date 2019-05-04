@@ -3,9 +3,9 @@
 
 #include <QStackedWidget>
 
-#include <qtpropertybrowser/QtTreePropertyBrowser>
-#include <qtpropertybrowser/QtButtonPropertyBrowser>
-#include <qtpropertybrowser/QtGroupPropertyManager>
+#include "qtpropertybrowser/include/QtTreePropertyBrowser"
+#include "qtpropertybrowser/include/QtButtonPropertyBrowser"
+#include "qtpropertybrowser/include/QtGroupPropertyManager"
 
 #include "variantpropertymanager.h"
 #include "varianteditorfactory.h"

@@ -1,7 +1,7 @@
 #ifndef VARIANTEDITORFACTORY_H
 #define VARIANTEDITORFACTORY_H
 
-#include <qtpropertybrowser/QtVariantEditorFactory>
+#include "qtpropertybrowser/include/QtVariantEditorFactory"
 
 class QMediaContent;
 class TPixmapEdit;

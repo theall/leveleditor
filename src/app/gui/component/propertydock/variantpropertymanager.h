@@ -1,7 +1,7 @@
 #ifndef VARIANTPROPERTYMANAGER_H
 #define VARIANTPROPERTYMANAGER_H
 
-#include <qtpropertybrowser/QtVariantPropertyManager>
+#include "qtpropertybrowser/include/QtVariantPropertyManager"
 
 #include <QFileIconProvider>
 

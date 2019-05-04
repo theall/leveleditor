@@ -72,7 +72,8 @@ SOURCES += \
     $$PWD/document/model/entity/enemyfactory.cpp \
     $$PWD/document/model/entity/animation.cpp \
     $$PWD/document/model/entity/frame.cpp \
-    $$PWD/document/model/enemyfactorymodel.cpp
+    $$PWD/document/model/enemyfactorymodel.cpp \
+    $$PWD/document/model/basemodel.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -151,4 +152,5 @@ HEADERS  += \
     $$PWD/document/model/entity/enemyfactory.h \
     $$PWD/document/model/entity/animation.h \
     $$PWD/document/model/entity/frame.h \
-    $$PWD/document/model/enemyfactorymodel.h
+    $$PWD/document/model/enemyfactorymodel.h \
+    $$PWD/document/model/basemodel.h

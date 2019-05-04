@@ -24,7 +24,7 @@ TSelectRootDialog::~TSelectRootDialog()
 
 QString TSelectRootDialog::getSelectedRoot(QWidget *parent)
 {
-    TSelectRootDialog dlg;
+    TSelectRootDialog dlg(parent);
     int code = dlg.exec();
     if(code == QDialog::Accepted)
         return dlg.getRoot();

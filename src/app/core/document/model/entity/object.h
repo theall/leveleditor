@@ -44,11 +44,15 @@ public:
 
     virtual bool isCongener(TObject *object) const = 0;
 
+    bool visible() const;
+    void setVisible(bool visible);
+
 protected:
     virtual void initPropertySheet();
 
 private:
     Type mType;
+    bool mVisible;
 };
 
 typedef QList<TObject*> TObjectList;

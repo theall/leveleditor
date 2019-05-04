@@ -75,3 +75,13 @@ void TObject::initPropertySheet()
 {
     mPropertySheet->addProperty(PT_VECTORF, P_RECT, PID_OBJECT_RECT);
 }
+
+bool TObject::visible() const
+{
+    return mVisible;
+}
+
+void TObject::setVisible(bool visible)
+{
+    mVisible = visible;
+}

@@ -1,6 +1,8 @@
 QT += gui widgets multimedia
 CONFIG += qt
 
+include($$PWD/component/propertydock/qtpropertybrowser/src/qtpropertybrowser.pri)
+
 INCLUDEPATH += \
     $$PWD/widgets
 
@@ -116,9 +118,3 @@ FORMS += \
     $$PWD/dialogs/selectrootdialog.ui
 
 RESOURCES += $$PWD/resource/editor.qrc
-
-CONFIG(debug, debug|release) {
-    LIBS += -lqtpropertybrowserd
-} else {
-    LIBS += -lqtpropertybrowser
-}

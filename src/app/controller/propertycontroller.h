@@ -6,7 +6,7 @@
 #include <QMap>
 #include <QPixmap>
 #include <QMediaContent>
-#include <qtpropertybrowser/QtVariantPropertyManager>
+#include "gui/component/propertydock/qtpropertybrowser/include/QtVariantPropertyManager"
 
 class TPropertyBrowser;
 class TSoundResourceDialog;

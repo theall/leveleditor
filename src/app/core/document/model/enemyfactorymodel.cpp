@@ -1,22 +1,22 @@
 #include "enemyfactorymodel.h"
 
-TEnemiyFactoryModel::TEnemiyFactoryModel(QObject *parent) :
+TEnemyFactoryModel::TEnemyFactoryModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
 
 }
 
-TEnemiyFactoryModel::~TEnemiyFactoryModel()
+TEnemyFactoryModel::~TEnemyFactoryModel()
 {
 
 }
 
-void TEnemiyFactoryModel::clear()
+void TEnemyFactoryModel::clear()
 {
 
 }
 
-void TEnemiyFactoryModel::readFromStream(QDataStream &stream)
+void TEnemyFactoryModel::readFromStream(QDataStream &stream)
 {
     int enemyAmount = 0;
     stream >> enemyAmount;
@@ -29,22 +29,22 @@ void TEnemiyFactoryModel::readFromStream(QDataStream &stream)
     }
 }
 
-void TEnemiyFactoryModel::saveToStream(QDataStream &) const
+void TEnemyFactoryModel::saveToStream(QDataStream &) const
 {
 
 }
 
-int TEnemiyFactoryModel::rowCount(const QModelIndex &) const
+int TEnemyFactoryModel::rowCount(const QModelIndex &) const
 {
     return mEnemyFactoryList.size();
 }
 
-int TEnemiyFactoryModel::columnCount(const QModelIndex &) const
+int TEnemyFactoryModel::columnCount(const QModelIndex &) const
 {
     return 1;
 }
 
-QVariant TEnemiyFactoryModel::data(const QModelIndex &index, int role) const
+QVariant TEnemyFactoryModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
     if(row>=0 && row<mEnemyFactoryList.size())
@@ -57,12 +57,12 @@ QVariant TEnemiyFactoryModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-TEnemyFactoryList TEnemiyFactoryModel::enemyFactoryList() const
+TEnemyFactoryList TEnemyFactoryModel::enemyFactoryList() const
 {
     return mEnemyFactoryList;
 }
 
-void TEnemiyFactoryModel::setEnemyFactoryList(const TEnemyFactoryList &enemyFactoryList)
+void TEnemyFactoryModel::setEnemyFactoryList(const TEnemyFactoryList &enemyFactoryList)
 {
     mEnemyFactoryList = enemyFactoryList;
 }

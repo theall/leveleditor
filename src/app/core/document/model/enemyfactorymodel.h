@@ -6,13 +6,13 @@
 
 #include <QAbstractTableModel>
 
-class TEnemiyFactoryModel : public QAbstractTableModel, TIO
+class TEnemyFactoryModel : public QAbstractTableModel, TIO
 {
     Q_OBJECT
 
 public:
-    explicit TEnemiyFactoryModel(QObject *parent = Q_NULLPTR);
-    ~TEnemiyFactoryModel();
+    explicit TEnemyFactoryModel(QObject *parent = Q_NULLPTR);
+    ~TEnemyFactoryModel();
 
     void clear();
 
