@@ -131,4 +131,10 @@ QRectF dpiScaled(QRectF value)
                   dpiScaled(value.height()));
 }
 
+QSize smallIconSize()
+{
+    static QSize size = dpiScaled(QSize(16, 16));
+    return size;
+}
+
 }

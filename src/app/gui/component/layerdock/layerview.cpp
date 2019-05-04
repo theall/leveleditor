@@ -1,27 +1,24 @@
 #include "layerview.h"
+#include "iconcheckdelegate.h"
+#include "boldcurrentitemdelegate.h"
 
 #include <QHeaderView>
 
+#define COLUMN_INDEX_NAME 0
+#define COLUMN_INDEX_VISIBILITY 1
+#define COLUMN_INDEX_LOCK 2
+
 TLayerView::TLayerView(QWidget *parent):
-    QTreeView(parent),
-    mActionMoveLayerUp(new QAction(this)),
-    mActionMoveLayerDown(new QAction(this)),
-    mActionToggleOtherLayers(new QAction(this)),
-    mContextMenu(new QMenu(this))
+    QTreeView(parent)
+  , mActionMoveLayerUp(new QAction(this))
+  , mActionMoveLayerDown(new QAction(this))
+  , mActionToggleOtherLayers(new QAction(this))
+  , mContextMenu(new QMenu(this))
 {
     setRootIsDecorated(false);
     setHeaderHidden(true);
-    setItemsExpandable(true);
+    setItemsExpandable(false);
     setUniformRowHeights(true);
-
-    setSelectionBehavior(QAbstractItemView::SelectRows);
-    setSelectionMode(QAbstractItemView::ExtendedSelection);
-
-    connect(this, SIGNAL(pressed(QModelIndex)), SLOT(slotPressed(QModelIndex)));
-
-    connect(this, SIGNAL(activated(QModelIndex)), SLOT(onActivated(QModelIndex)));
-
-    connect(header(), SIGNAL(sectionResized(int,int,int)), this, SLOT(slotOnSectionResized(int)));
 }
 
 QSize TLayerView::sizeHint() const
@@ -40,6 +37,11 @@ void TLayerView::slotCurrentRowChanged(const QModelIndex &index)
 }
 
 void TLayerView::slotPressed(const QModelIndex &index)
+{
+
+}
+
+void TLayerView::slotOnActivated(const QModelIndex &index)
 {
 
 }
@@ -80,6 +82,33 @@ void TLayerView::slotSelectionChanged(const QItemSelection &selected,
     }
 
     emit onSelectionChanged(rows);
+}
+
+void TLayerView::setModel(QAbstractItemModel *model)
+{
+    QTreeView::setModel(model);
+
+    QHeaderView *h = header();
+    setSelectionBehavior(QAbstractItemView::SelectRows);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+    setItemDelegateForColumn(COLUMN_INDEX_NAME, new TBoldCurrentItemDelegate(selectionModel(), this));
+    setItemDelegateForColumn(COLUMN_INDEX_VISIBILITY, new TIconCheckDelegate(TIconCheckDelegate::Visibility, true, this));
+    setItemDelegateForColumn(COLUMN_INDEX_LOCK, new TIconCheckDelegate(TIconCheckDelegate::Lock, true, this));
+    h->setStretchLastSection(false);
+
+    connect(this, SIGNAL(pressed(QModelIndex)), SLOT(slotPressed(QModelIndex)));
+    connect(this, SIGNAL(activated(QModelIndex)), SLOT(slotOnActivated(QModelIndex)));
+    connect(h, SIGNAL(sectionResized(int,int,int)), this, SLOT(slotOnSectionResized(int)));
+
+    h->setSectionResizeMode(COLUMN_INDEX_NAME, QHeaderView::Stretch);
+    h->setSectionResizeMode(COLUMN_INDEX_VISIBILITY, QHeaderView::Fixed);
+    h->setSectionResizeMode(COLUMN_INDEX_LOCK, QHeaderView::Fixed);
+
+    const int iconSectionWidth = TIconCheckDelegate::exclusiveSectionWidth();
+    h->setMinimumSectionSize(iconSectionWidth);
+    h->resizeSection(COLUMN_INDEX_VISIBILITY, iconSectionWidth);
+    h->resizeSection(COLUMN_INDEX_LOCK, iconSectionWidth);
 }
 
 void TLayerView::selectRows(QList<int> rows, int newRow)

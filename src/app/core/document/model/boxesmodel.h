@@ -1,12 +1,10 @@
 #ifndef TBOXESMODEL_H
 #define TBOXESMODEL_H
 
-#include "../base/io.h"
+#include "basemodel.h"
 #include "entity/box.h"
 
-#include <QAbstractTableModel>
-
-class TBoxesModel : public QAbstractTableModel, TIO
+class TBoxesModel : public TBaseModel
 {
     Q_OBJECT
 

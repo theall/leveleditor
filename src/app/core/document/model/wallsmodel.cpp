@@ -1,9 +1,9 @@
 #include "wallsmodel.h"
 
 TWallsModel::TWallsModel(QObject *parent) :
-    QAbstractTableModel(parent)
+    TBaseModel(parent)
 {
-
+    setName(tr("Wall"));
 }
 
 void TWallsModel::readFromStream(QDataStream &stream)

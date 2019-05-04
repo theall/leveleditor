@@ -1,9 +1,9 @@
 #include "eventsmodel.h"
 
 TEventsModel::TEventsModel(QObject *parent) :
-    QAbstractTableModel(parent)
+    TBaseModel(parent)
 {
-
+    setName(tr("Event"));
 }
 
 void TEventsModel::clear()

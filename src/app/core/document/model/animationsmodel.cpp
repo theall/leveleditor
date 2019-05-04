@@ -1,9 +1,9 @@
 #include "animationsmodel.h"
 
 TAnimationsModel::TAnimationsModel(QObject *parent) :
-    QAbstractTableModel(parent)
+    TBaseModel(parent)
 {
-
+    setName(tr("Animation"));
 }
 
 TAnimationsModel::~TAnimationsModel()

@@ -1,12 +1,10 @@
 #ifndef TDAREASMODEL_H
 #define TDAREASMODEL_H
 
-#include "../base/io.h"
+#include "basemodel.h"
 #include "entity/darea.h"
 
-#include <QAbstractTableModel>
-
-class TDAreasModel : public QAbstractTableModel, TIO
+class TDAreasModel : public TBaseModel
 {
     Q_OBJECT
 

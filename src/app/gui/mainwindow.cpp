@@ -36,6 +36,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
   , mPropertyDock(new TPropertiesDock(this))
   , mTilesetDock(new TTilesetDock(this))
   , mCharacterDock(new TCharacterDock(this))
+  , mLayerDock(new TLayerDock(this))
   , mAboutDialog(new TAboutDialog(this))
   , mLoadingDialog(new TLoadingDialog(this))
   , mZoomComboBox(new TZoomComboBox(this))
@@ -101,11 +102,12 @@ TMainWindow::TMainWindow(QWidget *parent) :
     ui->menuView->insertSeparator(ui->actionShowGrid);
 
     addDockWidget(Qt::LeftDockWidgetArea, mMapsDock);
-    addDockWidget(Qt::LeftDockWidgetArea, mTilesetDock);
-    addDockWidget(Qt::LeftDockWidgetArea, mCharacterDock);
+    addDockWidget(Qt::RightDockWidgetArea, mTilesetDock);
+    addDockWidget(Qt::RightDockWidgetArea, mCharacterDock);
     addDockWidget(Qt::LeftDockWidgetArea, mUndoDock);
     addDockWidget(Qt::RightDockWidgetArea, mMiniSceneDock);
     addDockWidget(Qt::RightDockWidgetArea, mPropertyDock);
+    addDockWidget(Qt::LeftDockWidgetArea, mLayerDock);
     tabifyDockWidget(mMapsDock, mTilesetDock);
     tabifyDockWidget(mTilesetDock, mCharacterDock);
 
@@ -622,6 +624,11 @@ void TMainWindow::on_actionRun_triggered()
         return;
 
     TPreferencesDialog::showPreferences(this, TPreferencesDialog::DEBUG);
+}
+
+TLayerDock *TMainWindow::getLayerDock() const
+{
+    return mLayerDock;
 }
 
 TCharacterDock *TMainWindow::getCharacterDock() const

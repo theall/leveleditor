@@ -1,11 +1,9 @@
 #ifndef TTRIGGERSMODEL_H
 #define TTRIGGERSMODEL_H
 
-#include "../base/io.h"
+#include "basemodel.h"
 
-#include <QAbstractTableModel>
-
-class TTriggersModel : public QAbstractTableModel, TIO
+class TTriggersModel : public TBaseModel
 {
     Q_OBJECT
 

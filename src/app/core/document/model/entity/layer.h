@@ -28,18 +28,18 @@ public:
     Type type() const;
     void setType(const Type &type);
 
+    int tileSize() const;
+
 private:
     Type mType;
     QString mName;
     TDocument *mDocument;
+    TTileList mTileList;
 
     // TIO interface
 public:
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
-
-private:
-    TTileList mTileList;
 };
 typedef QList<TLayer*> TLayerList;
 

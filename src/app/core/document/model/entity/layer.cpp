@@ -70,3 +70,8 @@ void TLayer::setType(const Type &type)
 {
     mType = type;
 }
+
+int TLayer::tileSize() const
+{
+    return mTileList.size();
+}

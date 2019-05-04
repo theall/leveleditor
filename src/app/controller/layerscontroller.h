@@ -3,6 +3,7 @@
 
 #include "abstractcontroller.h"
 
+class TLayerView;
 class TLayersController : public TAbstractController
 {
     Q_OBJECT
@@ -19,6 +20,7 @@ signals:
 private slots:
 
 private:
+    TLayerView *mLayerView;
 
 protected slots:
     void slotTimerEvent() Q_DECL_OVERRIDE;

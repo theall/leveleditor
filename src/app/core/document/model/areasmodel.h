@@ -1,12 +1,10 @@
 #ifndef TAREASMODEL_H
 #define TAREASMODEL_H
 
-#include "../base/io.h"
+#include "basemodel.h"
 #include "entity/area.h"
 
-#include <QAbstractTableModel>
-
-class TAreasModel : public QAbstractTableModel, TIO
+class TAreasModel : public TBaseModel
 {
     Q_OBJECT
 

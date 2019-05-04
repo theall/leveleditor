@@ -9,19 +9,28 @@
 TLayerDock::TLayerDock(QWidget *parent) :
     QDockWidget(parent)
   , mLayerView(new TLayerView(this))
-  , mUpdatingSlider(false)
-  , mChangingLayerOpacity(false)
 {
-    setObjectName(QLatin1String("layersDock"));
+    setObjectName(QLatin1String("LayersDock"));
 
     QWidget *widget = new QWidget(this);
     QVBoxLayout *layout = new QVBoxLayout(widget);
-    layout->setMargin(5);
+    layout->setMargin(0);
 
     QToolBar *buttonContainer = new QToolBar;
     buttonContainer->setFloatable(false);
     buttonContainer->setMovable(false);
     buttonContainer->setIconSize(QSize(16, 16));
+
+    mActionToggleOther = new QAction(this);
+    mActionToggleOther->setShortcut(tr("Ctrl+Shift+H"));
+    mActionToggleOther->setIcon(QIcon(QLatin1String(":/layersdock/images/show_hide_others.png")));
+
+    mActionToggleLockOther = new QAction(this);
+    mActionToggleLockOther->setShortcut(tr("Ctrl+Shift+L"));
+    mActionToggleLockOther->setIcon(QIcon(QLatin1String(":/layersdock/images/locked.png")));
+
+    buttonContainer->addAction(mActionToggleOther);
+    buttonContainer->addAction(mActionToggleLockOther);
 
     QVBoxLayout *listAndToolBar = new QVBoxLayout;
     listAndToolBar->setSpacing(0);
@@ -50,22 +59,15 @@ void TLayerDock::changeEvent(QEvent *e)
     }
 }
 
-void TLayerDock::layerChanged(int index)
+TLayerView *TLayerDock::layerView() const
 {
-    Q_UNUSED(index);
-}
-
-void TLayerDock::editLayerName()
-{
-
-}
-
-void TLayerDock::slotSliderValueChanged(int opacity)
-{
-    Q_UNUSED(opacity);
+    return mLayerView;
 }
 
 void TLayerDock::retranslateUi()
 {
-    setWindowTitle(tr("Layers"));
+    setWindowTitle(tr("Layers Dock"));
+
+    mActionToggleOther->setToolTip(tr("Show/&Hide all Other Layers"));
+    mActionToggleLockOther->setToolTip(tr("Lock/&Unlock all Other Layers"));
 }

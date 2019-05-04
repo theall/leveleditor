@@ -1,12 +1,10 @@
 #ifndef TANIMATIONSMODEL_H
 #define TANIMATIONSMODEL_H
 
+#include "basemodel.h"
 #include "entity/animation.h"
-#include "../base/io.h"
 
-#include <QAbstractTableModel>
-
-class TAnimationsModel : public QAbstractTableModel, TIO
+class TAnimationsModel : public TBaseModel
 {
     Q_OBJECT
 

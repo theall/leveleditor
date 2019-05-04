@@ -1,9 +1,9 @@
 #include "areasmodel.h"
 
 TAreasModel::TAreasModel(QObject *parent) :
-    QAbstractTableModel(parent)
+    TBaseModel(parent)
 {
-
+    setName(tr("Area"));
 }
 
 void TAreasModel::clear()

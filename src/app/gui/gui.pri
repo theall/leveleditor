@@ -58,7 +58,11 @@ SOURCES += \
     $$PWD/component/mapsdock/mapsproxyview.cpp \
     $$PWD/component/mapsdock/modstab.cpp \
     $$PWD/component/mapsdock/modstree.cpp \
-    $$PWD/component/mapsdock/modstab/mapview.cpp
+    $$PWD/component/mapsdock/modstab/mapview.cpp \
+    $$PWD/component/layerdock/iconcheckdelegate.cpp \
+    $$PWD/component/layerdock/boldcurrentitemdelegate.cpp \
+    $$PWD/style/stylehelper.cpp \
+    $$PWD/style/proxystyle.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -107,7 +111,11 @@ HEADERS += \
     $$PWD/component/mapsdock/mapsproxyview.h \
     $$PWD/component/mapsdock/modstab.h \
     $$PWD/component/mapsdock/modstree.h \
-    $$PWD/component/mapsdock/modstab/mapview.h
+    $$PWD/component/mapsdock/modstab/mapview.h \
+    $$PWD/component/layerdock/iconcheckdelegate.h \
+    $$PWD/component/layerdock/boldcurrentitemdelegate.h \
+    $$PWD/style/stylehelper.h \
+    $$PWD/style/proxystyle.h
 
 FORMS += \
     $$PWD/mainwindow.ui \

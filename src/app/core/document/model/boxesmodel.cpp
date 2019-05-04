@@ -1,9 +1,9 @@
 #include "boxesmodel.h"
 
 TBoxesModel::TBoxesModel(QObject *parent) :
-    QAbstractTableModel(parent)
+    TBaseModel(parent)
 {
-
+    setName(tr("Box"));
 }
 
 void TBoxesModel::clear()

@@ -19,6 +19,7 @@ TMainController::TMainController(QObject *parent) :
   , mTilesetController(new TTilesetController(this))
   , mCharacterController(new TCharacterPanelController(this))
   , mMapsDockController(new TMapsDockController(this))
+  , mLayersController(new TLayersController(this))
 {
     connect(mTabController, SIGNAL(requestCloseDocument(TDocument*)), this, SLOT(slotRequestCloseDocument(TDocument*)));
     connect(mTabController, SIGNAL(requestSwitchToDocument(TDocument*)), this, SLOT(slotRequestSwitchToDocument(TDocument*)));
@@ -206,6 +207,7 @@ void TMainController::slotRequestSwitchToDocument(TDocument *document)
     mUndoController->setCurrentDocument(document);
     mMainPropertyController->setCurrentDocument(document);
     mMiniSceneController->setCurrentDocument(document);
+    mLayersController->setCurrentDocument(document);
 
     mMainWindow->enableSaveAction(document&&document->isDirty());
     mMainWindow->enableRunAction(document!=nullptr);

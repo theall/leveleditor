@@ -1,12 +1,10 @@
 #ifndef TWALLSMODEL_H
 #define TWALLSMODEL_H
 
-#include "../base/io.h"
+#include "basemodel.h"
 #include "entity/wall.h"
 
-#include <QAbstractTableModel>
-
-class TWallsModel : public QAbstractTableModel, TIO
+class TWallsModel : public TBaseModel
 {
     Q_OBJECT
 

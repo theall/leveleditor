@@ -1,12 +1,10 @@
 #ifndef TPLATFORMSMODEL_H
 #define TPLATFORMSMODEL_H
 
-#include "../base/io.h"
+#include "basemodel.h"
 #include "entity/plat.h"
 
-#include <QAbstractTableModel>
-
-class TPlatformsModel : public QAbstractTableModel, TIO
+class TPlatformsModel : public TBaseModel
 {
     Q_OBJECT
 

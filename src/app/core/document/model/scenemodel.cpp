@@ -14,25 +14,55 @@ static const QString P_AIR_STRIKE = T("Air Strike");
 static const QString P_MUSIC1 = T("Music 1");
 static const QString P_MUSIC2 = T("Music 2");
 
+#define COLUMN_INDEX_NAME 0
+#define COLUMN_INDEX_VISIBILITY 1
+#define COLUMN_INDEX_LOCK 2
+
 TSceneModel::TSceneModel(QObject *parent) :
-    TPropertyObject(parent)
+    TBaseModel(parent)
+  , mPropertyObject(new TPropertyObject(this))
+  , mPropertySheet(mPropertyObject->propertySheet())
+  , mTileLayerModel1(new TTileLayerModel(this))
+  , mTileLayerModel2(new TTileLayerModel(this))
+  , mTileLayerModel3(new TTileLayerModel(this))
   , mAnimationsModel(new TAnimationsModel(this))
   , mAreasModel(new TAreasModel(this))
   , mBoxesModel(new TBoxesModel(this))
   , mDAreasModel(new TDAreasModel(this))
   , mEventsModel(new TEventsModel(this))
-  , mLayersModel(new TLayersModel(this))
   , mPlatformsModel(new TPlatformsModel(this))
   , mRespawnsModel(new TRespawnsModel(this))
   , mTriggersModel(new TTriggersModel(this))
   , mWallsModel(new TWallsModel(this))
+  , mTileLayerModel4(new TTileLayerModel(this))
+  , mTileLayerModel5(new TTileLayerModel(this))
+  , mTileLayerModel6(new TTileLayerModel(this))
 {
-    initPropertySheet();
-}
+    setName(tr("Map"));
 
-TLayersModel *TSceneModel::layersModel() const
-{
-    return mLayersModel;
+    mBaseModelList.append(mTileLayerModel1);
+    mBaseModelList.append(mTileLayerModel2);
+    mBaseModelList.append(mTileLayerModel3);
+    mBaseModelList.append(mAnimationsModel);
+    mBaseModelList.append(mAreasModel);
+    mBaseModelList.append(mBoxesModel);
+    mBaseModelList.append(mDAreasModel);
+    mBaseModelList.append(mEventsModel);
+    mBaseModelList.append(mPlatformsModel);
+    mBaseModelList.append(mRespawnsModel);
+    mBaseModelList.append(mTriggersModel);
+    mBaseModelList.append(mWallsModel);
+    mBaseModelList.append(mTileLayerModel4);
+    mBaseModelList.append(mTileLayerModel5);
+    mBaseModelList.append(mTileLayerModel6);
+
+    mTileLayerModel1->setName(tr("Background 1"));
+    mTileLayerModel2->setName(tr("Background 2"));
+    mTileLayerModel3->setName(tr("Background 3"));
+    mTileLayerModel4->setName(tr("Foreground 1"));
+    mTileLayerModel5->setName(tr("Foreground 2"));
+    mTileLayerModel6->setName(tr("Foreground 3"));
+    initPropertySheet();
 }
 
 QColor TSceneModel::getBackgroundColor() const
@@ -41,6 +71,41 @@ QColor TSceneModel::getBackgroundColor() const
     if(item)
         return item->value().value<QColor>();
     return QColor();
+}
+
+TPropertySheet *TSceneModel::propertySheet() const
+{
+    return mPropertySheet;
+}
+
+TTileLayerModel *TSceneModel::getTileLayerModel6() const
+{
+    return mTileLayerModel6;
+}
+
+TTileLayerModel *TSceneModel::getTileLayerModel5() const
+{
+    return mTileLayerModel5;
+}
+
+TTileLayerModel *TSceneModel::getTileLayerModel4() const
+{
+    return mTileLayerModel4;
+}
+
+TTileLayerModel *TSceneModel::getTileLayerModel3() const
+{
+    return mTileLayerModel3;
+}
+
+TTileLayerModel *TSceneModel::getTileLayerModel2() const
+{
+    return mTileLayerModel2;
+}
+
+TTileLayerModel *TSceneModel::getTileLayerModel1() const
+{
+    return mTileLayerModel1;
 }
 
 TWallsModel *TSceneModel::getWallsModel() const
@@ -61,11 +126,6 @@ TRespawnsModel *TSceneModel::getRespawnsModel() const
 TPlatformsModel *TSceneModel::getPlatformsModel() const
 {
     return mPlatformsModel;
-}
-
-TLayersModel *TSceneModel::getLayersModel() const
-{
-    return mLayersModel;
 }
 
 TEventsModel *TSceneModel::getEventsModel() const
@@ -126,7 +186,13 @@ void TSceneModel::readFromStream(QDataStream &stream)
     stream >> g;
     stream >> b;
 
-    mLayersModel->readFromStream(stream);
+    mTileLayerModel1->readFromStream(stream);
+    mTileLayerModel2->readFromStream(stream);
+    mTileLayerModel3->readFromStream(stream);
+    mTileLayerModel4->readFromStream(stream);
+    mTileLayerModel5->readFromStream(stream);
+    mTileLayerModel6->readFromStream(stream);
+
     mRespawnsModel->readFromStream(stream);
 
     QPoint flag1, flag2;
@@ -205,4 +271,92 @@ void TSceneModel::readFromStream(QDataStream &stream)
 
     mPropertySheet->setValue(PID_SCENE_FLAG1, flag1);
     mPropertySheet->setValue(PID_SCENE_FLAG2, flag2);
+}
+
+int TSceneModel::rowCount(const QModelIndex &) const
+{
+    return mBaseModelList.size();
+}
+
+QVariant TSceneModel::data(const QModelIndex &index, int role) const
+{
+    int row = index.row();
+    if(row<0 || row>=mBaseModelList.size())
+        return QVariant();
+
+    TBaseModel *baseModel = mBaseModelList.at(row);
+    int column = index.column();
+    if(role==Qt::DisplayRole) {
+        if(column==COLUMN_INDEX_NAME)
+            return baseModel->name();
+    } else if(role == Qt::DecorationRole) {
+        if(column==COLUMN_INDEX_NAME)
+            return baseModel->icon();
+    } else if(role == Qt::CheckStateRole) {
+        if (column == COLUMN_INDEX_VISIBILITY)
+          return baseModel->visible() ? Qt::Checked : Qt::Unchecked;
+        if (column == COLUMN_INDEX_LOCK)
+          return baseModel->locked() ? Qt::Checked : Qt::Unchecked;
+    }
+    return TBaseModel::data(index, role);
+}
+
+/**
+ * Allows for changing the name, visibility and opacity of a layer.
+ */
+bool TSceneModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (!index.isValid())
+        return false;
+
+    int row = index.row();
+    if(row<0 || row>=mBaseModelList.size())
+        return false;
+
+    if (role == Qt::CheckStateRole) {
+        int column = index.column();
+        TBaseModel *baseModel = mBaseModelList.at(row);
+        if (column == COLUMN_INDEX_VISIBILITY) {
+            Qt::CheckState c = static_cast<Qt::CheckState>(value.toInt());
+            const bool visible = (c == Qt::Checked);
+            baseModel->setVisible(visible);
+        }
+        if (column == COLUMN_INDEX_LOCK) {
+            Qt::CheckState c = static_cast<Qt::CheckState>(value.toInt());
+            const bool locked = (c == Qt::Checked);
+            baseModel->setLocked(locked);
+        }
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Makes sure the items are checkable and names editable.
+ */
+Qt::ItemFlags TSceneModel::flags(const QModelIndex &index) const
+{
+    Qt::ItemFlags rc = QAbstractItemModel::flags(index);
+
+    int column = index.column();
+    if (column==COLUMN_INDEX_VISIBILITY || column==COLUMN_INDEX_LOCK)
+        rc |= Qt::ItemIsUserCheckable;
+
+    return rc;
+}
+
+/**
+ * Returns the headers for the table.
+ */
+QVariant TSceneModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (role==Qt::DisplayRole && orientation==Qt::Horizontal) {
+        switch (section) {
+        case COLUMN_INDEX_NAME: return tr("Name");
+        case COLUMN_INDEX_VISIBILITY: return tr("Visible");
+        case COLUMN_INDEX_LOCK: return tr("Locked");
+        }
+    }
+    return QVariant();
 }

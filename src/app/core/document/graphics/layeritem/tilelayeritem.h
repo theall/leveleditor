@@ -4,17 +4,21 @@
 #include <QList>
 #include "layeritem.h"
 #include "objectitem/tileitem.h"
-#include "../../model/entity/layer.h"
+#include "../../model/tilelayermodel.h"
 
 class TTileLayerItem : public TLayerItem
 {
 public:
-    TTileLayerItem(TLayer *layer, QGraphicsItem *parent = Q_NULLPTR);
+    explicit TTileLayerItem(TLayer *layer, QGraphicsItem *parent = Q_NULLPTR);
+    TTileLayerItem(TTileLayerModel *model, QGraphicsItem *parent = Q_NULLPTR);
+    ~TTileLayerItem();
 
 private:
     TLayer *mLayer;
     QRectF mBoundingRect;
     TTileItemList mTileItemList;
+
+    void create();
 
     // TLayerItem interface
 public:

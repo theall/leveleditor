@@ -1,12 +1,10 @@
 #ifndef TENEMYFACTORYMODEL_H
 #define TENEMYFACTORYMODEL_H
 
-#include "../base/io.h"
+#include "basemodel.h"
 #include "entity/enemyfactory.h"
 
-#include <QAbstractTableModel>
-
-class TEnemyFactoryModel : public QAbstractTableModel, TIO
+class TEnemyFactoryModel : public TBaseModel
 {
     Q_OBJECT
 

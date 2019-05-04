@@ -78,8 +78,8 @@ public:
     TMiniSceneDock *getMiniSceneDock() const;
     TZoomComboBox *getZoomComboBox() const;
     TTilesetDock *getTilesetDock() const;
-
     TCharacterDock *getCharacterDock() const;
+    TLayerDock *getLayerDock() const;
 
 signals:
     void requestCreateProject();
@@ -153,6 +153,7 @@ private:
     TPropertiesDock *mPropertyDock;
     TTilesetDock *mTilesetDock;
     TCharacterDock *mCharacterDock;
+    TLayerDock *mLayerDock;
 
     TAboutDialog *mAboutDialog;
     TLoadingDialog *mLoadingDialog;

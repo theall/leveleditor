@@ -1,9 +1,9 @@
 #include "platformsmodel.h"
 
 TPlatformsModel::TPlatformsModel(QObject *parent) :
-    QAbstractTableModel(parent)
+    TBaseModel(parent)
 {
-
+    setName(tr("Platform"));
 }
 
 void TPlatformsModel::readFromStream(QDataStream &stream)

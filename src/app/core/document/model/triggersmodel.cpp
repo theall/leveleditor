@@ -1,9 +1,9 @@
 #include "triggersmodel.h"
 
 TTriggersModel::TTriggersModel(QObject *parent) :
-    QAbstractTableModel(parent)
+    TBaseModel(parent)
 {
-
+    setName(tr("Trigger"));
 }
 
 void TTriggersModel::clear()

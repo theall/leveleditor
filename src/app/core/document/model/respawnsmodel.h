@@ -1,13 +1,12 @@
 #ifndef TRESPAWNSMODEL_H
 #define TRESPAWNSMODEL_H
 
-#include "../base/io.h"
+#include "basemodel.h"
 
 #include <QList>
 #include <QPoint>
-#include <QAbstractTableModel>
 
-class TRespawnsModel : public QAbstractTableModel, TIO
+class TRespawnsModel : public TBaseModel
 {
     Q_OBJECT
 

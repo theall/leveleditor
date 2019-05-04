@@ -4,6 +4,23 @@ TTileLayerItem::TTileLayerItem(TLayer *layer, QGraphicsItem *parent) :
     TLayerItem(parent)
   , mLayer(layer)
 {
+    create();
+}
+
+TTileLayerItem::TTileLayerItem(TTileLayerModel *model, QGraphicsItem *parent) :
+    TLayerItem(parent)
+  , mLayer(model->layer())
+{
+    create();
+}
+
+TTileLayerItem::~TTileLayerItem()
+{
+
+}
+
+void TTileLayerItem::create()
+{
     Q_ASSERT(mLayer);
 
     QMap<TTile*, TTileItem*> tileItemMap;

@@ -12,17 +12,22 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
     setFlag(QGraphicsItem::ItemHasNoContents);
     setAcceptHoverEvents(true);
 
-    for(TLayer *layer : mSceneModel->layersModel()->getBackgroundLayerList()) {
-        TTileLayerItem *layerItem = new TTileLayerItem(layer, this);
-        mLayerItemList.append(layerItem);
-    }
+    TTileLayerItem *layerItem = nullptr;
+    layerItem = new TTileLayerItem(mSceneModel->getTileLayerModel1(), this);
+    mLayerItemList.append(layerItem);
+    layerItem = new TTileLayerItem(mSceneModel->getTileLayerModel2(), this);
+    mLayerItemList.append(layerItem);
+    layerItem = new TTileLayerItem(mSceneModel->getTileLayerModel3(), this);
+    mLayerItemList.append(layerItem);
 
     mLayerItemList.append(new TMainLayerItem(mSceneModel, this));
 
-    for(TLayer *layer : mSceneModel->layersModel()->getForegroundLayerList()) {
-        TTileLayerItem *layerItem = new TTileLayerItem(layer, this);
-        mLayerItemList.append(layerItem);
-    }
+    layerItem = new TTileLayerItem(mSceneModel->getTileLayerModel4(), this);
+    mLayerItemList.append(layerItem);
+    layerItem = new TTileLayerItem(mSceneModel->getTileLayerModel5(), this);
+    mLayerItemList.append(layerItem);
+    layerItem = new TTileLayerItem(mSceneModel->getTileLayerModel6(), this);
+    mLayerItemList.append(layerItem);
 
     int index = 0;
     for(TLayerItem *layerItem : mLayerItemList) {

@@ -10,7 +10,6 @@ SOURCES += \
     $$PWD/document/document.cpp \
     $$PWD/document/property/propertysheet.cpp \
     $$PWD/document/property/propertyitem.cpp \
-    $$PWD/document/model/layersmodel.cpp \
     $$PWD/document/model/entity/layer.cpp \
     $$PWD/document/property/propertyobject.cpp \
     $$PWD/document/model/scenemodel.cpp \
@@ -48,7 +47,6 @@ SOURCES += \
     $$PWD/document/graphics/layeritem/objectitem/objectitem.cpp \
     $$PWD/document/graphics/uiitem/selecteditems.cpp \
     $$PWD/document/undocommand/propertyundocommand.cpp \
-    $$PWD/document/undocommand/layersundocommand.cpp \
     $$PWD/document/undocommand/objectundocommand.cpp \
     $$PWD/document/graphics/uiitem/selectionrectangle.cpp \
     $$PWD/document/graphics/tools/abstracttool.cpp \
@@ -73,7 +71,8 @@ SOURCES += \
     $$PWD/document/model/entity/animation.cpp \
     $$PWD/document/model/entity/frame.cpp \
     $$PWD/document/model/enemyfactorymodel.cpp \
-    $$PWD/document/model/basemodel.cpp
+    $$PWD/document/model/basemodel.cpp \
+    $$PWD/document/model/tilelayermodel.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -86,7 +85,6 @@ HEADERS  += \
     $$PWD/document/property/property.h \
     $$PWD/document/property/propertysheet.h \
     $$PWD/document/property/propertyitem.h \
-    $$PWD/document/model/layersmodel.h \
     $$PWD/document/model/entity/layer.h \
     $$PWD/document/property/propertyobject.h \
     $$PWD/document/model/scenemodel.h \
@@ -126,7 +124,6 @@ HEADERS  += \
     $$PWD/document/graphics/layeritem/objectitem/objectitem.h \
     $$PWD/document/graphics/uiitem/selecteditems.h \
     $$PWD/document/undocommand/propertyundocommand.h \
-    $$PWD/document/undocommand/layersundocommand.h \
     $$PWD/document/undocommand/objectundocommand.h \
     $$PWD/document/base/finddoc.h \
     $$PWD/document/graphics/uiitem/selectionrectangle.h \
@@ -153,4 +150,8 @@ HEADERS  += \
     $$PWD/document/model/entity/animation.h \
     $$PWD/document/model/entity/frame.h \
     $$PWD/document/model/enemyfactorymodel.h \
-    $$PWD/document/model/basemodel.h
+    $$PWD/document/model/basemodel.h \
+    $$PWD/document/model/tilelayermodel.h
+
+RESOURCES += \
+    $$PWD/resource/core.qrc

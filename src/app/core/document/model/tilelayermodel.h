@@ -1,27 +1,21 @@
-#ifndef LAYERSMODEL_H
-#define LAYERSMODEL_H
+#ifndef TTILELAYERMODEL_H
+#define TTILELAYERMODEL_H
 
+#include "basemodel.h"
 #include "entity/layer.h"
-#include "../base/io.h"
-#include "../property/propertyobject.h"
 
-#include <QAbstractTableModel>
-
-class TLayersModel : public QAbstractTableModel, TIO
+class TTileLayerModel : public TBaseModel
 {
     Q_OBJECT
 
 public:
-    TLayersModel(QObject *parent = nullptr);
-    ~TLayersModel();
+    TTileLayerModel(QObject *parent = nullptr);
+    ~TTileLayerModel();
 
-    TLayerList getBackgroundLayerList() const;
-    TLayerList getForegroundLayerList() const;
+    TLayer *layer() const;
 
 private:
-    TLayerList mUnityLayerList;
-    TLayerList mBackgroundLayerList;
-    TLayerList mForegroundLayerList;
+    TLayer *mLayer;
 
     // IO interface
 public:
@@ -35,4 +29,5 @@ public:
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 };
 
-#endif // LAYERSMODEL_H
+
+#endif // TTILELAYERMODEL_H

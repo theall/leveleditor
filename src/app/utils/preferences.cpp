@@ -316,6 +316,36 @@ void TPreferences::setRoot(const QString &root)
     SET_VALUE(root, mRoot, SEC_INSTALL, SEC_INSTALL_GAME_ROOT);
 }
 
+TPreferences::ApplicationStyle TPreferences::applicationStyle() const
+{
+    return mApplicationStyle;
+}
+
+void TPreferences::setApplicationStyle(const ApplicationStyle &applicationStyle)
+{
+    mApplicationStyle = applicationStyle;
+}
+
+QColor TPreferences::baseColor() const
+{
+    return mBaseColor;
+}
+
+void TPreferences::setBaseColor(const QColor &baseColor)
+{
+    mBaseColor = baseColor;
+}
+
+QColor TPreferences::selectionColor() const
+{
+    return mSelectionColor;
+}
+
+void TPreferences::setSelectionColor(const QColor &selectionColor)
+{
+    mSelectionColor = selectionColor;
+}
+
 void TPreferences::windowGeometryState(QByteArray *g, QByteArray *s)
 {
     mSettings->beginGroup(SEC_GUI);

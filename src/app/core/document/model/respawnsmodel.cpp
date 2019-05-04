@@ -1,9 +1,9 @@
 #include "respawnsmodel.h"
 
 TRespawnsModel::TRespawnsModel(QObject *parent) :
-    QAbstractTableModel(parent)
+    TBaseModel(parent)
 {
-
+    setName(tr("Respawn"));
 }
 
 void TRespawnsModel::clear()

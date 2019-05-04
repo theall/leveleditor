@@ -36,6 +36,12 @@ public:
     static const int ICON_SIZE_LARGE;
     static TPreferences* mInstance;
 
+    enum ApplicationStyle {
+        SystemDefaultStyle,
+        FusionStyle,
+        TiledStyle
+    };
+
 public:
     TPreferences(QObject *parent=0);
     ~TPreferences();
@@ -108,11 +114,23 @@ public:
     QString root() const;
     void setRoot(const QString &root);
 
+    ApplicationStyle applicationStyle() const;
+    void setApplicationStyle(const ApplicationStyle &applicationStyle);
+
+    QColor baseColor() const;
+    void setBaseColor(const QColor &baseColor);
+
+    QColor selectionColor() const;
+    void setSelectionColor(const QColor &selectionColor);
+
 signals:
     void hideMenuBarChanged(bool);
     void toolbarIconSizeChanged(int);
     void hideStatusBarChanged(bool);
     void styleChanged(const QString &style);
+    void applicationStyleChanged(const ApplicationStyle &applicationStyle);
+    void baseColorChanged(const QColor &baseColor);
+    void selectionColorChanged(const QColor &selectionColor);
 
 private:
     QSettings *mSettings;
@@ -136,6 +154,9 @@ private:
     QString mEnginePath;
     bool mEnableDebugMultiInstances;
     QString mRoot;
+    ApplicationStyle mApplicationStyle;
+    QColor mBaseColor;
+    QColor mSelectionColor;
 
     void setValue(const QString &section, const QVariant &value);
     QVariant value(const QString &section, const QVariant &defValue=QVariant());

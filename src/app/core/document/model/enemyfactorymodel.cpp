@@ -1,9 +1,9 @@
 #include "enemyfactorymodel.h"
 
 TEnemyFactoryModel::TEnemyFactoryModel(QObject *parent) :
-    QAbstractTableModel(parent)
+    TBaseModel(parent)
 {
-
+    setName(tr("Factory"));
 }
 
 TEnemyFactoryModel::~TEnemyFactoryModel()

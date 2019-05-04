@@ -1,9 +1,9 @@
 #include "dareasmodel.h"
 
 TDAreasModel::TDAreasModel(QObject *parent) :
-    QAbstractTableModel(parent)
+    TBaseModel(parent)
 {
-
+    setName(tr("Danger Area"));
 }
 
 TDAreasModel::~TDAreasModel()

@@ -1,11 +1,9 @@
 #ifndef TEVENTSMODEL_H
 #define TEVENTSMODEL_H
 
-#include "../base/io.h"
+#include "basemodel.h"
 
-#include <QAbstractTableModel>
-
-class TEventsModel : public QAbstractTableModel, TIO
+class TEventsModel : public TBaseModel
 {
     Q_OBJECT
 

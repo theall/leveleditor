@@ -61,4 +61,11 @@
         <file>images/tree.png</file>
         <file>images/default_thumbnail.png</file>
     </qresource>
+    <qresource prefix="/layersdock">
+        <file>images/locked.png</file>
+        <file>images/show_hide_others.png</file>
+        <file>images/hidden.png</file>
+        <file>images/unlocked.png</file>
+        <file>images/visible.png</file>
+    </qresource>
 </RCC>

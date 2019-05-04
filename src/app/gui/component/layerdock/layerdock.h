@@ -16,24 +16,19 @@ public:
     explicit TLayerDock(QWidget *parent = nullptr);
     ~TLayerDock();
 
-    void enableOpacitySlider(bool enabled);
-    void setOpacitySliderValue(int value);
+    TLayerView *layerView() const;
 
 signals:
-    void opacitySliderValueChanged(int);
 
 protected:
     void changeEvent(QEvent *e) override;
 
 private slots:
-    void layerChanged(int index);
-    void editLayerName();
-    void slotSliderValueChanged(int opacity);
 
 private:
     TLayerView *mLayerView;
-    bool mUpdatingSlider;
-    bool mChangingLayerOpacity;
+    QAction *mActionToggleOther;
+    QAction *mActionToggleLockOther;
 
     void retranslateUi();
 };

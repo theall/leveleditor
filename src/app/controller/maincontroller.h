@@ -11,6 +11,7 @@
 #include "tilesetcontroller.h"
 #include "characterpanelcontroller.h"
 #include "mapsdockcontroller.h"
+#include "layerscontroller.h"
 
 class TMainController : public TAbstractController
 {
@@ -61,6 +62,7 @@ private:
     TTilesetController *mTilesetController;
     TCharacterPanelController *mCharacterController;
     TMapsDockController *mMapsDockController;
+    TLayersController *mLayersController;
 
     bool confirmAllSaved();
     void createNewDocument();

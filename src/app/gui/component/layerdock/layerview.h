@@ -35,6 +35,7 @@ protected:
 private slots:
     void slotCurrentRowChanged(const QModelIndex &index);
     void slotPressed(const QModelIndex &index);
+    void slotOnActivated(const QModelIndex &index);
     void slotOnSectionResized(int logicalIndex);
     void slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
@@ -44,6 +45,10 @@ private:
     QAction *mActionToggleOtherLayers;
 
     QMenu *mContextMenu;
+
+    // QAbstractItemView interface
+public:
+    void setModel(QAbstractItemModel *model);
 };
 
 #endif // TLAYERVIEW_H
