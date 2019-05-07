@@ -3,8 +3,6 @@
 #include "../assets/assetsmanager.h"
 #include "base/tr.h"
 
-#include "undocommand/layersundocommand.h"
-
 #include <QUuid>
 
 static const QString P_NAME = T("Name");
