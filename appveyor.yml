@@ -1,0 +1,28 @@
+version: 1.0.{build}
+build_script:
+- cmd: >-
+    set PATH=C:\Qt\5.6\mingw49_32\bin;C:\Qt\Tools\mingw492_32\bin;
+    cd src
+    qmake leveleditor.pro
+    mingw32-make -j16
+    copy release\*.exe ..\
+environment:
+  QTDIR: C:\Qt\5.6\mingw53_32\bin
+  EDITOR_OUTPUT_PATH: c:\leveleditor
+  QTMINGW: C:\Qt\Tools\mingw530_32\bin
+  NSIS: C:\Program Files (x86)\NSIS
+  ZIP: C:\Program Files\7-Zip
+  PYTHON: C:\Python34
+artifacts:
+- path: src\release\leveleditor.exe
+  name: demo
+- path: leveleditor.exe
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: icaJlPkqzI3IUxSqUHgI34BtCpffDWxpp4otuYUAwA1RqMtQvAtdmXjOL9UOdqQI
+  artifact: /leveleditor.*\.(exe|7z|zip)/
+  draft: true
+  force_update: false
+  on:
+    appveyor_repo_tag: false
