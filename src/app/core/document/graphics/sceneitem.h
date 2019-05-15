@@ -3,8 +3,7 @@
 
 #include <QGraphicsObject>
 
-#include "layeritem/tilelayeritem.h"
-#include "layeritem/mainlayeritem.h"
+#include "layeritem/layeritem.h"
 #include "uiitem/hovereditem.h"
 #include "../model/scenemodel.h"
 
@@ -23,6 +22,7 @@ private:
     QGraphicsRectItem *mDarkRectangle;
     QGraphicsRectItem *mBorderRectangle;
     TLayerItemList mLayerItemList;
+    QMap<TBaseModel*, TLayerItem*> mModelLayerMap;
 
     void calcBoundingRect();
 

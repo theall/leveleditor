@@ -95,6 +95,7 @@ signals:
     void requestShowFrameSceneArea(AreaType areaType, bool visible);
     void onFrameSceneActionSelected(SelectedAction selectedAction);
     void requestRunCurrentProject();
+    void requestShowBorder(bool);
 
 private slots:
     // From TTabWidget
@@ -139,6 +140,8 @@ private slots:
     void on_actionSelect_triggered(bool checked);
     void on_actionAbout_triggered();
     void on_actionRun_triggered();
+
+    void on_actionShowBorder_toggled(bool arg1);
 
 private:
     Ui::MainWindow *ui;

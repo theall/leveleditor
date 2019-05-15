@@ -98,8 +98,8 @@ TMainWindow::TMainWindow(QWidget *parent) :
     // Add the 'Views and Toolbars' submenu.This needs to happen after all
     // the dock widgets and toolbars have been added to the main window
     mViewsAndToolbarsMenu = new QAction(tr("Views and Toolbars"), this);
-    ui->menuView->insertAction(ui->actionShowGrid, mViewsAndToolbarsMenu);
-    ui->menuView->insertSeparator(ui->actionShowGrid);
+    ui->menuView->insertAction(ui->actionShowBorder, mViewsAndToolbarsMenu);
+    ui->menuView->insertSeparator(ui->actionShowBorder);
 
     addDockWidget(Qt::LeftDockWidgetArea, mMapsDock);
     addDockWidget(Qt::RightDockWidgetArea, mTilesetDock);
@@ -485,10 +485,12 @@ void TMainWindow::loadConfig()
 
     QByteArray geometry, state;
     prefs->windowGeometryState(&geometry, &state);
-    if(geometry.isEmpty())
-        showMaximized();
-    else
+    if(geometry.isEmpty()) {
+        if(isVisible())
+            showMaximized();
+    } else {
         restoreGeometry(geometry);
+    }
 
     if(!state.isEmpty())
         restoreState(state);
@@ -654,4 +656,9 @@ TMiniSceneDock *TMainWindow::getMiniSceneDock() const
 TLoadingDialog *TMainWindow::getLoadingDialog() const
 {
     return mLoadingDialog;
+}
+
+void TMainWindow::on_actionShowBorder_toggled(bool arg1)
+{
+    emit requestShowBorder(arg1);
 }

@@ -3,6 +3,7 @@
 #include <QCursor>
 #include <QGraphicsSceneMouseEvent>
 
+bool TTileItem::mShowBorder = true;
 TTileItem::TTileItem(TTile *tile, QGraphicsItem *parent) :
     TObjectItem(tile, parent)
   , mTile(tile)
@@ -46,12 +47,23 @@ void TTileItem::setTargetTileItem(TTileItem *targetTileItem)
     mTargetTileItem = targetTileItem;
 }
 
+bool TTileItem::showBorder()
+{
+    return mShowBorder;
+}
+
+void TTileItem::setShowBorder(bool showBorder)
+{
+    mShowBorder = showBorder;
+}
+
 void TTileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRectF r = mTile->rect();
     painter->drawPixmap(r.topLeft(), mTile->pixmap());
 
-    TObjectItem::paint(painter, option, widget);
+    if(mShowBorder)
+        TObjectItem::paint(painter, option, widget);
 }
 
 QPainterPath TTileItem::shape() const

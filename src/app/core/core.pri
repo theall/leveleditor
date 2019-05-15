@@ -61,7 +61,6 @@ SOURCES += \
     $$PWD/document/graphics/layeritem/objectitem/dareaitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/boxitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/platitem.cpp \
-    $$PWD/document/graphics/layeritem/mainlayeritem.cpp \
     $$PWD/model/mapsmodel.cpp \
     $$PWD/model/charactermodel.cpp \
     $$PWD/assets/maps.cpp \
@@ -72,7 +71,13 @@ SOURCES += \
     $$PWD/document/model/entity/frame.cpp \
     $$PWD/document/model/enemyfactorymodel.cpp \
     $$PWD/document/model/basemodel.cpp \
-    $$PWD/document/model/tilelayermodel.cpp
+    $$PWD/document/model/tilelayermodel.cpp \
+    $$PWD/document/graphics/layeritem/arealayeritem.cpp \
+    $$PWD/document/graphics/layeritem/boxlayeritem.cpp \
+    $$PWD/document/graphics/layeritem/darealayeritem.cpp \
+    $$PWD/document/graphics/layeritem/platlayeritem.cpp \
+    $$PWD/document/graphics/layeritem/walllayeritem.cpp \
+    $$PWD/document/graphics/layeritem/objectlayeritem.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -140,7 +145,6 @@ HEADERS  += \
     $$PWD/document/graphics/layeritem/objectitem/dareaitem.h \
     $$PWD/document/graphics/layeritem/objectitem/boxitem.h \
     $$PWD/document/graphics/layeritem/objectitem/platitem.h \
-    $$PWD/document/graphics/layeritem/mainlayeritem.h \
     $$PWD/model/mapsmodel.h \
     $$PWD/model/charactermodel.h \
     $$PWD/assets/maps.h \
@@ -151,7 +155,13 @@ HEADERS  += \
     $$PWD/document/model/entity/frame.h \
     $$PWD/document/model/enemyfactorymodel.h \
     $$PWD/document/model/basemodel.h \
-    $$PWD/document/model/tilelayermodel.h
+    $$PWD/document/model/tilelayermodel.h \
+    $$PWD/document/graphics/layeritem/arealayeritem.h \
+    $$PWD/document/graphics/layeritem/boxlayeritem.h \
+    $$PWD/document/graphics/layeritem/darealayeritem.h \
+    $$PWD/document/graphics/layeritem/platlayeritem.h \
+    $$PWD/document/graphics/layeritem/walllayeritem.h \
+    $$PWD/document/graphics/layeritem/objectlayeritem.h
 
 RESOURCES += \
     $$PWD/resource/core.qrc

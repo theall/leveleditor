@@ -4,6 +4,7 @@
 #include "../gui/dialogs/loadingdialog.h"
 #include "../gui/component/tabwidget/tabwidget.h"
 #include "../core/assets/assetsmanager.h"
+#include "../core/document/graphics/layeritem/objectitem/tileitem.h"
 
 #include <QProcess>
 #include <QMessageBox>
@@ -72,6 +73,8 @@ bool TMainController::joint(TMainWindow *mainWindow, TCore *core)
         connect(mainWindow, SIGNAL(requestDisplayProjectProperties()), this, SLOT(slotRequestDisplayProjectProperties()));
         connect(mainWindow, SIGNAL(requestExitApp(bool&)), this, SLOT(slotRequestExitApp(bool&)));
         connect(mainWindow, SIGNAL(requestRunCurrentProject()), this, SLOT(slotRequestRunCurrentProject()));
+        connect(mainWindow, SIGNAL(requestShowBorder(bool)), this, SLOT(slotRequestShowBorder(bool)));
+
         TPreferences *prefs = TPreferences::instance();
         QString gameRoot = prefs->root();
         QStringList arguments = QCoreApplication::arguments();
@@ -88,7 +91,6 @@ bool TMainController::joint(TMainWindow *mainWindow, TCore *core)
             prefs->setRoot(gameRoot);
         }
         mainWindow->show();
-
 
         if(prefs->openLastFile())
         {
@@ -347,6 +349,11 @@ void TMainController::slotRequestRunCurrentProject()
                               tr("Error"),
                               tr("Fail to start process with command %1").arg(enginePath),
                               QMessageBox::Ok);
+}
+
+void TMainController::slotRequestShowBorder(bool show)
+{
+    TTileItem::setShowBorder(show);
 }
 
 void TMainController::slotTimerEvent()

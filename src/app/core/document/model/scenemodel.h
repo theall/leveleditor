@@ -40,6 +40,7 @@ public:
 
     QColor getBackgroundColor() const;
     TPropertySheet *propertySheet() const;
+    TBaseModelList getBaseModelList() const;
 
 private:
     int mNextMap[5];

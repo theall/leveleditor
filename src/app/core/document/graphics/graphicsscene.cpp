@@ -119,6 +119,9 @@ void TGraphicsScene::setFps(int fps)
 
 void TGraphicsScene::setSceneModel(TSceneModel *sceneModel)
 {
+    if(mSceneModel == sceneModel)
+        return;
+
     if(mSceneModel) {
         mSceneModel->disconnect(this);
         removeItem((QGraphicsItem*)mSceneItem);

@@ -1,4 +1,17 @@
 #include "sceneitem.h"
+#include "layeritem/tilelayeritem.h"
+#include "layeritem/arealayeritem.h"
+#include "layeritem/boxlayeritem.h"
+#include "layeritem/darealayeritem.h"
+#include "layeritem/platlayeritem.h"
+#include "layeritem/walllayeritem.h"
+#include "../model/areasmodel.h"
+#include "../model/boxesmodel.h"
+#include "../model/dareasmodel.h"
+#include "../model/platformsmodel.h"
+#include "../model/wallsmodel.h"
+
+#include <QDebug>
 
 #define ZINDEX_BASE 1000
 
@@ -12,22 +25,27 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
     setFlag(QGraphicsItem::ItemHasNoContents);
     setAcceptHoverEvents(true);
 
-    TTileLayerItem *layerItem = nullptr;
-    layerItem = new TTileLayerItem(mSceneModel->getTileLayerModel1(), this);
-    mLayerItemList.append(layerItem);
-    layerItem = new TTileLayerItem(mSceneModel->getTileLayerModel2(), this);
-    mLayerItemList.append(layerItem);
-    layerItem = new TTileLayerItem(mSceneModel->getTileLayerModel3(), this);
-    mLayerItemList.append(layerItem);
-
-    mLayerItemList.append(new TMainLayerItem(mSceneModel, this));
-
-    layerItem = new TTileLayerItem(mSceneModel->getTileLayerModel4(), this);
-    mLayerItemList.append(layerItem);
-    layerItem = new TTileLayerItem(mSceneModel->getTileLayerModel5(), this);
-    mLayerItemList.append(layerItem);
-    layerItem = new TTileLayerItem(mSceneModel->getTileLayerModel6(), this);
-    mLayerItemList.append(layerItem);
+    for(TBaseModel *baseModel : mSceneModel->getBaseModelList()) {
+        TLayerItem *layerItem = nullptr;
+        if(TTileLayerModel *tileLayerModel = dynamic_cast<TTileLayerModel*>(baseModel)) {
+            layerItem = new TTileLayerItem(tileLayerModel, this);
+        } else if(TAreasModel *areaModel = dynamic_cast<TAreasModel*>(baseModel)) {
+            layerItem = new TAreasLayerItem(areaModel, this);
+        } else if(TBoxesModel *boxModel = dynamic_cast<TBoxesModel*>(baseModel)) {
+            layerItem = new TBoxLayerItem(boxModel, this);
+        } else if(TDAreasModel *dareasModel = dynamic_cast<TDAreasModel*>(baseModel)) {
+            layerItem = new TDAreaLayerItem(dareasModel, this);
+        } else if(TPlatformsModel *platModel = dynamic_cast<TPlatformsModel*>(baseModel)) {
+            layerItem = new TPlatLayerItem(platModel, this);
+        } else if(TWallsModel *wallModel = dynamic_cast<TWallsModel*>(baseModel)) {
+            layerItem = new TWallLayerItem(wallModel, this);
+        }
+        if(layerItem) {
+            mLayerItemList.append(layerItem);
+        } else {
+            qDebug() << "Unprocessed model:" << baseModel->name();
+        }
+    }
 
     int index = 0;
     for(TLayerItem *layerItem : mLayerItemList) {

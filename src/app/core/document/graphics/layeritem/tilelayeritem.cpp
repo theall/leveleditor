@@ -1,14 +1,7 @@
 #include "tilelayeritem.h"
 
-TTileLayerItem::TTileLayerItem(TLayer *layer, QGraphicsItem *parent) :
-    TLayerItem(parent)
-  , mLayer(layer)
-{
-    create();
-}
-
 TTileLayerItem::TTileLayerItem(TTileLayerModel *model, QGraphicsItem *parent) :
-    TLayerItem(parent)
+    TLayerItem(model, parent)
   , mLayer(model->layer())
 {
     create();
@@ -24,7 +17,7 @@ void TTileLayerItem::create()
     Q_ASSERT(mLayer);
 
     QMap<TTile*, TTileItem*> tileItemMap;
-    foreach (TTile *tile, mLayer->tileList()) {
+    for(TTile *tile : mLayer->tileList()) {
         TTileItem *tileItem = new TTileItem(tile, this);
         mTileItemList.append(tileItem);
         tileItemMap.insert(tile, tileItem);

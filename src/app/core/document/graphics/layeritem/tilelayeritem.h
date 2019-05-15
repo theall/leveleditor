@@ -9,8 +9,7 @@
 class TTileLayerItem : public TLayerItem
 {
 public:
-    explicit TTileLayerItem(TLayer *layer, QGraphicsItem *parent = Q_NULLPTR);
-    TTileLayerItem(TTileLayerModel *model, QGraphicsItem *parent = Q_NULLPTR);
+    explicit TTileLayerItem(TTileLayerModel *model, QGraphicsItem *parent = Q_NULLPTR);
     ~TTileLayerItem();
 
 private:

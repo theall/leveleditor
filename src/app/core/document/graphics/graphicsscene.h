@@ -1,6 +1,7 @@
 #ifndef GRAPHICSSCENE_H
 #define GRAPHICSSCENE_H
 
+#include <QMap>
 #include <QPair>
 #include <QList>
 #include <QGraphicsItem>

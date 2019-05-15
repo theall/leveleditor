@@ -58,7 +58,7 @@
      <x>0</x>
      <y>0</y>
      <width>1062</width>
-     <height>17</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -102,7 +102,7 @@
     </property>
     <addaction name="separator"/>
     <addaction name="actionAlwaysOnTop"/>
-    <addaction name="actionShowGrid"/>
+    <addaction name="actionShowBorder"/>
     <addaction name="separator"/>
     <addaction name="actionZoomIn"/>
     <addaction name="actionZoomOut"/>
@@ -631,12 +631,12 @@
     <string>Add collision area</string>
    </property>
   </action>
-  <action name="actionShowGrid">
+  <action name="actionShowBorder">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Display Grid</string>
+    <string>Display Border</string>
    </property>
   </action>
   <action name="actionPaste">

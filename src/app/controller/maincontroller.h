@@ -37,6 +37,7 @@ private slots:
     void slotRequestReloadCurrentProject();
     void slotRequestDisplayProjectProperties();
     void slotRequestRunCurrentProject();
+    void slotRequestShowBorder(bool show);
 
     // From TTabController
     void slotRequestCloseDocument(TDocument *document);

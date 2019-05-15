@@ -25,7 +25,11 @@ bool TBaseModel::visible() const
 
 void TBaseModel::setVisible(bool visible)
 {
+    if(mVisible == visible)
+        return;
+
     mVisible = visible;
+    emit visibilityChanged(visible);
 }
 
 QIcon TBaseModel::icon() const
@@ -45,7 +49,16 @@ bool TBaseModel::locked() const
 
 void TBaseModel::setLocked(bool locked)
 {
+    if(mLocked == locked)
+        return;
+
     mLocked = locked;
+    emit lockChanged(locked);
+}
+
+TBaseModel::Type TBaseModel::type() const
+{
+    return mType;
 }
 
 int TBaseModel::columnCount(const QModelIndex &) const

@@ -20,11 +20,15 @@ public:
     TTileItem *targetTileItem() const;
     void setTargetTileItem(TTileItem *targetTileItem);
 
+    static bool showBorder();
+    static void setShowBorder(bool showBorder);
+
 private:
     TTile *mTile;
     TDoorItem *mDoorItem;
     TTrackItem *mTileDoorTrackItem;
     TTileItem *mTargetTileItem;
+    static bool mShowBorder;
 
     // QGraphicsItem interface
 public:

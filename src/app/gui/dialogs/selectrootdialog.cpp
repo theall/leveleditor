@@ -24,7 +24,10 @@ TSelectRootDialog::~TSelectRootDialog()
 
 QString TSelectRootDialog::getSelectedRoot(QWidget *parent)
 {
-    TSelectRootDialog dlg(parent);
+    TSelectRootDialog dlg(nullptr);
+    if(parent) {
+        dlg.setWindowIcon(parent->windowIcon());
+    }
     int code = dlg.exec();
     if(code == QDialog::Accepted)
         return dlg.getRoot();

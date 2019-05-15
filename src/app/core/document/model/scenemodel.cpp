@@ -78,6 +78,11 @@ TPropertySheet *TSceneModel::propertySheet() const
     return mPropertySheet;
 }
 
+TBaseModelList TSceneModel::getBaseModelList() const
+{
+    return mBaseModelList;
+}
+
 TTileLayerModel *TSceneModel::getTileLayerModel6() const
 {
     return mTileLayerModel6;
@@ -301,9 +306,6 @@ QVariant TSceneModel::data(const QModelIndex &index, int role) const
     return TBaseModel::data(index, role);
 }
 
-/**
- * Allows for changing the name, visibility and opacity of a layer.
- */
 bool TSceneModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (!index.isValid())

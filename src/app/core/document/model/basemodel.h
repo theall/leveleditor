@@ -9,7 +9,17 @@
 
 class TBaseModel : public QAbstractTableModel, TIO
 {
+    Q_OBJECT
+
 public:
+    enum Type {
+        TILE,
+        AREA,
+        DAREA,
+        PLAT,
+        WALL
+    };
+
     explicit TBaseModel(QObject *parent = Q_NULLPTR);
 
     QString name() const;
@@ -24,11 +34,18 @@ public:
     bool locked() const;
     void setLocked(bool locked);
 
+    Type type() const;
+
+signals:
+    void visibilityChanged(bool visible);
+    void lockChanged(bool locked);
+
 private:
     QIcon mIcon;
     QString mName;
     bool mVisible;
     bool mLocked;
+    Type mType;
 
     // QAbstractItemModel interface
 public:
