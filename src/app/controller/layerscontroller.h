@@ -18,6 +18,7 @@ public:
 signals:
 
 private slots:
+    void slotCurrentLayerSelected(int row);
 
 private:
     TLayerView *mLayerView;

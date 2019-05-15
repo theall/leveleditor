@@ -9,16 +9,28 @@ class TLayerItem : public QGraphicsObject
     Q_OBJECT
 
 public:
+    enum LayerType {
+        TILE,
+        OBJECT
+    };
+
     TLayerItem(TBaseModel *baseModel, QGraphicsItem *parent = Q_NULLPTR);
     ~TLayerItem();
 
     TBaseModel *baseModel() const;
     bool locked() const;
 
+    bool isTileLayer() const;
+    bool isObjectLayer() const;
+
+    LayerType layerType() const;
+    void setLayerType(const LayerType &layerType);
+
     virtual QRectF calcBoundingRect() = 0;
 
 private:
     bool mLocked;
+    LayerType mLayerType;
 
 private slots:
     void slotLayerVisibilityChanged(bool visible);

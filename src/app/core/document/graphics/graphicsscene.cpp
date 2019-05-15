@@ -539,6 +539,16 @@ TObjectItem *TGraphicsScene::getLastSelectedObjectItem() const
     return mLastSelectedObjectItem;
 }
 
+TLayerItem *TGraphicsScene::getLayerItem(int index) const
+{
+    return mSceneItem->getLayerItem(index);
+}
+
+TLayerItemList TGraphicsScene::getLayerItemList() const
+{
+    return mSceneItem->getLayerItemList();
+}
+
 TObject *TGraphicsScene::getTopMostObject(const QPointF &pos) const
 {
     TObjectItem *objectItem = getTopMostObjectItem(pos);

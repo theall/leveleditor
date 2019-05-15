@@ -60,6 +60,19 @@ TSceneItem::~TSceneItem()
 
 }
 
+TLayerItem *TSceneItem::getLayerItem(int index) const
+{
+    TLayerItem *layerItem = nullptr;
+    if(index>=0 && index<mLayerItemList.size())
+        layerItem = mLayerItemList.at(index);
+    return layerItem;
+}
+
+TLayerItemList TSceneItem::getLayerItemList() const
+{
+    return mLayerItemList;
+}
+
 void TSceneItem::calcBoundingRect()
 {
     mBoundingRect.intersected(QRectF(0,0,0,0));

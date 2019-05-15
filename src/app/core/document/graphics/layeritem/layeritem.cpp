@@ -23,6 +23,26 @@ bool TLayerItem::locked() const
     return mLocked;
 }
 
+bool TLayerItem::isTileLayer() const
+{
+    return mLayerType==TILE;
+}
+
+bool TLayerItem::isObjectLayer() const
+{
+    return mLayerType==OBJECT;
+}
+
+TLayerItem::LayerType TLayerItem::layerType() const
+{
+    return mLayerType;
+}
+
+void TLayerItem::setLayerType(const LayerType &layerType)
+{
+    mLayerType = layerType;
+}
+
 void TLayerItem::slotLayerVisibilityChanged(bool visible)
 {
     setVisible(visible);
@@ -30,7 +50,7 @@ void TLayerItem::slotLayerVisibilityChanged(bool visible)
 
 void TLayerItem::slotLayerLockChanged(bool locked)
 {
-   mLocked = locked;
+    mLocked = locked;
 }
 
 QRectF TLayerItem::boundingRect() const

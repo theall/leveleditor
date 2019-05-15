@@ -15,6 +15,9 @@ public:
     explicit TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent = Q_NULLPTR);
     ~TSceneItem();
 
+    TLayerItem *getLayerItem(int index) const;
+    TLayerItemList getLayerItemList() const;
+
 private:
     QRectF mBoundingRect;
     bool mIsHovered = false;

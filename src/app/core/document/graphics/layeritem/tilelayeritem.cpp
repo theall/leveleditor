@@ -4,6 +4,8 @@ TTileLayerItem::TTileLayerItem(TTileLayerModel *model, QGraphicsItem *parent) :
     TLayerItem(model, parent)
   , mLayer(model->layer())
 {
+    setLayerType(TLayerItem::TILE);
+
     create();
 }
 

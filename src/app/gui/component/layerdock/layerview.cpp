@@ -31,9 +31,9 @@ QMenu *TLayerView::contextMenu()
     return mContextMenu;
 }
 
-void TLayerView::slotCurrentRowChanged(const QModelIndex &index)
+void TLayerView::slotCurrentRowChanged(const QModelIndex &current, const QModelIndex &)
 {
-
+    emit currentRowChanged(current.row());
 }
 
 void TLayerView::slotPressed(const QModelIndex &index)
@@ -97,6 +97,8 @@ void TLayerView::setModel(QAbstractItemModel *model)
     setItemDelegateForColumn(COLUMN_INDEX_LOCK, new TIconCheckDelegate(TIconCheckDelegate::Lock, true, this));
     h->setStretchLastSection(false);
 
+    QItemSelectionModel *_selectionModel = selectionModel();
+    connect(_selectionModel, SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), this, SLOT(slotCurrentRowChanged(QModelIndex,QModelIndex)));
     connect(this, SIGNAL(pressed(QModelIndex)), SLOT(slotPressed(QModelIndex)));
     connect(this, SIGNAL(activated(QModelIndex)), SLOT(slotOnActivated(QModelIndex)));
     connect(h, SIGNAL(sectionResized(int,int,int)), this, SLOT(slotOnSectionResized(int)));
