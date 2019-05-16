@@ -92,7 +92,7 @@ class TTile : public TObject, TIO
     Q_OBJECT
 
 public:
-    TTile(QObject *parent = nullptr);
+    explicit TTile(QObject *parent = nullptr);
 
     QPixmap pixmap() const;
     TPixmap *primitive() const;

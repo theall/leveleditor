@@ -8,28 +8,18 @@
 class TObjectUndoCommand : public QUndoCommand
 {
 public:
-    enum Command
-    {
-        Move = 0,
-        Delete,
-        COUNT
-    };
-
     TObjectUndoCommand(
-           Command command,
            const TObjectList &objectList,
-           const QVariant &parameter = QVariant(),
+           const QPointF &offset = QPointF(),
            int commandSequenceId = -1,
            QUndoCommand *parent = Q_NULLPTR);
     ~TObjectUndoCommand();
 
-    Command command() const;
     QPointF offset() const;
     TObjectList objectList() const;
 
 private:
     int mId;
-    Command mCommand;
     QPointF mOffset;
     TObjectList mObjectList;
 

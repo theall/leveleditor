@@ -47,7 +47,6 @@ SOURCES += \
     $$PWD/document/graphics/layeritem/objectitem/objectitem.cpp \
     $$PWD/document/graphics/uiitem/selecteditems.cpp \
     $$PWD/document/undocommand/propertyundocommand.cpp \
-    $$PWD/document/undocommand/objectundocommand.cpp \
     $$PWD/document/graphics/uiitem/selectionrectangle.cpp \
     $$PWD/document/graphics/tools/abstracttool.cpp \
     $$PWD/model/tilesetmodel.cpp \
@@ -77,7 +76,10 @@ SOURCES += \
     $$PWD/document/graphics/layeritem/darealayeritem.cpp \
     $$PWD/document/graphics/layeritem/platlayeritem.cpp \
     $$PWD/document/graphics/layeritem/walllayeritem.cpp \
-    $$PWD/document/graphics/layeritem/objectlayeritem.cpp
+    $$PWD/document/graphics/layeritem/objectlayeritem.cpp \
+    $$PWD/document/undocommand/objectaddcommand.cpp \
+    $$PWD/document/undocommand/objectmovecommand.cpp \
+    $$PWD/document/graphics/uiitem/tilestampitem.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -129,7 +131,6 @@ HEADERS  += \
     $$PWD/document/graphics/layeritem/objectitem/objectitem.h \
     $$PWD/document/graphics/uiitem/selecteditems.h \
     $$PWD/document/undocommand/propertyundocommand.h \
-    $$PWD/document/undocommand/objectundocommand.h \
     $$PWD/document/base/finddoc.h \
     $$PWD/document/graphics/uiitem/selectionrectangle.h \
     $$PWD/document/graphics/tools/abstracttool.h \
@@ -161,7 +162,10 @@ HEADERS  += \
     $$PWD/document/graphics/layeritem/darealayeritem.h \
     $$PWD/document/graphics/layeritem/platlayeritem.h \
     $$PWD/document/graphics/layeritem/walllayeritem.h \
-    $$PWD/document/graphics/layeritem/objectlayeritem.h
+    $$PWD/document/graphics/layeritem/objectlayeritem.h \
+    $$PWD/document/undocommand/objectmovecommand.h \
+    $$PWD/document/undocommand/objectaddcommand.h \
+    $$PWD/document/graphics/uiitem/tilestampitem.h
 
 RESOURCES += \
     $$PWD/resource/core.qrc

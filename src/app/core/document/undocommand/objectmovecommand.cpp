@@ -1,20 +1,16 @@
-#include "objectundocommand.h"
+#include "objectmovecommand.h"
 #include "../base/tr.h"
 
-const QString g_commandText[TObjectUndoCommand::COUNT] = {
-    T("Move %1"),
-    T("Delete %1")
-};
+const QString g_commandText = T("Move %1");
 
 TObjectUndoCommand::TObjectUndoCommand(
-        Command command,
         const TObjectList &objectList,
-        const QVariant &parameter,
+        const QPointF &offset,
         int commandSequenceId,
         QUndoCommand *parent) :
     QUndoCommand(parent)
   , mId(commandSequenceId)
-  , mCommand(command)
+  , mOffset(offset)
   , mObjectList(objectList)
 {
     QString context = "";
@@ -28,11 +24,7 @@ TObjectUndoCommand::TObjectUndoCommand(
                 context += "...";
         }
     }
-    setText(g_commandText[command].arg(context));
-
-    if(command == Move) {
-        mOffset = parameter.toPointF();
-    }
+    setText(g_commandText.arg(context));
 }
 
 TObjectUndoCommand::~TObjectUndoCommand()
@@ -50,35 +42,24 @@ TObjectList TObjectUndoCommand::objectList() const
     return mObjectList;
 }
 
-TObjectUndoCommand::Command TObjectUndoCommand::command() const
-{
-    return mCommand;
-}
-
 void TObjectUndoCommand::undo()
 {
-    if(mCommand==Move)
-    {
-        for(TObject *object : mObjectList) {
-            object->move(-mOffset);
-        }
+    for(TObject *object : mObjectList) {
+        object->move(-mOffset);
     }
 }
 
 void TObjectUndoCommand::redo()
 {
-    if(mCommand==Move)
-    {
-       for(TObject *object : mObjectList) {
-           object->move(mOffset);
-       }
+    for(TObject *object : mObjectList) {
+        object->move(mOffset);
     }
 }
 
 bool TObjectUndoCommand::mergeWith(const QUndoCommand *other)
 {
     const TObjectUndoCommand *command = static_cast<const TObjectUndoCommand*>(other);
-    bool canMerge = command && (mCommand==command->command()) && (mObjectList==command->objectList());
+    bool canMerge = command && (mObjectList==command->objectList());
     if(canMerge)
         mOffset += command->offset();
     return canMerge;

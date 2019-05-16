@@ -9,6 +9,7 @@
 
 #include "sceneitem.h"
 #include "uiitem/hovereditem.h"
+#include "uiitem/tilestampitem.h"
 #include "uiitem/selecteditems.h"
 #include "uiitem/selectionrectangle.h"
 #include "../model/scenemodel.h"
@@ -20,6 +21,11 @@ class TGraphicsScene : public QGraphicsScene
     Q_OBJECT
 
 public:
+    enum Mode {
+        DEFAULT,
+        INSERT_TILE
+    };
+
     TGraphicsScene(QObject *parent = nullptr);
     ~TGraphicsScene();
 
@@ -85,10 +91,12 @@ private:
     TSceneModel *mSceneModel;
     TSceneItem *mSceneItem;
     THoveredItem *mHoveredItem;
+    TTileStampItem *mTileStampItem;
     TSelectedItems *mSelectedItems;
     TSelectionRectangle *mSelectionRectangle;
     TObjectItem *mLastSelectedObjectItem;
     TDocument *mDocument;
+    Mode mMode;
 
     void step();
     void setSelectedObjectItem(TObjectItem *objectItem);

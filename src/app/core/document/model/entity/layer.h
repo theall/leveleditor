@@ -30,6 +30,18 @@ public:
 
     int tileSize() const;
 
+    void insertTile(TTile *tile, int index = -1);
+    void insertTile(const TTileList &tileList, const QList<int> &indexList = QList<int>());
+
+    int removeTile(int index);
+    int removeTile(TTile *tile);
+    QList<int> removeTile(const QList<int> &indexList);
+    QList<int> removeTile(const TTileList &tileList);
+
+signals:
+    void tileInserted(const TTileList &tileList, const QList<int> &indexList);
+    void tileRemoved(const TTileList &tileList, const QList<int> &indexList);
+
 private:
     Type mType;
     QString mName;

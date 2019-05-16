@@ -6,7 +6,7 @@
 #include "graphicsscene.h"
 #include "../base/finddoc.h"
 #include "../document.h"
-#include "../undocommand/objectundocommand.h"
+#include "../undocommand/objectmovecommand.h"
 
 #define TOP_Z_VALUE 10000
 TGraphicsScene::TGraphicsScene(QObject *parent) :
@@ -20,10 +20,12 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
   , mSceneModel(nullptr)
   , mSceneItem(nullptr)
   , mHoveredItem(new THoveredItem)
+  , mTileStampItem(new TTileStampItem)
   , mSelectedItems(new TSelectedItems)
   , mSelectionRectangle(new TSelectionRectangle)
   , mLastSelectedObjectItem(nullptr)
   , mDocument(nullptr)
+  , mMode(DEFAULT)
 {
     setSize(640, 480);
 
@@ -35,6 +37,9 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
 
     mSelectionRectangle->setZValue(TOP_Z_VALUE);
     addItem(mSelectionRectangle);
+
+    mTileStampItem->setZValue(TOP_Z_VALUE+1);
+    addItem(mTileStampItem);
 
     FIND_DOCUMENT;
 }
@@ -182,7 +187,6 @@ void TGraphicsScene::setSelectedObjectItem(TObjectItem *objectItem)
 void TGraphicsScene::pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset, int commandId)
 {
     TObjectUndoCommand *command = new TObjectUndoCommand(
-                TObjectUndoCommand::Move,
                 objectList,
                 offset,
                 commandId);
@@ -249,51 +253,55 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mousePressEvent(event);
 
-    TObjectItem *autonomyObjectitem = nullptr;
-    TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
-    if(mLastSelectedObjectItem && mLastSelectedObjectItem->needGrabMouse()) {
-        autonomyObjectitem = mLastSelectedObjectItem;
-    }
-    if(!autonomyObjectitem) {
-        if(objectItem && objectItem->autonomy())
-            autonomyObjectitem = objectItem;
-    }
-    if(autonomyObjectitem)
-    {
-        autonomyObjectitem->mousePressed(event);
-        setSelectedObjectItem(autonomyObjectitem);
-        if(event->isAccepted())
-            return;
-    }
+    if(mMode == DEFAULT) {
+        TObjectItem *autonomyObjectitem = nullptr;
+        TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
+        if(mLastSelectedObjectItem && mLastSelectedObjectItem->needGrabMouse()) {
+            autonomyObjectitem = mLastSelectedObjectItem;
+        }
+        if(!autonomyObjectitem) {
+            if(objectItem && objectItem->autonomy())
+                autonomyObjectitem = objectItem;
+        }
+        if(autonomyObjectitem)
+        {
+            autonomyObjectitem->mousePressed(event);
+            setSelectedObjectItem(autonomyObjectitem);
+            if(event->isAccepted())
+                return;
+        }
 
-    Qt::MouseButton button = event->button();
-    mLeftButtonDown = (button==Qt::LeftButton);
-    if(button == Qt::RightButton)
-    {
-        if(mTimerId==-1)
-            play();
-        else
-            stop();
-    } else if(button == Qt::LeftButton) {
-        mLeftButtonDownPos = event->scenePos();
-        mCommandId = qAbs(((int)mLeftButtonDownPos.x())<<16) + qAbs(mLeftButtonDownPos.y());
-        Qt::KeyboardModifiers modifers = event->modifiers();
-        if(modifers&Qt::ShiftModifier) {
-            TObjectItem *objectItem = getTopMostObjectItem(mLeftButtonDownPos);
-            if(mLastSelectedObjectItem && mLastSelectedObjectItem->isCongener(objectItem)) {
-                qreal leftButtonDownX = mLeftButtonDownPos.x();
-                qreal leftButtonDownY = mLeftButtonDownPos.y();
-                QRectF lastObjectItemRect = mLastSelectedObjectItem->boundingRect();
-                QPointF centerPos = lastObjectItemRect.center();
-                qreal left = qMin(leftButtonDownX, centerPos.x());
-                qreal top = qMin(leftButtonDownY, centerPos.y());
-                qreal right = qMax(leftButtonDownX, centerPos.x());
-                qreal bottom = qMax(leftButtonDownY, centerPos.y());
-                TObjectItemList objectItemList = getObjectItemList(QRectF(left,top,right-left,bottom-top), mLastSelectedObjectItem);
-                if(objectItemList.size() > 0)
-                    mSelectedItems->setObjectItemList(objectItemList);
+        Qt::MouseButton button = event->button();
+        mLeftButtonDown = (button==Qt::LeftButton);
+        if(button == Qt::RightButton)
+        {
+            if(mTimerId == -1)
+                play();
+            else
+                stop();
+        } else if(button == Qt::LeftButton) {
+            mLeftButtonDownPos = event->scenePos();
+            mCommandId = qAbs(((int)mLeftButtonDownPos.x())<<16) + qAbs(mLeftButtonDownPos.y());
+            Qt::KeyboardModifiers modifers = event->modifiers();
+            if(modifers&Qt::ShiftModifier) {
+                TObjectItem *objectItem = getTopMostObjectItem(mLeftButtonDownPos);
+                if(mLastSelectedObjectItem && mLastSelectedObjectItem->isCongener(objectItem)) {
+                    qreal leftButtonDownX = mLeftButtonDownPos.x();
+                    qreal leftButtonDownY = mLeftButtonDownPos.y();
+                    QRectF lastObjectItemRect = mLastSelectedObjectItem->boundingRect();
+                    QPointF centerPos = lastObjectItemRect.center();
+                    qreal left = qMin(leftButtonDownX, centerPos.x());
+                    qreal top = qMin(leftButtonDownY, centerPos.y());
+                    qreal right = qMax(leftButtonDownX, centerPos.x());
+                    qreal bottom = qMax(leftButtonDownY, centerPos.y());
+                    TObjectItemList objectItemList = getObjectItemList(QRectF(left,top,right-left,bottom-top), mLastSelectedObjectItem);
+                    if(objectItemList.size() > 0)
+                        mSelectedItems->setObjectItemList(objectItemList);
+                }
             }
         }
+    } else if(mMode == INSERT_TILE) {
+
     }
 }
 
@@ -301,125 +309,133 @@ void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mouseMoveEvent(event);
 
-    TObjectItem *autonomyObjectitem = nullptr;
-    TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
-    if(mLastSelectedObjectItem && mLastSelectedObjectItem->needGrabMouse()) {
-        autonomyObjectitem = mLastSelectedObjectItem;
-    }
-    if(!autonomyObjectitem) {
-        if(objectItem && objectItem->autonomy())
-            autonomyObjectitem = objectItem;
-    }
-    if(autonomyObjectitem)
-    {
-        autonomyObjectitem->mouseMoved(event);
-        if(event->isAccepted())
-            return;
-    }
+    if(mMode == DEFAULT) {
+        TObjectItem *autonomyObjectitem = nullptr;
+        TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
+        if(mLastSelectedObjectItem && mLastSelectedObjectItem->needGrabMouse()) {
+            autonomyObjectitem = mLastSelectedObjectItem;
+        }
+        if(!autonomyObjectitem) {
+            if(objectItem && objectItem->autonomy())
+                autonomyObjectitem = objectItem;
+        }
+        if(autonomyObjectitem)
+        {
+            autonomyObjectitem->mouseMoved(event);
+            if(event->isAccepted())
+                return;
+        }
 
-    if(!mLeftButtonDown) {
-        if(mSelectedItems->containsObjectItem(objectItem))
-            mHoveredItem->setObjectItem(nullptr);
-        else
-            mHoveredItem->setObjectItem(objectItem);
-        mAction = NoAction;
-    } else {
-        if(mAction == NoAction) {
-            if(objectItem) {
-                QPointF lastScenePos = event->lastScenePos();
-                // Check whether need to add object item under mouse to selected items
-                if(lastScenePos == mLeftButtonDownPos) {
-                    mAction = Moving;
-                    if(!mSelectedItems->containsObjectItem(objectItem)) {
-                        mSelectedItems->setObjectItem(objectItem);
+        if(!mLeftButtonDown) {
+            if(mSelectedItems->containsObjectItem(objectItem))
+                mHoveredItem->setObjectItem(nullptr);
+            else
+                mHoveredItem->setObjectItem(objectItem);
+            mAction = NoAction;
+        } else {
+            if(mAction == NoAction) {
+                if(objectItem) {
+                    QPointF lastScenePos = event->lastScenePos();
+                    // Check whether need to add object item under mouse to selected items
+                    if(lastScenePos == mLeftButtonDownPos) {
+                        mAction = Moving;
+                        if(!mSelectedItems->containsObjectItem(objectItem)) {
+                            mSelectedItems->setObjectItem(objectItem);
+                        }
+                    }
+                } else {
+                    mAction = Selecting;
+                    mSelectionRectangle->setVisible(true);
+                }
+            }
+            if(mAction == Moving) {
+                // Move selected object item
+                TObjectList objectList = mSelectedItems->getSelectedObjectList();
+                if(objectList.size() > 0) {
+                    QPointF offset = event->scenePos() - event->lastScenePos();
+                    if(!offset.isNull()) {
+                        pushObjectMoveCommand(objectList, offset, mCommandId);
                     }
                 }
-            } else {
-                mAction = Selecting;
-                mSelectionRectangle->setVisible(true);
+            } else if(mAction == Selecting) {
+                mSelectionRectangle->setRectangle(QRectF(mLeftButtonDownPos, event->scenePos()));
             }
         }
-        if(mAction == Moving) {
-            // Move selected object item
-            TObjectList objectList = mSelectedItems->getSelectedObjectList();
-            if(objectList.size() > 0) {
-                QPointF offset = event->scenePos() - event->lastScenePos();
-                if(!offset.isNull()) {
-                    pushObjectMoveCommand(objectList, offset, mCommandId);
-                }
-            }
-        } else if(mAction == Selecting) {
-            mSelectionRectangle->setRectangle(QRectF(mLeftButtonDownPos, event->scenePos()));
-        }
+        updateCursor();
+        update();
+    } else if(mMode == INSERT_TILE) {
+
     }
-    updateCursor();
-    update();
 }
 
 void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mouseReleaseEvent(event);
 
-    TObjectItem *autonomyObjectitem = nullptr;
-    TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
-    if(mLastSelectedObjectItem && mLastSelectedObjectItem->needGrabMouse()) {
-        autonomyObjectitem = mLastSelectedObjectItem;
-    }
-    if(!autonomyObjectitem) {
-        if(objectItem && objectItem->autonomy())
-            autonomyObjectitem = objectItem;
-    }
-    if(autonomyObjectitem)
-    {
-        autonomyObjectitem->mouseReleased(event);
-        if(event->isAccepted())
-            return;
-    }
-
-    if(mLeftButtonDown) {
-        mLeftButtonDown = false;
-        if(mAction == NoAction) {
-            TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
-            if(objectItem) {
-                Qt::KeyboardModifiers modifers = event->modifiers();
-                if(modifers&Qt::ControlModifier) {
-                    if(mLeftButtonDownPos==event->scenePos()) {
-                        // The mouse pos is not equal to mLeftButtonDownPos after selected items moved
-                        if(!mSelectedItems->containsObjectItem(objectItem)) {
-                            mSelectedItems->addObjectItem(objectItem);
-                        } else {
-                            mSelectedItems->removeObjectItem(objectItem);
-                        }
-                    }
-                    setSelectedObjectItem(objectItem);
-                } else if(modifers&Qt::ShiftModifier) {
-                    if(!mLastSelectedObjectItem)
-                        setSelectedObjectItem(objectItem);
-                } else {
-                    mSelectedItems->setObjectItem(objectItem);
-                    setSelectedObjectItem(objectItem);
-                }
-            } else {
-                mSelectedItems->setObjectItem(nullptr);
-                setSelectedObjectItem(nullptr);
-            }
-        } else if(mAction == Moving) {
-            mAction = NoAction;
-        } else if(mAction == Selecting) {
-            mAction = NoAction;
-
-            QRectF selectionRect = mSelectionRectangle->boundingRect();
-            TObjectItemList objectItemList = getObjectItemList(selectionRect);
-            Qt::KeyboardModifiers modifers = event->modifiers();
-            if(modifers&Qt::ControlModifier) {
-                mSelectedItems->addObjectItems(objectItemList);
-            } else {
-                mSelectedItems->setObjectItemList(objectItemList);
-            }
-            mSelectionRectangle->setVisible(false);
+    if(mMode == DEFAULT) {
+        TObjectItem *autonomyObjectitem = nullptr;
+        TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
+        if(mLastSelectedObjectItem && mLastSelectedObjectItem->needGrabMouse()) {
+            autonomyObjectitem = mLastSelectedObjectItem;
+        }
+        if(!autonomyObjectitem) {
+            if(objectItem && objectItem->autonomy())
+                autonomyObjectitem = objectItem;
+        }
+        if(autonomyObjectitem)
+        {
+            autonomyObjectitem->mouseReleased(event);
+            if(event->isAccepted())
+                return;
         }
 
-        update();
+        if(mLeftButtonDown) {
+            mLeftButtonDown = false;
+            if(mAction == NoAction) {
+                TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
+                if(objectItem) {
+                    Qt::KeyboardModifiers modifers = event->modifiers();
+                    if(modifers&Qt::ControlModifier) {
+                        if(mLeftButtonDownPos==event->scenePos()) {
+                            // The mouse pos is not equal to mLeftButtonDownPos after selected items moved
+                            if(!mSelectedItems->containsObjectItem(objectItem)) {
+                                mSelectedItems->addObjectItem(objectItem);
+                            } else {
+                                mSelectedItems->removeObjectItem(objectItem);
+                            }
+                        }
+                        setSelectedObjectItem(objectItem);
+                    } else if(modifers&Qt::ShiftModifier) {
+                        if(!mLastSelectedObjectItem)
+                            setSelectedObjectItem(objectItem);
+                    } else {
+                        mSelectedItems->setObjectItem(objectItem);
+                        setSelectedObjectItem(objectItem);
+                    }
+                } else {
+                    mSelectedItems->setObjectItem(nullptr);
+                    setSelectedObjectItem(nullptr);
+                }
+            } else if(mAction == Moving) {
+                mAction = NoAction;
+            } else if(mAction == Selecting) {
+                mAction = NoAction;
+
+                QRectF selectionRect = mSelectionRectangle->boundingRect();
+                TObjectItemList objectItemList = getObjectItemList(selectionRect);
+                Qt::KeyboardModifiers modifers = event->modifiers();
+                if(modifers&Qt::ControlModifier) {
+                    mSelectedItems->addObjectItems(objectItemList);
+                } else {
+                    mSelectedItems->setObjectItemList(objectItemList);
+                }
+                mSelectionRectangle->setVisible(false);
+            }
+
+            update();
+        }
+    } else if(mMode == INSERT_TILE) {
+
     }
 }
 
