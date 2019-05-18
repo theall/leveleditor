@@ -18,8 +18,12 @@ public:
     TPixmap *pixmap() const;
     void setPixmap(TPixmap *pixmap);
 
+    int tilesetId() const;
+    void setTilesetId(int tilesetId);
+
 private:
     int mId;
+    int mTilesetId;
     TPixmap *mPixmap;
 };
 typedef QList<TTileId*> TTileIdList;

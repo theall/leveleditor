@@ -7,6 +7,7 @@
 #include "object.h"
 #include "../../base/io.h"
 
+class TTileId;
 class TPixmap;
 class TDocument;
 
@@ -103,6 +104,9 @@ public:
     void setTarget(TTile *target);
     int targetNumber() const;
 
+    TTileId *tileId() const;
+    void setTileId(TTileId *tileId);
+
 private slots:
     void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);
 
@@ -111,9 +115,11 @@ private:
     TDocument *mDocument;
     TDoor *mDoor;
     TTile *mTarget;
+    TTileId *mTileId;
     bool mHasMoveModel;
     int mTargetNumber;
 
+    void setUp();
     void initPropertySheet();
 
     // TObject interface

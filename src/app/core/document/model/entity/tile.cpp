@@ -150,6 +150,8 @@ TTile::TTile(QObject *parent) :
   , mDocument(nullptr)
   , mDoor(nullptr)
   , mTarget(nullptr)
+  , mTileId(nullptr)
+  , mHasMoveModel(false)
   , mTargetNumber(-1)
 {
     FIND_DOCUMENT;
@@ -248,12 +250,11 @@ void TTile::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(P_TARGET, target);
     mPropertySheet->setValue(P_SCREEN_SPEED, screenSpeed);
 
-    TTileId *tileId = mDocument->getTileId(setNumber, number);
-    if(tileId) {
-        mPixmap = tileId->pixmap();
-        mPropertySheet->setValue(P_IMAGE, mPixmap->fileName());
-        setRect(QRectF(pos1, mPixmap->pixmap().size()));
-    }
+    mTileId = mDocument->getTileId(setNumber, number);
+    setRect(QRectF(pos1, QSizeF()));
+
+    setUp();
+
     if(mHasMoveModel) {
         mDoor = new TDoor(this);
         mDoor->setStartPos(startPos);
@@ -315,6 +316,32 @@ void TTile::slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &ol
             offset -= oldValue.toPointF();
             mDoor->slide(offset);
         }
+    }
+}
+
+TTileId *TTile::tileId() const
+{
+    return mTileId;
+}
+
+void TTile::setTileId(TTileId *tileId)
+{
+    if(mTileId == tileId)
+        return;
+
+    mTileId = tileId;
+    setUp();
+}
+
+void TTile::setUp()
+{
+    if(mTileId) {
+        mPixmap = mTileId->pixmap();
+        mPropertySheet->setValue(P_IMAGE, mPixmap->fileName());
+
+        QRectF r = rect();
+        r.setSize(mPixmap->pixmap().size());
+        setRect(r);
     }
 }
 

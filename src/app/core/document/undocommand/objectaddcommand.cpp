@@ -1,82 +1,73 @@
 #include "objectaddcommand.h"
 #include "../base/tr.h"
 
-const QString g_commandText[TTileUndoCommand::COUNT] = {
-    T("Add tile"),
-    T("Remove tile")
+const QString g_commandText[TObjectAddCommand::COUNT] = {
+    T("Add %1"),
+    T("Remove %1")
 };
 
-TTileUndoCommand::TTileUndoCommand(
+TObjectAddCommand::TObjectAddCommand(
         Command command,
-        TLayer *layer,
-        TTile *tile,
-        int index,
-        QUndoCommand *parent) :
-    QUndoCommand(parent)
-  , mCommand(command)
-  , mLayer(layer)
-{
-    mTileList.append(tile);
-    mTileIndexList.append(index);
-    setText(g_commandText[command]);
-}
-
-TTileUndoCommand::TTileUndoCommand(
-        Command command,
-        TLayer *layer,
-        const TTileList tileList,
+        TBaseModel *baseModel,
+        const TObjectList &objectList,
         const QList<int> &indexList,
         QUndoCommand *parent) :
     QUndoCommand(parent)
   , mCommand(command)
-  , mLayer(layer)
-  , mTileList(tileList)
-  , mTileIndexList(indexList)
+  , mObjectList(objectList)
+  , mBaseModel(baseModel)
+  , mIndexList(indexList)
 {
-    setText(g_commandText[command]);
+    Q_ASSERT(!objectList.isEmpty());
 
-    if(mTileIndexList.size() != mTileList.size())
-        mTileIndexList.clear();
+    QString tmp = objectList.at(0)->typeString();
+    int objectSize = objectList.size();
+    if(objectSize > 1)
+        tmp.append(QString(" %1 ").arg(objectSize));
 
-    if(mTileIndexList.isEmpty()) {
-        for(int i=0;i<tileList.size();i++) {
-            mTileIndexList.append(-1);
+    setText(g_commandText[command].arg(tmp));
+
+    if(mIndexList.size() != objectSize)
+        mIndexList.clear();
+
+    if(mIndexList.isEmpty()) {
+        for(int i=0;i<objectSize;i++) {
+            mIndexList.append(-1);
         }
     }
 }
 
-TTileUndoCommand::~TTileUndoCommand()
+TObjectAddCommand::~TObjectAddCommand()
 {
 
 }
 
-TTileUndoCommand::Command TTileUndoCommand::command() const
+TObjectAddCommand::Command TObjectAddCommand::command() const
 {
     return mCommand;
 }
 
-void TTileUndoCommand::undo()
+void TObjectAddCommand::undo()
 {
     if(mCommand == ADD)
     {
-
+        mIndexList = mBaseModel->removeObjects(mObjectList);
+    } else if(mCommand == REMOVE) {
+        mBaseModel->insertObjects(mObjectList, mIndexList);
     }
 }
 
-void TTileUndoCommand::redo()
+void TObjectAddCommand::redo()
 {
-    if(mCommand == REMOVE)
+    if(mCommand == ADD)
     {
-
+        mBaseModel->insertObjects(mObjectList, mIndexList);
+    } else if(mCommand == REMOVE) {
+        mIndexList = mBaseModel->removeObjects(mObjectList);
     }
 }
 
-bool TTileUndoCommand::mergeWith(const QUndoCommand *)
+bool TObjectAddCommand::mergeWith(const QUndoCommand *)
 {
     return false;
-}
-
-int TTileUndoCommand::id() const
-{
-    return mId;
 }

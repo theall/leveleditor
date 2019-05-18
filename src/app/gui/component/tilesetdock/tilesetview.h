@@ -21,6 +21,7 @@ public:
 signals:
     // To controller
     void rowSelected(int row);
+    void currentRowChanged(int row);
 
     // To gui
     void validChanged(bool valid);
@@ -32,6 +33,7 @@ private slots:
     void slotActionRemoveTilesTriggered();
     void slotActionRenameTriggered();
     void slotSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void slotOnCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 
 private:
     QMenu *mContextMenu;

@@ -20,7 +20,11 @@ public:
     void setCurrentDocument(TDocument *document);
 
 private slots:
+    // From assets load
     void slotOnCoreReady();
+
+    // From tileset view
+    void slotonTilesetViewCurrentRowChanged(int tileset, int row);
 
 protected slots:
     void slotTimerEvent();

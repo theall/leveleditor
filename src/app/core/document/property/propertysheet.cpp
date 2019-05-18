@@ -64,11 +64,11 @@ QVariant TPropertySheet::getValue(const QString &name) const
     return QVariant();
 }
 
-void TPropertySheet::setValue(const QString &name, const QVariant &value)
+void TPropertySheet::setValue(const QString &name, const QVariant &value, bool emitSignal)
 {
     TPropertyItem *item = mPropertyMap.value(name, nullptr);
     if(item)
-        item->setValue(value);
+        item->setValue(value, emitSignal);
 }
 
 TPropertyItem *TPropertySheet::operator [](const QString &name) const
@@ -89,11 +89,11 @@ QVariant TPropertySheet::getValue(const PropertyID &pid) const
     return QVariant();
 }
 
-void TPropertySheet::setValue(const PropertyID &pid, const QVariant &value)
+void TPropertySheet::setValue(const PropertyID &pid, const QVariant &value, bool emitSignal)
 {
     TPropertyItem *item = mPropertyIdMap.value(pid, nullptr);
     if(item)
-        item->setValue(value);
+        item->setValue(value, emitSignal);
 }
 
 TPropertyItem *TPropertySheet::operator [](const PropertyID &pid) const

@@ -22,6 +22,9 @@ public:
     void setTilesetIcon(void *tileSet, const QIcon &icon);
 
 signals:
+    // To TTilesetController
+    void onTilesetViewRowChanged(int tabIndex, int row);
+
     // To TTabController
     void requestSwitchToTileset(void *tileSet);
     void requestCloseTileset(void *tileSet);
@@ -37,6 +40,7 @@ private slots:
     void slotCustomContextMenuRequested(const QPoint &pos);
     void slotActionAddTilesTriggered();
     void slotActionRemoveTilesTriggered();
+    void slotOnTilesetRowChanged(int row);
 
 private:
     QList<void*> mTilesets;

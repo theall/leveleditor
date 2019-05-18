@@ -27,6 +27,11 @@ public:
     int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
+
+    // TBaseModel interface
+public:
+    void insertObjects(const TObjectList &objectList, const QList<int> &indexList);
+    QList<int> removeObjects(const TObjectList &objectList);
 };
 
 

@@ -38,6 +38,9 @@ public:
     QList<int> removeTile(const QList<int> &indexList);
     QList<int> removeTile(const TTileList &tileList);
 
+    // Create tile under this layer
+    TTile *createTile(TTileId *tileId, const QPointF &pos = QPointF());
+
 signals:
     void tileInserted(const TTileList &tileList, const QList<int> &indexList);
     void tileRemoved(const TTileList &tileList, const QList<int> &indexList);

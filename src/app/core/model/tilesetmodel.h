@@ -14,6 +14,8 @@ public:
     TTileset *tileset() const;
     void setTileset(TTileset *tileset);
 
+    TTileId *getTileId(int index) const;
+
 private:
     TTileset *mTileset;
 

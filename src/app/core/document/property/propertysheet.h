@@ -26,11 +26,11 @@ public:
     void removeProperty(const TPropertyItems &propertyItemList);
 
     QVariant getValue(const QString &name) const;
-    void setValue(const QString &name, const QVariant &value);
+    void setValue(const QString &name, const QVariant &value, bool emitSignal = true);
     TPropertyItem *operator [](const QString &name) const;
     TPropertyItem *get(const QString &name) const;
     QVariant getValue(const PropertyID &pid) const;
-    void setValue(const PropertyID &pid, const QVariant &value);
+    void setValue(const PropertyID &pid, const QVariant &value, bool emitSignal = true);
     TPropertyItem *operator [](const PropertyID &pid) const;
     TPropertyItem *get(const PropertyID &pid) const;
     void setNewValue(const PropertyID &pid, const QVariant &value);

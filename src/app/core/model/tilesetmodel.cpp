@@ -27,6 +27,11 @@ void TTilesetModel::setTileset(TTileset *tileset)
     endResetModel();
 }
 
+TTileId *TTilesetModel::getTileId(int index) const
+{
+    return mTileset->getTileId(index);
+}
+
 int TTilesetModel::rowCount(const QModelIndex &) const
 {
     return mTileset->tileList().size();

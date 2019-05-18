@@ -1,12 +1,17 @@
 # leveleditor
 Level editor for multihero
+
 [![Build status](https://ci.appveyor.com/api/projects/status/8880nxf443r9agwy?svg=true)](https://ci.appveyor.com/project/theall68665/leveleditor)
 
 Static analysis status for entire build:
 
 [![Coverity Scan Status](https://scan.coverity.com/projects/18368/badge.svg?flat=1)](https://scan.coverity.com/projects/theall-leveleditor)
 
-How to compile?
+# Prerequirements
+
+ - [Qt5.6.3](http://download.qt.io/archive/qt/5.6/5.6.3/)
+ 
+# How to compile?
 ===============
 
 On a windows system

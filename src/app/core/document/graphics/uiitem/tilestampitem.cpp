@@ -36,7 +36,15 @@ TTileStampItem::~TTileStampItem()
 
 }
 
-void TTileStampItem::setCenterPos(const QPointF &pos)
+void TTileStampItem::setPixmap(const QPixmap &pixmap)
 {
+    QGraphicsPixmapItem::setPixmap(pixmap);
 
+    mTranslate.setX(pixmap.width()/2);
+    mTranslate.setY(pixmap.height()/2);
+}
+
+void TTileStampItem::setCenterPos(const QPointF &centerPos)
+{
+    setPos(centerPos - mTranslate);
 }

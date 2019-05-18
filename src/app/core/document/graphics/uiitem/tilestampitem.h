@@ -31,8 +31,10 @@ public:
     TTileStampItem(QGraphicsItem *parent = nullptr);
     ~TTileStampItem();
 
+    void setPixmap(const QPixmap &pixmap);
     void setCenterPos(const QPointF &pos);
 
 private:
+    QPointF mTranslate;
 };
 

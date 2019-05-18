@@ -197,6 +197,14 @@ void TDocument::slotDirectoryChanged(const QString &dir)
     Q_UNUSED(dir);
 }
 
+void TDocument::setTileStamp(TTileId *tileStamp)
+{
+    if(!tileStamp)
+        return;
+
+    mGraphicsScene->setCurrentTileId(tileStamp);
+}
+
 TSceneModel *TDocument::getSceneModel() const
 {
     return mSceneModel;

@@ -61,6 +61,16 @@ TBaseModel::Type TBaseModel::type() const
     return mType;
 }
 
+void TBaseModel::insertObjects(const TObjectList &objectList, const QList<int> &indexList)
+{
+
+}
+
+QList<int> TBaseModel::removeObjects(const TObjectList &objectList)
+{
+
+}
+
 int TBaseModel::columnCount(const QModelIndex &) const
 {
     return 3;

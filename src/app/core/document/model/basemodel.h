@@ -6,6 +6,7 @@
 #include <QAbstractTableModel>
 
 #include "../base/io.h"
+#include "entity/object.h"
 
 class TBaseModel : public QAbstractTableModel, TIO
 {
@@ -35,6 +36,9 @@ public:
     void setLocked(bool locked);
 
     Type type() const;
+
+    virtual void insertObjects(const TObjectList &objectList, const QList<int> &indexList);
+    virtual QList<int> removeObjects(const TObjectList &objectList);
 
 signals:
     void visibilityChanged(bool visible);

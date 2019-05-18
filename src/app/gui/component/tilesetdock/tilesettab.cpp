@@ -45,6 +45,8 @@ int TTilesetTab::addTab(QAbstractItemModel *tilesetModel, const QString &name, c
     mTilesets.append(tilesetModel);
 
     TTilesetView *view = new TTilesetView(this);
+    connect(view, SIGNAL(currentRowChanged(int)), this, SLOT(slotOnTilesetRowChanged(int)));
+
     view->setModel(tilesetModel);
     int i =  QTabWidget::addTab(view, QIcon(icon), name);
     emit onTabCountChanged(count());
@@ -66,10 +68,13 @@ bool TTilesetTab::removeTab(void *tileSet)
     int index = findTilesetIndex(tileSet);
     if(index != -1)
     {
-        mTilesets.takeAt(index);
-        QTabWidget::removeTab(index);
-        emit onTabCountChanged(count());
-        return true;
+        TTilesetView *view = (TTilesetView*)mTilesets.takeAt(index);
+        if(view) {
+            view->disconnect(this);
+            QTabWidget::removeTab(index);
+            emit onTabCountChanged(count());
+            return true;
+        }
     }
     return false;
 }
@@ -125,6 +130,11 @@ void TTilesetTab::slotActionAddTilesTriggered()
 void TTilesetTab::slotActionRemoveTilesTriggered()
 {
 
+}
+
+void TTilesetTab::slotOnTilesetRowChanged(int row)
+{
+    emit onTilesetViewRowChanged(currentIndex(), row);
 }
 
 void TTilesetTab::switchTo(int diff)

@@ -90,7 +90,6 @@ void TLayer::insertTile(TTile *tile, int index)
 
 void TLayer::insertTile(const TTileList &tileList, const QList<int> &indexList)
 {
-    int i;
     TTileList tileInsertedList;
     QList<int> insertedIndexList;
     QList<int> indexListClone = indexList;
@@ -173,4 +172,12 @@ QList<int> TLayer::removeTile(const TTileList &tileList)
     if(!indexRemoved.isEmpty())
         emit tileRemoved(tileList, indexRemoved);
     return indexRemoved;
+}
+
+TTile *TLayer::createTile(TTileId *tileId, const QPointF &pos)
+{
+    TTile *tile = new TTile(this);
+    tile->setTileId(tileId);
+    tile->setPos(pos);
+    return tile;
 }

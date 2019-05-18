@@ -7,6 +7,7 @@
 #include "../base/finddoc.h"
 #include "../document.h"
 #include "../undocommand/objectmovecommand.h"
+#include "../undocommand/objectaddcommand.h"
 
 #define TOP_Z_VALUE 10000
 TGraphicsScene::TGraphicsScene(QObject *parent) :
@@ -25,7 +26,8 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
   , mSelectionRectangle(new TSelectionRectangle)
   , mLastSelectedObjectItem(nullptr)
   , mDocument(nullptr)
-  , mMode(DEFAULT)
+  , mMode(INSERT_TILE)
+  , mTileId(nullptr)
 {
     setSize(640, 480);
 
@@ -301,7 +303,16 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             }
         }
     } else if(mMode == INSERT_TILE) {
-
+        TTileLayerModel *tileLayerModel = mSceneModel->getTileLayerModel6();
+        TTile *tile = tileLayerModel->layer()->createTile(mTileId, mTileStampItem->pos());
+        TObjectList objectList;
+        objectList.append(tile);
+        TObjectAddCommand *command = new TObjectAddCommand(
+            TObjectAddCommand::ADD,
+            tileLayerModel,
+            objectList
+        );
+        mDocument->addUndoCommand(command);
     }
 }
 
@@ -364,7 +375,7 @@ void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         updateCursor();
         update();
     } else if(mMode == INSERT_TILE) {
-
+        mTileStampItem->setCenterPos(event->scenePos());
     }
 }
 
@@ -550,6 +561,26 @@ void TGraphicsScene::slotPropertyItemValueChanged(TPropertyItem *item, const QVa
     }
 }
 
+TGraphicsScene::Mode TGraphicsScene::getMode() const
+{
+    return mMode;
+}
+
+void TGraphicsScene::setMode(const Mode &mode)
+{
+    if(mMode == mode)
+        return;
+
+    mMode = mode;
+    if(mMode == INSERT_TILE) {
+        mTileStampItem->setParentItem(mSceneItem->getLayerItemList().last());
+        mTileStampItem->setPos(-9999, -9999);
+        mTileStampItem->setVisible(true);
+    } else {
+        mTileStampItem->setVisible(false);
+    }
+}
+
 TObjectItem *TGraphicsScene::getLastSelectedObjectItem() const
 {
     return mLastSelectedObjectItem;
@@ -563,6 +594,20 @@ TLayerItem *TGraphicsScene::getLayerItem(int index) const
 TLayerItemList TGraphicsScene::getLayerItemList() const
 {
     return mSceneItem->getLayerItemList();
+}
+
+void TGraphicsScene::setCurrentTileId(TTileId *tileId)
+{
+    if(tileId == mTileId)
+        return;
+
+    mTileId = tileId;
+
+    if(mTileId) {
+        mTileStampItem->setPixmap(mTileId->pixmap()->pixmap());
+    } else {
+        mTileStampItem->setVisible(false);
+    }
 }
 
 TObject *TGraphicsScene::getTopMostObject(const QPointF &pos) const

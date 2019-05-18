@@ -15,6 +15,7 @@
 #include "../model/scenemodel.h"
 #include "layeritem/objectitem/objectitem.h"
 
+class TTileId;
 class TDocument;
 class TGraphicsScene : public QGraphicsScene
 {
@@ -59,6 +60,11 @@ public:
     TLayerItem *getLayerItem(int index) const;
     TLayerItemList getLayerItemList() const;
 
+    void setCurrentTileId(TTileId *tileId);
+
+    Mode getMode() const;
+    void setMode(const Mode &mode);
+
 signals:
     void needChangeCursor(Qt::CursorShape cursor);
     void selectedObjectChanged(TObject *prev, TObject *current);
@@ -97,11 +103,12 @@ private:
     TObjectItem *mLastSelectedObjectItem;
     TDocument *mDocument;
     Mode mMode;
+    TTileId *mTileId;
 
     void step();
     void setSelectedObjectItem(TObjectItem *objectItem);
     void pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset, int commandId);
-
+    void pushObjectAddCommand(const TObjectList &objectList, const QPointF &offset, int commandId);
 
 private slots:
     void updateCursor();

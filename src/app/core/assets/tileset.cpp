@@ -46,10 +46,22 @@ void TTileset::setTileList(const TTileIdList &tileList)
 
 void TTileset::add(TTileId *tile)
 {
+    if(!tile)
+        return;
+
+    tile->setTilesetId(mId);
     mTileList.append(tile);
 }
 
 void TTileset::sort()
 {
     qSort(mTileList.begin(), mTileList.end(), idCompare);
+}
+
+TTileId *TTileset::getTileId(int index) const
+{
+    TTileId *tileId = nullptr;
+    if(index>=0 && index<mTileList.size())
+        tileId = mTileList.at(index);
+    return tileId;
 }

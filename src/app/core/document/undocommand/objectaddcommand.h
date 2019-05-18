@@ -1,50 +1,41 @@
-#ifndef TTILEUNDOCOMMAND_H
-#define TTILEUNDOCOMMAND_H
+#ifndef TOBJECTADDCOMMAND_H
+#define TOBJECTADDCOMMAND_H
 
 #include <QList>
 #include <QUndoCommand>
-#include "../model/entity/layer.h"
+#include "../model/basemodel.h"
+#include "../model/entity/object.h"
 
-class TTileUndoCommand : public QUndoCommand
+class TObjectAddCommand : public QUndoCommand
 {
 public:
-    enum Command
-    {
-        ADD = 0,
+    enum Command {
+        ADD,
         REMOVE,
         COUNT
     };
 
-    TTileUndoCommand(
+    TObjectAddCommand(
            Command command,
-           TLayer *layer,
-           TTile *tile,
-           int index,
-           QUndoCommand *parent = Q_NULLPTR);
-
-    TTileUndoCommand(
-           Command command,
-           TLayer *layer,
-           const TTileList tileList,
+           TBaseModel *model,
+           const TObjectList &objectList,
            const QList<int> &indexList = QList<int>(),
            QUndoCommand *parent = Q_NULLPTR);
-    ~TTileUndoCommand();
+    ~TObjectAddCommand();
 
     Command command() const;
 
 private:
-    int mId;
     Command mCommand;
-    TLayer *mLayer;
-    TTileList mTileList;
-    QList<int> mTileIndexList;
+    TObjectList mObjectList;
+    TBaseModel *mBaseModel;
+    QList<int> mIndexList;
 
     // QUndoCommand interface
 public:
     void undo() Q_DECL_OVERRIDE;
     void redo() Q_DECL_OVERRIDE;
     bool mergeWith(const QUndoCommand *other) Q_DECL_OVERRIDE;
-    int id() const;
 };
 
-#endif // TTILEUNDOCOMMAND_H
+#endif // TOBJECTADDCOMMAND_H

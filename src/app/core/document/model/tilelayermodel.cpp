@@ -51,3 +51,21 @@ QVariant TTileLayerModel::data(const QModelIndex &index, int role) const
 
     return QVariant();
 }
+
+void TTileLayerModel::insertObjects(const TObjectList &objectList, const QList<int> &indexList)
+{
+    TTileList tileList;
+    for(TObject *object : objectList) {
+        tileList.append((TTile*)object);
+    }
+    mLayer->insertTile(tileList, indexList);
+}
+
+QList<int> TTileLayerModel::removeObjects(const TObjectList &objectList)
+{
+    TTileList tileList;
+    for(TObject *object : objectList) {
+        tileList.append((TTile*)object);
+    }
+    return mLayer->removeTile(tileList);
+}

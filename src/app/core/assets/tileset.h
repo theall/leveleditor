@@ -19,6 +19,8 @@ public:
     void add(TTileId *tile);
     void sort();
 
+    TTileId *getTileId(int index) const;
+
 private:
     int mId;
     TTileIdList mTileList;

@@ -41,3 +41,13 @@ void TTileId::setPixmap(TPixmap *pixmap)
 {
     mPixmap = pixmap;
 }
+
+int TTileId::tilesetId() const
+{
+    return mTilesetId;
+}
+
+void TTileId::setTilesetId(int tilesetId)
+{
+    mTilesetId = tilesetId;
+}

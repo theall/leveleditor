@@ -94,6 +94,11 @@ void TTilesetView::slotSelectionChanged(const QItemSelection &selected, const QI
     emit hasSelectionChanged(getSelectedIndexes().size()>0);
 }
 
+void TTilesetView::slotOnCurrentChanged(const QModelIndex &current, const QModelIndex &)
+{
+    emit currentRowChanged(current.row());
+}
+
 void TTilesetView::retranslateUi()
 {
     mActionAddTiles->setText(tr("Add tiles"));
@@ -108,10 +113,9 @@ void TTilesetView::setModel(QAbstractItemModel *model)
 
     if(model)
     {
-        connect(selectionModel(),
-                SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-                this,
-                SLOT(slotSelectionChanged(QItemSelection,QItemSelection)));
+        QItemSelectionModel *itemSelectionModel = selectionModel();
+        connect(itemSelectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(slotSelectionChanged(QItemSelection,QItemSelection)));
+        connect(itemSelectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(slotOnCurrentChanged(QModelIndex,QModelIndex)));
     }
 }
 

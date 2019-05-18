@@ -7,9 +7,9 @@
 #include <QGraphicsScene>
 
 #include "model/scenemodel.h"
+#include "graphics/graphicsscene.h"
 #include "undocommand/propertyundocommand.h"
 #include "../assets/tileid.h"
-#include "graphics/graphicsscene.h"
 
 class TPropertyObject;
 class TFileSystemWatcher;
@@ -48,6 +48,8 @@ public:
     TGraphicsScene *graphicsScene() const;
     TSceneModel *getSceneModel() const;
 
+    void setTileStamp(TTileId *tileStamp);
+
 signals:
     void projectFileChanged();
     void dirtyFlagChanged(bool isDirty);
@@ -70,6 +72,7 @@ private:
     TFileSystemWatcher *mFileWatcher;
     TSceneModel *mSceneModel;
     TGraphicsScene *mGraphicsScene;
+    TTileId *mTileStamp;
 
     void load(const QString &file);
     void setFileName(const QString &fileName);
