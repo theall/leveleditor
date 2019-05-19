@@ -65,3 +65,8 @@ TTileId *TTileset::getTileId(int index) const
         tileId = mTileList.at(index);
     return tileId;
 }
+
+int TTileset::indexOf(TTileId *tileId) const
+{
+    return mTileList.indexOf(tileId);
+}

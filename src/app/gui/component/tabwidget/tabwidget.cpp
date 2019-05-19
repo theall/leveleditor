@@ -40,7 +40,7 @@ TTabWidget::TTabWidget(QWidget *parent) :
     mActionCloseRight = mContextMenu->addAction(QString(), this, SLOT(slotActionCloseRightTriggered()));
     mActionSave = mContextMenu->addAction(QString(), this, SIGNAL(onActionSaveTriggered()));
     mContextMenu->addSeparator();
-    mActionExplorer = mContextMenu->addAction(QString(), this, SLOT(slotActionExplorerTriggered()));
+    mActionExplore = mContextMenu->addAction(QString(), this, SLOT(slotActionExploreTriggered()));
 
     mActionCloseOther->setVisible(false);
     mActionCloseLeft->setVisible(false);
@@ -224,7 +224,7 @@ void TTabWidget::retranslateUi()
     mActionCloseRight->setText(tr("Close All to the right"));
     mActionCloseOther->setText(tr("Close All except this"));
     mActionSave->setText(tr("Save"));
-    mActionExplorer->setText(tr("Explore"));
+    mActionExplore->setText(tr("Explore"));
 }
 
 void TTabWidget::slotActionCloseTriggered()
@@ -275,12 +275,12 @@ void TTabWidget::slotActionSaveTriggered()
     emit onActionSaveTriggered();
 }
 
-void TTabWidget::slotActionExplorerTriggered()
+void TTabWidget::slotActionExploreTriggered()
 {
     int index = currentIndex();
     if(index == -1)
         return;
 
     QString fileName = tabToolTip(index);
-    //Utils::exploreFile(fileName);
+    emit requestExploreFile(fileName);
 }

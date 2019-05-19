@@ -28,10 +28,12 @@ public:
 
     void setDocumentIcon(void *document, const QIcon &icon);
     void moveTab(int from, int to);
+
 signals:
     // To TTabController
     void requestSwitchToDocument(void *document);
     void requestCloseDocument(void *document);
+    void requestExploreFile(const QString &file);
 
     // To main window
     void onTabCountChanged(int count);
@@ -49,7 +51,7 @@ private slots:
     void slotActionCloseRightTriggered();
     void slotActionCloseOtherTriggered();
     void slotActionSaveTriggered();
-    void slotActionExplorerTriggered();
+    void slotActionExploreTriggered();
 
 private:
     QList<void*> mDocuments;
@@ -59,7 +61,7 @@ private:
     QAction *mActionCloseRight;
     QAction *mActionCloseOther;
     QAction *mActionSave;
-    QAction *mActionExplorer;
+    QAction *mActionExplore;
 
     void switchTo(int diff);
     void setTabDirty(int index, bool isDirty);

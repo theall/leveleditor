@@ -97,6 +97,11 @@ void TPropertyItem::addAttribute(const PropertyAttribute &attribute, const QVari
     addAttribute(g_propertyAttrMap[attribute], value);
 }
 
+void TPropertyItem::setReadOnly(bool readOnly)
+{
+    addAttribute(g_propertyAttrMap[PA_READ_ONLY], readOnly);
+}
+
 QVariant TPropertyItem::value() const
 {
     return mValue;

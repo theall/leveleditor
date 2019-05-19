@@ -36,6 +36,7 @@ private:
     int mUpdateTimer;
     QRectF mBoundingRect;
     QMap<TObjectItem*, TSelectedItem*> mObjectItemMap;
+    QMap<TObject*, TSelectedItem*> mObjectMap;
 
     void updateBoundingRect();
 

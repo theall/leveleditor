@@ -29,3 +29,8 @@ void TGraphicsView::resizeEvent(QResizeEvent *)
 {
     emit resized();
 }
+
+void TGraphicsView::contextMenuEvent(QContextMenuEvent *event)
+{
+    emit requestPopupContextMenu(event->globalPos());
+}

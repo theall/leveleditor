@@ -53,6 +53,7 @@ public:
     TTileId *getTileId(int tileset, int index) const;
 
     TTilesetModelList getTilsetModelList() const;
+    bool findTileIdIndex(TTileId *tileId, int &tilesetIndex, int &tileIdIndex) const;
 
 private:
     int mCurrentIndex;

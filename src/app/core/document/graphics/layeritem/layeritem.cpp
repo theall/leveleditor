@@ -1,4 +1,5 @@
 #include "layeritem.h"
+#include "objectitem/objectitem.h"
 #include "../../model/basemodel.h"
 
 TLayerItem::TLayerItem(TBaseModel *baseModel, QGraphicsItem *parent) :
@@ -41,6 +42,16 @@ TLayerItem::LayerType TLayerItem::layerType() const
 void TLayerItem::setLayerType(const LayerType &layerType)
 {
     mLayerType = layerType;
+}
+
+bool TLayerItem::hasItem(TObjectItem *objectItem) const
+{
+    return objectItem && objectItem->parentItem()==this;
+}
+
+bool TLayerItem::hasItem(QGraphicsItem *objectItem) const
+{
+    return objectItem && objectItem->parentItem()==this;
 }
 
 void TLayerItem::slotLayerVisibilityChanged(bool visible)

@@ -49,6 +49,9 @@ public:
 
     TBaseModel *getCurrentModel() const;
 
+signals:
+    void currentIndexChanged(int index);
+
 private:
     int mNextMap[5];
     TPropertyObject *mPropertyObject;

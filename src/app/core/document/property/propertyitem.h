@@ -80,6 +80,8 @@ public:
     void addAttribute(const QString &name, const QVariant &value);
     void addAttribute(const PropertyAttribute &attribute, const QVariant &value);
 
+    void setReadOnly(bool readOnly = true);
+
     QVariant value() const;
     void setValue(const QVariant &value, bool emitSignal = true);
 

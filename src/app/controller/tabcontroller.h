@@ -40,10 +40,13 @@ private:
     int mLastListCount;
     bool mLock;
 
+    QMenu *mGraphicsViewContextMenu;
+
 private slots:
     // From TTabWidget
     void slotRequestSwithToDocument(void *document);
     void slotRequestCloseDocument(void *document);
+    void slotRequestExploreFile(const QString &file);
 
     // From TDocument
     void slotDocumentDirtyFlagChanged(bool isDirty);

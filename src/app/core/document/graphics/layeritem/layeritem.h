@@ -3,7 +3,9 @@
 
 #include <QGraphicsObject>
 
+class TObject;
 class TBaseModel;
+class TObjectItem;
 class TLayerItem : public QGraphicsObject
 {
     Q_OBJECT
@@ -25,6 +27,9 @@ public:
 
     LayerType layerType() const;
     void setLayerType(const LayerType &layerType);
+
+    bool hasItem(TObjectItem *objectItem) const;
+    bool hasItem(QGraphicsItem *objectItem) const;
 
     virtual QRectF calcBoundingRect() = 0;
 

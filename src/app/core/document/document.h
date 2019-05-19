@@ -71,6 +71,7 @@ private slots:
     void slotModificationChanged(bool isClean);
     void slotFileChanged(const QString &file);
     void slotDirectoryChanged(const QString &dir);
+    void slotUndoStackIndexChanged(int index);
 
 private:
     bool mIsDirty;
@@ -84,6 +85,8 @@ private:
     TGraphicsScene *mGraphicsScene;
     TTileId *mTileStamp;
     EditMode mEditMode;
+    int mLastUndoStackIndex;
+    QUndoCommand *mLastUndoCommand;
 
     void load(const QString &file);
     void setFileName(const QString &fileName);

@@ -24,13 +24,16 @@ void TSelectedItems::setObjectItemList(const TObjectItemList &objectItemList)
         delete selectedItem;
     }
     mObjectItemMap.clear();
+    mObjectMap.clear();
 
     for(TObjectItem *objectItem : objectItemList) {
         if(!objectItem)
             continue;
+
         TSelectedItem *selectedItem = new TSelectedItem(this);
         selectedItem->setObjectItem(objectItem);
         mObjectItemMap.insert(objectItem, selectedItem);
+        mObjectMap.insert(objectItem->object(), selectedItem);
     }
     updateBoundingRect();
 }
@@ -50,6 +53,7 @@ int TSelectedItems::addObjectItem(TObjectItem *objectItem)
     TSelectedItem *selectedItem = new TSelectedItem(this);
     selectedItem->setObjectItem(objectItem);
     mObjectItemMap.insert(objectItem, selectedItem);
+    mObjectMap.insert(objectItem->object(), selectedItem);
     updateBoundingRect();
     return 0;
 }
@@ -64,6 +68,7 @@ int TSelectedItems::addObjectItems(const TObjectItemList &objectItemList)
         TSelectedItem *selectedItem = new TSelectedItem(this);
         selectedItem->setObjectItem(objectItem);
         mObjectItemMap.insert(objectItem, selectedItem);
+        mObjectMap.insert(objectItem->object(), selectedItem);
         itemsAdded++;
     }
     if(itemsAdded > 0)
@@ -78,6 +83,7 @@ int TSelectedItems::removeObjectItem(TObjectItem *objectItem)
     if(!selectedItem)
         return -1;
 
+    mObjectMap.remove(objectItem->object());
     mObjectItemMap.remove(objectItem);
     delete selectedItem;
     updateBoundingRect();
@@ -96,11 +102,7 @@ TObjectItemList TSelectedItems::getSelectedObjectItemList() const
 
 TObjectList TSelectedItems::getSelectedObjectList() const
 {
-    TObjectList objectList;
-    for(TObjectItem *objectItem : mObjectItemMap.keys()) {
-        objectList.append(objectItem->object());
-    }
-    return objectList;
+    return mObjectMap.keys();
 }
 
 bool TSelectedItems::isEmpty() const

@@ -23,7 +23,7 @@ TObjectAddCommand::TObjectAddCommand(
     QString tmp = objectList.at(0)->typeString();
     int objectSize = objectList.size();
     if(objectSize > 1)
-        tmp.append(QString(" %1 ").arg(objectSize));
+        tmp.prepend(QString(" %1 ").arg(objectSize));
 
     setText(g_commandText[command].arg(tmp));
 

@@ -20,10 +20,13 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
   , mSceneModel(sceneModel)
   , mDarkRectangle(new QGraphicsRectItem(this))
   , mBorderRectangle(new QGraphicsRectItem(this))
+  , mCurrentLayerItem(nullptr)
 {
     Q_ASSERT(mSceneModel);
     setFlag(QGraphicsItem::ItemHasNoContents);
     setAcceptHoverEvents(true);
+
+    connect(mSceneModel, SIGNAL(currentIndexChanged(int)), this, SLOT(slotOnSceneModelCurrentIndexChanged(int)));
 
     for(TBaseModel *baseModel : mSceneModel->getBaseModelList()) {
         TLayerItem *layerItem = nullptr;
@@ -45,6 +48,7 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
         } else {
             qDebug() << "Unprocessed model:" << baseModel->name();
         }
+        mModelLayerMap[baseModel] = layerItem;
     }
 
     int index = 0;
@@ -71,6 +75,26 @@ TLayerItem *TSceneItem::getLayerItem(int index) const
 TLayerItemList TSceneItem::getLayerItemList() const
 {
     return mLayerItemList;
+}
+
+void TSceneItem::slotOnSceneModelCurrentIndexChanged(int index)
+{
+    TBaseModel *baseModel = mSceneModel->getBaseModel(index);
+    if(!baseModel) {
+        setCurrentLayerItem(nullptr);
+    } else {
+        setCurrentLayerItem(mModelLayerMap[baseModel]);
+    }
+}
+
+TLayerItem *TSceneItem::getCurrentLayerItem() const
+{
+    return mCurrentLayerItem;
+}
+
+void TSceneItem::setCurrentLayerItem(TLayerItem *currentLayerItem)
+{
+    mCurrentLayerItem = currentLayerItem;
 }
 
 void TSceneItem::calcBoundingRect()

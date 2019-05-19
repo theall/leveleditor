@@ -18,6 +18,12 @@ public:
     TLayerItem *getLayerItem(int index) const;
     TLayerItemList getLayerItemList() const;
 
+    TLayerItem *getCurrentLayerItem() const;
+    void setCurrentLayerItem(TLayerItem *currentLayerItem);
+
+private slots:
+    void slotOnSceneModelCurrentIndexChanged(int index);
+
 private:
     QRectF mBoundingRect;
     bool mIsHovered = false;
@@ -26,6 +32,7 @@ private:
     QGraphicsRectItem *mBorderRectangle;
     TLayerItemList mLayerItemList;
     QMap<TBaseModel*, TLayerItem*> mModelLayerMap;
+    TLayerItem *mCurrentLayerItem;
 
     void calcBoundingRect();
 

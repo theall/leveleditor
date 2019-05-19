@@ -2,6 +2,7 @@
 #include "../shared/filesystemwatcher.h"
 #include "../assets/assetsmanager.h"
 #include "base/tr.h"
+#include "undocommand/objectaddcommand.h"
 
 #include <QUuid>
 
@@ -16,10 +17,13 @@ TDocument::TDocument(const QString &file, QObject *parent) :
   , mSceneModel(new TSceneModel(this))
   , mGraphicsScene(new TGraphicsScene(this))
   , mEditMode(DEFAULT)
+  , mLastUndoStackIndex(-1)
+  , mLastUndoCommand(nullptr)
 {
     setObjectName("Document");
 
     connect(mUndoStack, SIGNAL(cleanChanged(bool)), this, SLOT(slotModificationChanged(bool)));
+    connect(mUndoStack, SIGNAL(indexChanged(int)), this, SLOT(slotUndoStackIndexChanged(int)));
     mUndoStack->setClean();
 
     connect(mGraphicsScene, SIGNAL(requestUndo()), mUndoStack, SLOT(undo()));
@@ -196,6 +200,34 @@ void TDocument::slotFileChanged(const QString &file)
 void TDocument::slotDirectoryChanged(const QString &dir)
 {
     Q_UNUSED(dir);
+}
+
+void TDocument::slotUndoStackIndexChanged(int index)
+{
+    index--;
+    int diff = index - mLastUndoStackIndex;
+    mLastUndoStackIndex = index;
+    if(qAbs(diff) == 1) {
+        QUndoCommand *undoCommand = nullptr;
+        if(diff > 0) {
+            undoCommand = (QUndoCommand*)mUndoStack->command(index);
+            mLastUndoCommand = undoCommand;
+        } else {
+            undoCommand = mLastUndoCommand;
+        }
+
+        if(!undoCommand)
+            return;
+
+        const TObjectAddCommand *objectAddCommand = dynamic_cast<TObjectAddCommand*>((QUndoCommand*)undoCommand);
+        if(!objectAddCommand) {
+            return;
+        }
+        TObjectAddCommand::Command command = objectAddCommand->command();
+        if(command == TObjectAddCommand::REMOVE) {
+            mGraphicsScene->showSelectedItemsBorder(diff<0);
+        }
+    }
 }
 
 void TDocument::setTileStamp(TTileId *tileStamp)

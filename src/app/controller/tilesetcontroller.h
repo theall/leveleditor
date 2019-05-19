@@ -28,6 +28,9 @@ private slots:
     // From tileset view
     void slotOnTilesetViewCurrentRowChanged(int tileset, int row);
 
+    // From graphics scene
+    void slotOnSelectedObjectChanged(TObject *prev, TObject *current);
+
 protected slots:
     void slotTimerEvent();
 };

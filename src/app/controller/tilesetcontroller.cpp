@@ -32,9 +32,17 @@ bool TTilesetController::joint(TMainWindow *mainWindow, TCore *core)
 
 void TTilesetController::setCurrentDocument(TDocument *document)
 {
-    if(document && document->getEditMode()==INSERT) {
-        TTileId *tileId = mCore->tilesetModelManager()->getCurrentTileId();
-        document->setTileStamp(tileId);
+    if(mDocument)
+        mDocument->disconnect(this);
+
+    if(document) {
+        if(document->getEditMode()==INSERT) {
+            TTileId *tileId = mCore->tilesetModelManager()->getCurrentTileId();
+            document->setTileStamp(tileId);
+        }
+
+        TGraphicsScene *graphicsScene = document->graphicsScene();
+        connect(graphicsScene, SIGNAL(selectedObjectChanged(TObject*,TObject*)), this, SLOT(slotOnSelectedObjectChanged(TObject*,TObject*)));
     }
 }
 
@@ -46,7 +54,7 @@ void TTilesetController::slotOnCoreReady()
         mTilesetTab->addTab(tilesetModel, QString::number(index++));
     }
 
-    mTilesetTab->selectTile(0, 0);
+    mTilesetTab->selectIndex(0, 0);
 }
 
 void TTilesetController::slotOnTilesetViewCurrentRowChanged(int tileset, int row)
@@ -56,6 +64,20 @@ void TTilesetController::slotOnTilesetViewCurrentRowChanged(int tileset, int row
     TTileId *tileId = tilesetModelManager->getTileId(tileset, row);
     if(mDocument)
         mDocument->setTileStamp(tileId);
+}
+
+void TTilesetController::slotOnSelectedObjectChanged(TObject *, TObject *current)
+{
+    // Check if object is tile object
+    if(current && current->type()==TObject::TILE) {
+        TTile *tile = static_cast<TTile*>(current);
+        TTileId *tileId = tile->tileId();
+        int tilesetIndex, tileIdIndex;
+        bool found = mCore->tilesetModelManager()->findTileIdIndex(tileId, tilesetIndex, tileIdIndex);
+        if(found) {
+            mTilesetTab->selectIndex(tilesetIndex, tileIdIndex);
+        }
+    }
 }
 
 void TTilesetController::slotTimerEvent()

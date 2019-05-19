@@ -154,8 +154,18 @@ void TGraphicsScene::setSceneModel(TSceneModel *sceneModel)
 void TGraphicsScene::removeSelectedItems()
 {
     TObjectList objectList = mSelectedItems->getSelectedObjectList();
-    if(objectList.size() < 1)
+    if(objectList.isEmpty())
         return;
+
+    TTileLayerModel *tileLayerModel = dynamic_cast<TTileLayerModel*>(mSceneModel->getCurrentModel());
+    if(tileLayerModel) {
+        TObjectAddCommand *command = new TObjectAddCommand(
+            TObjectAddCommand::REMOVE,
+            tileLayerModel,
+            objectList
+        );
+        mDocument->addUndoCommand(command);
+    }
 }
 
 qreal TGraphicsScene::scale() const
@@ -185,6 +195,36 @@ void TGraphicsScene::setSelectedObjectItem(TObjectItem *objectItem)
     prevObject = prevObjectItem?prevObjectItem->object():nullptr;
     currentObject = objectItem?objectItem->object():nullptr;
     emit selectedObjectChanged(prevObject, currentObject);
+}
+
+QList<QGraphicsItem*> TGraphicsScene::itemsOfCurrentLayerItem(
+        const QPointF &pos,
+        Qt::ItemSelectionMode mode) const
+{
+    QList<QGraphicsItem*> itemList;
+    TLayerItem *currentLayerItem = mSceneItem->getCurrentLayerItem();
+    if(currentLayerItem) {
+        itemList = items(pos, mode);
+        QSet<QGraphicsItem*> itemSet = QSet<QGraphicsItem*>::fromList(itemList);
+        QSet<QGraphicsItem*> childItemSet = QSet<QGraphicsItem*>::fromList(currentLayerItem->childItems());
+        itemList = itemSet.intersect(childItemSet).toList();
+    }
+    return itemList;
+}
+
+QList<QGraphicsItem *> TGraphicsScene::itemsOfCurrentLayerItem(
+        const QRectF &rect,
+        Qt::ItemSelectionMode mode) const
+{
+    QList<QGraphicsItem*> itemList;
+    TLayerItem *currentLayerItem = mSceneItem->getCurrentLayerItem();
+    if(currentLayerItem) {
+        itemList = items(rect, mode);
+        QSet<QGraphicsItem*> itemSet = QSet<QGraphicsItem*>::fromList(itemList);
+        QSet<QGraphicsItem*> childItemSet = QSet<QGraphicsItem*>::fromList(currentLayerItem->childItems());
+        itemList = itemSet.intersect(childItemSet).toList();
+    }
+    return itemList;
 }
 
 void TGraphicsScene::pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset, int commandId)
@@ -226,13 +266,19 @@ bool TGraphicsScene::event(QEvent *event)
     switch (event->type()) {
     case QEvent::Enter:
         mUnderMouse = true;
-        if(mEditMode == INSERT)
+        if(mEditMode == INSERT) {
             mTileStampItem->setVisible(true);
+        } else if(mEditMode == DEFAULT) {
+            mHoveredItem->setVisible(true);
+        }
         break;
     case QEvent::Leave:
         mUnderMouse = false;
-        if(mEditMode == INSERT)
+        if(mEditMode == INSERT) {
             mTileStampItem->setVisible(false);
+        } else if(mEditMode == DEFAULT) {
+            mHoveredItem->setVisible(false);
+        }
         break;
     default:
         break;
@@ -285,7 +331,7 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             mLeftButtonDownPos = event->scenePos();
             mCommandId = qAbs(((int)mLeftButtonDownPos.x())<<16) + qAbs(mLeftButtonDownPos.y());
             Qt::KeyboardModifiers modifers = event->modifiers();
-            if(modifers&Qt::ShiftModifier) {
+            if(modifers & Qt::ShiftModifier) {
                 TObjectItem *objectItem = getTopMostObjectItem(mLeftButtonDownPos);
                 if(mLastSelectedObjectItem && mLastSelectedObjectItem->isCongener(objectItem)) {
                     qreal leftButtonDownX = mLeftButtonDownPos.x();
@@ -390,7 +436,8 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     if(mEditMode == DEFAULT) {
         TObjectItem *autonomyObjectitem = nullptr;
-        TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
+        QPointF mouseScenePos = event->scenePos();
+        TObjectItem *objectItem = getTopMostObjectItem(mouseScenePos);
         if(mLastSelectedObjectItem && mLastSelectedObjectItem->needGrabMouse()) {
             autonomyObjectitem = mLastSelectedObjectItem;
         }
@@ -408,11 +455,11 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         if(mLeftButtonDown) {
             mLeftButtonDown = false;
             if(mAction == NoAction) {
-                TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
+                TObjectItem *objectItem = getTopMostObjectItem(mouseScenePos);
                 if(objectItem) {
                     Qt::KeyboardModifiers modifers = event->modifiers();
                     if(modifers&Qt::ControlModifier) {
-                        if(mLeftButtonDownPos==event->scenePos()) {
+                        if(mLeftButtonDownPos==mouseScenePos) {
                             // The mouse pos is not equal to mLeftButtonDownPos after selected items moved
                             if(!mSelectedItems->containsObjectItem(objectItem)) {
                                 mSelectedItems->addObjectItem(objectItem);
@@ -502,7 +549,8 @@ void TGraphicsScene::keyPressEvent(QKeyEvent *event)
         }
     } else if(mEditMode == INSERT) {
         if(key == Qt::Key_Escape) {
-            setEditMode(DEFAULT);
+            // Call document to emit editModelChanged signal
+            mDocument->setEditMode(DEFAULT);
         }
     }
 
@@ -580,13 +628,21 @@ void TGraphicsScene::setEditMode(int editMode)
         return;
 
     mEditMode = editMode;
+
+    mLeftButtonDown = false;
+
     if(mUnderMouse) {
         mTileStampItem->setCenterPos(mMouseMovingPos);
         mTileStampItem->setVisible(mEditMode==INSERT);
+        mHoveredItem->setVisible(mEditMode==DEFAULT);
     }
-    mHoveredItem->setVisible(mEditMode==DEFAULT);
     mSelectedItems->setVisible(mEditMode==DEFAULT);
     mSelectionRectangle->setVisible(mEditMode==DEFAULT);
+}
+
+void TGraphicsScene::showSelectedItemsBorder(bool visible)
+{
+    mSelectedItems->setVisible(visible);
 }
 
 TObjectItem *TGraphicsScene::getLastSelectedObjectItem() const
@@ -628,8 +684,7 @@ TObject *TGraphicsScene::getTopMostObject(const QPointF &pos) const
 
 TObjectItem *TGraphicsScene::getTopMostObjectItem(const QPointF &pos) const
 {
-    const QList<QGraphicsItem *> &itemList = items(pos, Qt::IntersectsItemBoundingRect);
-
+    QList<QGraphicsItem*> itemList = itemsOfCurrentLayerItem(pos, Qt::IntersectsItemBoundingRect);
     for (QGraphicsItem *item : itemList) {
         if (!item->isEnabled())
             continue;
@@ -643,7 +698,7 @@ TObjectItem *TGraphicsScene::getTopMostObjectItem(const QPointF &pos) const
 
 TObjectItemList TGraphicsScene::getObjectItemList(const QRectF &rect) const
 {
-    const QList<QGraphicsItem *> &itemList = items(rect, Qt::IntersectsItemBoundingRect);
+    QList<QGraphicsItem*> itemList = itemsOfCurrentLayerItem(rect, Qt::IntersectsItemBoundingRect);
     TObjectItemList objectItemList;
     for (QGraphicsItem *item : itemList) {
         if (!item->isEnabled())
@@ -658,7 +713,7 @@ TObjectItemList TGraphicsScene::getObjectItemList(const QRectF &rect) const
 
 TObjectItemList TGraphicsScene::getObjectItemList(const QRectF &rect, TObject::Type objectType) const
 {
-    const QList<QGraphicsItem *> &itemList = items(rect, Qt::IntersectsItemBoundingRect);
+    QList<QGraphicsItem*> itemList = itemsOfCurrentLayerItem(rect, Qt::IntersectsItemBoundingRect);
     TObjectItemList objectItemList;
     for (QGraphicsItem *item : itemList) {
         if (!item->isEnabled())
@@ -677,7 +732,7 @@ TObjectItemList TGraphicsScene::getObjectItemList(const QRectF &rect, TObjectIte
     if(!objectItem)
         return objectItemList;
 
-    const QList<QGraphicsItem *> &itemList = items(rect);
+    QList<QGraphicsItem*> itemList = itemsOfCurrentLayerItem(rect);
     TObject *object = objectItem->object();
     for (QGraphicsItem *item : itemList) {
         if (!item->isEnabled())

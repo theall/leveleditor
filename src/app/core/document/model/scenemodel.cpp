@@ -109,6 +109,8 @@ void TSceneModel::setCurrentIndex(int index)
         return;
 
     mCurrentIndex = index;
+
+    emit currentIndexChanged(index);
 }
 
 TBaseModel *TSceneModel::getCurrentModel() const

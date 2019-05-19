@@ -319,7 +319,7 @@
     <string>Toggle to select item</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+1</string>
+    <string>F1</string>
    </property>
   </action>
   <action name="actionZoomOut">
@@ -893,7 +893,7 @@
     <string>Insert Tile/Object</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+2</string>
+    <string>F2</string>
    </property>
   </action>
  </widget>

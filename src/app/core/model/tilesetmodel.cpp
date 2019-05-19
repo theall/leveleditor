@@ -156,3 +156,15 @@ TTilesetModelList TTilesetModelManager::getTilsetModelList() const
 {
     return mTilsetModelList;
 }
+
+bool TTilesetModelManager::findTileIdIndex(TTileId *tileId, int &tilesetIndex, int &tileIdIndex) const
+{
+    tilesetIndex = 0;
+    for(TTilesetModel *tilesetModel : mTilsetModelList) {
+        tileIdIndex = tilesetModel->tileset()->indexOf(tileId);
+        if(tileIdIndex != -1)
+            return true;
+        tilesetIndex++;
+    }
+    return false;
+}

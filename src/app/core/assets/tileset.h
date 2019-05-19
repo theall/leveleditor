@@ -20,6 +20,7 @@ public:
     void sort();
 
     TTileId *getTileId(int index) const;
+    int indexOf(TTileId *tileId) const;
 
 private:
     int mId;

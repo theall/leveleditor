@@ -3,6 +3,7 @@
 #include "../core/shared/filesystemwatcher.h"
 #include "../core/document/graphics/graphicsscene.h"
 #include "../gui/component/tabwidget/tabwidget.h"
+#include "../utils/utils.h"
 
 #include <QMessageBox>
 
@@ -30,6 +31,7 @@ bool TTabController::joint(TMainWindow *mainWindow, TCore *core)
 
     connect(mTabWidget, SIGNAL(requestCloseDocument(void*)), this, SLOT(slotRequestCloseDocument(void*)));
     connect(mTabWidget, SIGNAL(requestSwitchToDocument(void*)), this, SLOT(slotRequestSwithToDocument(void*)));
+    connect(mTabWidget, SIGNAL(requestExploreFile(QString)), this, SLOT(slotRequestExploreFile(QString)));
 
     connect(core, SIGNAL(documentFileChanged(QString)), this, SLOT(slotDocumentFileChanged(QString)));
 
@@ -130,6 +132,11 @@ void TTabController::slotRequestSwithToDocument(void *document)
 void TTabController::slotRequestCloseDocument(void *document)
 {
     emit requestCloseDocument((TDocument*)document);
+}
+
+void TTabController::slotRequestExploreFile(const QString &file)
+{
+    Utils::exploreFile(file);
 }
 
 void TTabController::slotDocumentDirtyFlagChanged(bool isDirty)

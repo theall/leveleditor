@@ -62,7 +62,8 @@ SOURCES += \
     $$PWD/component/layerdock/iconcheckdelegate.cpp \
     $$PWD/component/layerdock/boldcurrentitemdelegate.cpp \
     $$PWD/style/stylehelper.cpp \
-    $$PWD/style/proxystyle.cpp
+    $$PWD/style/proxystyle.cpp \
+    $$PWD/component/tabwidget/graphicsviewcontexmenu.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -115,7 +116,8 @@ HEADERS += \
     $$PWD/component/layerdock/iconcheckdelegate.h \
     $$PWD/component/layerdock/boldcurrentitemdelegate.h \
     $$PWD/style/stylehelper.h \
-    $$PWD/style/proxystyle.h
+    $$PWD/style/proxystyle.h \
+    $$PWD/component/tabwidget/graphicsviewcontexmenu.h
 
 FORMS += \
     $$PWD/mainwindow.ui \

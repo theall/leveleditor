@@ -58,6 +58,7 @@ public:
     void setCurrentTileId(TTileId *tileId);
 
     void setEditMode(int editMode);
+    void showSelectedItemsBorder(bool visible = true);
 
 signals:
     void needChangeCursor(Qt::CursorShape cursor);
@@ -102,8 +103,16 @@ private:
 
     void step();
     void setSelectedObjectItem(TObjectItem *objectItem);
+
     void pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset, int commandId);
     void pushObjectAddCommand(const TObjectList &objectList, const QPointF &offset, int commandId);
+
+    QList<QGraphicsItem*> itemsOfCurrentLayerItem(
+            const QPointF &pos,
+            Qt::ItemSelectionMode mode = Qt::IntersectsItemShape) const;
+    QList<QGraphicsItem*> itemsOfCurrentLayerItem(
+            const QRectF &rect,
+            Qt::ItemSelectionMode mode = Qt::IntersectsItemShape) const;
 
 private slots:
     void updateCursor();
