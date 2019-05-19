@@ -4,7 +4,7 @@
 #include <QCloseEvent>
 
 TLoadingDialog::TLoadingDialog(QWidget *parent) :
-    QDialog(parent)
+    QDialog(nullptr)
   , mIsEnd(false)
   , ui(new Ui::TLoadingDialog)
 {
@@ -16,6 +16,10 @@ TLoadingDialog::TLoadingDialog(QWidget *parent) :
     setWindowTitle(tr("Loading..."));
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setWindowModality(Qt::WindowModal);
+
+    if(parent) {
+        setWindowIcon(parent->windowIcon());
+    }
 }
 
 TLoadingDialog::~TLoadingDialog()

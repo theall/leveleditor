@@ -1,3 +1,4 @@
+#include <QCursor>
 #include <QPainter>
 #include <QWheelEvent>
 #include <QCoreApplication>
@@ -26,8 +27,8 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
   , mSelectionRectangle(new TSelectionRectangle)
   , mLastSelectedObjectItem(nullptr)
   , mDocument(nullptr)
-  , mMode(INSERT_TILE)
   , mTileId(nullptr)
+  , mEditMode(DEFAULT)
 {
     setSize(640, 480);
 
@@ -41,7 +42,7 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
     addItem(mSelectionRectangle);
 
     mTileStampItem->setZValue(TOP_Z_VALUE+1);
-    addItem(mTileStampItem);
+    addItem(mTileStampItem);   
 
     FIND_DOCUMENT;
 }
@@ -220,19 +221,18 @@ void TGraphicsScene::updateCursor()
     }
 }
 
-
 bool TGraphicsScene::event(QEvent *event)
 {
     switch (event->type()) {
     case QEvent::Enter:
         mUnderMouse = true;
-//        if (mActiveTool)
-//            mActiveTool->mouseEntered();
+        if(mEditMode == INSERT)
+            mTileStampItem->setVisible(true);
         break;
     case QEvent::Leave:
         mUnderMouse = false;
-//        if (mActiveTool)
-//            mActiveTool->mouseLeft();
+        if(mEditMode == INSERT)
+            mTileStampItem->setVisible(false);
         break;
     default:
         break;
@@ -255,7 +255,9 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mousePressEvent(event);
 
-    if(mMode == DEFAULT) {
+    Qt::MouseButton button = event->button();
+    mLeftButtonDown = (button==Qt::LeftButton);
+    if(mEditMode == DEFAULT) {
         TObjectItem *autonomyObjectitem = nullptr;
         TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
         if(mLastSelectedObjectItem && mLastSelectedObjectItem->needGrabMouse()) {
@@ -273,8 +275,6 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 return;
         }
 
-        Qt::MouseButton button = event->button();
-        mLeftButtonDown = (button==Qt::LeftButton);
         if(button == Qt::RightButton)
         {
             if(mTimerId == -1)
@@ -302,27 +302,32 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 }
             }
         }
-    } else if(mMode == INSERT_TILE) {
-        TTileLayerModel *tileLayerModel = mSceneModel->getTileLayerModel6();
-        TTile *tile = tileLayerModel->layer()->createTile(mTileId, mTileStampItem->pos());
-        TObjectList objectList;
-        objectList.append(tile);
-        TObjectAddCommand *command = new TObjectAddCommand(
-            TObjectAddCommand::ADD,
-            tileLayerModel,
-            objectList
-        );
-        mDocument->addUndoCommand(command);
+    } else if(mEditMode == INSERT) {
+        if(mLeftButtonDown) {
+            TTileLayerModel *tileLayerModel = dynamic_cast<TTileLayerModel*>(mSceneModel->getCurrentModel());
+            if(tileLayerModel) {
+                TTile *tile = tileLayerModel->layer()->createTile(mTileId, mTileStampItem->pos());
+                TObjectList objectList;
+                objectList.append(tile);
+                TObjectAddCommand *command = new TObjectAddCommand(
+                    TObjectAddCommand::ADD,
+                    tileLayerModel,
+                    objectList
+                );
+                mDocument->addUndoCommand(command);
+            }
+        }
     }
 }
 
 void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mouseMoveEvent(event);
+    mMouseMovingPos = event->scenePos();
 
-    if(mMode == DEFAULT) {
+    if(mEditMode == DEFAULT) {
         TObjectItem *autonomyObjectitem = nullptr;
-        TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
+        TObjectItem *objectItem = getTopMostObjectItem(mMouseMovingPos);
         if(mLastSelectedObjectItem && mLastSelectedObjectItem->needGrabMouse()) {
             autonomyObjectitem = mLastSelectedObjectItem;
         }
@@ -363,19 +368,19 @@ void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 // Move selected object item
                 TObjectList objectList = mSelectedItems->getSelectedObjectList();
                 if(objectList.size() > 0) {
-                    QPointF offset = event->scenePos() - event->lastScenePos();
+                    QPointF offset = mMouseMovingPos - event->lastScenePos();
                     if(!offset.isNull()) {
                         pushObjectMoveCommand(objectList, offset, mCommandId);
                     }
                 }
             } else if(mAction == Selecting) {
-                mSelectionRectangle->setRectangle(QRectF(mLeftButtonDownPos, event->scenePos()));
+                mSelectionRectangle->setRectangle(QRectF(mLeftButtonDownPos, mMouseMovingPos));
             }
         }
         updateCursor();
         update();
-    } else if(mMode == INSERT_TILE) {
-        mTileStampItem->setCenterPos(event->scenePos());
+    } else if(mEditMode == INSERT) {
+        mTileStampItem->setCenterPos(mMouseMovingPos);
     }
 }
 
@@ -383,7 +388,7 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mouseReleaseEvent(event);
 
-    if(mMode == DEFAULT) {
+    if(mEditMode == DEFAULT) {
         TObjectItem *autonomyObjectitem = nullptr;
         TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
         if(mLastSelectedObjectItem && mLastSelectedObjectItem->needGrabMouse()) {
@@ -445,7 +450,7 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
             update();
         }
-    } else if(mMode == INSERT_TILE) {
+    } else if(mEditMode == INSERT) {
 
     }
 }
@@ -459,40 +464,48 @@ void TGraphicsScene::keyPressEvent(QKeyEvent *event)
 {
     int key = event->key();
     Qt::KeyboardModifiers keyboardModifiers = event->modifiers();
-    if(key == Qt::Key_Space)
-    {
-        if(!mStepMode) {
-            mStepMode = true;
-            if(isPlaying())
-                stop();
-        } else {
-            step();
-        }
-    } else if(key>=Qt::Key_Left && key<=Qt::Key_Down) {
-        TObjectList objectList = mSelectedItems->getSelectedObjectList();
-        if(objectList.size() > 0) {
-            QPointF offset;
-            if(key == Qt::Key_Left) {
-                offset.setX(-1);
-            } else if(key == Qt::Key_Up) {
-                offset.setY(-1);
-            } else if(key == Qt::Key_Right) {
-                offset.setX(1);
-            } else if(key == Qt::Key_Down) {
-                offset.setY(1);
+
+    if(mEditMode == DEFAULT) {
+        if(key == Qt::Key_Space)
+        {
+            if(!mStepMode) {
+                mStepMode = true;
+                if(isPlaying())
+                    stop();
+            } else {
+                step();
             }
-            pushObjectMoveCommand(objectList, offset, mCommandId);
+        } else if(key>=Qt::Key_Left && key<=Qt::Key_Down) {
+            TObjectList objectList = mSelectedItems->getSelectedObjectList();
+            if(objectList.size() > 0) {
+                QPointF offset;
+                if(key == Qt::Key_Left) {
+                    offset.setX(-1);
+                } else if(key == Qt::Key_Up) {
+                    offset.setY(-1);
+                } else if(key == Qt::Key_Right) {
+                    offset.setX(1);
+                } else if(key == Qt::Key_Down) {
+                    offset.setY(1);
+                }
+                pushObjectMoveCommand(objectList, offset, mCommandId);
+            }
+        } else if(key==Qt::Key_Delete) {
+            removeSelectedItems();
+        } else if(key==Qt::Key_Z && (keyboardModifiers&Qt::ControlModifier)) {
+            emit requestUndo();
+        } else if(key==Qt::Key_Y && (keyboardModifiers&Qt::ControlModifier)) {
+            emit requestRedo();
+        } else if(key==Qt::Key_Escape) {
+            mSelectedItems->setObjectItem(nullptr);
+            update();
         }
-    } else if(key==Qt::Key_Delete) {
-        removeSelectedItems();
-    } else if(key==Qt::Key_Z && (keyboardModifiers&Qt::ControlModifier)) {
-        emit requestUndo();
-    } else if(key==Qt::Key_Y && (keyboardModifiers&Qt::ControlModifier)) {
-        emit requestRedo();
-    } else if(key==Qt::Key_Escape) {
-        mSelectedItems->setObjectItem(nullptr);
-        update();
+    } else if(mEditMode == INSERT) {
+        if(key == Qt::Key_Escape) {
+            setEditMode(DEFAULT);
+        }
     }
+
     QGraphicsScene::keyPressEvent(event);
 }
 
@@ -561,24 +574,19 @@ void TGraphicsScene::slotPropertyItemValueChanged(TPropertyItem *item, const QVa
     }
 }
 
-TGraphicsScene::Mode TGraphicsScene::getMode() const
+void TGraphicsScene::setEditMode(int editMode)
 {
-    return mMode;
-}
-
-void TGraphicsScene::setMode(const Mode &mode)
-{
-    if(mMode == mode)
+    if(mEditMode == editMode)
         return;
 
-    mMode = mode;
-    if(mMode == INSERT_TILE) {
-        mTileStampItem->setParentItem(mSceneItem->getLayerItemList().last());
-        mTileStampItem->setPos(-9999, -9999);
-        mTileStampItem->setVisible(true);
-    } else {
-        mTileStampItem->setVisible(false);
+    mEditMode = editMode;
+    if(mUnderMouse) {
+        mTileStampItem->setCenterPos(mMouseMovingPos);
+        mTileStampItem->setVisible(mEditMode==INSERT);
     }
+    mHoveredItem->setVisible(mEditMode==DEFAULT);
+    mSelectedItems->setVisible(mEditMode==DEFAULT);
+    mSelectionRectangle->setVisible(mEditMode==DEFAULT);
 }
 
 TObjectItem *TGraphicsScene::getLastSelectedObjectItem() const
@@ -606,7 +614,7 @@ void TGraphicsScene::setCurrentTileId(TTileId *tileId)
     if(mTileId) {
         mTileStampItem->setPixmap(mTileId->pixmap()->pixmap());
     } else {
-        mTileStampItem->setVisible(false);
+        mTileStampItem->setPixmap(QPixmap());
     }
 }
 

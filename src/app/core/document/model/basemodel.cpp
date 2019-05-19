@@ -23,7 +23,7 @@ bool TBaseModel::visible() const
     return mVisible;
 }
 
-void TBaseModel::setVisible(bool visible)
+void TBaseModel::setVisibility(bool visible)
 {
     if(mVisible == visible)
         return;

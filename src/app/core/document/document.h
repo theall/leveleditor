@@ -11,6 +11,11 @@
 #include "undocommand/propertyundocommand.h"
 #include "../assets/tileid.h"
 
+enum EditMode {
+    DEFAULT,
+    INSERT
+};
+
 class TPropertyObject;
 class TFileSystemWatcher;
 
@@ -50,12 +55,17 @@ public:
 
     void setTileStamp(TTileId *tileStamp);
 
+    EditMode getEditMode() const;
+    void setEditMode(const EditMode &editMode);
+
 signals:
     void projectFileChanged();
     void dirtyFlagChanged(bool isDirty);
     void saved();
     void resourceChanged();
     void iconChanged(TPixmap *newPixmap);
+    // Send to external
+    void editModeChanged(const EditMode &current, const EditMode &prev);
 
 private slots:
     void slotModificationChanged(bool isClean);
@@ -73,6 +83,7 @@ private:
     TSceneModel *mSceneModel;
     TGraphicsScene *mGraphicsScene;
     TTileId *mTileStamp;
+    EditMode mEditMode;
 
     void load(const QString &file);
     void setFileName(const QString &fileName);

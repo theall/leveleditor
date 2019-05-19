@@ -22,11 +22,6 @@ class TGraphicsScene : public QGraphicsScene
     Q_OBJECT
 
 public:
-    enum Mode {
-        DEFAULT,
-        INSERT_TILE
-    };
-
     TGraphicsScene(QObject *parent = nullptr);
     ~TGraphicsScene();
 
@@ -62,8 +57,7 @@ public:
 
     void setCurrentTileId(TTileId *tileId);
 
-    Mode getMode() const;
-    void setMode(const Mode &mode);
+    void setEditMode(int editMode);
 
 signals:
     void needChangeCursor(Qt::CursorShape cursor);
@@ -91,6 +85,7 @@ private:
     bool mLeftButtonDown;
     bool mUnderMouse;
     QPointF mLeftButtonDownPos;
+    QPointF mMouseMovingPos;
     int mCommandId;
     Action mAction;
     Qt::CursorShape mCursor;
@@ -102,8 +97,8 @@ private:
     TSelectionRectangle *mSelectionRectangle;
     TObjectItem *mLastSelectedObjectItem;
     TDocument *mDocument;
-    Mode mMode;
     TTileId *mTileId;
+    int mEditMode;
 
     void step();
     void setSelectedObjectItem(TObjectItem *objectItem);

@@ -180,7 +180,6 @@
    </attribute>
    <addaction name="actionSelect"/>
    <addaction name="actionInsertTile"/>
-   <addaction name="actionInsertArea"/>
   </widget>
   <action name="actionHelp">
    <property name="icon">
@@ -381,21 +380,6 @@
    </property>
    <property name="toolTip">
     <string>Define Foot Position</string>
-   </property>
-  </action>
-  <action name="actionAddFireObject">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="resource/editor.qrc">
-     <normaloff>:/toolbar/images/addExtra.png</normaloff>:/toolbar/images/addExtra.png</iconset>
-   </property>
-   <property name="text">
-    <string>Add fire object</string>
-   </property>
-   <property name="toolTip">
-    <string>Add fire object</string>
    </property>
   </action>
   <action name="actionPlay">
@@ -613,24 +597,6 @@
     <string>show extra objects</string>
    </property>
   </action>
-  <action name="actionAddCollideArea">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/toolbar/images/collide_area.png</normaloff>:/toolbar/images/collide_area.png</iconset>
-   </property>
-   <property name="text">
-    <string>Add collide area</string>
-   </property>
-   <property name="toolTip">
-    <string>Add collision area</string>
-   </property>
-  </action>
   <action name="actionShowBorder">
    <property name="checkable">
     <bool>true</bool>
@@ -781,32 +747,12 @@
     <string>Project Properties</string>
    </property>
   </action>
-  <action name="actionAddAction">
-   <property name="text">
-    <string>Add Action</string>
-   </property>
-  </action>
   <action name="actionExportAs">
    <property name="text">
     <string>Export As</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+E</string>
-   </property>
-  </action>
-  <action name="actionAddArea">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="resource/editor.qrc">
-     <normaloff>:/tools/images/add.png</normaloff>:/tools/images/add.png</iconset>
-   </property>
-   <property name="text">
-    <string>Add area</string>
-   </property>
-   <property name="toolTip">
-    <string>Add area</string>
    </property>
   </action>
   <action name="actionAboutQt">
@@ -852,60 +798,6 @@
    </property>
    <property name="text">
     <string>RemoveArea</string>
-   </property>
-  </action>
-  <action name="actionAddTerrianArea">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/toolbar/images/terrian_area.png</normaloff>:/toolbar/images/terrian_area.png</iconset>
-   </property>
-   <property name="text">
-    <string>Add terrian area</string>
-   </property>
-   <property name="toolTip">
-    <string>Add terrian area</string>
-   </property>
-  </action>
-  <action name="actionAddAttackArea">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/toolbar/images/attack_area.png</normaloff>:/toolbar/images/attack_area.png</iconset>
-   </property>
-   <property name="text">
-    <string>Add attack area</string>
-   </property>
-   <property name="toolTip">
-    <string>Add attack area</string>
-   </property>
-  </action>
-  <action name="actionAddUndertakeArea">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/toolbar/images/undertake_area.png</normaloff>:/toolbar/images/undertake_area.png</iconset>
-   </property>
-   <property name="text">
-    <string>Add undertake area</string>
-   </property>
-   <property name="toolTip">
-    <string>Add undertake area</string>
    </property>
   </action>
   <action name="actionShowCollideArea">
@@ -995,22 +887,13 @@
    </property>
    <property name="icon">
     <iconset resource="resource/editor.qrc">
-     <normaloff>:/toolbar/images/insert_tile.png</normaloff>:/toolbar/images/insert_tile.png</iconset>
+     <normaloff>:/tools/images/add.png</normaloff>:/tools/images/add.png</iconset>
    </property>
    <property name="text">
-    <string>Insert Tile</string>
+    <string>Insert Tile/Object</string>
    </property>
-  </action>
-  <action name="actionInsertArea">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="resource/editor.qrc">
-     <normaloff>:/toolbar/images/insert_area.png</normaloff>:/toolbar/images/insert_area.png</iconset>
-   </property>
-   <property name="text">
-    <string>Insert Area</string>
+   <property name="shortcut">
+    <string>Ctrl+2</string>
    </property>
   </action>
  </widget>

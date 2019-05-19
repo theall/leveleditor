@@ -123,6 +123,9 @@ public:
     QColor selectionColor() const;
     void setSelectionColor(const QColor &selectionColor);
 
+    bool showTileBorder() const;
+    void setShowTileBorder(bool showTileBorder);
+
 signals:
     void hideMenuBarChanged(bool);
     void toolbarIconSizeChanged(int);
@@ -157,6 +160,7 @@ private:
     ApplicationStyle mApplicationStyle;
     QColor mBaseColor;
     QColor mSelectionColor;
+    bool mShowTileBorder;
 
     void setValue(const QString &section, const QVariant &value);
     QVariant value(const QString &section, const QVariant &defValue=QVariant());

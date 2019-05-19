@@ -38,6 +38,8 @@ private slots:
     void slotRequestDisplayProjectProperties();
     void slotRequestRunCurrentProject();
     void slotRequestShowBorder(bool show);
+    void slotOnActionSelectPushed();
+    void slotOnActionInsertPushed();
 
     // From TTabController
     void slotRequestCloseDocument(TDocument *document);
@@ -53,6 +55,13 @@ private slots:
 
     // From TMapsDockController
     void slotRequestOpenMap(TMap *map);
+
+    // From TLayersController
+    void slotOnLayerSelected(int index);
+
+    // From document
+    void slotOnDirtyFlagChanged(bool isDirty);
+    void slotOnEditModeChanged(const EditMode &current, const EditMode &prev);
 
 private:
     TOptionsController *mOptionsController;

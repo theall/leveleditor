@@ -3,7 +3,7 @@
 #include <QCursor>
 #include <QGraphicsSceneMouseEvent>
 
-bool TTileItem::mShowBorder = true;
+bool TTileItem::mShowBorder = false;
 TTileItem::TTileItem(TTile *tile, QGraphicsItem *parent) :
     TObjectItem(tile, parent)
   , mTile(tile)

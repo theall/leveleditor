@@ -14,39 +14,48 @@ TTilesetController::~TTilesetController()
 
 }
 
+void TTilesetController::setTilesetEnabled(bool enabled)
+{
+    mTilesetTab->setEnabled(enabled);
+}
+
 bool TTilesetController::joint(TMainWindow *mainWindow, TCore *core)
 {
     Q_ASSERT(mainWindow);
     Q_ASSERT(core);
     mTilesetTab = mainWindow->getTilesetDock()->tilesetTab();
-    connect(mTilesetTab, SIGNAL(onTilesetViewRowChanged(int,int)), this, SLOT(slotonTilesetViewCurrentRowChanged(int,int)));
+    connect(mTilesetTab, SIGNAL(onTilesetViewRowChanged(int,int)), this, SLOT(slotOnTilesetViewCurrentRowChanged(int,int)));
 
     connect(core, SIGNAL(ready()), this, SLOT(slotOnCoreReady()));
     return TAbstractController::joint(mainWindow, core);
 }
 
-void TTilesetController::setCurrentDocument(TDocument *)
+void TTilesetController::setCurrentDocument(TDocument *document)
 {
-
+    if(document && document->getEditMode()==INSERT) {
+        TTileId *tileId = mCore->tilesetModelManager()->getCurrentTileId();
+        document->setTileStamp(tileId);
+    }
 }
 
 void TTilesetController::slotOnCoreReady()
 {
     int index = 1;
-    for(TTilesetModel *tilesetModel : mCore->tilesetModelList()) {
+    TTilesetModelList tilesetModelList = mCore->tilesetModelList();
+    for(TTilesetModel *tilesetModel : tilesetModelList) {
         mTilesetTab->addTab(tilesetModel, QString::number(index++));
     }
+
+    mTilesetTab->selectTile(0, 0);
 }
 
-void TTilesetController::slotonTilesetViewCurrentRowChanged(int tileset, int row)
+void TTilesetController::slotOnTilesetViewCurrentRowChanged(int tileset, int row)
 {
-    TTilesetModelList tilesetModelList = mCore->tilesetModelList();
-    TTilesetModel *tilesetModel =  tilesetModelList.at(tileset);
-    if(!tilesetModel)
-        return;
-
-    TTileId *tileId = tilesetModel->getTileId(row);
-    mDocument->setTileStamp(tileId);
+    TTilesetModelManager *tilesetModelManager = mCore->tilesetModelManager();
+    tilesetModelManager->setCurrentIndex(tileset, row);
+    TTileId *tileId = tilesetModelManager->getTileId(tileset, row);
+    if(mDocument)
+        mDocument->setTileStamp(tileId);
 }
 
 void TTilesetController::slotTimerEvent()

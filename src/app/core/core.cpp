@@ -5,9 +5,10 @@
 
 TCore::TCore(QObject *parent) :
     QObject(parent)
+  , mMapsModel(new TMapsModel(this))
   , mFileWatcher(new TFileSystemWatcher(this))
   , mCharacterModel(new TCharacterModel(this))
-  , mMapsModel(new TMapsModel(this))
+  , mTilesetModelManager(new TTilesetModelManager(this))
 {
     TPreferences::instance();
 
@@ -102,18 +103,24 @@ QList<TDocument *> TCore::documents() const
 void TCore::slotOnResourceLoadCompleted()
 {
     TAssetsManager *assetsManager = TAssetsManager::getInstance();
-    // Create tileset models
-    FREE_CONTAINER(mTilesetModelList);
 
+    // Create tileset models
+    TTilesetModelList tilesetModelList;
     TilesetList tilesetList = assetsManager->getTilesetList();
     for(TTileset *tileset : tilesetList) {
         TTilesetModel *tilesetModel = new TTilesetModel(tileset, this);
-        mTilesetModelList.append(tilesetModel);
+        tilesetModelList.append(tilesetModel);
     }
 
+    mTilesetModelManager->setTilsetModelList(tilesetModelList);
     mCharacterModel->setFaceList(assetsManager->getFaceList());
     mMapsModel->setModuleList(assetsManager->getModuleList());
     emit ready();
+}
+
+TTilesetModelManager *TCore::tilesetModelManager() const
+{
+    return mTilesetModelManager;
 }
 
 TMapsModel *TCore::mapsModel() const
@@ -128,7 +135,7 @@ TCharacterModel *TCore::characterModel() const
 
 TTilesetModelList TCore::tilesetModelList() const
 {
-    return mTilesetModelList;
+    return mTilesetModelManager->tilsetModelList();
 }
 
 void TCore::addDocument(TDocument *document)

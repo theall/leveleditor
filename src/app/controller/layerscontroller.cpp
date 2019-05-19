@@ -5,6 +5,7 @@
 TLayersController::TLayersController(QObject *parent) :
     TAbstractController(parent)
   , mLayerView(nullptr)
+  , mLayerDock(nullptr)
 {
 
 }
@@ -19,8 +20,13 @@ bool TLayersController::joint(TMainWindow *mainWindow, TCore *core)
     Q_ASSERT(mainWindow);
     Q_ASSERT(core);
 
-    mLayerView = mainWindow->getLayerDock()->layerView();
+    mLayerDock = mainWindow->getLayerDock();
+    connect(mLayerDock, SIGNAL(layerOpacityChanged(QList<int>,float)), this, SLOT(slotLayerOpacityChanged(QList<int>,float)));
+
+    mLayerView = mLayerDock->layerView();
     connect(mLayerView, SIGNAL(currentRowChanged(int)), this, SLOT(slotCurrentLayerSelected(int)));
+    connect(mLayerView, SIGNAL(requestShowLayers(QList<int>,bool)), this, SLOT(slotRequestShowLayers(QList<int>,bool)));
+    connect(mLayerView, SIGNAL(requestLockLayers(QList<int>,bool)), this, SLOT(slotRequestLockLayers(QList<int>,bool)));
 
     return TAbstractController::joint(mainWindow, core);
 }
@@ -33,13 +39,17 @@ void TLayersController::setCurrentDocument(TDocument *document)
     if(mDocument)
         mDocument->disconnect(this);
 
-    QAbstractItemModel *model = nullptr;
+    TSceneModel *model = nullptr;
 
     if(document)
     {
         model = document->getSceneModel();
     }
     mLayerView->setModel(model);
+
+    if(model && !model->getCurrentModel()) {
+        mLayerView->selectLast();
+    }
 }
 
 void TLayersController::slotCurrentLayerSelected(int row)
@@ -47,25 +57,60 @@ void TLayersController::slotCurrentLayerSelected(int row)
     if(!mDocument)
         return;
 
-//    TGraphicsScene *graphicsScene = mDocument->graphicsScene();
-//    TLayerItemList layerItemList = graphicsScene->getLayerItemList();
-//    TLayerItem *layerItem = graphicsScene->getLayerItem(row);
-//    if(!layerItem) {
-//        for(TLayerItem *_layerItem : layerItemList)
-//            _layerItem->setOpacity(1.0);
-//        return;
-//    }
+    mDocument->getSceneModel()->setCurrentIndex(row);
 
-//    int i = 0;
-//    for(TLayerItem *_layerItem : layerItemList) {
-//        if(i > row) {
-//            _layerItem->setOpacity(0);
-//        } else if(i < row) {
-//            _layerItem->setOpacity(0.1);
-//        }
-//        i++;
-//    }
-//    layerItem->setOpacity(1.0);
+    TGraphicsScene *graphicsScene = mDocument->graphicsScene();
+    TLayerItem *layerItem = graphicsScene->getLayerItem(row);
+    mLayerDock->setOpacitySliderValue(layerItem?layerItem->opacity():1.0);
+
+    // Notify main controller
+    emit layerSelected(row);
+}
+
+void TLayersController::slotLayerOpacityChanged(const QList<int> &rows, float opacity)
+{
+    if(!mDocument)
+        return;
+
+    TGraphicsScene *scene = mDocument->graphicsScene();
+    for(int row : rows) {
+        TLayerItem *layerItem = scene->getLayerItem(row);
+        if(layerItem) {
+            layerItem->setOpacity(opacity);
+        }
+    }
+}
+
+void TLayersController::slotRequestShowLayers(const QList<int> &rows, bool show)
+{
+    if(!mDocument)
+        return;
+
+    TSceneModel *sceneModel = mDocument->getSceneModel();
+    if(!sceneModel)
+        return;
+
+    for(int index : rows) {
+        TBaseModel *baseModel = sceneModel->getBaseModel(index);
+        if(baseModel)
+            baseModel->setVisibility(show);
+    }
+}
+
+void TLayersController::slotRequestLockLayers(const QList<int> &rows, bool lock)
+{
+    if(!mDocument)
+        return;
+
+    TSceneModel *sceneModel = mDocument->getSceneModel();
+    if(!sceneModel)
+        return;
+
+    for(int index : rows) {
+        TBaseModel *baseModel = sceneModel->getBaseModel(index);
+        if(baseModel)
+            baseModel->setLocked(lock);
+    }
 }
 
 void TLayersController::slotTimerEvent()

@@ -15,6 +15,7 @@ TDocument::TDocument(const QString &file, QObject *parent) :
   , mFileWatcher(new TFileSystemWatcher(this))
   , mSceneModel(new TSceneModel(this))
   , mGraphicsScene(new TGraphicsScene(this))
+  , mEditMode(DEFAULT)
 {
     setObjectName("Document");
 
@@ -203,6 +204,23 @@ void TDocument::setTileStamp(TTileId *tileStamp)
         return;
 
     mGraphicsScene->setCurrentTileId(tileStamp);
+}
+
+EditMode TDocument::getEditMode() const
+{
+    return mEditMode;
+}
+
+void TDocument::setEditMode(const EditMode &editMode)
+{
+    if(mEditMode == editMode)
+        return;
+
+    EditMode oldMode = mEditMode;
+    mEditMode = editMode;
+    mGraphicsScene->setEditMode(editMode);
+
+    emit editModeChanged(mEditMode, oldMode);
 }
 
 TSceneModel *TDocument::getSceneModel() const

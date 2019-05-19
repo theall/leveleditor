@@ -11,6 +11,8 @@ public:
     TTilesetController(QObject *parent = 0);
     ~TTilesetController();
 
+    void setTilesetEnabled(bool enabled);
+
 private:
     TTilesetTab *mTilesetTab;
 
@@ -24,7 +26,7 @@ private slots:
     void slotOnCoreReady();
 
     // From tileset view
-    void slotonTilesetViewCurrentRowChanged(int tileset, int row);
+    void slotOnTilesetViewCurrentRowChanged(int tileset, int row);
 
 protected slots:
     void slotTimerEvent();

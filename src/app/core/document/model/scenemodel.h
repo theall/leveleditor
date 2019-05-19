@@ -21,7 +21,8 @@ class TSceneModel : public TBaseModel
     Q_OBJECT
 
 public:
-    TSceneModel(QObject *parent = nullptr);
+    explicit TSceneModel(QObject *parent = nullptr);
+    ~TSceneModel();
 
     TAreasModel *getAreasModel() const;
     TBoxesModel *getBoxesModel() const;
@@ -41,6 +42,12 @@ public:
     QColor getBackgroundColor() const;
     TPropertySheet *propertySheet() const;
     TBaseModelList getBaseModelList() const;
+    TBaseModel *getBaseModel(int index) const;
+
+    int currentIndex() const;
+    void setCurrentIndex(int index);
+
+    TBaseModel *getCurrentModel() const;
 
 private:
     int mNextMap[5];
@@ -63,6 +70,7 @@ private:
     TTileLayerModel *mTileLayerModel5;
     TTileLayerModel *mTileLayerModel6;
     TBaseModelList mBaseModelList;
+    int mCurrentIndex;
 
     void initPropertySheet();
 

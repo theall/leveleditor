@@ -46,6 +46,7 @@ static const char *SEC_GUI_HIDESTATUSBAR = "HideStatusBar";
 static const char *SEC_GUI_RECENTOPENEDFILES = "RecentOpenedFiles";
 static const char *SEC_GUI_LASTACTIVEFILE = "LastActiveFile";
 static const char *SEC_GUI_SCENE_SCALE = "SceneScale";
+static const char *SEC_GUI_SHOW_TILE_BORDER = "ShowTileBorder";
 
 // Install
 static const char *SEC_INSTALL = "Install";
@@ -57,6 +58,11 @@ static const char *SEC_OPTIONS = "Options";
 
 static const char *SEC_OPTION_GENERAL = "OptionGeneral";
 static const char *SEC_OPTION_DISPLAY_TRAY_ICON = "DisplayTrayIcon";
+
+static const char *SEC_OPTION_UI = "OptionUI";
+static const char *SEC_OPTION_UI_APP_STYLE = "AppStyle";
+static const char *SEC_OPTION_UI_BASE_COLOR = "BaseColor";
+static const char *SEC_OPTION_UI_SELECTION_COLOR = "SelectionColor";
 
 static const char *SEC_OPTION_DEBUG = "OptionDebug";
 static const char *SEC_OPTION_DEBUG_ENGINE_PATH = "EnginePath";
@@ -109,6 +115,7 @@ TPreferences::TPreferences(QObject *parent):
     mLastActiveFile = stringValue(SEC_GUI_LASTACTIVEFILE);
     mSceneScale = doubleValue(SEC_GUI_SCENE_SCALE, 1.0);
     mSceneScale = QString::number(mSceneScale, 'f', 2).toDouble();
+    mShowTileBorder = boolValue(SEC_GUI_SHOW_TILE_BORDER);
     mSettings->endGroup();
 
     //// Options
@@ -116,6 +123,13 @@ TPreferences::TPreferences(QObject *parent):
         // general
         mSettings->beginGroup(SEC_OPTION_GENERAL);
         mDisplayTrayIcon = boolValue(SEC_OPTION_DISPLAY_TRAY_ICON, true);
+        mSettings->endGroup();
+
+        // UI
+        mSettings->beginGroup(SEC_OPTION_UI);
+        mBaseColor = colorValue(SEC_OPTION_UI_BASE_COLOR);
+        mSelectionColor = colorValue(SEC_OPTION_UI_SELECTION_COLOR);
+        mApplicationStyle = (ApplicationStyle)intValue(SEC_OPTION_UI_APP_STYLE);
         mSettings->endGroup();
 
         // debug
@@ -323,7 +337,7 @@ TPreferences::ApplicationStyle TPreferences::applicationStyle() const
 
 void TPreferences::setApplicationStyle(const ApplicationStyle &applicationStyle)
 {
-    mApplicationStyle = applicationStyle;
+    SET_VALUE(applicationStyle, mApplicationStyle, SEC_OPTIONS, SEC_OPTION_UI_APP_STYLE);
 }
 
 QColor TPreferences::baseColor() const
@@ -333,7 +347,7 @@ QColor TPreferences::baseColor() const
 
 void TPreferences::setBaseColor(const QColor &baseColor)
 {
-    mBaseColor = baseColor;
+    SET_VALUE(baseColor, mBaseColor, SEC_OPTIONS, SEC_OPTION_UI_BASE_COLOR);
 }
 
 QColor TPreferences::selectionColor() const
@@ -343,7 +357,17 @@ QColor TPreferences::selectionColor() const
 
 void TPreferences::setSelectionColor(const QColor &selectionColor)
 {
-    mSelectionColor = selectionColor;
+    SET_VALUE(selectionColor, mSelectionColor, SEC_OPTIONS, SEC_OPTION_UI_SELECTION_COLOR);
+}
+
+bool TPreferences::showTileBorder() const
+{
+    return mShowTileBorder;
+}
+
+void TPreferences::setShowTileBorder(bool showTileBorder)
+{
+    SET_VALUE(showTileBorder, mShowTileBorder, SEC_GUI, SEC_GUI_SHOW_TILE_BORDER);
 }
 
 void TPreferences::windowGeometryState(QByteArray *g, QByteArray *s)

@@ -8,26 +8,6 @@
 #include <QActionGroup>
 #include <QMainWindow>
 
-enum SelectedAction
-{
-    SA_Default,
-    SA_AddCollideArea,
-    SA_AddAttackArea,
-    SA_AddUndertakeArea,
-    SA_AddTerrianArea,
-    SA_AddFireObject,
-    SA_COUNT
-};
-
-enum AreaType
-{
-    AT_COLLIDE,
-    AT_ATTACK,
-    AT_TERRIAN,
-    AT_UNDERTAKE,
-    AT_COUNT
-};
-
 namespace Ui {
     class MainWindow;
 }
@@ -62,13 +42,14 @@ public:
     void enableCloseAllAction(bool enabled = true);
     void enableRunAction(bool enabled = true);
 
-    SelectedAction getSelectedAction();
+    void checkSelectAction();
+    void checkInsertAction();
+
     void triggerCurrentSelectedAction();
-    void setSelectedAction(SelectedAction action);
 
     void addRecentFile(const QString &file);
     void setStatusMessage(const QString &message, int timeOut = 3000);
-    void show();
+    void asShow();
 
     TUndoDock *getUndoDock() const;
     TMapsDock *getMapsDock() const;
@@ -92,10 +73,10 @@ signals:
     void requestCloseCurrentProject();
     void requestCloseAllProjects();
     void requestDisplayProjectProperties();
-    void requestShowFrameSceneArea(AreaType areaType, bool visible);
-    void onFrameSceneActionSelected(SelectedAction selectedAction);
     void requestRunCurrentProject();
     void requestShowBorder(bool);
+    void onActionSelectPushed();
+    void onActionInsertPushed();
 
 private slots:
     // From TTabWidget
@@ -128,20 +109,12 @@ private slots:
     void on_actionExportAs_triggered();
     void on_actionPreferences_triggered();
     void on_actionDocumentProperties_triggered();
-    void on_actionShowCollideArea_triggered(bool checked);
-    void on_actionShowTerrianArea_triggered(bool checked);
-    void on_actionShowAttackArea_triggered(bool checked);
-    void on_actionShowUndertakeArea_triggered(bool checked);
-    void on_actionAddCollideArea_triggered(bool checked);
-    void on_actionAddFireObject_triggered(bool checked);
-    void on_actionAddAttackArea_triggered(bool checked);
-    void on_actionAddUndertakeArea_triggered(bool checked);
-    void on_actionAddTerrianArea_triggered(bool checked);
-    void on_actionSelect_triggered(bool checked);
+    void on_actionSelect_triggered();
+    void on_actionInsertTile_triggered();
     void on_actionAbout_triggered();
     void on_actionRun_triggered();
-
-    void on_actionShowBorder_toggled(bool arg1);
+    void on_actionShowBorder_triggered(bool arg1);
+    void on_actionAlwaysOnTop_triggered(bool arg1);
 
 private:
     Ui::MainWindow *ui;
@@ -170,6 +143,7 @@ private:
     void loadConfig();
     void saveConfig();
     void raiseLoadingDialog();
+    void checkActionWithoutEmitSignal(QAction *action, bool checked);
 
     // QWidget interface
 protected:

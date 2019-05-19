@@ -37,8 +37,9 @@ TSceneModel::TSceneModel(QObject *parent) :
   , mTileLayerModel4(new TTileLayerModel(this))
   , mTileLayerModel5(new TTileLayerModel(this))
   , mTileLayerModel6(new TTileLayerModel(this))
+  , mCurrentIndex(-1)
 {
-    setName(tr("Map"));
+    setName(tr("SceneModel"));
 
     mBaseModelList.append(mTileLayerModel1);
     mBaseModelList.append(mTileLayerModel2);
@@ -55,6 +56,7 @@ TSceneModel::TSceneModel(QObject *parent) :
     mBaseModelList.append(mTileLayerModel4);
     mBaseModelList.append(mTileLayerModel5);
     mBaseModelList.append(mTileLayerModel6);
+    mCurrentIndex = mBaseModelList.size() - 1;
 
     mTileLayerModel1->setName(tr("Background 1"));
     mTileLayerModel2->setName(tr("Background 2"));
@@ -63,6 +65,11 @@ TSceneModel::TSceneModel(QObject *parent) :
     mTileLayerModel5->setName(tr("Foreground 2"));
     mTileLayerModel6->setName(tr("Foreground 3"));
     initPropertySheet();
+}
+
+TSceneModel::~TSceneModel()
+{
+
 }
 
 QColor TSceneModel::getBackgroundColor() const
@@ -81,6 +88,35 @@ TPropertySheet *TSceneModel::propertySheet() const
 TBaseModelList TSceneModel::getBaseModelList() const
 {
     return mBaseModelList;
+}
+
+TBaseModel *TSceneModel::getBaseModel(int index) const
+{
+    TBaseModel *baseModel = nullptr;
+    if(index>=0 && index<mBaseModelList.size())
+        baseModel = mBaseModelList.at(index);
+    return baseModel;
+}
+
+int TSceneModel::currentIndex() const
+{
+    return mCurrentIndex;
+}
+
+void TSceneModel::setCurrentIndex(int index)
+{
+    if(mCurrentIndex == index)
+        return;
+
+    mCurrentIndex = index;
+}
+
+TBaseModel *TSceneModel::getCurrentModel() const
+{
+    TBaseModel *m = nullptr;
+    if(mCurrentIndex>=0 && mCurrentIndex<mBaseModelList.size())
+        m = mBaseModelList.at(mCurrentIndex);
+    return m;
 }
 
 TTileLayerModel *TSceneModel::getTileLayerModel6() const
@@ -321,7 +357,7 @@ bool TSceneModel::setData(const QModelIndex &index, const QVariant &value, int r
         if (column == COLUMN_INDEX_VISIBILITY) {
             Qt::CheckState c = static_cast<Qt::CheckState>(value.toInt());
             const bool visible = (c == Qt::Checked);
-            baseModel->setVisible(visible);
+            baseModel->setVisibility(visible);
         }
         if (column == COLUMN_INDEX_LOCK) {
             Qt::CheckState c = static_cast<Qt::CheckState>(value.toInt());

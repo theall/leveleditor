@@ -28,7 +28,7 @@ TTileStampItem::TTileStampItem(QGraphicsItem *parent) :
 {
     setAcceptedMouseButtons(Qt::MouseButtons());
     setAcceptHoverEvents(false);
-    setOpacity(0.85);
+    setOpacity(0.5);
 }
 
 TTileStampItem::~TTileStampItem()

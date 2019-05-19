@@ -36,6 +36,8 @@ TMainController::TMainController(QObject *parent) :
             SLOT(slotPropertyItemActived(TPropertyItem*)));
 
     connect(mMapsDockController, SIGNAL(requestOpenMap(TMap*)), this, SLOT(slotRequestOpenMap(TMap*)));
+
+    connect(mLayersController, SIGNAL(layerSelected(int)), this, SLOT(slotOnLayerSelected(int)));
     connect(TAssetsManager::getInstance(), SIGNAL(onProgress(int,int)), this, SLOT(slotOnResourceLoadProgress(int,int)));
 }
 
@@ -74,6 +76,8 @@ bool TMainController::joint(TMainWindow *mainWindow, TCore *core)
         connect(mainWindow, SIGNAL(requestExitApp(bool&)), this, SLOT(slotRequestExitApp(bool&)));
         connect(mainWindow, SIGNAL(requestRunCurrentProject()), this, SLOT(slotRequestRunCurrentProject()));
         connect(mainWindow, SIGNAL(requestShowBorder(bool)), this, SLOT(slotRequestShowBorder(bool)));
+        connect(mainWindow, SIGNAL(onActionSelectPushed()), this, SLOT(slotOnActionSelectPushed()));
+        connect(mainWindow, SIGNAL(onActionInsertPushed()), this, SLOT(slotOnActionInsertPushed()));
 
         TPreferences *prefs = TPreferences::instance();
         QString gameRoot = prefs->root();
@@ -90,8 +94,7 @@ bool TMainController::joint(TMainWindow *mainWindow, TCore *core)
         if(success) {
             prefs->setRoot(gameRoot);
         }
-        mainWindow->show();
-
+        mainWindow->asShow();
         if(prefs->openLastFile())
         {
             bool showErrorDialog = true;
@@ -128,7 +131,6 @@ bool TMainController::joint(TMainWindow *mainWindow, TCore *core)
                 setCurrentDocument(document);
             }
         }
-
     }
     return ret;
 }
@@ -211,9 +213,18 @@ void TMainController::slotRequestSwitchToDocument(TDocument *document)
     mMiniSceneController->setCurrentDocument(document);
     mLayersController->setCurrentDocument(document);
 
+    if(mDocument)
+        mDocument->disconnect(this);
+
+    mDocument = document;
+
+    if(mDocument) {
+        connect(mDocument, SIGNAL(dirtyFlagChanged(bool)), this, SLOT(slotOnDirtyFlagChanged(bool)));
+        connect(mDocument, SIGNAL(editModeChanged(EditMode,EditMode)), this, SLOT(slotOnEditModeChanged(EditMode,EditMode)));
+    }
+
     mMainWindow->enableSaveAction(document&&document->isDirty());
     mMainWindow->enableRunAction(document!=nullptr);
-    mDocument = document;
 }
 
 void TMainController::slotDocumentDirtyFlagChanged(TDocument *document, bool isDirty)
@@ -266,6 +277,32 @@ void TMainController::slotRequestOpenMap(TMap *map)
     TDocument *document = mCore->open(map);
     setCurrentDocument(document);
     mMainWindow->addRecentFile(document->fileName());
+}
+
+void TMainController::slotOnLayerSelected(int index)
+{
+    TGraphicsScene *graphicsScene = mDocument->graphicsScene();
+    TLayerItem *layerItem = graphicsScene->getLayerItem(index);
+    bool enableTileset = layerItem && layerItem->isTileLayer();
+    mTilesetController->setTilesetEnabled(enableTileset);
+}
+
+void TMainController::slotOnDirtyFlagChanged(bool isDirty)
+{
+    mMainWindow->enableSaveAction(isDirty);
+}
+
+void TMainController::slotOnEditModeChanged(const EditMode &current, const EditMode &)
+{
+    switch (current) {
+    case INSERT:
+        mMainWindow->checkInsertAction();
+        break;
+    case DEFAULT:
+    default:
+        mMainWindow->checkSelectAction();
+        break;
+    }
 }
 
 bool TMainController::confirmAllSaved()
@@ -354,6 +391,25 @@ void TMainController::slotRequestRunCurrentProject()
 void TMainController::slotRequestShowBorder(bool show)
 {
     TTileItem::setShowBorder(show);
+    TPreferences::instance()->setDisplayTrayIcon(show);
+}
+
+void TMainController::slotOnActionSelectPushed()
+{
+    if(!mDocument)
+        return;
+
+    mDocument->setEditMode(DEFAULT);
+}
+
+void TMainController::slotOnActionInsertPushed()
+{
+    if(!mDocument)
+        return;
+
+    TTileId *tileId = mCore->tilesetModelManager()->getCurrentTileId();
+    mDocument->setTileStamp(tileId);
+    mDocument->setEditMode(INSERT);
 }
 
 void TMainController::slotTimerEvent()

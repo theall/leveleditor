@@ -35,6 +35,8 @@ public:
 
     TMapsModel *mapsModel() const;
 
+    TTilesetModelManager *tilesetModelManager() const;
+
 signals:
     void documentFileChanged(const QString &file);
     void ready();
@@ -43,11 +45,11 @@ private slots:
     void slotOnResourceLoadCompleted();
 
 private:
-    QList<TDocument*> mDocuments;
-    TTilesetModelList mTilesetModelList;
+    TMapsModel *mMapsModel;
     TFileSystemWatcher *mFileWatcher;
     TCharacterModel *mCharacterModel;
-    TMapsModel *mMapsModel;
+    TTilesetModelManager *mTilesetModelManager;
+    QList<TDocument*> mDocuments;
 
     void addDocument(TDocument *document);
 };

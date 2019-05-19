@@ -17,7 +17,6 @@
 #include "component/tilesetdock/tilesetdock.h"
 
 #include "widgets/zoomcombobox.h"
-
 #include "../utils/preferences.h"
 
 #include <QUrl>
@@ -67,10 +66,9 @@ TMainWindow::TMainWindow(QWidget *parent) :
     ui->actionCloseAll->setEnabled(false);
     ui->actionClearRecentFiles->setEnabled(false);
 
-    // Frame menu
+    // Toolbar action list
     mActionGroup->addAction(ui->actionSelect);
-    mActionGroup->addAction(ui->actionAddAttackArea);
-    mActionGroup->addAction(ui->actionAddUndertakeArea);
+    mActionGroup->addAction(ui->actionInsertTile);
     ui->actionSelect->setChecked(true);
 
     // Add recent file actions to the recent files menu
@@ -110,6 +108,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
     addDockWidget(Qt::LeftDockWidgetArea, mLayerDock);
     tabifyDockWidget(mMapsDock, mTilesetDock);
     tabifyDockWidget(mTilesetDock, mCharacterDock);
+    tabifyDockWidget(mLayerDock, mUndoDock);
 
     mViewsAndToolbarsMenu->setMenu(createPopupMenu());
 
@@ -124,7 +123,11 @@ TMainWindow::TMainWindow(QWidget *parent) :
 
     setAcceptDrops(true);
 
-    loadConfig();
+    TPreferences *prefs = TPreferences::instance();
+    connect(prefs, SIGNAL(toolbarIconSizeChanged(int)), this, SLOT(slotToolbarIconSizeChanged(int)));
+    connect(prefs, SIGNAL(hideMenuBarChanged(bool)), this, SLOT(slotHideMenuBarChanged(bool)));
+    connect(prefs, SIGNAL(hideStatusBarChanged(bool)), this, SLOT(slotHideStatusBarChanged(bool)));
+    connect(prefs, SIGNAL(styleChanged(QString)), this, SLOT(slotStyleChanged(QString)));
 }
 
 TMainWindow::~TMainWindow()
@@ -169,20 +172,20 @@ void TMainWindow::enableRunAction(bool enabled)
     ui->actionRun->setEnabled(enabled);
 }
 
-SelectedAction TMainWindow::getSelectedAction()
+void TMainWindow::checkSelectAction()
 {
-    SelectedAction selectedAction = SA_Default;
-    QAction *checkedAction = mActionGroup->checkedAction();
-    if(checkedAction==ui->actionAddAttackArea)
-        selectedAction = SA_AddAttackArea;
-    else if(checkedAction==ui->actionAddCollideArea)
-        selectedAction = SA_AddCollideArea;
-    else if(checkedAction==ui->actionAddTerrianArea)
-        selectedAction = SA_AddTerrianArea;
-    else if(checkedAction==ui->actionAddUndertakeArea)
-        selectedAction = SA_AddUndertakeArea;
+    for(QAction *action : mActionGroup->actions()) {
+        checkActionWithoutEmitSignal(action, false);
+    }
+    checkActionWithoutEmitSignal(ui->actionSelect, true);
+}
 
-    return selectedAction;
+void TMainWindow::checkInsertAction()
+{
+    for(QAction *action : mActionGroup->actions()) {
+        checkActionWithoutEmitSignal(action, false);
+    }
+    checkActionWithoutEmitSignal(ui->actionInsertTile, true);
 }
 
 void TMainWindow::triggerCurrentSelectedAction()
@@ -190,20 +193,6 @@ void TMainWindow::triggerCurrentSelectedAction()
     QAction *checkedAction = mActionGroup->checkedAction();
     if(checkedAction)
         checkedAction->trigger();
-}
-
-void TMainWindow::setSelectedAction(SelectedAction action)
-{
-    if(action==SA_AddAttackArea)
-        ui->actionAddAttackArea->setChecked(true);
-    else if(action==SA_AddCollideArea)
-        ui->actionAddCollideArea->setChecked(true);
-    else if(action==SA_AddTerrianArea)
-        ui->actionAddTerrianArea->setChecked(true);
-    else if(action==SA_AddUndertakeArea)
-        ui->actionAddUndertakeArea->setChecked(true);
-    else
-        ui->actionSelect->setChecked(true);
 }
 
 void TMainWindow::addRecentFile(const QString &file)
@@ -220,13 +209,14 @@ void TMainWindow::setStatusMessage(const QString &message, int timeOut)
     statusBar()->showMessage(message, timeOut);
 }
 
-void TMainWindow::show()
+void TMainWindow::asShow()
 {
-    QMainWindow::show();
-
 #ifndef GUI_STAND_ALONE
     raiseLoadingDialog();
 #endif
+
+    loadConfig();
+    show();
 }
 
 void TMainWindow::on_actionOpen_triggered()
@@ -373,6 +363,13 @@ void TMainWindow::raiseLoadingDialog()
     }
 }
 
+void TMainWindow::checkActionWithoutEmitSignal(QAction *action, bool checked)
+{
+    action->blockSignals(true);
+    action->setChecked(checked);
+    action->blockSignals(false);
+}
+
 void TMainWindow::closeEvent(QCloseEvent *event)
 {
 #ifdef GUI_STAND_ALONE
@@ -478,24 +475,14 @@ void TMainWindow::on_actionExit_triggered()
 void TMainWindow::loadConfig()
 {
     TPreferences *prefs = TPreferences::instance();
-    connect(prefs, SIGNAL(toolbarIconSizeChanged(int)), this, SLOT(slotToolbarIconSizeChanged(int)));
-    connect(prefs, SIGNAL(hideMenuBarChanged(bool)), this, SLOT(slotHideMenuBarChanged(bool)));
-    connect(prefs, SIGNAL(hideStatusBarChanged(bool)), this, SLOT(slotHideStatusBarChanged(bool)));
-    connect(prefs, SIGNAL(styleChanged(QString)), this, SLOT(slotStyleChanged(QString)));
-
     QByteArray geometry, state;
     prefs->windowGeometryState(&geometry, &state);
-    if(geometry.isEmpty()) {
-        if(isVisible())
-            showMaximized();
-    } else {
+    if(!geometry.isEmpty()) {
         restoreGeometry(geometry);
     }
 
     if(!state.isEmpty())
         restoreState(state);
-
-    //    ui->actionShowGrid->setChecked(preferences->showGrid());
 
     if(prefs->hideMenuBar())
         ui->mainMenu->setVisible(false);
@@ -505,14 +492,11 @@ void TMainWindow::loadConfig()
         statusBar()->setVisible(false);
     }
     slotToolbarIconSizeChanged(prefs->toolbarIconSize());
-
-    if(prefs->alwaysOnTop())
-        ui->actionAlwaysOnTop->trigger();
-
     mZoomComboBox->setScaleValue(prefs->sceneScale());
-
-    slotStyleChanged(prefs->style());
     updateRecentFiles();
+    slotStyleChanged(prefs->style());
+    ui->actionShowBorder->triggered(prefs->showTileBorder());
+    ui->actionAlwaysOnTop->triggered(prefs->alwaysOnTop());
 }
 
 void TMainWindow::on_actionClose_triggered()
@@ -545,60 +529,14 @@ void TMainWindow::on_actionDocumentProperties_triggered()
     emit requestDisplayProjectProperties();
 }
 
-void TMainWindow::on_actionAddAttackArea_triggered(bool checked)
+void TMainWindow::on_actionSelect_triggered()
 {
-    if(checked)
-        emit onFrameSceneActionSelected(SA_AddAttackArea);
+    emit onActionSelectPushed();
 }
 
-void TMainWindow::on_actionAddUndertakeArea_triggered(bool checked)
+void TMainWindow::on_actionInsertTile_triggered()
 {
-    if(checked)
-        emit onFrameSceneActionSelected(SA_AddUndertakeArea);
-}
-
-void TMainWindow::on_actionAddTerrianArea_triggered(bool checked)
-{
-    if(checked)
-        emit onFrameSceneActionSelected(SA_AddTerrianArea);
-}
-
-void TMainWindow::on_actionAddCollideArea_triggered(bool checked)
-{
-    if(checked)
-        emit onFrameSceneActionSelected(SA_AddCollideArea);
-}
-
-void TMainWindow::on_actionAddFireObject_triggered(bool checked)
-{
-    if(checked)
-        emit onFrameSceneActionSelected(SA_AddFireObject);
-}
-
-void TMainWindow::on_actionSelect_triggered(bool checked)
-{
-    if(checked)
-        emit onFrameSceneActionSelected(SA_Default);
-}
-
-void TMainWindow::on_actionShowCollideArea_triggered(bool checked)
-{
-    requestShowFrameSceneArea(AT_COLLIDE, checked);
-}
-
-void TMainWindow::on_actionShowTerrianArea_triggered(bool checked)
-{
-    requestShowFrameSceneArea(AT_TERRIAN, checked);
-}
-
-void TMainWindow::on_actionShowAttackArea_triggered(bool checked)
-{
-    requestShowFrameSceneArea(AT_ATTACK, checked);
-}
-
-void TMainWindow::on_actionShowUndertakeArea_triggered(bool checked)
-{
-    requestShowFrameSceneArea(AT_UNDERTAKE, checked);
+    emit onActionInsertPushed();
 }
 
 void TMainWindow::on_actionAbout_triggered()
@@ -658,7 +596,18 @@ TLoadingDialog *TMainWindow::getLoadingDialog() const
     return mLoadingDialog;
 }
 
-void TMainWindow::on_actionShowBorder_toggled(bool arg1)
+void TMainWindow::on_actionShowBorder_triggered(bool arg1)
 {
     emit requestShowBorder(arg1);
+}
+
+void TMainWindow::on_actionAlwaysOnTop_triggered(bool)
+{
+//    if(checked) {
+//        setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
+//    } else {
+//        setWindowFlags(windowFlags() ^ Qt::WindowStaysOnTopHint);
+//    }
+//    TPreferences::instance()->setAlwaysOnTop(checked);
+//    show();
 }

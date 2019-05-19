@@ -20,6 +20,7 @@ public:
     void *currentTileset();
 
     void setTilesetIcon(void *tileSet, const QIcon &icon);
+    void selectTile(int tabIndex, int tileIndex);
 
 signals:
     // To TTilesetController

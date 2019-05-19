@@ -27,7 +27,7 @@ public:
     void setName(const QString &name);
 
     bool visible() const;
-    void setVisible(bool visible);
+    void setVisibility(bool visible);
 
     QIcon icon() const;
     void setIcon(const QIcon &icon);

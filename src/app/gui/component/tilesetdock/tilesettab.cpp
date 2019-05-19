@@ -96,6 +96,14 @@ void TTilesetTab::setTilesetIcon(void *tileSet, const QIcon &icon)
     setTabIcon(index, icon);
 }
 
+void TTilesetTab::selectTile(int tabIndex, int tileIndex)
+{
+    TTilesetView *view = (TTilesetView*)widget(tabIndex);
+    if(view) {
+        view->selectRow(tileIndex);
+    }
+}
+
 void TTilesetTab::slotOnCurrentIndexChanged(int index)
 {
     void *tileSet = nullptr;
