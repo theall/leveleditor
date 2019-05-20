@@ -11,6 +11,7 @@
 #include "uiitem/hovereditem.h"
 #include "uiitem/tilestampitem.h"
 #include "uiitem/selecteditems.h"
+#include "uiitem/objectareaitem.h"
 #include "uiitem/selectionrectangle.h"
 #include "../model/scenemodel.h"
 #include "layeritem/objectitem/objectitem.h"
@@ -95,6 +96,7 @@ private:
     THoveredItem *mHoveredItem;
     TTileStampItem *mTileStampItem;
     TSelectedItems *mSelectedItems;
+    TObjectAreaItem *mObjectAreaItem;
     TSelectionRectangle *mSelectionRectangle;
     TObjectItem *mLastSelectedObjectItem;
     TDocument *mDocument;
@@ -113,6 +115,8 @@ private:
     QList<QGraphicsItem*> itemsOfCurrentLayerItem(
             const QRectF &rect,
             Qt::ItemSelectionMode mode = Qt::IntersectsItemShape) const;
+
+    void updateUiItemsVisibility();
 
 private slots:
     void updateCursor();

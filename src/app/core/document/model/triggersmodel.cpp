@@ -1,7 +1,7 @@
 #include "triggersmodel.h"
 
 TTriggersModel::TTriggersModel(QObject *parent) :
-    TBaseModel(parent)
+    TBaseModel(TBaseModel::TRIGGER, parent)
 {
     setName(tr("Trigger"));
 }

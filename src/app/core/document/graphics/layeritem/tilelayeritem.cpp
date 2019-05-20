@@ -34,15 +34,14 @@ void TTileLayerItem::slotTileInserted(const TTileList &tileList, const QList<int
 
 void TTileLayerItem::slotTileRemoved(const TTileList &tileList, const QList<int> &)
 {
-    QGraphicsScene *_scene = scene();
-    if(!_scene)
-        return;
-
     for(TTile *tile : tileList) {
         TTileItem *tileItem = mTileItemMap[tile];
         if(tileItem) {
-            _scene->removeItem(tileItem);
+            //scene()->removeItem(tileItem);Don't use,will cause exception
+            delete tileItem;
+            mTileItemList.removeAll(tileItem);
         }
+        mTileItemMap.remove(tile);
     }
     calcBoundingRect();
 }

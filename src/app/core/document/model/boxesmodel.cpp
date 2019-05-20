@@ -1,7 +1,7 @@
 #include "boxesmodel.h"
 
 TBoxesModel::TBoxesModel(QObject *parent) :
-    TBaseModel(parent)
+    TBaseModel(TBaseModel::BOX, parent)
 {
     setName(tr("Box"));
 }

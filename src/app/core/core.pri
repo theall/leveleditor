@@ -79,7 +79,9 @@ SOURCES += \
     $$PWD/document/graphics/layeritem/objectlayeritem.cpp \
     $$PWD/document/undocommand/objectaddcommand.cpp \
     $$PWD/document/undocommand/objectmovecommand.cpp \
-    $$PWD/document/graphics/uiitem/tilestampitem.cpp
+    $$PWD/document/graphics/uiitem/tilestampitem.cpp \
+    $$PWD/document/undocommand/removeselectioncommand.cpp \
+    $$PWD/document/graphics/uiitem/objectareaitem.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -165,7 +167,9 @@ HEADERS  += \
     $$PWD/document/graphics/layeritem/objectlayeritem.h \
     $$PWD/document/undocommand/objectmovecommand.h \
     $$PWD/document/undocommand/objectaddcommand.h \
-    $$PWD/document/graphics/uiitem/tilestampitem.h
+    $$PWD/document/graphics/uiitem/tilestampitem.h \
+    $$PWD/document/undocommand/removeselectioncommand.h \
+    $$PWD/document/graphics/uiitem/objectareaitem.h
 
 RESOURCES += \
     $$PWD/resource/core.qrc

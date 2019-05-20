@@ -1,7 +1,7 @@
 #include "platformsmodel.h"
 
 TPlatformsModel::TPlatformsModel(QObject *parent) :
-    TBaseModel(parent)
+    TBaseModel(TBaseModel::PLAT, parent)
 {
     setName(tr("Platform"));
 }

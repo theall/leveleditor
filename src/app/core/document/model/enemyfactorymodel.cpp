@@ -1,7 +1,7 @@
 #include "enemyfactorymodel.h"
 
 TEnemyFactoryModel::TEnemyFactoryModel(QObject *parent) :
-    TBaseModel(parent)
+    TBaseModel(TBaseModel::INVALID, parent)
 {
     setName(tr("Factory"));
 }

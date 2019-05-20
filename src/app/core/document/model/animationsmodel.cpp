@@ -1,7 +1,7 @@
 #include "animationsmodel.h"
 
 TAnimationsModel::TAnimationsModel(QObject *parent) :
-    TBaseModel(parent)
+    TBaseModel(TBaseModel::ANIMATION, parent)
 {
     setName(tr("Animation"));
 }

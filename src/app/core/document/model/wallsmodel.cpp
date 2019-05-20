@@ -1,7 +1,7 @@
 #include "wallsmodel.h"
 
 TWallsModel::TWallsModel(QObject *parent) :
-    TBaseModel(parent)
+    TBaseModel(TBaseModel::WALL, parent)
 {
     setName(tr("Wall"));
 }

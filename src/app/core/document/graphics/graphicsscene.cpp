@@ -9,6 +9,7 @@
 #include "../document.h"
 #include "../undocommand/objectmovecommand.h"
 #include "../undocommand/objectaddcommand.h"
+#include "../undocommand/removeselectioncommand.h"
 
 #define TOP_Z_VALUE 10000
 TGraphicsScene::TGraphicsScene(QObject *parent) :
@@ -24,6 +25,7 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
   , mHoveredItem(new THoveredItem)
   , mTileStampItem(new TTileStampItem)
   , mSelectedItems(new TSelectedItems)
+  , mObjectAreaItem(new TObjectAreaItem)
   , mSelectionRectangle(new TSelectionRectangle)
   , mLastSelectedObjectItem(nullptr)
   , mDocument(nullptr)
@@ -159,10 +161,10 @@ void TGraphicsScene::removeSelectedItems()
 
     TTileLayerModel *tileLayerModel = dynamic_cast<TTileLayerModel*>(mSceneModel->getCurrentModel());
     if(tileLayerModel) {
-        TObjectAddCommand *command = new TObjectAddCommand(
-            TObjectAddCommand::REMOVE,
+        TRemoveSelectionCommand *command = new TRemoveSelectionCommand(
             tileLayerModel,
-            objectList
+            mSceneItem->getCurrentLayerItem(),
+            mSelectedItems
         );
         mDocument->addUndoCommand(command);
     }
@@ -227,6 +229,22 @@ QList<QGraphicsItem *> TGraphicsScene::itemsOfCurrentLayerItem(
     return itemList;
 }
 
+void TGraphicsScene::updateUiItemsVisibility()
+{
+    bool isDefaultMode = mEditMode==DEFAULT;
+    bool isInsertMode = mEditMode==INSERT;
+    TBaseModel::Type modelType = mSceneModel->getCurretnModelType();
+    bool isInsertTileMode = isInsertMode && modelType==TBaseModel::TILE;
+    bool tileStampNeedShow = mUnderMouse && isInsertTileMode;
+    if(tileStampNeedShow)
+        mTileStampItem->setCenterPos(mMouseMovingPos);
+    mTileStampItem->setVisible(tileStampNeedShow);
+
+    mHoveredItem->setVisible(mUnderMouse && isDefaultMode);
+    mSelectedItems->setVisible(isDefaultMode);
+    mSelectionRectangle->setVisible(isDefaultMode);
+}
+
 void TGraphicsScene::pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset, int commandId)
 {
     TObjectUndoCommand *command = new TObjectUndoCommand(
@@ -266,19 +284,11 @@ bool TGraphicsScene::event(QEvent *event)
     switch (event->type()) {
     case QEvent::Enter:
         mUnderMouse = true;
-        if(mEditMode == INSERT) {
-            mTileStampItem->setVisible(true);
-        } else if(mEditMode == DEFAULT) {
-            mHoveredItem->setVisible(true);
-        }
+        updateUiItemsVisibility();
         break;
     case QEvent::Leave:
         mUnderMouse = false;
-        if(mEditMode == INSERT) {
-            mTileStampItem->setVisible(false);
-        } else if(mEditMode == DEFAULT) {
-            mHoveredItem->setVisible(false);
-        }
+        updateUiItemsVisibility();
         break;
     default:
         break;
@@ -300,9 +310,11 @@ void TGraphicsScene::drawForeground(QPainter *painter, const QRectF &rect)
 void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsScene::mousePressEvent(event);
-
     Qt::MouseButton button = event->button();
     mLeftButtonDown = (button==Qt::LeftButton);
+    if(mLeftButtonDown)
+        mLeftButtonDownPos = event->scenePos();
+
     if(mEditMode == DEFAULT) {
         TObjectItem *autonomyObjectitem = nullptr;
         TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
@@ -328,7 +340,6 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             else
                 stop();
         } else if(button == Qt::LeftButton) {
-            mLeftButtonDownPos = event->scenePos();
             mCommandId = qAbs(((int)mLeftButtonDownPos.x())<<16) + qAbs(mLeftButtonDownPos.y());
             Qt::KeyboardModifiers modifers = event->modifiers();
             if(modifers & Qt::ShiftModifier) {
@@ -350,7 +361,7 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }
     } else if(mEditMode == INSERT) {
         if(mLeftButtonDown) {
-            TTileLayerModel *tileLayerModel = dynamic_cast<TTileLayerModel*>(mSceneModel->getCurrentModel());
+            TTileLayerModel *tileLayerModel = mSceneModel->getCurrentAsTileLayerModel();
             if(tileLayerModel) {
                 TTile *tile = tileLayerModel->layer()->createTile(mTileId, mTileStampItem->pos());
                 TObjectList objectList;
@@ -493,6 +504,8 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                     mSelectedItems->setObjectItemList(objectItemList);
                 }
                 mSelectionRectangle->setVisible(false);
+                if(!mSelectedItems->isVisible())
+                    mSelectedItems->setVisible(true);
             }
 
             update();
@@ -628,16 +641,8 @@ void TGraphicsScene::setEditMode(int editMode)
         return;
 
     mEditMode = editMode;
-
     mLeftButtonDown = false;
-
-    if(mUnderMouse) {
-        mTileStampItem->setCenterPos(mMouseMovingPos);
-        mTileStampItem->setVisible(mEditMode==INSERT);
-        mHoveredItem->setVisible(mEditMode==DEFAULT);
-    }
-    mSelectedItems->setVisible(mEditMode==DEFAULT);
-    mSelectionRectangle->setVisible(mEditMode==DEFAULT);
+    updateUiItemsVisibility();
 }
 
 void TGraphicsScene::showSelectedItemsBorder(bool visible)

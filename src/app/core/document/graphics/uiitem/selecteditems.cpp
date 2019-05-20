@@ -105,6 +105,11 @@ TObjectList TSelectedItems::getSelectedObjectList() const
     return mObjectMap.keys();
 }
 
+void TSelectedItems::clear()
+{
+    setObjectItemList(TObjectItemList());
+}
+
 bool TSelectedItems::isEmpty() const
 {
     return mObjectItemMap.isEmpty();

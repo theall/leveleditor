@@ -54,6 +54,16 @@ bool TLayerItem::hasItem(QGraphicsItem *objectItem) const
     return objectItem && objectItem->parentItem()==this;
 }
 
+TObjectItemList TLayerItem::getObjectItemList() const
+{
+    TObjectItemList objectItemList;
+    for(QGraphicsItem *graphicsItem : childItems()) {
+        if(TObjectItem *objectItem = dynamic_cast<TObjectItem*>(graphicsItem))
+            objectItemList.append(objectItem);
+    }
+    return objectItemList;
+}
+
 void TLayerItem::slotLayerVisibilityChanged(bool visible)
 {
     setVisible(visible);

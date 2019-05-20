@@ -1,7 +1,7 @@
 #include "eventsmodel.h"
 
 TEventsModel::TEventsModel(QObject *parent) :
-    TBaseModel(parent)
+    TBaseModel(TBaseModel::EVENT, parent)
 {
     setName(tr("Event"));
 }

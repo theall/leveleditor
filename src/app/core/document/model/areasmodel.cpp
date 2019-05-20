@@ -1,7 +1,7 @@
 #include "areasmodel.h"
 
 TAreasModel::TAreasModel(QObject *parent) :
-    TBaseModel(parent)
+    TBaseModel(TBaseModel::AREA, parent)
 {
     setName(tr("Area"));
 }

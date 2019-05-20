@@ -20,6 +20,7 @@ public:
     TObjectItemList getSelectedObjectItemList() const;
     TObjectList getSelectedObjectList() const;
 
+    void clear();
     bool isEmpty() const;
 
     /**

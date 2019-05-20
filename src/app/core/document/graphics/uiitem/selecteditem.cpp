@@ -14,9 +14,7 @@ TSelectedItem::TSelectedItem(QGraphicsItem *parent) :
 
 TSelectedItem::~TSelectedItem()
 {
-    if(mObjectItem) {
-        mObjectItem->disconnect(this);
-    }
+
 }
 
 void TSelectedItem::setObjectItem(TObjectItem *objectItem)

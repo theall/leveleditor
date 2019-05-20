@@ -1,7 +1,7 @@
 #include "tilelayermodel.h"
 
 TTileLayerModel::TTileLayerModel(QObject *parent) :
-    TBaseModel(parent)
+    TBaseModel(TBaseModel::TILE, parent)
   , mLayer(new TLayer(this))
 {
 

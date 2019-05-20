@@ -1,7 +1,7 @@
 #include "respawnsmodel.h"
 
 TRespawnsModel::TRespawnsModel(QObject *parent) :
-    TBaseModel(parent)
+    TBaseModel(TBaseModel::RESPAWN, parent)
 {
     setName(tr("Respawn"));
 }

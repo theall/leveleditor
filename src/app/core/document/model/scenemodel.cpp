@@ -19,7 +19,7 @@ static const QString P_MUSIC2 = T("Music 2");
 #define COLUMN_INDEX_LOCK 2
 
 TSceneModel::TSceneModel(QObject *parent) :
-    TBaseModel(parent)
+    TBaseModel(TBaseModel::INVALID, parent)
   , mPropertyObject(new TPropertyObject(this))
   , mPropertySheet(mPropertyObject->propertySheet())
   , mTileLayerModel1(new TTileLayerModel(this))
@@ -115,10 +115,31 @@ void TSceneModel::setCurrentIndex(int index)
 
 TBaseModel *TSceneModel::getCurrentModel() const
 {
-    TBaseModel *m = nullptr;
+    TBaseModel *baseModel = nullptr;
     if(mCurrentIndex>=0 && mCurrentIndex<mBaseModelList.size())
-        m = mBaseModelList.at(mCurrentIndex);
-    return m;
+        baseModel = mBaseModelList.at(mCurrentIndex);
+    return baseModel;
+}
+
+TTileLayerModel *TSceneModel::getCurrentAsTileLayerModel() const
+{
+    TTileLayerModel *tileLayerModel = nullptr;
+    TBaseModel *baseModel = mBaseModelList.at(mCurrentIndex);
+    if(baseModel && baseModel->isTile())
+        tileLayerModel = dynamic_cast<TTileLayerModel*>(baseModel);
+    return tileLayerModel;
+}
+
+TBaseModel::Type TSceneModel::getCurretnModelType() const
+{
+    TBaseModel *baseModel = mBaseModelList.at(mCurrentIndex);
+    return baseModel?baseModel->type():TBaseModel::INVALID;
+}
+
+bool TSceneModel::isCurrentTileLayerModel() const
+{
+    TBaseModel *m = getCurrentModel();
+    return m && m->isTile();
 }
 
 TTileLayerModel *TSceneModel::getTileLayerModel6() const

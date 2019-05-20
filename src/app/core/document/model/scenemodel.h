@@ -48,6 +48,10 @@ public:
     void setCurrentIndex(int index);
 
     TBaseModel *getCurrentModel() const;
+    TTileLayerModel *getCurrentAsTileLayerModel() const;
+    TBaseModel::Type getCurretnModelType() const;
+
+    bool isCurrentTileLayerModel() const;
 
 signals:
     void currentIndexChanged(int index);

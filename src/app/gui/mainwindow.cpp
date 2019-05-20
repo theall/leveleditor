@@ -43,6 +43,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
   , mActionGroup(new QActionGroup(this))
 {
     ui->setupUi(this);
+    mLoadingDialog->setWindowIcon(windowIcon());
 
     // Initialize menu
     ui->actionNew->setShortcuts(QKeySequence::New);

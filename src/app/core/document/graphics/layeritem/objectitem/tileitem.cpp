@@ -24,7 +24,6 @@ TTileItem::~TTileItem()
         delete mDoorItem;
     if(mTileDoorTrackItem)
         delete mTileDoorTrackItem;
-
 }
 
 TTile *TTileItem::tile() const

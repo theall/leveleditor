@@ -1,12 +1,14 @@
 #include "basemodel.h"
 
-TBaseModel::TBaseModel(QObject *parent) :
+TBaseModel::TBaseModel(TBaseModel::Type type, QObject *parent) :
     QAbstractTableModel(parent)
   , mVisible(true)
   , mLocked(false)
+  , mType(type)
 {
     mIcon.addFile(":/scenemodel/images/layer-image.png");
 }
+
 
 QString TBaseModel::name() const
 {
@@ -69,6 +71,11 @@ void TBaseModel::insertObjects(const TObjectList &objectList, const QList<int> &
 QList<int> TBaseModel::removeObjects(const TObjectList &objectList)
 {
 
+}
+
+bool TBaseModel::isTile() const
+{
+    return mType == TILE;
 }
 
 int TBaseModel::columnCount(const QModelIndex &) const

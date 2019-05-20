@@ -18,10 +18,16 @@ public:
         AREA,
         DAREA,
         PLAT,
-        WALL
+        WALL,
+        BOX,
+        EVENT,
+        TRIGGER,
+        RESPAWN,
+        ANIMATION,
+        SCENE,
+        INVALID = -1,
     };
-
-    explicit TBaseModel(QObject *parent = Q_NULLPTR);
+    explicit TBaseModel(Type type, QObject *parent = Q_NULLPTR);
 
     QString name() const;
     void setName(const QString &name);
@@ -39,6 +45,8 @@ public:
 
     virtual void insertObjects(const TObjectList &objectList, const QList<int> &indexList);
     virtual QList<int> removeObjects(const TObjectList &objectList);
+
+    bool isTile() const;
 
 signals:
     void visibilityChanged(bool visible);

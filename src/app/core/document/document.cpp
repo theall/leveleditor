@@ -202,32 +202,9 @@ void TDocument::slotDirectoryChanged(const QString &dir)
     Q_UNUSED(dir);
 }
 
-void TDocument::slotUndoStackIndexChanged(int index)
+void TDocument::slotUndoStackIndexChanged(int)
 {
-    index--;
-    int diff = index - mLastUndoStackIndex;
-    mLastUndoStackIndex = index;
-    if(qAbs(diff) == 1) {
-        QUndoCommand *undoCommand = nullptr;
-        if(diff > 0) {
-            undoCommand = (QUndoCommand*)mUndoStack->command(index);
-            mLastUndoCommand = undoCommand;
-        } else {
-            undoCommand = mLastUndoCommand;
-        }
 
-        if(!undoCommand)
-            return;
-
-        const TObjectAddCommand *objectAddCommand = dynamic_cast<TObjectAddCommand*>((QUndoCommand*)undoCommand);
-        if(!objectAddCommand) {
-            return;
-        }
-        TObjectAddCommand::Command command = objectAddCommand->command();
-        if(command == TObjectAddCommand::REMOVE) {
-            mGraphicsScene->showSelectedItemsBorder(diff<0);
-        }
-    }
 }
 
 void TDocument::setTileStamp(TTileId *tileStamp)
