@@ -130,7 +130,7 @@ TModuleList TAssetsManager::getModuleList() const
 }
 
 void TAssetsManager::loadAssets()
-{    
+{
     // Enumate face list
     FREE_CONTAINER(mFaceList);
     QList<int> faceIdList;

@@ -5,7 +5,7 @@
 
 TObjectAreaItem::TObjectAreaItem(QGraphicsItem *parent) :
     QGraphicsItem(parent)
-  , mColor(Qt::white)
+  , mColor(Qt::green)
 {
 
 }
@@ -28,7 +28,7 @@ void TObjectAreaItem::setColor(const QColor &color)
 
 QRectF TObjectAreaItem::boundingRect() const
 {
-    return mRectangle.adjusted(-1, -1, 2, 2);
+    return mRectangle;
 }
 
 void TObjectAreaItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -37,9 +37,9 @@ void TObjectAreaItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
         return;
 
     // Draw a rectangle
-    QColor green(mColor);
-    green.setAlpha(128);
-    QPen pen(green, 2, Qt::SolidLine);
+    QColor color(mColor);
+    color.setAlpha(128);
+    QPen pen(color, 2, Qt::SolidLine);
     pen.setCosmetic(true);
     painter->setPen(pen);
     painter->drawRect(mRectangle);

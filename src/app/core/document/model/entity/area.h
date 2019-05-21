@@ -11,7 +11,8 @@ class TArea : public TObject, TIO
     Q_OBJECT
 
 public:
-    explicit TArea(QObject *parent = nullptr);
+    explicit TArea(QObject *parent = Q_NULLPTR);
+    TArea(const QRect &rect, QObject *parent = Q_NULLPTR);
 
 private:
     void initPropertySheet();

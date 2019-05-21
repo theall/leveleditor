@@ -18,9 +18,9 @@
 TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
     QGraphicsObject(parent)
   , mSceneModel(sceneModel)
-  , mDarkRectangle(new QGraphicsRectItem(this))
   , mBorderRectangle(new QGraphicsRectItem(this))
   , mCurrentLayerItem(nullptr)
+  , mDarkMaskItem(new TDarkMaskItem(this))
 {
     Q_ASSERT(mSceneModel);
     setFlag(QGraphicsItem::ItemHasNoContents);
@@ -43,16 +43,18 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
         } else if(TWallsModel *wallModel = dynamic_cast<TWallsModel*>(baseModel)) {
             layerItem = new TWallLayerItem(wallModel, this);
         }
-        if(layerItem) {
-            mLayerItemList.append(layerItem);
-        } else {
+        if(!layerItem) {
             qDebug() << "Unprocessed model:" << baseModel->name();
         }
         mModelLayerMap[baseModel] = layerItem;
+        mLayerItemList.append(layerItem);
     }
 
     int index = 0;
     for(TLayerItem *layerItem : mLayerItemList) {
+        if(!layerItem)
+            continue;
+
         layerItem->setZValue(index++);
     }
 
@@ -82,9 +84,27 @@ void TSceneItem::slotOnSceneModelCurrentIndexChanged(int index)
     TBaseModel *baseModel = mSceneModel->getBaseModel(index);
     if(!baseModel) {
         setCurrentLayerItem(nullptr);
+        for(TLayerItem *layerItem : mLayerItemList) {
+            if(layerItem) {
+                layerItem->setOpacity(1.0);
+            }
+        }
     } else {
-        setCurrentLayerItem(mModelLayerMap[baseModel]);
+        TLayerItem *layerItem = mModelLayerMap[baseModel];
+        setCurrentLayerItem(layerItem);
+
+        if(layerItem) {
+            layerItem->setOpacity(1.0);
+            mDarkMaskItem->setZValue(layerItem->zValue() - 0.5);
+        }
+        for(int i=index+1;i<mLayerItemList.size();i++) {
+            TLayerItem *layerItem = mLayerItemList.at(i);
+            if(layerItem) {
+                layerItem->setOpacity(0.4);
+            }
+        }
     }
+    mDarkMaskItem->setVisible(index>0 && baseModel);
 }
 
 TLayerItem *TSceneItem::getCurrentLayerItem() const
@@ -101,6 +121,8 @@ void TSceneItem::calcBoundingRect()
 {
     mBoundingRect.intersected(QRectF(0,0,0,0));
     for(TLayerItem *layerItem : mLayerItemList) {
+        if(!layerItem)
+            continue;
         mBoundingRect = mBoundingRect.united(layerItem->calcBoundingRect());
     }
     mBoundingRect.adjust(-100, -100, 100, 100);

@@ -28,6 +28,7 @@ public:
         INVALID = -1,
     };
     explicit TBaseModel(Type type, QObject *parent = Q_NULLPTR);
+    virtual ~TBaseModel();
 
     QString name() const;
     void setName(const QString &name);
@@ -43,9 +44,6 @@ public:
 
     Type type() const;
 
-    virtual void insertObjects(const TObjectList &objectList, const QList<int> &indexList);
-    virtual QList<int> removeObjects(const TObjectList &objectList);
-
     bool isTile() const;
 
 signals:
@@ -59,6 +57,10 @@ private:
     bool mLocked;
     Type mType;
 
+public:
+    virtual void insertObjects(const TObjectList &objectList, const QList<int> &indexList);
+    virtual QList<int> removeObjects(const TObjectList &objectList);
+
     // QAbstractItemModel interface
 public:
     int columnCount(const QModelIndex &parent) const;
@@ -66,5 +68,4 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
 };
 typedef QList<TBaseModel*> TBaseModelList;
-
 #endif // TBASEMODEL_H

@@ -3,12 +3,12 @@
 
 TTileLayerItem::TTileLayerItem(TTileLayerModel *model, QGraphicsItem *parent) :
     TLayerItem(model, parent)
-  , mLayer(model->layer())
+  , mTileLayerModel(model)
 {
-    Q_ASSERT(mLayer);
+    Q_ASSERT(mTileLayerModel);
     setLayerType(TLayerItem::TILE);
-    connect(mLayer, SIGNAL(tileInserted(TTileList,QList<int>)), this, SLOT(slotTileInserted(TTileList,QList<int>)));
-    connect(mLayer, SIGNAL(tileRemoved(TTileList,QList<int>)), this, SLOT(slotTileRemoved(TTileList,QList<int>)));
+    connect(mTileLayerModel, SIGNAL(tileInserted(TTileList,QList<int>)), this, SLOT(slotTileInserted(TTileList,QList<int>)));
+    connect(mTileLayerModel, SIGNAL(tileRemoved(TTileList,QList<int>)), this, SLOT(slotTileRemoved(TTileList,QList<int>)));
 
     create();
 }
@@ -48,10 +48,10 @@ void TTileLayerItem::slotTileRemoved(const TTileList &tileList, const QList<int>
 
 void TTileLayerItem::create()
 {
-    Q_ASSERT(mLayer);
+    Q_ASSERT(mTileLayerModel);
 
     mTileItemMap.clear();
-    for(TTile *tile : mLayer->tileList()) {
+    for(TTile *tile : mTileLayerModel->tileList()) {
         addTile(tile);
     }
 

@@ -101,7 +101,7 @@ void TPixmap::load(const QString &file)
 }
 
 void TPixmap::reload()
-{           
+{
     QByteArray imageData = loadImageFile(mFileFullName);
     mIsValid = mPixmap.loadFromData(imageData);
     if(!mIsValid)

@@ -179,7 +179,7 @@ void TLayerView::setModel(QAbstractItemModel *model)
 }
 
 void TLayerView::selectRows(QList<int> rows, int newRow)
-{    
+{
     QAbstractItemModel *m = model();
     if(!m)
         return;

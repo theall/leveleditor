@@ -6,6 +6,7 @@
 #include "layeritem/layeritem.h"
 #include "uiitem/hovereditem.h"
 #include "../model/scenemodel.h"
+#include "uiitem/darkmaskitem.h"
 
 class TSceneItem : QGraphicsObject
 {
@@ -28,11 +29,11 @@ private:
     QRectF mBoundingRect;
     bool mIsHovered = false;
     TSceneModel *mSceneModel;
-    QGraphicsRectItem *mDarkRectangle;
     QGraphicsRectItem *mBorderRectangle;
     TLayerItemList mLayerItemList;
     QMap<TBaseModel*, TLayerItem*> mModelLayerMap;
     TLayerItem *mCurrentLayerItem;
+    TDarkMaskItem *mDarkMaskItem;
 
     void calcBoundingRect();
 

@@ -22,11 +22,12 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
   , mCursor(Qt::ArrowCursor)
   , mSceneModel(nullptr)
   , mSceneItem(nullptr)
-  , mHoveredItem(new THoveredItem)
-  , mTileStampItem(new TTileStampItem)
-  , mSelectedItems(new TSelectedItems)
-  , mObjectAreaItem(new TObjectAreaItem)
-  , mSelectionRectangle(new TSelectionRectangle)
+  , mUiItemsGroup(new QGraphicsRectItem)
+  , mHoveredItem(new THoveredItem(mUiItemsGroup))
+  , mTileStampItem(new TTileStampItem(mUiItemsGroup))
+  , mSelectedItems(new TSelectedItems(mUiItemsGroup))
+  , mObjectAreaItem(new TObjectAreaItem(mUiItemsGroup))
+  , mSelectionRectangle(new TSelectionRectangle(mUiItemsGroup))
   , mLastSelectedObjectItem(nullptr)
   , mDocument(nullptr)
   , mTileId(nullptr)
@@ -34,26 +35,15 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
 {
     setSize(640, 480);
 
-    mHoveredItem->setZValue(TOP_Z_VALUE-2);
-    addItem(mHoveredItem);
-
-    mSelectedItems->setZValue(TOP_Z_VALUE-1);
-    addItem(mSelectedItems);
-
-    mSelectionRectangle->setZValue(TOP_Z_VALUE);
-    addItem(mSelectionRectangle);
-
-    mTileStampItem->setZValue(TOP_Z_VALUE+1);
-    addItem(mTileStampItem);   
+    mUiItemsGroup->setZValue(TOP_Z_VALUE);
+    addItem(mUiItemsGroup);
 
     FIND_DOCUMENT;
 }
 
 TGraphicsScene::~TGraphicsScene()
 {
-    delete mHoveredItem;
-    delete mSelectedItems;
-    delete mSelectionRectangle;
+    delete mUiItemsGroup;
 }
 
 void TGraphicsScene::setSize(qreal w, qreal h)
@@ -142,6 +132,10 @@ void TGraphicsScene::setSceneModel(TSceneModel *sceneModel)
     if(mSceneModel) {
         mSceneItem = new TSceneItem(sceneModel);
         addItem((QGraphicsItem*)mSceneItem);
+        connect(mSceneModel,
+                SIGNAL(currentIndexChanged(int)),
+                this,
+                SLOT(slotOnSceneModelCurrentIndexChanged(int)));
         connect(mSceneModel->propertySheet(),
                 SIGNAL(propertyItemValueChanged(TPropertyItem*,QVariant)),
                 this,
@@ -159,10 +153,10 @@ void TGraphicsScene::removeSelectedItems()
     if(objectList.isEmpty())
         return;
 
-    TTileLayerModel *tileLayerModel = dynamic_cast<TTileLayerModel*>(mSceneModel->getCurrentModel());
-    if(tileLayerModel) {
+    TBaseModel *currentModel = mSceneModel->getCurrentModel();
+    if(currentModel) {
         TRemoveSelectionCommand *command = new TRemoveSelectionCommand(
-            tileLayerModel,
+            currentModel,
             mSceneItem->getCurrentLayerItem(),
             mSelectedItems
         );
@@ -229,7 +223,7 @@ QList<QGraphicsItem *> TGraphicsScene::itemsOfCurrentLayerItem(
     return itemList;
 }
 
-void TGraphicsScene::updateUiItemsVisibility()
+void TGraphicsScene::updateUiItems()
 {
     bool isDefaultMode = mEditMode==DEFAULT;
     bool isInsertMode = mEditMode==INSERT;
@@ -242,7 +236,8 @@ void TGraphicsScene::updateUiItemsVisibility()
 
     mHoveredItem->setVisible(mUnderMouse && isDefaultMode);
     mSelectedItems->setVisible(isDefaultMode);
-    mSelectionRectangle->setVisible(isDefaultMode);
+    mSelectionRectangle->setVisible(false);
+    mObjectAreaItem->setVisible(false);
 }
 
 void TGraphicsScene::pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset, int commandId)
@@ -284,11 +279,11 @@ bool TGraphicsScene::event(QEvent *event)
     switch (event->type()) {
     case QEvent::Enter:
         mUnderMouse = true;
-        updateUiItemsVisibility();
+        updateUiItems();
         break;
     case QEvent::Leave:
         mUnderMouse = false;
-        updateUiItemsVisibility();
+        updateUiItems();
         break;
     default:
         break;
@@ -361,9 +356,10 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }
     } else if(mEditMode == INSERT) {
         if(mLeftButtonDown) {
-            TTileLayerModel *tileLayerModel = mSceneModel->getCurrentAsTileLayerModel();
-            if(tileLayerModel) {
-                TTile *tile = tileLayerModel->layer()->createTile(mTileId, mTileStampItem->pos());
+            TBaseModel::Type currentModelType = mSceneModel->getCurretnModelType();
+            if(currentModelType == TBaseModel::TILE) {
+                TTileLayerModel *tileLayerModel = mSceneModel->getCurrentAsTileLayerModel();
+                TTile *tile = tileLayerModel->createTile(mTileId, mTileStampItem->pos());
                 TObjectList objectList;
                 objectList.append(tile);
                 TObjectAddCommand *command = new TObjectAddCommand(
@@ -372,6 +368,9 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                     objectList
                 );
                 mDocument->addUndoCommand(command);
+            } else {
+                mObjectAreaItem->setRectangle(QRectF(mLeftButtonDownPos, QSizeF(1,1)));
+                mObjectAreaItem->setVisible(true);
             }
         }
     }
@@ -437,7 +436,12 @@ void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         updateCursor();
         update();
     } else if(mEditMode == INSERT) {
-        mTileStampItem->setCenterPos(mMouseMovingPos);
+        TBaseModel::Type currentModelType = mSceneModel->getCurretnModelType();
+        if(currentModelType == TBaseModel::TILE) {
+            mTileStampItem->setCenterPos(mMouseMovingPos);
+        } else {
+            mObjectAreaItem->setRectangle(QRectF(mLeftButtonDownPos, mMouseMovingPos));
+        }
     }
 }
 
@@ -511,7 +515,24 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             update();
         }
     } else if(mEditMode == INSERT) {
-
+        TBaseModel *baseModel = mSceneModel->getCurrentModel();
+        TBaseModel::Type modelType = baseModel->type();
+        TObject *newObject = nullptr;
+        QRectF areaRect = mObjectAreaItem->boundingRect();
+        if(modelType == TBaseModel::AREA) {
+            newObject = ((TAreasModel*)baseModel)->createArea(areaRect);
+        }
+        if(newObject) {
+            TObjectList objectList;
+            objectList.append(newObject);
+            TObjectAddCommand *command = new TObjectAddCommand(
+                TObjectAddCommand::ADD,
+                baseModel,
+                objectList
+            );
+            mDocument->addUndoCommand(command);
+        }
+        mObjectAreaItem->setVisible(false);
     }
 }
 
@@ -642,12 +663,19 @@ void TGraphicsScene::setEditMode(int editMode)
 
     mEditMode = editMode;
     mLeftButtonDown = false;
-    updateUiItemsVisibility();
+    updateUiItems();
 }
 
 void TGraphicsScene::showSelectedItemsBorder(bool visible)
 {
     mSelectedItems->setVisible(visible);
+}
+
+void TGraphicsScene::slotOnSceneModelCurrentIndexChanged(int)
+{
+    if(mSceneModel->getCurrentModel()) {
+        mSelectedItems->clear();
+    }
 }
 
 TObjectItem *TGraphicsScene::getLastSelectedObjectItem() const

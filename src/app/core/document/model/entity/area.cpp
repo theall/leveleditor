@@ -14,6 +14,13 @@ TArea::TArea(QObject *parent) :
     initPropertySheet();
 }
 
+TArea::TArea(const QRect &rect, QObject *parent) :
+    TObject(TObject::AREA, parent)
+{
+    initPropertySheet();
+    mPropertySheet->setValue(PID_OBJECT_RECT, QRectF(rect));
+}
+
 void TArea::saveToStream(QDataStream &stream) const
 {
 

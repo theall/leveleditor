@@ -56,7 +56,7 @@ private:
     };
     QMap<const QtProperty *, Data> mValues;
     QMap<const QtProperty *, QStringList> mSuggestions;
-    
+
     const QString mSuggestionsAttribute;
     QIcon mImageMissingIcon;
 };

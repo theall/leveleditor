@@ -9,6 +9,11 @@ TBaseModel::TBaseModel(TBaseModel::Type type, QObject *parent) :
     mIcon.addFile(":/scenemodel/images/layer-image.png");
 }
 
+TBaseModel::~TBaseModel()
+{
+
+}
+
 
 QString TBaseModel::name() const
 {
@@ -63,19 +68,21 @@ TBaseModel::Type TBaseModel::type() const
     return mType;
 }
 
+bool TBaseModel::isTile() const
+{
+    return mType == TILE;
+}
+
 void TBaseModel::insertObjects(const TObjectList &objectList, const QList<int> &indexList)
 {
-
+    Q_UNUSED(objectList);
+    Q_UNUSED(indexList);
 }
 
 QList<int> TBaseModel::removeObjects(const TObjectList &objectList)
 {
-
-}
-
-bool TBaseModel::isTile() const
-{
-    return mType == TILE;
+    Q_UNUSED(objectList);
+    return QList<int>();
 }
 
 int TBaseModel::columnCount(const QModelIndex &) const

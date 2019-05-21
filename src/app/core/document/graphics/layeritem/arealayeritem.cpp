@@ -1,15 +1,15 @@
 #include "arealayeritem.h"
-#include "objectitem/areaitem.h"
 #include "../../model/areasmodel.h"
 
 TAreasLayerItem::TAreasLayerItem(TAreasModel *areasModel, QGraphicsItem *parent) :
     TObjectLayerItem(areasModel, parent)
 {
     Q_ASSERT(areasModel);
+    connect(areasModel, SIGNAL(areaInserted(TAreaList,QList<int>)), this, SLOT(slotAreaInserted(TAreaList,QList<int>)));
+    connect(areasModel, SIGNAL(areaRemoved(TAreaList,QList<int>)), this, SLOT(slotAreaRemoved(TAreaList,QList<int>)));
 
     for(TArea *area : areasModel->areaList()) {
-        TAreaItem *areaItem = new TAreaItem(area, this);
-        mObjectItemList.append(areaItem);
+        addArea(area);
     }
 
     calcBoundingRect();
@@ -18,4 +18,32 @@ TAreasLayerItem::TAreasLayerItem(TAreasModel *areasModel, QGraphicsItem *parent)
 TAreasLayerItem::~TAreasLayerItem()
 {
 
+}
+
+void TAreasLayerItem::slotAreaInserted(const TAreaList &areaList, const QList<int> &)
+{
+    for(TArea *area : areaList)
+        addArea(area);
+    calcBoundingRect();
+}
+
+void TAreasLayerItem::slotAreaRemoved(const TAreaList &areaList, const QList<int> &)
+{
+    for(TArea *area : areaList) {
+        TAreaItem *areaItem = mAreaItemMap[area];
+        if(areaItem) {
+            delete areaItem;
+            mAreaItemList.removeAll(areaItem);
+        }
+        mAreaItemMap.remove(area);
+    }
+    calcBoundingRect();
+}
+
+TAreaItem *TAreasLayerItem::addArea(TArea *area)
+{
+    TAreaItem *areaItem = new TAreaItem(area, this);
+    mAreaItemList.append(areaItem);
+    mAreaItemMap.insert(area, areaItem);
+    return areaItem;
 }

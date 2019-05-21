@@ -34,9 +34,7 @@ THoveredItem::THoveredItem(QGraphicsItem *parent) :
 
 THoveredItem::~THoveredItem()
 {
-    if(mObjectItem) {
-        mObjectItem->disconnect(this);
-    }
+
 }
 
 void THoveredItem::setIsHoverIndicator(bool isHoverIndicator)
@@ -93,6 +91,14 @@ void THoveredItem::slotObjectBoundingRectChanged()
         setBoundingRect(mObjectItem->boundingRect());
 }
 
+void THoveredItem::slotOnObjectDestroyed(QObject *)
+{
+    mObjectItem = nullptr;
+    if(isVisible())
+        setVisible(false);
+    setBoundingRect();
+}
+
 TObjectItem *THoveredItem::objectItem() const
 {
     return mObjectItem;
@@ -115,6 +121,10 @@ void THoveredItem::setObjectItem(TObjectItem *objectItem)
                 SIGNAL(boundingRectChanged()),
                 this,
                 SLOT(slotObjectBoundingRectChanged()));
+        connect(mObjectItem,
+                SIGNAL(destroyed(QObject*)),
+                this,
+                SLOT(slotOnObjectDestroyed(QObject*)));
         if(!isVisible())
             setVisible(true);
     } else {

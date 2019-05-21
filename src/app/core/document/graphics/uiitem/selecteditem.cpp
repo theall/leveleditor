@@ -34,7 +34,10 @@ void TSelectedItem::setObjectItem(TObjectItem *objectItem)
                 SIGNAL(boundingRectChanged()),
                 this,
                 SLOT(slotObjectBoundingRectChanged()));
-
+        connect(mObjectItem,
+                SIGNAL(destroyed(QObject*)),
+                this,
+                SLOT(slotOnObjectDestroyed(QObject*)));
         if(!isVisible())
             setVisible(true);
     } else {
@@ -90,6 +93,14 @@ void TSelectedItem::slotObjectBoundingRectChanged()
 {
     if(mObjectItem)
         setBoundingRect(mObjectItem->boundingRect());
+}
+
+void TSelectedItem::slotOnObjectDestroyed(QObject *)
+{
+    mObjectItem = nullptr;
+    if(isVisible())
+        setVisible(false);
+    setBoundingRect();
 }
 
 void TSelectedItem::setBoundingRect(const QRectF &rect)

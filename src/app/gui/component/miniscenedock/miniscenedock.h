@@ -41,7 +41,7 @@ protected:
     void changeEvent(QEvent *e) override;
 
 private:
-    void retranslateUi();    
+    void retranslateUi();
 
     TMiniSceneFrame *mMiniScene;
 };

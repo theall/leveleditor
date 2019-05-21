@@ -1,10 +1,11 @@
 #include "minisceneframe.h"
 
+#include <QDebug>
 #include <QCursor>
 #include <QPainter>
-#include <QResizeEvent>
 #include <QScrollBar>
 #include <QUndoStack>
+#include <QResizeEvent>
 
 TMiniSceneFrame::TMiniSceneFrame(QWidget *parent) :
     QFrame(parent)
@@ -62,7 +63,7 @@ void TMiniSceneFrame::resizeEvent(QResizeEvent *)
 }
 
 void TMiniSceneFrame::wheelEvent(QWheelEvent *event)
-{    
+{
     if(event->orientation() == Qt::Vertical) {
         int delta = event->delta();
         if(delta != 0)
@@ -74,7 +75,7 @@ void TMiniSceneFrame::wheelEvent(QWheelEvent *event)
 }
 
 void TMiniSceneFrame::mousePressEvent(QMouseEvent *event)
-{       
+{
     if(event->button() == Qt::LeftButton) {
         QPoint cursorPos = event->pos();
         if(mViewPortRect.contains(cursorPos)) {
@@ -113,7 +114,7 @@ void TMiniSceneFrame::mouseReleaseEvent(QMouseEvent *event)
 }
 
 void TMiniSceneFrame::mouseMoveEvent(QMouseEvent *event)
-{    
+{
     if(mIsDragging) {
         emit requestLocatePoint(event->pos() + mDragOffset);
         return;

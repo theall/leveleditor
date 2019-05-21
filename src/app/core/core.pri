@@ -10,7 +10,6 @@ SOURCES += \
     $$PWD/document/document.cpp \
     $$PWD/document/property/propertysheet.cpp \
     $$PWD/document/property/propertyitem.cpp \
-    $$PWD/document/model/entity/layer.cpp \
     $$PWD/document/property/propertyobject.cpp \
     $$PWD/document/model/scenemodel.cpp \
     $$PWD/document/model/areasmodel.cpp \
@@ -81,7 +80,9 @@ SOURCES += \
     $$PWD/document/undocommand/objectmovecommand.cpp \
     $$PWD/document/graphics/uiitem/tilestampitem.cpp \
     $$PWD/document/undocommand/removeselectioncommand.cpp \
-    $$PWD/document/graphics/uiitem/objectareaitem.cpp
+    $$PWD/document/graphics/uiitem/objectareaitem.cpp \
+    $$PWD/document/graphics/uiitem/darkmaskitem.cpp \
+    $$PWD/document/graphics/uiitem/uiitemsgroup.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -94,7 +95,6 @@ HEADERS  += \
     $$PWD/document/property/property.h \
     $$PWD/document/property/propertysheet.h \
     $$PWD/document/property/propertyitem.h \
-    $$PWD/document/model/entity/layer.h \
     $$PWD/document/property/propertyobject.h \
     $$PWD/document/model/scenemodel.h \
     $$PWD/document/base/io.h \
@@ -169,7 +169,10 @@ HEADERS  += \
     $$PWD/document/undocommand/objectaddcommand.h \
     $$PWD/document/graphics/uiitem/tilestampitem.h \
     $$PWD/document/undocommand/removeselectioncommand.h \
-    $$PWD/document/graphics/uiitem/objectareaitem.h
+    $$PWD/document/graphics/uiitem/objectareaitem.h \
+    $$PWD/document/graphics/uiitem/darkmaskitem.h \
+    $$PWD/document/model/objectgeneric.hpp \
+    $$PWD/document/graphics/uiitem/uiitemsgroup.h
 
 RESOURCES += \
     $$PWD/resource/core.qrc

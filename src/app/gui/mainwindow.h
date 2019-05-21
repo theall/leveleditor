@@ -33,7 +33,7 @@ class TMainWindow : public QMainWindow
 public:
     TMainWindow(QWidget *parent = nullptr);
     ~TMainWindow();
-    
+
     void enableUndoAction(bool enabled = true);
     void enableRedoAction(bool enabled = true);
     void enableSaveAction(bool enabled = true);

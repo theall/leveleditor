@@ -246,7 +246,7 @@ void TMainWindow::on_actionClearRecentFiles_triggered()
     TPreferences::instance()->setRecentFiles(QStringList());
     updateRecentFiles();
 }
-    
+
 void TMainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
     const QMimeData *mimeData = event->mimeData();
@@ -255,7 +255,7 @@ void TMainWindow::dragEnterEvent(QDragEnterEvent *event)
 
     event->accept();
 }
-    
+
 void TMainWindow::dragLeaveEvent(QDragLeaveEvent *event)
 {
     event->accept();
@@ -326,7 +326,7 @@ TUndoDock *TMainWindow::getUndoDock() const
 {
     return mUndoDock;
 }
-        
+
 // Updates the recent files menu.
 void TMainWindow::updateRecentFiles()
 {

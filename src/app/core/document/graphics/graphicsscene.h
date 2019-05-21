@@ -70,6 +70,7 @@ signals:
     void requestRedo();
 
 private slots:
+    void slotOnSceneModelCurrentIndexChanged(int index);
     void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);
 
 private:
@@ -93,6 +94,7 @@ private:
     Qt::CursorShape mCursor;
     TSceneModel *mSceneModel;
     TSceneItem *mSceneItem;
+    QGraphicsRectItem *mUiItemsGroup;
     THoveredItem *mHoveredItem;
     TTileStampItem *mTileStampItem;
     TSelectedItems *mSelectedItems;
@@ -116,7 +118,7 @@ private:
             const QRectF &rect,
             Qt::ItemSelectionMode mode = Qt::IntersectsItemShape) const;
 
-    void updateUiItemsVisibility();
+    void updateUiItems();
 
 private slots:
     void updateCursor();

@@ -49,6 +49,7 @@ public:
 
 private slots:
     void slotObjectBoundingRectChanged();
+    void slotOnObjectDestroyed(QObject *object);
 
 private:
     TObjectItem *mObjectItem;

@@ -19,9 +19,9 @@ private slots:
     void slotTileRemoved(const TTileList &tileList, const QList<int> &indexList);
 
 private:
-    TLayer *mLayer;
     QRectF mBoundingRect;
     TTileItemList mTileItemList;
+    TTileLayerModel *mTileLayerModel;
     QMap<TTile*, TTileItem*> mTileItemMap;
 
     void create();
