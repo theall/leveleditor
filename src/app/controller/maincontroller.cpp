@@ -67,7 +67,7 @@ bool TMainController::joint(TMainWindow *mainWindow, TCore *core)
     bool ret = TAbstractController::jointAll(mainWindow, core);
     if(ret)
     {
-        connect(mainWindow, SIGNAL(requestOpenProject(QString)), this, SLOT(slotRequestOpenProject(QString)));
+        connect(mainWindow, SIGNAL(requestOpenMap(QString)), this, SLOT(slotRequestOpenMap(QString)));
         connect(mainWindow, SIGNAL(requestSaveCurrentProject()), this, SLOT(slotRequestSaveCurrentProject()));
         connect(mainWindow, SIGNAL(requestSaveAllProjects()), this, SLOT(slotRequestSaveAllProjects()));
         connect(mainWindow, SIGNAL(requestCloseCurrentProject()), this, SLOT(slotRequestCloseCurrentProject()));
@@ -80,20 +80,21 @@ bool TMainController::joint(TMainWindow *mainWindow, TCore *core)
         connect(mainWindow, SIGNAL(onActionInsertPushed()), this, SLOT(slotOnActionInsertPushed()));
 
         TPreferences *prefs = TPreferences::instance();
-        QString gameRoot = prefs->root();
+        QString gameRoot = prefs->gameRoot();
         QStringList arguments = QCoreApplication::arguments();
         if(arguments.size() > 1)
             gameRoot = arguments.at(1);
-        bool success = core->loadResource(gameRoot);
-        while(!success) {
-            gameRoot = TSelectRootDialog::getSelectedRoot(mainWindow);
-            if(gameRoot.isEmpty())
-                return false;
+
+        bool success = false;
+        do {
             success = core->loadResource(gameRoot);
-        }
-        if(success) {
-            prefs->setRoot(gameRoot);
-        }
+            if(!success) {
+                gameRoot = TSelectRootDialog::getSelectedRoot(mainWindow);
+                if(gameRoot.isEmpty())
+                    return false;
+            }
+        } while(!success);
+        prefs->setGameRoot(gameRoot);
         mainWindow->asShow();
         if(prefs->openLastFile())
         {
@@ -144,7 +145,7 @@ void TMainController::setCurrentDocument(TDocument *document)
     mDocument = document;
 }
 
-void TMainController::slotRequestOpenProject(const QString &file)
+void TMainController::slotRequestOpenMap(const QString &file)
 {
     if(!mCore || !mMainWindow || !mTabController)
         return;

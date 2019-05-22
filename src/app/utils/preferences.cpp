@@ -149,7 +149,7 @@ TPreferences::TPreferences(QObject *parent):
         mSettings->setValue(SEC_INSTALL_RUN_COUNT, mRunCount);
     }
 
-    mRoot = stringValue(SEC_INSTALL_GAME_ROOT);
+    mGameRoot = stringValue(SEC_INSTALL_GAME_ROOT);
     mSettings->endGroup();
 }
 
@@ -320,14 +320,14 @@ void TPreferences::setEnableDebugMultiInstances(bool enableDebugMultiInstances)
     SET_VALUE2(enableDebugMultiInstances, mEnableDebugMultiInstances, SEC_OPTIONS, SEC_OPTION_DEBUG, SEC_OPTION_DEBUG_MULTI_INSTANCES);
 }
 
-QString TPreferences::root() const
+QString TPreferences::gameRoot() const
 {
-    return mRoot;
+    return mGameRoot;
 }
 
-void TPreferences::setRoot(const QString &root)
+void TPreferences::setGameRoot(const QString &gameRoot)
 {
-    SET_VALUE(root, mRoot, SEC_INSTALL, SEC_INSTALL_GAME_ROOT);
+    SET_VALUE(gameRoot, mGameRoot, SEC_INSTALL, SEC_INSTALL_GAME_ROOT);
 }
 
 TPreferences::ApplicationStyle TPreferences::applicationStyle() const

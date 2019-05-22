@@ -111,8 +111,8 @@ public:
     bool enableDebugMultiInstances() const;
     void setEnableDebugMultiInstances(bool enableDebugMultiInstances);
 
-    QString root() const;
-    void setRoot(const QString &root);
+    QString gameRoot() const;
+    void setGameRoot(const QString &gameRoot);
 
     ApplicationStyle applicationStyle() const;
     void setApplicationStyle(const ApplicationStyle &applicationStyle);
@@ -156,7 +156,7 @@ private:
     qreal mSceneScale;
     QString mEnginePath;
     bool mEnableDebugMultiInstances;
-    QString mRoot;
+    QString mGameRoot;
     ApplicationStyle mApplicationStyle;
     QColor mBaseColor;
     QColor mSelectionColor;

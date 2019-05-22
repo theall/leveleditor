@@ -31,7 +31,7 @@ public:
     int start();
 
 signals:
-    void requestOpenProject(const QString &file);
+    void requestOpenMap(const QString &file);
 
 private:
 

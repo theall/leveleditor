@@ -46,11 +46,11 @@ TMainWindow::TMainWindow(QWidget *parent) :
     mLoadingDialog->setWindowIcon(windowIcon());
 
     // Initialize menu
-    ui->actionNew->setShortcuts(QKeySequence::New);
-    ui->actionOpen->setShortcuts(QKeySequence::Open);
-    ui->actionSave->setShortcuts(QKeySequence::Save);
+    ui->actionNewMap->setShortcuts(QKeySequence::New);
+    ui->actionOpenGame->setShortcuts(QKeySequence::Open);
+    ui->actionSaveMap->setShortcuts(QKeySequence::Save);
     ui->actionSaveAs->setShortcuts(QKeySequence::SaveAs);
-    ui->actionClose->setShortcuts(QKeySequence::Close);
+    ui->actionCloseMap->setShortcuts(QKeySequence::Close);
     ui->actionQuit->setShortcuts(QKeySequence::Quit);
     ui->actionCut->setShortcuts(QKeySequence::Cut);
     ui->actionCopy->setShortcuts(QKeySequence::Copy);
@@ -58,19 +58,20 @@ TMainWindow::TMainWindow(QWidget *parent) :
     ui->actionDelete->setShortcuts(QKeySequence::Delete);
     ui->actionUndo->setShortcut(QKeySequence::Undo);
     ui->actionRedo->setShortcut(QKeySequence::Redo);
-    ui->actionSave->setEnabled(false);
+    ui->actionSaveMap->setEnabled(false);
     ui->actionSaveAs->setEnabled(false);
-    ui->actionSaveAll->setEnabled(false);
+    ui->actionSaveAllMaps->setEnabled(false);
     ui->actionUndo->setEnabled(false);
     ui->actionRedo->setEnabled(false);
-    ui->actionClose->setEnabled(false);
-    ui->actionCloseAll->setEnabled(false);
+    ui->actionCloseGame->setEnabled(false);
+    ui->actionCloseMap->setEnabled(false);
+    ui->actionCloseAllMaps->setEnabled(false);
     ui->actionClearRecentFiles->setEnabled(false);
 
     // Toolbar action list
-    mActionGroup->addAction(ui->actionSelect);
-    mActionGroup->addAction(ui->actionInsertTile);
-    ui->actionSelect->setChecked(true);
+    mActionGroup->addAction(ui->actionSelectMode);
+    mActionGroup->addAction(ui->actionInsertMode);
+    ui->actionSelectMode->setChecked(true);
 
     // Add recent file actions to the recent files menu
     for(int i=0;i<TPreferences::MAX_RECENT_FILES;i++)
@@ -92,7 +93,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
     keys += QKeySequence(tr("-"));
     ui->actionZoomOut->setShortcuts(keys);
     ui->menuEdit->insertSeparator(ui->actionCut);
-    ui->menuEdit->insertSeparator(ui->actionPreferences);
+    ui->menuEdit->insertSeparator(ui->actionSettings);
     ui->MainToolBar->addSeparator();
     // Add the 'Views and Toolbars' submenu.This needs to happen after all
     // the dock widgets and toolbars have been added to the main window
@@ -150,22 +151,22 @@ void TMainWindow::enableRedoAction(bool enabled)
 
 void TMainWindow::enableSaveAction(bool enabled)
 {
-    ui->actionSave->setEnabled(enabled);
+    ui->actionSaveMap->setEnabled(enabled);
 }
 
 void TMainWindow::enableSaveAllAction(bool enabled)
 {
-    ui->actionSaveAll->setEnabled(enabled);
+    ui->actionSaveAllMaps->setEnabled(enabled);
 }
 
 void TMainWindow::enableCloseAction(bool enabled)
 {
-    ui->actionClose->setEnabled(enabled);
+    ui->actionCloseMap->setEnabled(enabled);
 }
 
 void TMainWindow::enableCloseAllAction(bool enabled)
 {
-    ui->actionCloseAll->setEnabled(enabled);
+    ui->actionCloseAllMaps->setEnabled(enabled);
 }
 
 void TMainWindow::enableRunAction(bool enabled)
@@ -178,7 +179,7 @@ void TMainWindow::checkSelectAction()
     for(QAction *action : mActionGroup->actions()) {
         checkActionWithoutEmitSignal(action, false);
     }
-    checkActionWithoutEmitSignal(ui->actionSelect, true);
+    checkActionWithoutEmitSignal(ui->actionSelectMode, true);
 }
 
 void TMainWindow::checkInsertAction()
@@ -186,7 +187,7 @@ void TMainWindow::checkInsertAction()
     for(QAction *action : mActionGroup->actions()) {
         checkActionWithoutEmitSignal(action, false);
     }
-    checkActionWithoutEmitSignal(ui->actionInsertTile, true);
+    checkActionWithoutEmitSignal(ui->actionInsertMode, true);
 }
 
 void TMainWindow::triggerCurrentSelectedAction()
@@ -220,25 +221,16 @@ void TMainWindow::asShow()
     show();
 }
 
-void TMainWindow::on_actionOpen_triggered()
+void TMainWindow::on_actionOpenGame_triggered()
 {
-    QString filter = tr("All Files (*);;");
-    QString selectedFilter = tr("Maps (*.dat)");
-    filter += selectedFilter;
     TPreferences *pref = TPreferences::instance();
-    QStringList fileNames = QFileDialog::getOpenFileNames(
+    QString existDirectory = QFileDialog::getExistingDirectory(
                 this,
-                tr("Select scenes"),
-                pref->lastOpenPath(),
-                filter,
-                &selectedFilter);
+                tr("Select game root"),
+                pref->gameRoot());
 
-    if(!fileNames.isEmpty())
-        pref->setLastOpenPath(QDir(fileNames.at(0)).absolutePath());
-
-    for(QString file : fileNames) {
-        emit requestOpenProject(file);
-    }
+    if(!existDirectory.isEmpty())
+        pref->setLastOpenPath(existDirectory);
 }
 
 void TMainWindow::on_actionClearRecentFiles_triggered()
@@ -267,7 +259,7 @@ void TMainWindow::dropEvent(QDropEvent *event)
     const QMimeData *mimeData = event->mimeData();
     for(QUrl url : mimeData->urls())
     {
-        emit requestOpenProject(url.toLocalFile());
+        emit requestOpenMap(url.toLocalFile());
     }
 }
 
@@ -276,7 +268,7 @@ void TMainWindow::slotOpenRecentFile()
     QAction *action = dynamic_cast<QAction*>(sender());
     if(action)
     {
-        emit requestOpenProject(action->data().toString());
+        emit requestOpenMap(action->data().toString());
     }
 }
 
@@ -312,9 +304,9 @@ void TMainWindow::slotStyleChanged(const QString &style)
     qApp->setStyle(QStyleFactory::create(style));
 }
 
-void TMainWindow::on_actionNew_triggered()
+void TMainWindow::on_actionNewMap_triggered()
 {
-    emit requestCreateProject();
+    emit requestCreateNewMap();
 }
 
 TMapsDock *TMainWindow::getMapsDock() const
@@ -431,13 +423,13 @@ TTabWidget *TMainWindow::getTabWidget() const
 
 void TMainWindow::slotOnTabCountChanged(int count)
 {
-    ui->actionClose->setEnabled(count>0);
-    ui->actionCloseAll->setEnabled(count>0);
+    ui->actionCloseMap->setEnabled(count>0);
+    ui->actionCloseAllMaps->setEnabled(count>0);
 }
 
 void TMainWindow::slotOnActionSaveTriggered()
 {
-    ui->actionSave->trigger();
+    ui->actionSaveMap->trigger();
 }
 
 void TMainWindow::slotOnTabIndexChanged(int)
@@ -448,7 +440,7 @@ void TMainWindow::slotOnTabIndexChanged(int)
     }
 }
 
-void TMainWindow::on_actionSave_triggered()
+void TMainWindow::on_actionSaveMap_triggered()
 {
     emit requestSaveCurrentProject();
 }
@@ -463,7 +455,7 @@ void TMainWindow::on_actionUndo_triggered()
     emit requestUndo();
 }
 
-void TMainWindow::on_actionSaveAll_triggered()
+void TMainWindow::on_actionSaveAllMaps_triggered()
 {
     emit requestSaveAllProjects();
 }
@@ -500,12 +492,12 @@ void TMainWindow::loadConfig()
     ui->actionAlwaysOnTop->triggered(prefs->alwaysOnTop());
 }
 
-void TMainWindow::on_actionClose_triggered()
+void TMainWindow::on_actionCloseMap_triggered()
 {
     emit requestCloseCurrentProject();
 }
 
-void TMainWindow::on_actionCloseAll_triggered()
+void TMainWindow::on_actionCloseAllMaps_triggered()
 {
     emit requestCloseAllProjects();
 }
@@ -520,7 +512,7 @@ void TMainWindow::on_actionExportAs_triggered()
 
 }
 
-void TMainWindow::on_actionPreferences_triggered()
+void TMainWindow::on_actionSettings_triggered()
 {
     TPreferencesDialog::showPreferences(this);
 }
@@ -530,12 +522,12 @@ void TMainWindow::on_actionDocumentProperties_triggered()
     emit requestDisplayProjectProperties();
 }
 
-void TMainWindow::on_actionSelect_triggered()
+void TMainWindow::on_actionSelectMode_triggered()
 {
     emit onActionSelectPushed();
 }
 
-void TMainWindow::on_actionInsertTile_triggered()
+void TMainWindow::on_actionInsertMode_triggered()
 {
     emit onActionInsertPushed();
 }
@@ -611,4 +603,9 @@ void TMainWindow::on_actionAlwaysOnTop_triggered(bool)
 //    }
 //    TPreferences::instance()->setAlwaysOnTop(checked);
 //    show();
+}
+
+void TMainWindow::on_actionCloseGame_triggered()
+{
+
 }

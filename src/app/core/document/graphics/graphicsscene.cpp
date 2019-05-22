@@ -369,7 +369,7 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 );
                 mDocument->addUndoCommand(command);
             } else {
-                mObjectAreaItem->setRectangle(QRectF(mLeftButtonDownPos, QSizeF(1,1)));
+                mObjectAreaItem->setRectangle(QRectF(mLeftButtonDownPos, QSizeF()));
                 mObjectAreaItem->setVisible(true);
             }
         }

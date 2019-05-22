@@ -28,7 +28,7 @@ signals:
 
 private slots:
     // From TMainWindow
-    void slotRequestOpenProject(const QString &file);
+    void slotRequestOpenMap(const QString &file);
     void slotRequestSaveCurrentProject();
     void slotRequestSaveAllProjects();
     void slotRequestExitApp(bool &approved);

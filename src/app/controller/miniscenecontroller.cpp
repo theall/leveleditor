@@ -107,7 +107,7 @@ void TMiniSceneController::slotRequestLocatePoint(const QPoint &point, int delta
     QPointF centerPos = mapToScene(point);
     QRectF viewPortRect = mGraphicsView->mapToScene(mGraphicsView->viewport()->geometry()).boundingRect();
     viewPortRect.moveTopLeft(centerPos-viewPortRect.center());
-    mGraphicsView->setSceneRect(viewPortRect.united(mGraphicsView->sceneRect()));
+    //mGraphicsView->setSceneRect(viewPortRect.united(mGraphicsView->sceneRect()));
     updateViewPortRect();
     mGraphicsView->centerOn(centerPos);
 }

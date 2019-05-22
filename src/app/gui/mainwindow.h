@@ -63,8 +63,9 @@ public:
     TLayerDock *getLayerDock() const;
 
 signals:
-    void requestCreateProject();
-    void requestOpenProject(const QString &file);
+    void requestOpenGame(const QString &gameRoot);
+    void requestCreateNewMap();
+    void requestOpenMap(const QString &mapName);
     void requestSaveCurrentProject();
     void requestSaveAllProjects();
     void requestUndo();
@@ -94,27 +95,29 @@ private slots:
     void slotHideStatusBarChanged(bool checked);
     void slotStyleChanged(const QString &style);
 
-    void on_actionNew_triggered();
-    void on_actionOpen_triggered();
+    void on_actionNewMap_triggered();
+    void on_actionOpenGame_triggered();
     void on_actionClearRecentFiles_triggered();
     void on_actionAboutQt_triggered();
-    void on_actionSave_triggered();
+    void on_actionSaveMap_triggered();
     void on_actionRedo_triggered();
     void on_actionUndo_triggered();
-    void on_actionSaveAll_triggered();
+    void on_actionSaveAllMaps_triggered();
     void on_actionExit_triggered();
-    void on_actionClose_triggered();
-    void on_actionCloseAll_triggered();
+    void on_actionCloseMap_triggered();
+    void on_actionCloseAllMaps_triggered();
     void on_actionExport_triggered();
     void on_actionExportAs_triggered();
-    void on_actionPreferences_triggered();
+    void on_actionSettings_triggered();
     void on_actionDocumentProperties_triggered();
-    void on_actionSelect_triggered();
-    void on_actionInsertTile_triggered();
+    void on_actionSelectMode_triggered();
+    void on_actionInsertMode_triggered();
     void on_actionAbout_triggered();
     void on_actionRun_triggered();
     void on_actionShowBorder_triggered(bool arg1);
     void on_actionAlwaysOnTop_triggered(bool arg1);
+
+    void on_actionCloseGame_triggered();
 
 private:
     Ui::MainWindow *ui;

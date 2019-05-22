@@ -59,7 +59,7 @@ int TApp::start()
     if(!controller.joint(&gui, &core))
         return 0;
 
-    connect(this, SIGNAL(requestOpenProject(QString)), &gui, SIGNAL(requestOpenProject(QString)));
+    connect(this, SIGNAL(requestOpenMap(QString)), &gui, SIGNAL(requestOpenMap(QString)));
 
     int ret = exec();
     return ret;
@@ -70,7 +70,7 @@ bool TApp::event(QEvent *event)
     if(event->type()==QEvent::FileOpen)
     {
         QFileOpenEvent *fileOpenEvent = static_cast<QFileOpenEvent*>(event);
-        emit requestOpenProject(fileOpenEvent->file());
+        emit requestOpenMap(fileOpenEvent->file());
         return true;
     }
     return QApplication::event(event);

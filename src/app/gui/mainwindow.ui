@@ -70,20 +70,23 @@
     </property>
     <widget class="QMenu" name="menuRecentFiles">
      <property name="title">
-      <string>&amp;Recent Files</string>
+      <string>&amp;Recent Maps</string>
      </property>
      <addaction name="separator"/>
      <addaction name="actionClearRecentFiles"/>
     </widget>
-    <addaction name="actionNew"/>
-    <addaction name="actionOpen"/>
+    <addaction name="actionOpenGame"/>
+    <addaction name="actionNewMap"/>
     <addaction name="menuRecentFiles"/>
     <addaction name="separator"/>
-    <addaction name="actionSave"/>
-    <addaction name="actionSaveAll"/>
+    <addaction name="actionSettings"/>
     <addaction name="separator"/>
-    <addaction name="actionClose"/>
-    <addaction name="actionCloseAll"/>
+    <addaction name="actionSaveMap"/>
+    <addaction name="actionSaveAllMaps"/>
+    <addaction name="separator"/>
+    <addaction name="actionCloseMap"/>
+    <addaction name="actionCloseAllMaps"/>
+    <addaction name="actionCloseGame"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -111,7 +114,6 @@
     <addaction name="actionZoomOut"/>
     <addaction name="actionZoomNormal"/>
     <addaction name="separator"/>
-    <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
@@ -138,10 +140,10 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionNew"/>
-   <addaction name="actionOpen"/>
-   <addaction name="actionSave"/>
-   <addaction name="actionSaveAll"/>
+   <addaction name="actionNewMap"/>
+   <addaction name="actionOpenGame"/>
+   <addaction name="actionSaveMap"/>
+   <addaction name="actionSaveAllMaps"/>
   </widget>
   <widget class="QToolBar" name="EditToolBar">
    <property name="windowTitle">
@@ -181,8 +183,8 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionSelect"/>
-   <addaction name="actionInsertTile"/>
+   <addaction name="actionSelectMode"/>
+   <addaction name="actionInsertMode"/>
   </widget>
   <action name="actionHelp">
    <property name="icon">
@@ -216,37 +218,37 @@
     <string>Ctrl+B</string>
    </property>
   </action>
-  <action name="actionNew">
+  <action name="actionNewMap">
    <property name="icon">
     <iconset resource="resource/editor.qrc">
      <normaloff>:/toolbar/images/new.png</normaloff>:/toolbar/images/new.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;New</string>
+    <string>&amp;New Map</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
    </property>
   </action>
-  <action name="actionOpen">
+  <action name="actionOpenGame">
    <property name="icon">
     <iconset resource="resource/editor.qrc">
      <normaloff>:/toolbar/images/open.png</normaloff>:/toolbar/images/open.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Open</string>
+    <string>&amp;Open Game</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="actionSave">
+  <action name="actionSaveMap">
    <property name="icon">
     <iconset resource="resource/editor.qrc">
      <normaloff>:/toolbar/images/save.png</normaloff>:/toolbar/images/save.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Save</string>
+    <string>&amp;Save Map</string>
    </property>
    <property name="toolTip">
     <string>Save current project.</string>
@@ -304,7 +306,7 @@
     <string>Ctrl+I</string>
    </property>
   </action>
-  <action name="actionSelect">
+  <action name="actionSelectMode">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -319,7 +321,7 @@
     <string>Select</string>
    </property>
    <property name="toolTip">
-    <string>Toggle to select item</string>
+    <string>Toggle to select item mode</string>
    </property>
    <property name="shortcut">
     <string>F1</string>
@@ -583,9 +585,9 @@
     <string>Frames</string>
    </property>
   </action>
-  <action name="actionClose">
+  <action name="actionCloseMap">
    <property name="text">
-    <string>Close</string>
+    <string>Close Map</string>
    </property>
    <property name="toolTip">
     <string>Close current project.</string>
@@ -671,9 +673,9 @@
     <string>Delete</string>
    </property>
   </action>
-  <action name="actionPreferences">
+  <action name="actionSettings">
    <property name="text">
-    <string>Pre&amp;ferences...</string>
+    <string>Settings</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+P</string>
@@ -682,13 +684,13 @@
     <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
-  <action name="actionSaveAll">
+  <action name="actionSaveAllMaps">
    <property name="icon">
     <iconset resource="resource/editor.qrc">
      <normaloff>:/toolbar/images/saveall.png</normaloff>:/toolbar/images/saveall.png</iconset>
    </property>
    <property name="text">
-    <string>Save All</string>
+    <string>Save All Maps</string>
    </property>
    <property name="toolTip">
     <string>Save all project.</string>
@@ -710,9 +712,9 @@
     <string>Ctrl+R</string>
    </property>
   </action>
-  <action name="actionCloseAll">
+  <action name="actionCloseAllMaps">
    <property name="text">
-    <string>C&amp;lose All</string>
+    <string>C&amp;lose All Maps</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+W</string>
@@ -884,7 +886,7 @@
     <string>Run</string>
    </property>
   </action>
-  <action name="actionInsertTile">
+  <action name="actionInsertMode">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -897,6 +899,11 @@
    </property>
    <property name="shortcut">
     <string>F2</string>
+   </property>
+  </action>
+  <action name="actionCloseGame">
+   <property name="text">
+    <string>Close Game</string>
    </property>
   </action>
  </widget>
