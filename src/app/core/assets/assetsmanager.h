@@ -36,6 +36,8 @@ public:
 
     TModuleList getModuleList() const;
 
+    QString getPath() const;
+
 signals:
     // Notify external object
     void loadCompleted();
@@ -50,7 +52,7 @@ private:
     TModuleList mModuleList;
 
     void loadAssets();
-    bool isValidpath() const;
+    bool isValidPath() const;
 
     // QThread interface
 protected:

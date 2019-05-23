@@ -34,19 +34,16 @@ TDocument::TDocument(const QString &file, QObject *parent) :
 
     initPropertySheet();
 
-    if(!file.isEmpty())
+    if(!file.isEmpty()) {
         load(file);
+    } else {
+        mGraphicsScene->setSceneModel(mSceneModel);
+    }
 }
 
 TDocument::~TDocument()
 {
 
-}
-
-TDocument *TDocument::create()
-{
-    TDocument *document = new TDocument;
-    return document;
 }
 
 QUndoStack *TDocument::undoStack() const

@@ -31,9 +31,9 @@ void TSelectedItem::setObjectItem(TObjectItem *objectItem)
     if(mObjectItem) {
         setBoundingRect(mObjectItem->boundingRect());
         connect(mObjectItem,
-                SIGNAL(boundingRectChanged()),
+                SIGNAL(boundingRectChanged(QRectF)),
                 this,
-                SLOT(slotObjectBoundingRectChanged()));
+                SLOT(slotObjectBoundingRectChanged(QRectF)));
         connect(mObjectItem,
                 SIGNAL(destroyed(QObject*)),
                 this,
@@ -89,7 +89,7 @@ void TSelectedItem::paint(QPainter *painter,
     painter->drawLines(lines, 4);
 }
 
-void TSelectedItem::slotObjectBoundingRectChanged()
+void TSelectedItem::slotObjectBoundingRectChanged(const QRectF &)
 {
     if(mObjectItem)
         setBoundingRect(mObjectItem->boundingRect());

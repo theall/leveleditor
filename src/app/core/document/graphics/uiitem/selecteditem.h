@@ -22,7 +22,7 @@ public:
                QWidget *) override;
 
 private slots:
-    void slotObjectBoundingRectChanged();
+    void slotObjectBoundingRectChanged(const QRectF &rect);
     void slotOnObjectDestroyed(QObject *object);
 
 private:

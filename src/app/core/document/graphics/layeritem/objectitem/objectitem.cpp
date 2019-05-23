@@ -52,10 +52,10 @@ void TObjectItem::slotPropertyItemValueChanged(TPropertyItem *item, const QVaria
     // The inheired class may update bounding rect in propertyValueChanged
     propertyValueChanged(pid);
 
-    // Notify to selection item or hovering item
+    // Notify to selection item and hovering item
     if(pid==PID_OBJECT_RECT) {
         mBoundingRect = item->value().toRectF();
-        emit boundingRectChanged();
+        emit boundingRectChanged(mBoundingRect);
     }
 }
 

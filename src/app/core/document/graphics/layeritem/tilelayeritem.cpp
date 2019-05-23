@@ -38,12 +38,21 @@ void TTileLayerItem::slotTileRemoved(const TTileList &tileList, const QList<int>
         TTileItem *tileItem = mTileItemMap[tile];
         if(tileItem) {
             //scene()->removeItem(tileItem);Don't use,will cause exception
+            tileItem->disconnect(this);
             delete tileItem;
             mTileItemList.removeAll(tileItem);
         }
         mTileItemMap.remove(tile);
     }
     calcBoundingRect();
+}
+
+void TTileLayerItem::slotOnTileItemBoundingRectChanged(const QRectF &newRect)
+{
+    if(mBoundingRect.contains(newRect))
+        return;
+
+    setBoundingRect(mBoundingRect.united(newRect));
 }
 
 void TTileLayerItem::create()
@@ -66,6 +75,7 @@ void TTileLayerItem::create()
 TTileItem *TTileLayerItem::addTile(TTile *tile)
 {
     TTileItem *tileItem = new TTileItem(tile, this);
+    connect(tileItem, SIGNAL(boundingRectChanged(QRectF)), this, SLOT(slotOnTileItemBoundingRectChanged(QRectF)));
     mTileItemList.append(tileItem);
     mTileItemMap.insert(tile, tileItem);
     return tileItem;
@@ -86,9 +96,10 @@ void TTileLayerItem::setTileItemTarget(TTileItem *tileItem)
 
 QRectF TTileLayerItem::calcBoundingRect()
 {
-    mBoundingRect = QRectF();
+    QRectF newRect;
     for(TTileItem *tileItem : mTileItemList) {
-        mBoundingRect = mBoundingRect.united(tileItem->boundingRect());
+        newRect = newRect.united(tileItem->boundingRect());
     }
-    return mBoundingRect;
+    setBoundingRect(newRect);
+    return newRect;
 }

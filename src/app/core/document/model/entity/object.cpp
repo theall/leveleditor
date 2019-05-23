@@ -73,7 +73,7 @@ void TObject::move(const QPointF &offset)
 
 void TObject::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_VECTORF, P_RECT, PID_OBJECT_RECT);
+    mPropertySheet->addProperty(PT_RECTF, P_RECT, PID_OBJECT_RECT);
 }
 
 bool TObject::visible() const

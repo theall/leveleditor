@@ -22,12 +22,17 @@ signals:
 
 private:
     qreal mScale;
+    bool mLeftButtonDown;
 
 private:
     // QWidget interface
 protected:
     void resizeEvent(QResizeEvent *event);
     void contextMenuEvent(QContextMenuEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
 };
 
 #endif // GRAPHICSVIEW_H

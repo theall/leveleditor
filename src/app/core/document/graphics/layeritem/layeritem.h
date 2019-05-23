@@ -36,6 +36,11 @@ public:
 
     virtual QRectF calcBoundingRect() = 0;
 
+    void setBoundingRect(const QRectF &rect);
+
+signals:
+    void boundingRectChanged(const QRectF &rect);
+
 private:
     bool mLocked;
     LayerType mLayerType;

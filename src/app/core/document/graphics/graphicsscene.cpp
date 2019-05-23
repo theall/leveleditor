@@ -48,7 +48,7 @@ TGraphicsScene::~TGraphicsScene()
 
 void TGraphicsScene::setSize(qreal w, qreal h)
 {
-    setSceneRect(0.0, 0.0, w, h);
+    setSceneRect(QRectF(0.0, 0.0, w, h));
     update();
 }
 
@@ -124,6 +124,7 @@ void TGraphicsScene::setSceneModel(TSceneModel *sceneModel)
 
     if(mSceneModel) {
         mSceneModel->disconnect(this);
+        mSceneItem->disconnect(this);
         removeItem((QGraphicsItem*)mSceneItem);
     }
 
@@ -131,7 +132,9 @@ void TGraphicsScene::setSceneModel(TSceneModel *sceneModel)
 
     if(mSceneModel) {
         mSceneItem = new TSceneItem(sceneModel);
+        connect(mSceneItem, SIGNAL(boundingRectChanged(QRectF)), this, SLOT(slotOnSceneItemBoundingRectChanged(QRectF)));
         addItem((QGraphicsItem*)mSceneItem);
+
         connect(mSceneModel,
                 SIGNAL(currentIndexChanged(int)),
                 this,
@@ -140,7 +143,6 @@ void TGraphicsScene::setSceneModel(TSceneModel *sceneModel)
                 SIGNAL(propertyItemValueChanged(TPropertyItem*,QVariant)),
                 this,
                 SLOT(slotPropertyItemValueChanged(TPropertyItem*,QVariant)));
-
         setBackgroundColor(mSceneModel->getBackgroundColor());
         QRectF rect = mSceneItem->boundingRect();
         setSceneRect(rect);
@@ -225,6 +227,9 @@ QList<QGraphicsItem *> TGraphicsScene::itemsOfCurrentLayerItem(
 
 void TGraphicsScene::updateUiItems()
 {
+    if(!mSceneModel)
+        return;
+
     bool isDefaultMode = mEditMode==DEFAULT;
     bool isInsertMode = mEditMode==INSERT;
     TBaseModel::Type modelType = mSceneModel->getCurretnModelType();
@@ -656,6 +661,14 @@ void TGraphicsScene::slotPropertyItemValueChanged(TPropertyItem *item, const QVa
     }
 }
 
+void TGraphicsScene::slotOnSceneItemBoundingRectChanged(const QRectF &rect)
+{
+    QRectF currentRect = sceneRect();
+    if(currentRect.contains(rect))
+        return;
+    setSceneRect(currentRect.united(rect));
+}
+
 void TGraphicsScene::setEditMode(int editMode)
 {
     if(mEditMode == editMode)
@@ -669,6 +682,12 @@ void TGraphicsScene::setEditMode(int editMode)
 void TGraphicsScene::showSelectedItemsBorder(bool visible)
 {
     mSelectedItems->setVisible(visible);
+}
+
+void TGraphicsScene::setSceneRect(const QRectF &rect)
+{
+    QRectF flatedRect = rect.adjusted(-100,-100,100,100);
+    QGraphicsScene::setSceneRect(flatedRect);
 }
 
 void TGraphicsScene::slotOnSceneModelCurrentIndexChanged(int)

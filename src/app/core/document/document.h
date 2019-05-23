@@ -27,8 +27,6 @@ public:
     TDocument(const QString &file=QString(), QObject *parent=nullptr);
     ~TDocument();
 
-    static TDocument *create();
-
     QUndoStack *undoStack() const;
     void addUndoCommand(QUndoCommand *command);
 

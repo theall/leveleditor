@@ -48,7 +48,7 @@ public:
                QWidget *widget = nullptr) override;
 
 private slots:
-    void slotObjectBoundingRectChanged();
+    void slotObjectBoundingRectChanged(const QRectF &rect);
     void slotOnObjectDestroyed(QObject *object);
 
 private:

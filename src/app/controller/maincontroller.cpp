@@ -2,6 +2,7 @@
 #include "../utils/preferences.h"
 #include "../gui/dialogs/selectrootdialog.h"
 #include "../gui/dialogs/loadingdialog.h"
+#include "../gui/dialogs/newmapdialog.h"
 #include "../gui/component/tabwidget/tabwidget.h"
 #include "../core/assets/assetsmanager.h"
 #include "../core/document/graphics/layeritem/objectitem/tileitem.h"
@@ -68,13 +69,14 @@ bool TMainController::joint(TMainWindow *mainWindow, TCore *core)
     if(ret)
     {
         connect(mainWindow, SIGNAL(requestOpenMap(QString)), this, SLOT(slotRequestOpenMap(QString)));
-        connect(mainWindow, SIGNAL(requestSaveCurrentProject()), this, SLOT(slotRequestSaveCurrentProject()));
-        connect(mainWindow, SIGNAL(requestSaveAllProjects()), this, SLOT(slotRequestSaveAllProjects()));
-        connect(mainWindow, SIGNAL(requestCloseCurrentProject()), this, SLOT(slotRequestCloseCurrentProject()));
-        connect(mainWindow, SIGNAL(requestCloseAllProjects()), this, SLOT(slotRequestCloseAllProjects()));
-        connect(mainWindow, SIGNAL(requestDisplayProjectProperties()), this, SLOT(slotRequestDisplayProjectProperties()));
+        connect(mainWindow, SIGNAL(requestCreateNewMap()), this, SLOT(slotRequestCreateNewMap()));
+        connect(mainWindow, SIGNAL(requestSaveCurrentMap()), this, SLOT(slotRequestSaveCurrentMap()));
+        connect(mainWindow, SIGNAL(requestSaveAllMaps()), this, SLOT(slotRequestSaveAllMaps()));
+        connect(mainWindow, SIGNAL(requestCloseCurrentMap()), this, SLOT(slotRequestCloseCurrentMap()));
+        connect(mainWindow, SIGNAL(requestCloseAllMaps()), this, SLOT(slotRequestCloseAllMaps()));
+        connect(mainWindow, SIGNAL(requestDisplayMapProperties()), this, SLOT(slotRequestDisplayMapProperties()));
         connect(mainWindow, SIGNAL(requestExitApp(bool&)), this, SLOT(slotRequestExitApp(bool&)));
-        connect(mainWindow, SIGNAL(requestRunCurrentProject()), this, SLOT(slotRequestRunCurrentProject()));
+        connect(mainWindow, SIGNAL(requestRunCurrentMap()), this, SLOT(slotRequestRunCurrentMap()));
         connect(mainWindow, SIGNAL(requestShowBorder(bool)), this, SLOT(slotRequestShowBorder(bool)));
         connect(mainWindow, SIGNAL(onActionSelectPushed()), this, SLOT(slotOnActionSelectPushed()));
         connect(mainWindow, SIGNAL(onActionInsertPushed()), this, SLOT(slotOnActionInsertPushed()));
@@ -171,7 +173,33 @@ void TMainController::slotRequestOpenMap(const QString &file)
     mMainWindow->addRecentFile(document->fileName());
 }
 
-void TMainController::slotRequestSaveCurrentProject()
+void TMainController::slotRequestCreateNewMap()
+{
+    if(!mMainWindow)
+        return;
+
+    // Set module names to new map dialog
+    TNewMapDialog *newMapDialog = mMainWindow->getNewMapDialog();
+    if(!newMapDialog)
+        return;
+
+    QStringList moduleNames;
+    QList<int> advIdList;
+    QList<int> vsIdList;
+    QList<int> ctfIdList;
+    mCore->getModuleNameIds(moduleNames, advIdList, vsIdList, ctfIdList);
+    newMapDialog->setModuleNameIds(moduleNames, advIdList, vsIdList, ctfIdList);
+
+    int result = newMapDialog->exec();
+    if(result == QDialog::Accepted) {
+        QString moduleName = newMapDialog->getModuleName();
+        TMap::Type mapType = TMap::stringToType(newMapDialog->getMapTypeName());
+        int mapId = newMapDialog->getMapId();
+        createNewDocument(moduleName, mapType, mapId);
+    }
+}
+
+void TMainController::slotRequestSaveCurrentMap()
 {
     TDocument *document = (TDocument*)mMainWindow->getTabWidget()->currentDocument();
     if(!document)
@@ -180,7 +208,7 @@ void TMainController::slotRequestSaveCurrentProject()
     document->save();
 }
 
-void TMainController::slotRequestSaveAllProjects()
+void TMainController::slotRequestSaveAllMaps()
 {
     mCore->saveAllDocuments();
 }
@@ -319,15 +347,15 @@ bool TMainController::confirmAllSaved()
             return false;
         else if(code == QMessageBox::SaveAll)
         {
-            slotRequestSaveAllProjects();
+            slotRequestSaveAllMaps();
         }
     }
     return true;
 }
 
-void TMainController::createNewDocument()
+void TMainController::createNewDocument(const QString &moduleName, const TMap::Type &mapType, int mapId)
 {
-    TDocument *document = mCore->newDocument();
+    TDocument *document = mCore->newMap(moduleName, mapType, mapId);
     setCurrentDocument(document);
     mMainWindow->addRecentFile(document->fileName());
 }
@@ -336,20 +364,20 @@ void TMainController::slotRequestExitApp(bool &approved)
 {
     if(TPreferences::instance()->saveBeforeExit())
     {
-        slotRequestSaveAllProjects();
+        slotRequestSaveAllMaps();
         approved = true;
     } else {
         approved = confirmAllSaved();
     }
 }
 
-void TMainController::slotRequestCloseCurrentProject()
+void TMainController::slotRequestCloseCurrentMap()
 {
     TDocument *document = mTabController->currentDocument();
     slotRequestCloseDocument(document);
 }
 
-void TMainController::slotRequestCloseAllProjects()
+void TMainController::slotRequestCloseAllMaps()
 {
     if(!confirmAllSaved())
         return;
@@ -358,12 +386,12 @@ void TMainController::slotRequestCloseAllProjects()
         slotRequestCloseDocument(d);
 }
 
-void TMainController::slotRequestReloadCurrentProject()
+void TMainController::slotRequestReloadCurrentMap()
 {
 
 }
 
-void TMainController::slotRequestDisplayProjectProperties()
+void TMainController::slotRequestDisplayMapProperties()
 {
     if(!mDocument)
         return;
@@ -371,7 +399,7 @@ void TMainController::slotRequestDisplayProjectProperties()
     mMainPropertyController->setPropertySheet(mDocument->propertySheet());
 }
 
-void TMainController::slotRequestRunCurrentProject()
+void TMainController::slotRequestRunCurrentMap()
 {
     if(!mDocument)
         return;

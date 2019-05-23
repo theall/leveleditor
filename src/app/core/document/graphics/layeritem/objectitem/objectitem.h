@@ -42,7 +42,7 @@ public:
     void setBoundingRect(const QRectF &boundingRect);
 
 signals:
-    void boundingRectChanged();
+    void boundingRectChanged(const QRectF &boundingRect);
 
 private slots:
     void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);

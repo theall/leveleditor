@@ -22,11 +22,11 @@ public:
     ~TMap();
 
     QString name() const;
-    void setName(const QString &name);
-
     TPixmap *thumbnail() const;
     void setThumbnail(TPixmap *thumbnail);
     QPixmap thumbnailPixmap() const;
+
+    static Type stringToType(const QString &typeName);
 
     bool isOpened() const;
     bool isDirty() const;
@@ -49,6 +49,7 @@ public:
     void setDocument(TDocument *document);
 
     TDocument *open();
+    bool save();
 
 signals:
     void thumbChanged(const QPixmap &newThumb);
@@ -74,6 +75,7 @@ public:
     explicit TMapBundle(TModule *parent);
     ~TMapBundle();
 
+    TMap *newMap(const TMap::Type &mapType);
     TMapList mapList() const;
     void setMapList(const TMapList &mapList);
 
@@ -95,6 +97,7 @@ public:
 
     int getIndexInModule() const;
     void setIndexInModule(int indexInModule);
+    int getNextId();
 
     void sort();
 
@@ -111,6 +114,7 @@ private:
     bool mHasDirtyMap;
     TMapList mMapList;
     TModule *mModule;
+    bool mSorted;
 };
 typedef QList<TMapBundle*> TMapBundleList;
 
@@ -138,6 +142,7 @@ public:
     void setIndexInModel(int indexInModel);
 
     void sort();
+    void getAvailableIds(int &adv, int &vs, int &ctf) const;
 
     TMap *find(const QString &mapFilePath) const;
 

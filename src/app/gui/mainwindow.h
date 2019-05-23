@@ -25,6 +25,7 @@ class TLoadingDialog;
 class TTilesetDock;
 class TCharacterDock;
 class TLayerDock;
+class TNewMapDialog;
 
 class TMainWindow : public QMainWindow
 {
@@ -61,20 +62,21 @@ public:
     TTilesetDock *getTilesetDock() const;
     TCharacterDock *getCharacterDock() const;
     TLayerDock *getLayerDock() const;
+    TNewMapDialog *getNewMapDialog() const;
 
 signals:
     void requestOpenGame(const QString &gameRoot);
     void requestCreateNewMap();
     void requestOpenMap(const QString &mapName);
-    void requestSaveCurrentProject();
-    void requestSaveAllProjects();
+    void requestSaveCurrentMap();
+    void requestSaveAllMaps();
     void requestUndo();
     void requestRedo();
     void requestExitApp(bool &approved);
-    void requestCloseCurrentProject();
-    void requestCloseAllProjects();
-    void requestDisplayProjectProperties();
-    void requestRunCurrentProject();
+    void requestCloseCurrentMap();
+    void requestCloseAllMaps();
+    void requestDisplayMapProperties();
+    void requestRunCurrentMap();
     void requestShowBorder(bool);
     void onActionSelectPushed();
     void onActionInsertPushed();
@@ -116,7 +118,6 @@ private slots:
     void on_actionRun_triggered();
     void on_actionShowBorder_triggered(bool arg1);
     void on_actionAlwaysOnTop_triggered(bool arg1);
-
     void on_actionCloseGame_triggered();
 
 private:
@@ -136,7 +137,7 @@ private:
 
     TAboutDialog *mAboutDialog;
     TLoadingDialog *mLoadingDialog;
-
+    TNewMapDialog *mNewMapDialog;
     TZoomComboBox *mZoomComboBox;
 
     bool mHideMenu;

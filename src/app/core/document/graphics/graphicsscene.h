@@ -60,6 +60,7 @@ public:
 
     void setEditMode(int editMode);
     void showSelectedItemsBorder(bool visible = true);
+    void setSceneRect(const QRectF &rect);
 
 signals:
     void needChangeCursor(Qt::CursorShape cursor);
@@ -72,6 +73,7 @@ signals:
 private slots:
     void slotOnSceneModelCurrentIndexChanged(int index);
     void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);
+    void slotOnSceneItemBoundingRectChanged(const QRectF &rect);
 
 private:
     enum Action {

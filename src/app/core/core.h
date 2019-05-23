@@ -3,6 +3,7 @@
 
 #include <QList>
 #include <QString>
+#include <QStringList>
 #include "document/document.h"
 #include "model/tilesetmodel.h"
 #include "model/charactermodel.h"
@@ -19,13 +20,17 @@ public:
     bool loadResource(const QString &path, bool asynLoad = true) const;
     TDocument *open(const QString &file);
     TDocument *open(TMap *map);
-    TDocument *newDocument();
+    TDocument *newMap(const QString &moduleName, const TMap::Type &mapType, int mapId);
 
     TDocument *find(const QString &file);
     void closeDocument(TDocument *document);
 
     void saveAllDocuments();
     bool hasDirtyDocument();
+
+    QString getResourcePath() const;
+    QStringList getModuleNames() const;
+    void getModuleNameIds(QStringList &names, QList<int> &advList, QList<int> &vsList, QList<int> &ctfList) const;
 
     QList<TDocument *> documents() const;
 

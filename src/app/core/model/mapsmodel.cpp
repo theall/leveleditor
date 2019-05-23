@@ -106,6 +106,28 @@ TMap *TMapsModel::find(const QString &mapFilePath) const
     return map;
 }
 
+TMap *TMapsModel::createMap(const QString &moduleName, const TMap::Type &mapType, int mapId)
+{
+    TModule *targetModule = nullptr;
+    for(TModule *module : mModuleList) {
+        if(module->name() == moduleName) {
+            targetModule = module;
+            break;
+        }
+    }
+    if(!targetModule)
+        return nullptr;
+
+    TMapBundle *mapBundle = targetModule->getMapBundle(mapType);
+    if(!mapBundle)
+        return nullptr;
+
+    TMap *map = mapBundle->newMap(mapType);
+    map->setId(mapId);
+    mapBundle->add(map);
+    return map;
+}
+
 QColor TMapsModel::openedColor() const
 {
     return mOpenedColor;

@@ -68,7 +68,7 @@ TAssetsManager::~TAssetsManager()
 bool TAssetsManager::load(const QString &path, bool asynLoad)
 {
     if(mPath == path)
-        return isValidpath();
+        return isValidPath();
 
     mPath = path;
 
@@ -79,7 +79,7 @@ bool TAssetsManager::load(const QString &path, bool asynLoad)
         run();
     }
 
-    return isValidpath();
+    return isValidPath();
 }
 
 TFaceId *TAssetsManager::getFace(int id) const
@@ -127,6 +127,11 @@ TFaceList TAssetsManager::getFaceList() const
 TModuleList TAssetsManager::getModuleList() const
 {
     return mModuleList;
+}
+
+QString TAssetsManager::getPath() const
+{
+    return mPath;
 }
 
 void TAssetsManager::loadAssets()
@@ -235,7 +240,6 @@ void TAssetsManager::loadAssets()
                     }
                     if(map && mapBundle) {
                         map->setId(getThumbId(baseName));
-                        map->setName(baseName);
                         map->setFullFilePath(fileInfo.absoluteFilePath());
                         mapBundle->add(map);
 
@@ -318,7 +322,7 @@ void TAssetsManager::loadAssets()
     emit loadCompleted();
 }
 
-bool TAssetsManager::isValidpath() const
+bool TAssetsManager::isValidPath() const
 {
     QString path = mPath.trimmed();
     if(path.isEmpty())

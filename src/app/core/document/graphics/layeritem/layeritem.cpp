@@ -64,6 +64,15 @@ TObjectItemList TLayerItem::getObjectItemList() const
     return objectItemList;
 }
 
+void TLayerItem::setBoundingRect(const QRectF &rect)
+{
+    if(mBoundingRect == rect)
+        return;
+
+    mBoundingRect = rect;
+    emit boundingRectChanged(mBoundingRect);
+}
+
 void TLayerItem::slotLayerVisibilityChanged(bool visible)
 {
     setVisible(visible);
@@ -71,6 +80,9 @@ void TLayerItem::slotLayerVisibilityChanged(bool visible)
 
 void TLayerItem::slotLayerLockChanged(bool locked)
 {
+    if(mLocked == locked)
+        return;
+
     mLocked = locked;
 }
 

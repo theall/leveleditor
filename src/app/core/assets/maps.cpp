@@ -29,11 +29,6 @@ QString TMap::name() const
     return mName;
 }
 
-void TMap::setName(const QString &name)
-{
-    mName = name;
-}
-
 TPixmap *TMap::thumbnail() const
 {
     return mThumbnail;
@@ -52,6 +47,17 @@ void TMap::setThumbnail(TPixmap *thumbnail)
 QPixmap TMap::thumbnailPixmap() const
 {
     return mThumbnail->content();
+}
+
+TMap::Type TMap::stringToType(const QString &typeName)
+{
+    QString lowerTypeName = typeName.toLower();
+    if(lowerTypeName == "adv") {
+        return TMap::ADV;
+    } else if(lowerTypeName == "ctf") {
+        return TMap::CTF;
+    }
+    return TMap::VS;
 }
 
 bool TMap::isOpened() const
@@ -83,7 +89,31 @@ int TMap::id() const
 
 void TMap::setId(int id)
 {
+    if(mId == id)
+        return;
+
     mId = id;
+
+    QString tpl("map%2");
+    QString prefix = "";
+    switch (mType) {
+    case ADV:
+        prefix = "a";
+        break;
+    case CTF:
+        prefix = "CTF";
+        break;
+    case VS:
+    default:
+        break;
+    }
+    if(!prefix.isEmpty())
+        tpl.prepend(prefix);
+    mName = tpl.arg(mId);
+
+    if(!mFileFullPath.isEmpty()) {
+        mFileFullPath = QFileInfo(mFileFullPath).absoluteDir().absoluteFilePath(mName);
+    }
 }
 
 TMapBundle *TMap::mapBundle() const
@@ -129,12 +159,18 @@ TDocument *TMap::open()
     return mDocument;
 }
 
+bool TMap::save()
+{
+
+}
+
 TMapBundle::TMapBundle(TModule *parent) :
     QObject(parent)
   , mIndexInModule(-1)
   , mHasOpenedMap(false)
   , mHasDirtyMap(false)
   , mModule(parent)
+  , mSorted(false)
 {
 
 }
@@ -142,6 +178,11 @@ TMapBundle::TMapBundle(TModule *parent) :
 TMapBundle::~TMapBundle()
 {
 
+}
+
+TMap *TMapBundle::newMap(const TMap::Type &mapType)
+{
+    return new TMap(mapType, this);
 }
 
 TMapList TMapBundle::mapList() const
@@ -235,9 +276,23 @@ void TMapBundle::setIndexInModule(int indexInModule)
     mIndexInModule = indexInModule;
 }
 
+int TMapBundle::getNextId()
+{
+    sort();
+
+    int next = 0;
+    if(!mMapList.isEmpty()) {
+        next = mMapList.last()->id() + 1;
+    }
+    return next;
+}
+
 void TMapBundle::sort()
 {
-    qSort(mMapList.begin(), mMapList.end(), idCompare);
+    if(!mSorted) {
+        qSort(mMapList.begin(), mMapList.end(), idCompare);
+        mSorted = true;
+    }
 }
 
 TMap *TMapBundle::find(const QString &mapFilePath) const
@@ -339,6 +394,13 @@ void TModule::sort()
     for(TMapBundle *mapBundle : mMapBundleList) {
         mapBundle->sort();
     }
+}
+
+void TModule::getAvailableIds(int &adv, int &vs, int &ctf) const
+{
+    adv = mAdvBundle->getNextId();
+    vs = mVsBundle->getNextId();
+    ctf = mCtfBundle->getNextId();
 }
 
 TMap *TModule::find(const QString &mapFilePath) const

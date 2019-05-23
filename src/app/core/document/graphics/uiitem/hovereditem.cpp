@@ -85,7 +85,7 @@ void THoveredItem::paint(QPainter *painter,
     }
 }
 
-void THoveredItem::slotObjectBoundingRectChanged()
+void THoveredItem::slotObjectBoundingRectChanged(const QRectF &)
 {
     if(mObjectItem)
         setBoundingRect(mObjectItem->boundingRect());
@@ -118,9 +118,9 @@ void THoveredItem::setObjectItem(TObjectItem *objectItem)
     if(mObjectItem) {
         setBoundingRect(mObjectItem->boundingRect());
         connect(mObjectItem,
-                SIGNAL(boundingRectChanged()),
+                SIGNAL(boundingRectChanged(QRectF)),
                 this,
-                SLOT(slotObjectBoundingRectChanged()));
+                SLOT(slotObjectBoundingRectChanged(QRectF)));
         connect(mObjectItem,
                 SIGNAL(destroyed(QObject*)),
                 this,

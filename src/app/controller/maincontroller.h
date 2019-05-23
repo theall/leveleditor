@@ -29,14 +29,15 @@ signals:
 private slots:
     // From TMainWindow
     void slotRequestOpenMap(const QString &file);
-    void slotRequestSaveCurrentProject();
-    void slotRequestSaveAllProjects();
+    void slotRequestCreateNewMap();
+    void slotRequestSaveCurrentMap();
+    void slotRequestSaveAllMaps();
     void slotRequestExitApp(bool &approved);
-    void slotRequestCloseCurrentProject();
-    void slotRequestCloseAllProjects();
-    void slotRequestReloadCurrentProject();
-    void slotRequestDisplayProjectProperties();
-    void slotRequestRunCurrentProject();
+    void slotRequestCloseCurrentMap();
+    void slotRequestCloseAllMaps();
+    void slotRequestReloadCurrentMap();
+    void slotRequestDisplayMapProperties();
+    void slotRequestRunCurrentMap();
     void slotRequestShowBorder(bool show);
     void slotOnActionSelectPushed();
     void slotOnActionInsertPushed();
@@ -75,7 +76,7 @@ private:
     TLayersController *mLayersController;
 
     bool confirmAllSaved();
-    void createNewDocument();
+    void createNewDocument(const QString &moduleName, const TMap::Type &mapType, int mapId);
 
 protected slots:
     void slotTimerEvent() Q_DECL_OVERRIDE;

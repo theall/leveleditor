@@ -63,7 +63,8 @@ SOURCES += \
     $$PWD/component/layerdock/boldcurrentitemdelegate.cpp \
     $$PWD/style/stylehelper.cpp \
     $$PWD/style/proxystyle.cpp \
-    $$PWD/component/tabwidget/graphicsviewcontexmenu.cpp
+    $$PWD/component/tabwidget/graphicsviewcontexmenu.cpp \
+    $$PWD/dialogs/newmapdialog.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -117,7 +118,8 @@ HEADERS += \
     $$PWD/component/layerdock/boldcurrentitemdelegate.h \
     $$PWD/style/stylehelper.h \
     $$PWD/style/proxystyle.h \
-    $$PWD/component/tabwidget/graphicsviewcontexmenu.h
+    $$PWD/component/tabwidget/graphicsviewcontexmenu.h \
+    $$PWD/dialogs/newmapdialog.h
 
 FORMS += \
     $$PWD/mainwindow.ui \
@@ -125,6 +127,7 @@ FORMS += \
     $$PWD/dialogs/preferencesdialog.ui \
     $$PWD/dialogs/soundresourcedialog.ui \
     $$PWD/dialogs/loadingdialog.ui \
-    $$PWD/dialogs/selectrootdialog.ui
+    $$PWD/dialogs/selectrootdialog.ui \
+    $$PWD/dialogs/newmapdialog.ui
 
 RESOURCES += $$PWD/resource/editor.qrc

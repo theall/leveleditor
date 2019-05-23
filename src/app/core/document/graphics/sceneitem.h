@@ -8,7 +8,7 @@
 #include "../model/scenemodel.h"
 #include "uiitem/darkmaskitem.h"
 
-class TSceneItem : QGraphicsObject
+class TSceneItem : public QGraphicsObject
 {
     Q_OBJECT
 
@@ -22,8 +22,12 @@ public:
     TLayerItem *getCurrentLayerItem() const;
     void setCurrentLayerItem(TLayerItem *currentLayerItem);
 
+signals:
+    void boundingRectChanged(const QRectF &newRect);
+
 private slots:
     void slotOnSceneModelCurrentIndexChanged(int index);
+    void slotLayerBoundingRectChanged(const QRectF &rect);
 
 private:
     QRectF mBoundingRect;

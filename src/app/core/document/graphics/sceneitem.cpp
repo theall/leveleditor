@@ -43,7 +43,10 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
         } else if(TWallsModel *wallModel = dynamic_cast<TWallsModel*>(baseModel)) {
             layerItem = new TWallLayerItem(wallModel, this);
         }
-        if(!layerItem) {
+        if(layerItem) {
+            connect(layerItem, SIGNAL(boundingRectChanged(QRectF)), this, SLOT(slotLayerBoundingRectChanged(QRectF)));
+            mBoundingRect = mBoundingRect.united(layerItem->boundingRect());
+        } else {
             qDebug() << "Unprocessed model:" << baseModel->name();
         }
         mModelLayerMap[baseModel] = layerItem;
@@ -57,8 +60,6 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
 
         layerItem->setZValue(index++);
     }
-
-    calcBoundingRect();
 }
 
 TSceneItem::~TSceneItem()
@@ -107,6 +108,14 @@ void TSceneItem::slotOnSceneModelCurrentIndexChanged(int index)
     mDarkMaskItem->setVisible(index>0 && baseModel);
 }
 
+void TSceneItem::slotLayerBoundingRectChanged(const QRectF &rect)
+{
+    if(mBoundingRect.contains(rect))
+        return;
+    mBoundingRect = mBoundingRect.united(rect);
+    emit boundingRectChanged(mBoundingRect);
+}
+
 TLayerItem *TSceneItem::getCurrentLayerItem() const
 {
     return mCurrentLayerItem;
@@ -119,13 +128,13 @@ void TSceneItem::setCurrentLayerItem(TLayerItem *currentLayerItem)
 
 void TSceneItem::calcBoundingRect()
 {
-    mBoundingRect.intersected(QRectF(0,0,0,0));
+    QRectF tempRect;
     for(TLayerItem *layerItem : mLayerItemList) {
         if(!layerItem)
             continue;
-        mBoundingRect = mBoundingRect.united(layerItem->calcBoundingRect());
+        tempRect = tempRect.united(layerItem->calcBoundingRect());
     }
-    mBoundingRect.adjust(-100, -100, 100, 100);
+    mBoundingRect = tempRect;
 }
 
 QRectF TSceneItem::boundingRect() const

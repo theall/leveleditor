@@ -49,11 +49,11 @@ TDocument *TCore::open(TMap *map)
     return document;
 }
 
-TDocument *TCore::newDocument()
+TDocument *TCore::newMap(const QString &moduleName, const TMap::Type &mapType, int mapId)
 {
-    TDocument *document = TDocument::create();
-    addDocument(document);
-    return document;
+    TMap *map = mMapsModel->createMap(moduleName, mapType, mapId);
+
+    return open(map);
 }
 
 TDocument *TCore::find(const QString &file)
@@ -93,6 +93,36 @@ bool TCore::hasDirtyDocument()
             return true;
     }
     return false;
+}
+
+QString TCore::getResourcePath() const
+{
+    return TAssetsManager::getInstance()->getPath();
+}
+
+QStringList TCore::getModuleNames() const
+{
+    QStringList moduleNames;
+    for(TModule *module : TAssetsManager::getInstance()->getModuleList()) {
+        moduleNames.append(module->name());
+    }
+    return moduleNames;
+}
+
+void TCore::getModuleNameIds(QStringList &names, QList<int> &advList, QList<int> &vsList, QList<int> &ctfList) const
+{
+    names.clear();
+    advList.clear();
+    vsList.clear();
+    ctfList.clear();
+    for(TModule *module : TAssetsManager::getInstance()->getModuleList()) {
+        int advId, vsId, ctfId;
+        module->getAvailableIds(advId, vsId, ctfId);
+        names.append(module->name());
+        advList.append(advId);
+        vsList.append(vsId);
+        ctfList.append(ctfId);
+    }
 }
 
 QList<TDocument *> TCore::documents() const

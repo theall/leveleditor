@@ -5,6 +5,7 @@
 #include "dialogs/preferencesdialog.h"
 #include "dialogs/selectrootdialog.h"
 #include "dialogs/loadingdialog.h"
+#include "dialogs/newmapdialog.h"
 
 #include "component/centralwidget.h"
 #include "component/undodock/undodock.h"
@@ -38,6 +39,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
   , mLayerDock(new TLayerDock(this))
   , mAboutDialog(new TAboutDialog(this))
   , mLoadingDialog(new TLoadingDialog(this))
+  , mNewMapDialog(new TNewMapDialog(this))
   , mZoomComboBox(new TZoomComboBox(this))
   , mHideMenu(false)
   , mActionGroup(new QActionGroup(this))
@@ -199,10 +201,11 @@ void TMainWindow::triggerCurrentSelectedAction()
 
 void TMainWindow::addRecentFile(const QString &file)
 {
-    QStringList recentFiles = TPreferences::instance()->recentFiles();
+    TPreferences *prefs = TPreferences::instance();
+    QStringList recentFiles = prefs->recentFiles();
     recentFiles.removeAll(file);
     recentFiles.prepend(file);
-    TPreferences::instance()->setRecentFiles(recentFiles);
+    prefs->setRecentFiles(recentFiles);
     updateRecentFiles();
 }
 
@@ -442,7 +445,7 @@ void TMainWindow::slotOnTabIndexChanged(int)
 
 void TMainWindow::on_actionSaveMap_triggered()
 {
-    emit requestSaveCurrentProject();
+    emit requestSaveCurrentMap();
 }
 
 void TMainWindow::on_actionRedo_triggered()
@@ -457,7 +460,7 @@ void TMainWindow::on_actionUndo_triggered()
 
 void TMainWindow::on_actionSaveAllMaps_triggered()
 {
-    emit requestSaveAllProjects();
+    emit requestSaveAllMaps();
 }
 
 void TMainWindow::on_actionExit_triggered()
@@ -494,12 +497,12 @@ void TMainWindow::loadConfig()
 
 void TMainWindow::on_actionCloseMap_triggered()
 {
-    emit requestCloseCurrentProject();
+    emit requestCloseCurrentMap();
 }
 
 void TMainWindow::on_actionCloseAllMaps_triggered()
 {
-    emit requestCloseAllProjects();
+    emit requestCloseAllMaps();
 }
 
 void TMainWindow::on_actionExport_triggered()
@@ -519,7 +522,7 @@ void TMainWindow::on_actionSettings_triggered()
 
 void TMainWindow::on_actionDocumentProperties_triggered()
 {
-    emit requestDisplayProjectProperties();
+    emit requestDisplayMapProperties();
 }
 
 void TMainWindow::on_actionSelectMode_triggered()
@@ -541,7 +544,7 @@ void TMainWindow::on_actionRun_triggered()
 {
     QString enginePath = TPreferences::instance()->enginePath();
     if(QFile(enginePath).exists()) {
-        emit requestRunCurrentProject();
+        emit requestRunCurrentMap();
         return;
     }
 
@@ -608,4 +611,9 @@ void TMainWindow::on_actionAlwaysOnTop_triggered(bool)
 void TMainWindow::on_actionCloseGame_triggered()
 {
 
+}
+
+TNewMapDialog *TMainWindow::getNewMapDialog() const
+{
+    return mNewMapDialog;
 }
