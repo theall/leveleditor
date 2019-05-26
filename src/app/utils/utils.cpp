@@ -137,4 +137,23 @@ QSize smallIconSize()
     return size;
 }
 
+QString mapNameToThumbName(const QString &mapName)
+{
+    int i = 0;
+    int nameLength = mapName.length();
+    QString result = mapName;
+    for(i=0;i<nameLength;i++) {
+        if(mapName.at(i).isNumber()) {
+            result.insert(i, '_');
+            break;
+        }
+    }
+    int dotIndex = result.indexOf('.');
+    if(dotIndex != -1) {
+        result.chop(nameLength - dotIndex);
+    }
+    result.append(".jpg");
+    return result;
+}
+
 }

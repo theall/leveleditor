@@ -2,9 +2,13 @@
 #include "cachedpixmap.h"
 #include "cachedsound.h"
 
-#include <QDir>
 #include <QFileInfo>
 #include <QStringList>
+#include <utils/utils.h>
+
+#define GFX_PATH "gfx"
+#define MAPS_PATH "maps"
+#define TILES_NAME  "tiles"
 
 int getThumbId(const QString &mapName) {
     QString idStr;
@@ -20,24 +24,6 @@ int getThumbId(const QString &mapName) {
         id = idStr.toInt();
     }
     return id;
-}
-
-QString getThumbName(const QString &mapName) {
-    int i = 0;
-    int nameLength = mapName.length();
-    QString result = mapName;
-    for(i=0;i<nameLength;i++) {
-        if(mapName.at(i).isNumber()) {
-            result.insert(i, '_');
-            break;
-        }
-    }
-    int dotIndex = result.indexOf('.');
-    if(dotIndex != -1) {
-        result.chop(nameLength - dotIndex);
-    }
-    result.append(".jpg");
-    return result;
 }
 
 bool tileSetIdCompare(TTileset *tileSet1, TTileset *tileSet2)
@@ -65,12 +51,19 @@ TAssetsManager::~TAssetsManager()
     FREE_CONTAINER(mTilesetList);
 }
 
+bool TAssetsManager::setResourcePath(const QString &path)
+{
+    mPath = path.trimmed();
+    mDir.setPath(path);
+    mGfxDir.setPath(mDir.absoluteFilePath(GFX_PATH));
+    mMapsDir.setPath(mDir.absoluteFilePath(MAPS_PATH));
+    return isValidPath();
+}
+
 bool TAssetsManager::load(const QString &path, bool asynLoad)
 {
-    if(mPath == path)
-        return isValidPath();
-
-    mPath = path;
+    if(!setResourcePath(path))
+        return false;
 
     if(asynLoad) {
         moveToThread(this);
@@ -79,7 +72,7 @@ bool TAssetsManager::load(const QString &path, bool asynLoad)
         run();
     }
 
-    return isValidPath();
+    return true;
 }
 
 TFaceId *TAssetsManager::getFace(int id) const
@@ -134,16 +127,22 @@ QString TAssetsManager::getPath() const
     return mPath;
 }
 
+QString TAssetsManager::getMapFullName(const QString &module, const QString &mapName) const
+{
+    QDir moduleDir;
+    moduleDir.setPath(mMapsDir.absoluteFilePath(module));
+    return moduleDir.absoluteFilePath(mapName);
+}
+
 void TAssetsManager::loadAssets()
 {
     // Enumate face list
     FREE_CONTAINER(mFaceList);
+
     QList<int> faceIdList;
     QStringList faceFileList;
-    QString gfxPath = mPath + "/gfx";
-    QDir gfxDir(gfxPath);
-    gfxDir.setFilter(QDir::Dirs);
-    QFileInfoList gfxFileInfoList = gfxDir.entryInfoList();
+    mGfxDir.setFilter(QDir::Dirs);
+    QFileInfoList gfxFileInfoList = mGfxDir.entryInfoList();
     for (int i = 0; i < gfxFileInfoList.size(); i++) {
         QFileInfo idInfo = gfxFileInfoList.at(i);
         if(!idInfo.isDir())
@@ -159,11 +158,11 @@ void TAssetsManager::loadAssets()
             for (int j = 0; j < faceFileInfoList.size(); j++) {
                 QFileInfo fileInfo = faceFileInfoList.at(j);
                 QString fileName = fileInfo.baseName().trimmed().toLower();
-                if(fileName.startsWith("zwalk0")) {
-                    faceIdList.append(id);
-                    faceFileList.append(fileInfo.absoluteFilePath());
-                    break;
-                }
+                if(!fileName.startsWith("zwalk0"))
+                    continue;
+
+                faceIdList.append(id);
+                faceFileList.append(fileInfo.absoluteFilePath());
             }
         }
     }
@@ -172,7 +171,7 @@ void TAssetsManager::loadAssets()
     QList<int> tileSetIdList;
     QList<int> tileIdList;
     QStringList tileBitmapList;
-    QDir tilesDir = gfxDir.absoluteFilePath("tiles");
+    QDir tilesDir = mGfxDir.absoluteFilePath("tiles");
     tilesDir.setFilter(QDir::Files | QDir::Hidden);
     QFileInfoList tilesFileInfoList = tilesDir.entryInfoList();
     for (int i = 0; i < tilesFileInfoList.size(); ++i) {
@@ -201,10 +200,8 @@ void TAssetsManager::loadAssets()
     // Enumate map thumbnail
     FREE_CONTAINER(mModuleList);
     TPixmapList mapThumbFileList;
-    QString mapsPath = mPath + "/Maps";
-    QDir mapsDir(mapsPath);
-    mapsDir.setFilter(QDir::Dirs);
-    QFileInfoList moduleInfoList = mapsDir.entryInfoList(QDir::Dirs|QDir::NoDotAndDotDot);
+    mMapsDir.setFilter(QDir::Dirs);
+    QFileInfoList moduleInfoList = mMapsDir.entryInfoList(QDir::Dirs|QDir::NoDotAndDotDot);
     for (int i = 0; i < moduleInfoList.size(); i++) {
         QFileInfo moduleFileInfo = moduleInfoList.at(i);
         if(!moduleFileInfo.isDir())
@@ -224,30 +221,28 @@ void TAssetsManager::loadAssets()
             QString baseName = fileInfo.baseName();
             QString fileName = baseName.toLower();
             QString ext = fileInfo.suffix().toLower();
-            if(ext == "dat") {
-                if(fileName.at(fileName.size()-1).isNumber()) {
-                    TMap *map = nullptr;
-                    TMapBundle *mapBundle = nullptr;
-                    if(fileName.startsWith("amap")) {
-                        map = new TMap(TMap::ADV, advBundle);
-                        mapBundle = advBundle;
-                    } else if(fileName.startsWith("map")) {
-                        map = new TMap(TMap::VS, vsBundle);
-                        mapBundle = vsBundle;
-                    } else if(fileName.startsWith("ctfmap")) {
-                        map = new TMap(TMap::CTF, ctfBundle);
-                        mapBundle = ctfBundle;
-                    }
-                    if(map && mapBundle) {
-                        map->setId(getThumbId(baseName));
-                        map->setFullFilePath(fileInfo.absoluteFilePath());
-                        mapBundle->add(map);
+            if(ext!="dat" || !fileName.at(fileName.size()-1).isNumber())
+                continue;
+            TMap *map = nullptr;
+            TMapBundle *mapBundle = nullptr;
+            if(fileName.startsWith("amap")) {
+                map = new TMap(TMap::ADV, advBundle);
+                mapBundle = advBundle;
+            } else if(fileName.startsWith("map")) {
+                map = new TMap(TMap::VS, vsBundle);
+                mapBundle = vsBundle;
+            } else if(fileName.startsWith("ctfmap")) {
+                map = new TMap(TMap::CTF, ctfBundle);
+                mapBundle = ctfBundle;
+            }
+            if(map && mapBundle) {
+                map->setId(getThumbId(baseName));
+                map->setFullFilePath(fileInfo.absoluteFilePath());
+                mapBundle->add(map);
 
-                        TPixmap *thumbnail = map->thumbnail();
-                        thumbnail->setFileFullName(moduleDir.absoluteFilePath(getThumbName(baseName)));
-                        mapThumbFileList.append(thumbnail);
-                    }
-                }
+                TPixmap *thumbnail = map->thumbnail();
+                thumbnail->setFileFullName(moduleDir.absoluteFilePath(Utils::mapNameToThumbName(baseName)));
+                mapThumbFileList.append(thumbnail);
             }
         }
         module->sort();
@@ -324,17 +319,7 @@ void TAssetsManager::loadAssets()
 
 bool TAssetsManager::isValidPath() const
 {
-    QString path = mPath.trimmed();
-    if(path.isEmpty())
-        return false;
-    QDir dir(path);
-    if(!dir.exists())
-        return false;
-
-    if(!dir.cd("gfx"))
-        return false;
-
-    return true;
+    return !mPath.isEmpty()&&mDir.exists()&&mGfxDir.exists()&&mMapsDir.exists();
 }
 
 void TAssetsManager::run()

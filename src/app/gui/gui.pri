@@ -65,7 +65,8 @@ SOURCES += \
     $$PWD/style/proxystyle.cpp \
     $$PWD/component/tabwidget/graphicsviewcontexmenu.cpp \
     $$PWD/dialogs/newmapdialog.cpp \
-    $$PWD/widgets/flexiblescrollbar.cpp
+    $$PWD/widgets/flexiblescrollbar.cpp \
+    $$PWD/dialogs/exceptiondialog.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -121,7 +122,8 @@ HEADERS += \
     $$PWD/style/proxystyle.h \
     $$PWD/component/tabwidget/graphicsviewcontexmenu.h \
     $$PWD/dialogs/newmapdialog.h \
-    $$PWD/widgets/flexiblescrollbar.h
+    $$PWD/widgets/flexiblescrollbar.h \
+    $$PWD/dialogs/exceptiondialog.h
 
 FORMS += \
     $$PWD/mainwindow.ui \
@@ -130,6 +132,7 @@ FORMS += \
     $$PWD/dialogs/soundresourcedialog.ui \
     $$PWD/dialogs/loadingdialog.ui \
     $$PWD/dialogs/selectrootdialog.ui \
-    $$PWD/dialogs/newmapdialog.ui
+    $$PWD/dialogs/newmapdialog.ui \
+    $$PWD/dialogs/exceptiondialog.ui
 
 RESOURCES += $$PWD/resource/editor.qrc

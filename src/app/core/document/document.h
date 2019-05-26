@@ -24,7 +24,8 @@ class TDocument : public TPropertyObject
     Q_OBJECT
 
 public:
-    TDocument(const QString &file=QString(), QObject *parent=nullptr);
+    TDocument(QObject *parent=nullptr);
+    TDocument(const QString &file, QObject *parent=nullptr);
     ~TDocument();
 
     QUndoStack *undoStack() const;
@@ -36,6 +37,7 @@ public:
     void reload();
 
     QString fileName() const;
+    void setFileName(const QString &fileName);
 
     QString baseName() const;
     void setBaseName(const QString &baseName);
@@ -85,8 +87,8 @@ private:
     EditMode mEditMode;
 
     void load(const QString &file);
-    void setFileName(const QString &fileName);
     void initPropertySheet();
+    void connetSignalsToSlots();
 };
 
 #endif // DOCUMENT_H

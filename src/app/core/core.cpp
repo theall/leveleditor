@@ -35,9 +35,10 @@ TDocument *TCore::open(const QString &file)
     if(!document)
     {
         TMap *map = mMapsModel->find(file);
-        Q_ASSERT(map);
-        document = map->open();
-        addDocument(document);
+        if(map) {
+            document = map->open();
+            addDocument(document);
+        }
     }
     return document;
 }
@@ -55,8 +56,9 @@ TDocument *TCore::open(TMap *map)
 TDocument *TCore::newMap(const QString &moduleName, const TMap::Type &mapType, int mapId)
 {
     TMap *map = mMapsModel->createMap(moduleName, mapType, mapId);
-
-    return open(map);
+    QString mapFullName = TAssetsManager::getInstance()->getMapFullName(moduleName, map->fileName());
+    map->setFullFilePath(mapFullName);
+    return map->createDocument();
 }
 
 TDocument *TCore::find(const QString &file)

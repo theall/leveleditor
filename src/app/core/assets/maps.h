@@ -22,6 +22,7 @@ public:
     ~TMap();
 
     QString name() const;
+    QString fileName() const;
     TPixmap *thumbnail() const;
     void setThumbnail(TPixmap *thumbnail);
     QPixmap thumbnailPixmap() const;
@@ -46,6 +47,7 @@ public:
     void setFullFilePath(const QString &fullFilePath);
 
     TDocument *document() const;
+    TDocument *createDocument();
     void setDocument(TDocument *document);
 
     TDocument *open();
@@ -59,11 +61,14 @@ private:
     Type mType;
     int mId;
     QString mName;
+    QString mFileName;
     QString mFileFullPath;
     TPixmap *mThumbnail;
     TDocument *mDocument;
     TMapBundle *mMapBundle;
     int mIndexInMapBundle;
+
+    void updateThumbnail();
 };
 typedef QList<TMap*> TMapList;
 
@@ -91,6 +96,7 @@ public:
     bool hasDirtyMap() const;
 
     TMap *getMap(int index) const;
+    int getMapIndex(TMap *map) const;
 
     TModule *getModule() const;
 
@@ -104,6 +110,8 @@ public:
 
     TMap *find(const QString &mapFilePath) const;
     TMap *find(TDocument *document) const;
+
+    TMapList getMapList() const;
 
 signals:
     void mapAdded(TMap *map, int index);
@@ -148,6 +156,8 @@ public:
 
     TMap *find(const QString &mapFilePath) const;
     TMap *find(TDocument *document) const;
+
+    TMapBundleList getMapBundleList() const;
 
 private:
     QString mName;

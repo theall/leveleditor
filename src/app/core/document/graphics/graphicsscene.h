@@ -63,8 +63,7 @@ public:
     void showSelectedItemsBorder(bool visible = true);
     void setSceneRect(const QRectF &rect);
 
-    QImage toImage();
-    QImage toScaledImage(const QSize &size = QSize());
+    QImage toImage(const QSize &size = QSize());
 
 signals:
     void needChangeCursor(Qt::CursorShape cursor);

@@ -690,21 +690,17 @@ void TGraphicsScene::setSceneRect(const QRectF &rect)
     QGraphicsScene::setSceneRect(flatedRect);
 }
 
-QImage TGraphicsScene::toImage()
+QImage TGraphicsScene::toImage(const QSize &size)
 {
-    return toScaledImage();
-}
-
-QImage TGraphicsScene::toScaledImage(const QSize &size)
-{
-    QSizeF imageSize(size);
-    if(imageSize.isEmpty())
-        imageSize = sceneRect().size();
+    QSizeF imageSize(sceneRect().size());
     QImage image(imageSize.width(), imageSize.height(), QImage::Format_ARGB32);
     //get thumbnail
     QPainter painter(&image);
     painter.setRenderHint(QPainter::Antialiasing);
     render(&painter);
+    if(!size.isEmpty()) {
+        return image.scaled(size);
+    }
     return image;
 }
 

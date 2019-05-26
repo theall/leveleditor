@@ -84,7 +84,7 @@ void TNewMapDialog::updateMapFileName()
     ui->leFileName->setText(tpl.arg(prefix).arg(ui->sbId->value()));
 }
 
-void TNewMapDialog::on_cmbModule_currentIndexChanged(int index)
+void TNewMapDialog::on_cmbModule_currentIndexChanged(int)
 {
     updateMapId();
 }
@@ -92,6 +92,9 @@ void TNewMapDialog::on_cmbModule_currentIndexChanged(int index)
 void TNewMapDialog::updateMapId()
 {
     int moduleIndex = ui->cmbModule->currentIndex();
+    if(moduleIndex<0 || moduleIndex>=ui->cmbModule->count())
+        return;
+
     QString mapTypeName = ui->cmbMapType->currentText().toLower();
     int id = 9999;
     if(mapTypeName == "adv")

@@ -40,6 +40,8 @@ namespace Utils{
     QPoint dpiScaled(QPoint value);
     QRectF dpiScaled(QRectF value);
     QSize smallIconSize();
+
+    QString mapNameToThumbName(const QString &mapName);
 }
 
 #endif // UTILS_H

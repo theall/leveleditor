@@ -221,7 +221,9 @@ TAreasModel *TSceneModel::getAreasModel() const
 
 void TSceneModel::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_COLOR, P_BACKGROUND_COLOR, PID_SCENE_BACKGROUND_COLOR);
+    TPropertyItem *propertyItem = mPropertySheet->addProperty(PT_COLOR, P_BACKGROUND_COLOR, PID_SCENE_BACKGROUND_COLOR);
+    propertyItem->setValue(QColor(Qt::blue));
+
     mPropertySheet->addProperty(PT_VECTOR, P_FLAG1, PID_SCENE_FLAG1);
     mPropertySheet->addProperty(PT_VECTOR, P_FLAG2, PID_SCENE_FLAG2);
     mPropertySheet->addProperty(PT_BOOL, P_SCROLLABLE, PID_SCENE_SCROLLABLE);

@@ -5,6 +5,8 @@
 #include <QPainter>
 #include <QFileInfo>
 
+#define DEFAULT_THUMB_SIZE 64
+
 QByteArray loadImageFile(const QString &file) {
     QFile readFile(file);
     QByteArray result;
@@ -19,14 +21,29 @@ QByteArray loadImageFile(const QString &file) {
 TPixmap::TPixmap(QObject *parent) :
     QObject(parent)
   , mIsValid(false)
+  , mThumbnailFixedSize(QSize(DEFAULT_THUMB_SIZE,DEFAULT_THUMB_SIZE))
 {
+    mPixmap = QPixmap(QSize(1,1));
 
+    createMaskOnPixmap();
+}
+
+TPixmap::TPixmap(const QSize &size, QObject *parent) :
+    QObject(parent)
+  , mIsValid(false)
+  , mPixmapFixedSize(size)
+  , mThumbnailFixedSize(QSize(DEFAULT_THUMB_SIZE,DEFAULT_THUMB_SIZE))
+{
+    mPixmap = QPixmap(mPixmapFixedSize);
+
+    createMaskOnPixmap();
 }
 
 TPixmap::TPixmap(const QString &file, QObject *parent) :
     QObject(parent)
   , mIsValid(false)
   , mFileFullName(file)
+  , mThumbnailFixedSize(QSize(DEFAULT_THUMB_SIZE,DEFAULT_THUMB_SIZE))
   , mFileName(QFileInfo(file).fileName())
 {
 
@@ -64,6 +81,63 @@ int TPixmap::height() const
 bool TPixmap::isValid() const
 {
     return mIsValid;
+}
+
+QSize TPixmap::pixmapFixedSize() const
+{
+    return mPixmapFixedSize;
+}
+
+void TPixmap::setPixmapFixedSize(const QSize &pixmapFixedSize)
+{
+    mPixmapFixedSize = pixmapFixedSize;
+}
+
+QSize TPixmap::thumbnailFixedSize() const
+{
+    return mThumbnailFixedSize;
+}
+
+void TPixmap::setThumbnailFixedSize(const QSize &thumbnailFixedSize)
+{
+    mThumbnailFixedSize = thumbnailFixedSize;
+}
+
+void TPixmap::setPixmap(const QPixmap &pixmap)
+{
+    mPixmap = pixmap;
+
+    createMaskOnPixmap();
+}
+
+void TPixmap::save()
+{
+    if(mFileFullName.isEmpty())
+        return;
+
+    mPixmap.save(mFileFullName);
+}
+
+void TPixmap::createMaskOnPixmap()
+{
+    QBitmap mask = mPixmap.createMaskFromColor(Qt::black);
+    mPixmap.setMask(mask);
+
+    updateThumbnail();
+}
+
+void TPixmap::updateThumbnail()
+{
+    int w = mPixmap.width();
+    int h = mPixmap.height();
+    if(w>mThumbnailFixedSize.width() || h>mThumbnailFixedSize.height())
+    {
+        QImage img = mPixmap.toImage();
+        img.scaled(mThumbnailFixedSize);
+        mThumbnail = QPixmap::fromImage(img);
+    } else {
+        mThumbnail = mPixmap;
+    }
 }
 
 void TPixmap::setFileFullName(const QString &fileFullName)
@@ -107,17 +181,11 @@ void TPixmap::reload()
     if(!mIsValid)
         return;
 
-    QBitmap mask = mPixmap.createMaskFromColor(Qt::black);
-    mPixmap.setMask(mask);
-
-    int w = mPixmap.width();
-    int h = mPixmap.height();
-    if(w>64 || h>64)
-    {
+    if(!mPixmapFixedSize.isEmpty()) {
         QImage img = mPixmap.toImage();
-        img.scaled(64, 64);
-        mThumbnail = QPixmap::fromImage(img);
-    } else {
-        mThumbnail = mPixmap;
+        img.scaled(mPixmapFixedSize);
+        mPixmap = QPixmap::fromImage(img);
     }
+
+    createMaskOnPixmap();
 }

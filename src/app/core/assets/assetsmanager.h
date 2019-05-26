@@ -1,6 +1,7 @@
 #ifndef TASSETSMANAGER_H
 #define TASSETSMANAGER_H
 
+#include <QDir>
 #include <QThread>
 #include <QPixmap>
 #include <utils/macro.h>
@@ -23,6 +24,7 @@ public:
     TAssetsManager(QObject *parent=Q_NULLPTR);
     ~TAssetsManager();
 
+    bool setResourcePath(const QString &path);
     bool load(const QString &path, bool asynLoad = true);
     TFaceId *getFace(int id) const;
     TTileId *getTile(int tileSetId, int tileId) const;
@@ -37,6 +39,7 @@ public:
     TModuleList getModuleList() const;
 
     QString getPath() const;
+    QString getMapFullName(const QString &module, const QString &mapName) const;
 
 signals:
     // Notify external object
@@ -45,6 +48,11 @@ signals:
 
 private:
     QString mPath;
+    QDir mDir;
+    QDir mMapsDir;
+    QDir mGfxDir;
+    QDir mSoundDir;
+    QDir mTilesDir;
     TFaceList mFaceList;
     TCachedPixmap *mCachedPixmaps;
     TCachedSound *mCachedSounds;

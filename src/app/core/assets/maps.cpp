@@ -2,7 +2,9 @@
 #include "pixmap.h"
 #include "../document/document.h"
 
+#include <QDir>
 #include <QSize>
+#include <utils/utils.h>
 
 #define IMAGE_SMALL QSize(48,36)
 #define IMAGE_LARGE QSize(100,75)
@@ -16,12 +18,16 @@ TMap::TMap(const TMap::Type &type, TMapBundle *parent) :
     QObject(parent)
   , mType(type)
   , mId(-1)
-  , mThumbnail(new TPixmap(this))
+  , mThumbnail(nullptr)
   , mDocument(nullptr)
   , mMapBundle(parent)
   , mIndexInMapBundle(-1)
 {
-
+    if(type == ADV) {
+        mThumbnail = new TPixmap(QSize(IMAGE_SMALL), this);
+    } else {
+        mThumbnail = new TPixmap(QSize(IMAGE_LARGE), this);
+    }
 }
 
 TMap::~TMap()
@@ -32,6 +38,11 @@ TMap::~TMap()
 QString TMap::name() const
 {
     return mName;
+}
+
+QString TMap::fileName() const
+{
+    return mFileName;
 }
 
 TPixmap *TMap::thumbnail() const
@@ -116,6 +127,7 @@ void TMap::setId(int id)
         tpl.prepend(prefix);
     mName = tpl.arg(mId);
 
+    mFileName = mName + ".dat";
     if(!mFileFullPath.isEmpty()) {
         mFileFullPath = QFileInfo(mFileFullPath).absoluteDir().absoluteFilePath(mName);
     }
@@ -143,11 +155,35 @@ QString TMap::fullFilePath() const
 
 void TMap::setFullFilePath(const QString &fullFilePath)
 {
+    if(mFileFullPath == fullFilePath)
+        return;
+
     mFileFullPath = fullFilePath;
+
+    if(mDocument) {
+        mDocument->setFileName(mFileFullPath);
+    }
+    if(mThumbnail) {
+        QFileInfo fi(mFileFullPath);
+        QString thumbnailFileFullName = fi.absoluteDir().absoluteFilePath(Utils::mapNameToThumbName(fi.baseName()));
+        mThumbnail->setFileFullName(thumbnailFileFullName);
+    }
 }
 
 TDocument *TMap::document() const
 {
+    return mDocument;
+}
+
+TDocument *TMap::createDocument()
+{
+    if(mDocument)
+        delete mDocument;
+    mDocument = new TDocument(this);
+    if(!mFileFullPath.isEmpty())
+        mDocument->setFileName(mFileFullPath);
+
+    updateThumbnail();
     return mDocument;
 }
 
@@ -178,12 +214,19 @@ bool TMap::save()
     if(mDocument) {
         success = mDocument->save();
         if(success) {
-            QSize imageSize = mType==ADV?IMAGE_SMALL:IMAGE_LARGE;
-            QImage image = mDocument->graphicsScene()->toScaledImage(imageSize);
-            image.save(mThumbnail->fileFullName());
+            updateThumbnail();
+            mThumbnail->save();
+            emit thumbChanged(mThumbnail->content());
         }
     }
     return success;
+}
+
+void TMap::updateThumbnail()
+{
+    QSize imageSize = mType==ADV?IMAGE_SMALL:IMAGE_LARGE;
+    QImage image = mDocument->graphicsScene()->toImage(imageSize);
+    mThumbnail->setPixmap(QPixmap::fromImage(image));
 }
 
 TMapBundle::TMapBundle(TModule *parent) :
@@ -293,6 +336,11 @@ TMap *TMapBundle::getMap(int index) const
     return nullptr;
 }
 
+int TMapBundle::getMapIndex(TMap *map) const
+{
+    return mMapList.indexOf(map);
+}
+
 TModule *TMapBundle::getModule() const
 {
     return mModule;
@@ -352,6 +400,11 @@ TMap *TMapBundle::find(TDocument *document) const
     return nullptr;
 }
 
+TMapList TMapBundle::getMapList() const
+{
+    return mMapList;
+}
+
 TModule::TModule(QObject *parent) :
     QObject(parent)
   , mHasOpenedMap(false)
@@ -368,7 +421,10 @@ TModule::TModule(QObject *parent) :
     mMapBundleList.append(mVsBundle);
     mMapBundleList.append(mCtfBundle);
     for(int i=0;i<mMapBundleList.size();i++) {
-        mMapBundleList.at(i)->setIndexInModule(i);
+        TMapBundle *mapBundle = mMapBundleList.at(i);
+        mapBundle->setIndexInModule(i);
+
+
     }
 }
 
@@ -470,4 +526,9 @@ TMap *TModule::find(TDocument *document) const
             break;
     }
     return map;
+}
+
+TMapBundleList TModule::getMapBundleList() const
+{
+    return mMapBundleList;
 }

@@ -8,35 +8,36 @@
 
 static const QString P_NAME = T("Name");
 
-TDocument::TDocument(const QString &file, QObject *parent) :
+TDocument::TDocument(QObject *parent) :
     TPropertyObject(parent)
-  , mIsDirty(false)
+  , mIsDirty(true)
   , mUndoStack(new QUndoStack(this))
-  , mFileName(file)
   , mFileWatcher(new TFileSystemWatcher(this))
   , mSceneModel(new TSceneModel(this))
   , mGraphicsScene(new TGraphicsScene(this))
   , mEditMode(DEFAULT)
 {
     setObjectName("Document");
+    connetSignalsToSlots();
+    initPropertySheet();
+    mGraphicsScene->setSceneModel(mSceneModel);
+}
 
-    connect(mUndoStack, SIGNAL(cleanChanged(bool)), this, SLOT(slotModificationChanged(bool)));
-    connect(mUndoStack, SIGNAL(indexChanged(int)), this, SLOT(slotUndoStackIndexChanged(int)));
-    mUndoStack->setClean();
-
-    connect(mGraphicsScene, SIGNAL(requestUndo()), mUndoStack, SLOT(undo()));
-    connect(mGraphicsScene, SIGNAL(requestRedo()), mUndoStack, SLOT(redo()));
-
-    connect(mFileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(slotFileChanged(QString)));
-    connect(mFileWatcher, SIGNAL(directoryChanged(QString)), this, SLOT(slotDirectoryChanged(QString)));
-
+TDocument::TDocument(const QString &file, QObject *parent) :
+    TPropertyObject(parent)
+  , mIsDirty(false)
+  , mUndoStack(new QUndoStack(this))
+  , mFileWatcher(new TFileSystemWatcher(this))
+  , mSceneModel(new TSceneModel(this))
+  , mGraphicsScene(new TGraphicsScene(this))
+  , mEditMode(DEFAULT)
+{
+    setObjectName("Document");
+    connetSignalsToSlots();
     initPropertySheet();
 
-    if(!file.isEmpty()) {
-        load(file);
-    } else {
-        mGraphicsScene->setSceneModel(mSceneModel);
-    }
+    load(file);
+    mGraphicsScene->setSceneModel(mSceneModel);
 }
 
 TDocument::~TDocument()
@@ -85,7 +86,10 @@ bool TDocument::save(const QString &fileName)
             saveFile.write(byteArray);
             saveFile.close();
 
-            mUndoStack->setClean();
+            if(mUndoStack->count() > 0)
+                mUndoStack->setClean();
+            else
+                setDirty(false);
             mLastSaveTime = QFileInfo(mFileName).lastModified();
         }
     } catch(...) {
@@ -108,6 +112,12 @@ QString TDocument::fileName() const
 
 void TDocument::setFileName(const QString &fileName)
 {
+    if(mFileName == fileName)
+        return;
+
+    if(!mFileName.isEmpty())
+        mFileWatcher->removePath(mFileName);
+
     QFileInfo fileInfo(fileName);
 
     mFileName = fileName;
@@ -140,7 +150,6 @@ void TDocument::load(const QString &file)
             stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
             f.open(QIODevice::ReadOnly);
             mSceneModel->readFromStream(stream);
-            mGraphicsScene->setSceneModel(mSceneModel);
         } catch (...) {
             throw tr("Load map failed!");
             return;
@@ -156,6 +165,18 @@ void TDocument::load(const QString &file)
 void TDocument::initPropertySheet()
 {
     mPropertySheet->addProperty(PT_STRING, P_NAME, PID_NAME, tr("New Map"));
+}
+
+void TDocument::connetSignalsToSlots()
+{
+    connect(mUndoStack, SIGNAL(cleanChanged(bool)), this, SLOT(slotModificationChanged(bool)));
+    connect(mUndoStack, SIGNAL(indexChanged(int)), this, SLOT(slotUndoStackIndexChanged(int)));
+
+    connect(mGraphicsScene, SIGNAL(requestUndo()), mUndoStack, SLOT(undo()));
+    connect(mGraphicsScene, SIGNAL(requestRedo()), mUndoStack, SLOT(redo()));
+
+    connect(mFileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(slotFileChanged(QString)));
+    connect(mFileWatcher, SIGNAL(directoryChanged(QString)), this, SLOT(slotDirectoryChanged(QString)));
 }
 
 bool TDocument::isDirty() const

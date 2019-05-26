@@ -6,6 +6,10 @@ TEventsModel::TEventsModel(QObject *parent) :
     TBaseModel(TBaseModel::EVENT, parent)
 {
     setName(tr("Event"));
+
+    for(int i=0;i<EVENT_COUNT;i++) {
+        mEventList.append(0);
+    }
 }
 
 void TEventsModel::clear()

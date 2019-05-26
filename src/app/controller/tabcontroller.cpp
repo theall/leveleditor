@@ -47,6 +47,7 @@ void TTabController::setCurrentDocument(TDocument *document)
     if(index == -1)
     {
         index = addDocument(document);
+        mTabWidget->setDocumentDirty(document, document->isDirty());
     } else if(index == mTabWidget->currentIndex()) {
         return;
     }

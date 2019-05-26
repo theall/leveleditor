@@ -6,6 +6,7 @@
 #include "dialogs/selectrootdialog.h"
 #include "dialogs/loadingdialog.h"
 #include "dialogs/newmapdialog.h"
+#include "dialogs/exceptiondialog.h"
 
 #include "component/centralwidget.h"
 #include "component/undodock/undodock.h"
@@ -616,4 +617,11 @@ void TMainWindow::on_actionCloseGame_triggered()
 TNewMapDialog *TMainWindow::getNewMapDialog() const
 {
     return mNewMapDialog;
+}
+
+void TMainWindow::showExceptionDialog(const QString &msg, const QString &trace)
+{
+    TExceptionDialog dlg(this);
+    dlg.setInformation(msg, trace);
+    dlg.exec();
 }

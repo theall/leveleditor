@@ -25,7 +25,10 @@
 #include "gui/mainwindow.h"
 
 #include <QTextCodec>
+#include <QMessageBox>
 #include <QFileOpenEvent>
+
+#include <exception>
 
 TApp::TApp(int argc, char *argv[]) :
     QApplication(argc, argv)
@@ -56,12 +59,23 @@ int TApp::start()
     TCore core;
     TMainWindow gui;
     TMainController controller;
-    if(!controller.joint(&gui, &core))
-        return 0;
+    int ret = -1;
+    try {
+        if(!controller.joint(&gui, &core))
+            return 0;
 
-    connect(this, SIGNAL(requestOpenMap(QString)), &gui, SIGNAL(requestOpenMap(QString)));
+        connect(this, SIGNAL(requestOpenMap(QString)), &gui, SIGNAL(requestOpenMap(QString)));
+        ret = exec();
+    } catch(const std::exception &e) {
+        gui.showExceptionDialog(QString(e.what()));
+    } catch(const std::string &error) {
+        gui.showExceptionDialog(QString::fromStdString(error));
+    } catch(const QString &error) {
+        gui.showExceptionDialog(error);
+    } catch(...) {
+        gui.showExceptionDialog(tr("Unknown exception."));
+    }
 
-    int ret = exec();
     return ret;
 }
 

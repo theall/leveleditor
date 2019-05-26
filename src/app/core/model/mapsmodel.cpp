@@ -26,7 +26,9 @@ void TMapsModel::setModuleList(const TModuleList &moduleList)
     mModuleList = moduleList;
 
     for(int i=0;i<mModuleList.size();i++) {
-        mModuleList.at(i)->setIndexInModel(i);
+        TModule *module = mModuleList.at(i);
+        module->setIndexInModel(i);
+        connectModuleSignalsToSlot(module);
     }
 }
 
@@ -48,6 +50,8 @@ int TMapsModel::add(TModule *module, int index)
         moduleIndex = index;
     }
 
+    connectModuleSignalsToSlot(module);
+
     emit moduleAdded(module, moduleIndex);
     return moduleIndex;
 }
@@ -61,7 +65,9 @@ int TMapsModel::remove(int index)
     if(!module)
         return -1;
 
+    disConnectModuleSignalsToSlot(module);
     mModuleList.removeAt(index);
+
     emit moduleRemoved(module, index);
     return index;
 }
@@ -135,8 +141,71 @@ TMap *TMapsModel::createMap(const QString &moduleName, const TMap::Type &mapType
 
     TMap *map = mapBundle->newMap(mapType);
     map->setId(mapId);
+
     mapBundle->add(map);
     return map;
+}
+
+void TMapsModel::slotMapAdded(TMap *map, int index)
+{
+    beginInsertRows(getMapBundleIndex(map), index, index+1);
+    endInsertRows();
+}
+
+void TMapsModel::slotMapRemoved(TMap *map, int index)
+{
+    beginRemoveRows(getMapBundleIndex(map), index, index+1);
+    endInsertRows();
+}
+
+void TMapsModel::slotMapThumbChanged(const QPixmap &)
+{
+    emit layoutChanged();
+}
+
+QModelIndex TMapsModel::getMapBundleIndex(TMap *map)
+{
+    if(!map)
+        return QModelIndex();
+
+    TMapBundle *mapBundle = map->mapBundle();
+    if(!mapBundle)
+        return QModelIndex();
+
+    TModule *module = mapBundle->getModule();
+    if(!module)
+        return QModelIndex();
+
+    QModelIndex moduleIndex = index(module->getIndexInModel(), 0, QModelIndex());
+    return index(mapBundle->getIndexInModule(), 0, moduleIndex);
+}
+
+void TMapsModel::connectModuleSignalsToSlot(TModule *module)
+{
+    if(!module)
+        return;
+
+    for(TMapBundle *mapBundle : module->getMapBundleList()) {
+        connect(mapBundle, SIGNAL(mapAdded(TMap*,int)), this, SLOT(slotMapAdded(TMap*,int)));
+        connect(mapBundle, SIGNAL(mapRemoved(TMap*,int)), this, SLOT(slotMapRemoved(TMap*,int)));
+
+        for(TMap *map : mapBundle->getMapList()) {
+            connect(map, SIGNAL(thumbChanged(QPixmap)), this, SLOT(slotMapThumbChanged(QPixmap)));
+        }
+    }
+}
+
+void TMapsModel::disConnectModuleSignalsToSlot(TModule *module)
+{
+    if(!module)
+        return;
+
+    for(TMapBundle *mapBundle : module->getMapBundleList()) {
+        for(TMap *map : mapBundle->getMapList()) {
+            map->disconnect(this);
+        }
+        mapBundle->disconnect(this);
+    }
 }
 
 QColor TMapsModel::openedColor() const

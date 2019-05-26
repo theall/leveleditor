@@ -33,11 +33,20 @@ signals:
     void moduleAdded(TModule *module, int index);
     void moduleRemoved(TModule *module, int index);
 
+private slots:
+    void slotMapAdded(TMap *map, int index);
+    void slotMapRemoved(TMap *map, int index);
+    void slotMapThumbChanged(const QPixmap &newThumb);
+
 private:
     QColor mOpenedColor;
     QColor mDirtyColor;
     TModule *mCurrentModule;
     TModuleList mModuleList;
+
+    QModelIndex getMapBundleIndex(TMap *map);
+    void connectModuleSignalsToSlot(TModule *module);
+    void disConnectModuleSignalsToSlot(TModule *module);
 
     // QAbstractItemModel interface
 public:

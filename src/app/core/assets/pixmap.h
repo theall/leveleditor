@@ -10,6 +10,7 @@ class TPixmap : public QObject
 
 public:
     TPixmap(QObject *parent = nullptr);
+    TPixmap(const QSize &size, QObject *parent = nullptr);
     TPixmap(const QString &file, QObject *parent = nullptr);
     ~TPixmap();
 
@@ -30,12 +31,26 @@ public:
 
     bool isValid() const;
 
+    QSize pixmapFixedSize() const;
+    void setPixmapFixedSize(const QSize &pixmapFixedSize);
+
+    QSize thumbnailFixedSize() const;
+    void setThumbnailFixedSize(const QSize &thumbnailFixedSize);
+
+    void setPixmap(const QPixmap &pixmap);
+    void save();
+
 private:
     bool mIsValid;
+    QSize mPixmapFixedSize;
+    QSize mThumbnailFixedSize;
     QString mFileFullName;
     QString mFileName;
     QPixmap mPixmap;
     QPixmap mThumbnail;
+
+    void createMaskOnPixmap();
+    void updateThumbnail();
 };
 
 typedef QList<TPixmap*> TPixmapList;

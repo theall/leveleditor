@@ -64,6 +64,8 @@ public:
     TLayerDock *getLayerDock() const;
     TNewMapDialog *getNewMapDialog() const;
 
+    void showExceptionDialog(const QString &msg, const QString &trace = QString());
+
 signals:
     void requestOpenGame(const QString &gameRoot);
     void requestCreateNewMap();
