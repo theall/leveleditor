@@ -83,8 +83,6 @@ private:
     TGraphicsScene *mGraphicsScene;
     TTileId *mTileStamp;
     EditMode mEditMode;
-    int mLastUndoStackIndex;
-    QUndoCommand *mLastUndoCommand;
 
     void load(const QString &file);
     void setFileName(const QString &fileName);

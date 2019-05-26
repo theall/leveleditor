@@ -11,7 +11,7 @@ TWall::TWall(QObject *parent) :
 
 void TWall::saveToStream(QDataStream &stream) const
 {
-
+    stream << mPropertySheet->getValue(PID_OBJECT_RECT).toRect();
 }
 
 void TWall::readFromStream(QDataStream &stream)

@@ -1,4 +1,4 @@
-QT += core widgets multimedia
+QT += core widgets gui multimedia
 
 SOURCES += \
     $$PWD/core.cpp \

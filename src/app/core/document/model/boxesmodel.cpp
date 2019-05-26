@@ -25,7 +25,10 @@ void TBoxesModel::readFromStream(QDataStream &stream)
 
 void TBoxesModel::saveToStream(QDataStream &stream) const
 {
-
+    stream << mBoxList.size();
+    for(TBox *box : mBoxList) {
+        box->saveToStream(stream);
+    }
 }
 
 int TBoxesModel::rowCount(const QModelIndex &parent) const

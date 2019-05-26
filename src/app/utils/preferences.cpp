@@ -25,48 +25,49 @@ const int TPreferences::ICON_SIZE_SMALL = 16;
 const int TPreferences::ICON_SIZE_MEDIUM = 24;
 const int TPreferences::ICON_SIZE_LARGE = 32;
 
-#define SETTING_FILE                "setting.ini"
+#define SETTINGS_FILE_NAME                "setting.ini"
 
 // General
-static const char *SEC_GUI = "Gui";
-static const char *SEC_GUI_ALWAYS_ON_TOP = "AlwaysOnTop";
-static const char *SEC_GUI_LANGUAGE = "Language";
-static const char *SEC_GUI_STYLE = "Style";
-static const char *SEC_GUI_GEOMETRY = "Geometry";
-static const char *SEC_GUI_WINDOW_STATE = "WindowState";
-static const char *SEC_GUI_LAST_OPEN_PATH = "LastOpenPath";
-static const char *SEC_GUI_LAST_OPEN_DIR = "LastOpenDirectory";
-static const char *SEC_GUI_SAVEBEFOREEXIT = "SaveBeforeExit";
-static const char *SEC_GUI_OPENLASTFILE = "OpenLastFile";
-static const char *SEC_GUI_FULLSCREEN = "FullScreen";
-static const char *SEC_GUI_TOOLBARICONSIZE = "ToolbarIconSize";
-static const char *SEC_GUI_RECENTFILES = "RecentFiles";
-static const char *SEC_GUI_HIDEMENUBAR = "HideMenuBar";
-static const char *SEC_GUI_HIDESTATUSBAR = "HideStatusBar";
-static const char *SEC_GUI_RECENTOPENEDFILES = "RecentOpenedFiles";
-static const char *SEC_GUI_LASTACTIVEFILE = "LastActiveFile";
-static const char *SEC_GUI_SCENE_SCALE = "SceneScale";
-static const char *SEC_GUI_SHOW_TILE_BORDER = "ShowTileBorder";
+#define SEC_GUI "Gui"
+#define SEC_GUI_ALWAYS_ON_TOP "AlwaysOnTop"
+#define SEC_GUI_LANGUAGE "Language"
+#define SEC_GUI_STYLE "Style"
+#define SEC_GUI_GEOMETRY "Geometry"
+#define SEC_GUI_WINDOW_STATE "WindowState"
+#define SEC_GUI_LAST_OPEN_PATH "LastOpenPath"
+#define SEC_GUI_LAST_OPEN_DIR "LastOpenDirectory"
+#define SEC_GUI_SAVEBEFOREEXIT "SaveBeforeExit"
+#define SEC_GUI_OPENLASTFILE "OpenLastFile"
+#define SEC_GUI_FULLSCREEN "FullScreen"
+#define SEC_GUI_TOOLBARICONSIZE "ToolbarIconSize"
+#define SEC_GUI_RECENTFILES "RecentFiles"
+#define SEC_GUI_HIDEMENUBAR "HideMenuBar"
+#define SEC_GUI_HIDESTATUSBAR "HideStatusBar"
+#define SEC_GUI_RECENTOPENEDFILES "RecentOpenedFiles"
+#define SEC_GUI_LASTACTIVEFILE "LastActiveFile"
+#define SEC_GUI_SCENE_SCALE "SceneScale"
+#define SEC_GUI_SHOW_TILE_BORDER "ShowTileBorder"
 
 // Install
-static const char *SEC_INSTALL = "Install";
-static const char *SEC_INSTALL_RUN_COUNT = "RunCount";
-static const char *SEC_INSTALL_GAME_ROOT = "GameRoot";
+#define SEC_INSTALL "Install"
+#define SEC_INSTALL_RUN_COUNT "RunCount"
+#define SEC_INSTALL_GAME_ROOT "GameRoot"
 
 // Options
-static const char *SEC_OPTIONS = "Options";
+#define SEC_OPTIONS "Options"
 
-static const char *SEC_OPTION_GENERAL = "OptionGeneral";
-static const char *SEC_OPTION_DISPLAY_TRAY_ICON = "DisplayTrayIcon";
+#define SEC_OPTION_GENERAL "OptionGeneral"
+#define SEC_OPTION_DISPLAY_TRAY_ICON "DisplayTrayIcon"
 
-static const char *SEC_OPTION_UI = "OptionUI";
-static const char *SEC_OPTION_UI_APP_STYLE = "AppStyle";
-static const char *SEC_OPTION_UI_BASE_COLOR = "BaseColor";
-static const char *SEC_OPTION_UI_SELECTION_COLOR = "SelectionColor";
+#define SEC_OPTION_UI "OptionUI"
+#define SEC_OPTION_UI_APP_STYLE "AppStyle"
+#define SEC_OPTION_UI_BASE_COLOR "BaseColor"
+#define SEC_OPTION_UI_SELECTION_COLOR "SelectionColor"
+#define SEC_OPTION_UI_USE_OPENGL "UseOpenGL"
 
-static const char *SEC_OPTION_DEBUG = "OptionDebug";
-static const char *SEC_OPTION_DEBUG_ENGINE_PATH = "EnginePath";
-static const char *SEC_OPTION_DEBUG_MULTI_INSTANCES = "MultiInstances";
+#define SEC_OPTION_DEBUG "OptionDebug"
+#define SEC_OPTION_DEBUG_ENGINE_PATH "EnginePath"
+#define SEC_OPTION_DEBUG_MULTI_INSTANCES "MultiInstances"
 
 #define SET_VALUE(value,member,parent,section) \
     if(member==value)\
@@ -95,7 +96,7 @@ TPreferences *TPreferences::mInstance = NULL;
 TPreferences::TPreferences(QObject *parent):
     QObject(parent)
 {
-    mSettings = new QSettings(Utils::absoluteFilePath(SETTING_FILE), QSettings::IniFormat);
+    mSettings = new QSettings(Utils::absoluteFilePath(SETTINGS_FILE_NAME), QSettings::IniFormat);
 
     // Retrieve gui settings
     mSettings->beginGroup(SEC_GUI);
@@ -103,7 +104,7 @@ TPreferences::TPreferences(QObject *parent):
     mLastOpenPath = stringValue(SEC_GUI_LAST_OPEN_PATH);
     mLastOpenDir = stringValue(SEC_GUI_LAST_OPEN_DIR);
     mSaveBeforeExit = boolValue(SEC_GUI_SAVEBEFOREEXIT, true);
-    mOpenLastFile = boolValue(SEC_GUI_OPENLASTFILE);
+    mOpenLastFile = boolValue(SEC_GUI_OPENLASTFILE, true);
     mFullScreen = boolValue(SEC_GUI_FULLSCREEN);
     mToolbarIconSize = intValue(SEC_GUI_TOOLBARICONSIZE, ICON_SIZE_MEDIUM);
     mLanguage = stringValue(SEC_GUI_LANGUAGE, "en");
@@ -130,6 +131,7 @@ TPreferences::TPreferences(QObject *parent):
         mBaseColor = colorValue(SEC_OPTION_UI_BASE_COLOR);
         mSelectionColor = colorValue(SEC_OPTION_UI_SELECTION_COLOR);
         mApplicationStyle = (ApplicationStyle)intValue(SEC_OPTION_UI_APP_STYLE);
+        mUseOpenGL = boolValue(SEC_OPTION_UI_USE_OPENGL);
         mSettings->endGroup();
 
         // debug
@@ -264,7 +266,13 @@ QStringList TPreferences::recentOpenedFiles() const
 
 void TPreferences::setRecentOpenedFiles(const QStringList &recentOpenedFiles)
 {
-    SET_VALUE(recentOpenedFiles, mRecentOpenedFiles, SEC_GUI, SEC_GUI_RECENTOPENEDFILES);
+    QStringList realRecentFiles;
+    for(QString file : recentOpenedFiles) {
+        if(file.isEmpty())
+            continue;
+        realRecentFiles.append(file);
+    }
+    SET_VALUE(realRecentFiles, mRecentOpenedFiles, SEC_GUI, SEC_GUI_RECENTOPENEDFILES);
 }
 
 QString TPreferences::lastActiveFile() const
@@ -368,6 +376,16 @@ bool TPreferences::showTileBorder() const
 void TPreferences::setShowTileBorder(bool showTileBorder)
 {
     SET_VALUE(showTileBorder, mShowTileBorder, SEC_GUI, SEC_GUI_SHOW_TILE_BORDER);
+}
+
+bool TPreferences::useOpenGL() const
+{
+    return mUseOpenGL;
+}
+
+void TPreferences::setUseOpenGL(bool useOpenGL)
+{
+    SET_VALUE(useOpenGL, mUseOpenGL, SEC_GUI, SEC_OPTION_UI_USE_OPENGL);
 }
 
 void TPreferences::windowGeometryState(QByteArray *g, QByteArray *s)

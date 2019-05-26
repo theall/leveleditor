@@ -28,6 +28,9 @@ bool TCore::loadResource(const QString &path, bool asynLoad) const
 
 TDocument *TCore::open(const QString &file)
 {
+    if(file.isEmpty())
+        return nullptr;
+
     TDocument *document = find(file);
     if(!document)
     {
@@ -70,13 +73,31 @@ void TCore::closeDocument(TDocument *document)
 {
     if(document)
     {
+        TMap *map = mMapsModel->find(document);
+        if(!map)
+            throw("Invalid map with unbind document!");
+
         mFileWatcher->removePath(document->fileName());
         mDocuments.removeAll(document);
-        delete document;
+
+        // Close at end.
+        map->close();
     }
 }
 
-void TCore::saveAllDocuments()
+bool TCore::saveMap(TDocument *document)
+{
+    if(!document)
+        return false;
+
+    TMap *map = mMapsModel->find(document);
+    if(!map)
+        return false;
+
+    return map->save();
+}
+
+void TCore::saveAllMaps()
 {
     for(TDocument *d : mDocuments)
     {

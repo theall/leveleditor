@@ -27,7 +27,12 @@ void TRespawnsModel::readFromStream(QDataStream &stream)
 
 void TRespawnsModel::saveToStream(QDataStream &stream) const
 {
+    int respawnSize = mRespawnPointList.size();
+    stream << respawnSize;
 
+    for(int i=0;i<respawnSize;i++) {
+        stream << mRespawnPointList.at(i);
+    }
 }
 
 int TRespawnsModel::rowCount(const QModelIndex &parent) const

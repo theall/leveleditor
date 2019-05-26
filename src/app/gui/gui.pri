@@ -64,7 +64,8 @@ SOURCES += \
     $$PWD/style/stylehelper.cpp \
     $$PWD/style/proxystyle.cpp \
     $$PWD/component/tabwidget/graphicsviewcontexmenu.cpp \
-    $$PWD/dialogs/newmapdialog.cpp
+    $$PWD/dialogs/newmapdialog.cpp \
+    $$PWD/widgets/flexiblescrollbar.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -119,7 +120,8 @@ HEADERS += \
     $$PWD/style/stylehelper.h \
     $$PWD/style/proxystyle.h \
     $$PWD/component/tabwidget/graphicsviewcontexmenu.h \
-    $$PWD/dialogs/newmapdialog.h
+    $$PWD/dialogs/newmapdialog.h \
+    $$PWD/widgets/flexiblescrollbar.h
 
 FORMS += \
     $$PWD/mainwindow.ui \

@@ -127,7 +127,8 @@ bool TMainController::joint(TMainWindow *mainWindow, TCore *core)
                     }
                     continue;
                 }
-                mTabController->addDocument(document);
+                if(document)
+                    mTabController->addDocument(document);
             }
             TDocument *document = mCore->find(prefs->lastActiveFile());
             if(document) {
@@ -205,12 +206,12 @@ void TMainController::slotRequestSaveCurrentMap()
     if(!document)
         return;
 
-    document->save();
+    mCore->saveMap(document);
 }
 
 void TMainController::slotRequestSaveAllMaps()
 {
-    mCore->saveAllDocuments();
+    mCore->saveAllMaps();
 }
 
 void TMainController::slotRequestCloseDocument(TDocument *document)

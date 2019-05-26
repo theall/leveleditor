@@ -16,7 +16,15 @@ TDArea::TDArea(QObject *parent) :
 
 void TDArea::saveToStream(QDataStream &stream) const
 {
-
+    QRect r = mPropertySheet->getValue(PID_OBJECT_RECT).toRect();
+    stream << r.left();
+    stream << r.top();
+    stream << r.width();
+    stream << r.height();
+    stream << mPropertySheet->getValue(PID_DAREA_FLEE_DIR).toInt();
+    stream << mPropertySheet->getValue(PID_DAREA_TYPE).toInt();
+    stream << mPropertySheet->getValue(PID_DAREA_TARGET).toInt();
+    stream << mPropertySheet->getValue(PID_DAREA_MOVE_BY).toInt();
 }
 
 void TDArea::readFromStream(QDataStream &stream)
@@ -31,18 +39,18 @@ void TDArea::readFromStream(QDataStream &stream)
     stream >> target;
     stream >> moveBy;
     mPropertySheet->setValue(PID_OBJECT_RECT, QRectF(x,y,w,h));
-    mPropertySheet->setValue(PID_AREA_FLEE_DIR, fleeDir);
-    mPropertySheet->setValue(PID_AREA_DANGER_AREA, type);
-    mPropertySheet->setValue(PID_AREA_EDGES, target);
-    mPropertySheet->setValue(PID_AREA_MOVE_BY, moveBy);
+    mPropertySheet->setValue(PID_DAREA_FLEE_DIR, fleeDir);
+    mPropertySheet->setValue(PID_DAREA_TYPE, type);
+    mPropertySheet->setValue(PID_DAREA_TARGET, target);
+    mPropertySheet->setValue(PID_DAREA_MOVE_BY, moveBy);
 }
 
 void TDArea::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_INT, P_FLEE_DIR, PID_AREA_FLEE_DIR);
-    mPropertySheet->addProperty(PT_INT, P_TYPE, PID_AREA_DANGER_AREA);
-    mPropertySheet->addProperty(PT_INT, P_TARGET, PID_AREA_EDGES);
-    mPropertySheet->addProperty(PT_INT, P_MOVE_BY, PID_AREA_MOVE_BY);
+    mPropertySheet->addProperty(PT_INT, P_FLEE_DIR, PID_DAREA_FLEE_DIR);
+    mPropertySheet->addProperty(PT_INT, P_TYPE, PID_DAREA_TYPE);
+    mPropertySheet->addProperty(PT_INT, P_TARGET, PID_DAREA_TARGET);
+    mPropertySheet->addProperty(PT_INT, P_MOVE_BY, PID_DAREA_MOVE_BY);
 }
 
 QString TDArea::typeString() const

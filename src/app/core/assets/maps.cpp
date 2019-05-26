@@ -2,6 +2,11 @@
 #include "pixmap.h"
 #include "../document/document.h"
 
+#include <QSize>
+
+#define IMAGE_SMALL QSize(48,36)
+#define IMAGE_LARGE QSize(100,75)
+
 bool idCompare(TMap *map1, TMap *map2)
 {
     return map1->id() < map2->id();
@@ -159,9 +164,26 @@ TDocument *TMap::open()
     return mDocument;
 }
 
+void TMap::close()
+{
+    if(mDocument) {
+        delete mDocument;
+        mDocument = nullptr;
+    }
+}
+
 bool TMap::save()
 {
-
+    bool success = false;
+    if(mDocument) {
+        success = mDocument->save();
+        if(success) {
+            QSize imageSize = mType==ADV?IMAGE_SMALL:IMAGE_LARGE;
+            QImage image = mDocument->graphicsScene()->toScaledImage(imageSize);
+            image.save(mThumbnail->fileFullName());
+        }
+    }
+    return success;
 }
 
 TMapBundle::TMapBundle(TModule *parent) :
@@ -221,12 +243,27 @@ int TMapBundle::add(TMap *map, int index)
 
 int TMapBundle::remove(TMap *map)
 {
+    if(!map)
+        return -1;
 
+    int mapIndex = mMapList.indexOf(map);
+    if(mapIndex == -1)
+        return mapIndex;
+
+    mMapList.removeAt(mapIndex);
+    emit mapRemoved(map, mapIndex);
+    return mapIndex;
 }
 
 int TMapBundle::remove(int index)
 {
+    TMap *map = mMapList.at(index);
+    if(!map)
+        return -1;
 
+    mMapList.removeAt(index);
+    emit mapRemoved(map, index);
+    return index;
 }
 
 QString TMapBundle::name() const
@@ -299,6 +336,16 @@ TMap *TMapBundle::find(const QString &mapFilePath) const
 {
     for(TMap *map : mMapList) {
         if(map->fullFilePath() == mapFilePath) {
+            return map;
+        }
+    }
+    return nullptr;
+}
+
+TMap *TMapBundle::find(TDocument *document) const
+{
+    for(TMap *map : mMapList) {
+        if(map->document() == document) {
             return map;
         }
     }
@@ -408,6 +455,17 @@ TMap *TModule::find(const QString &mapFilePath) const
     TMap *map = nullptr;
     for(TMapBundle *mapBundle : mMapBundleList) {
         map = mapBundle->find(mapFilePath);
+        if(map)
+            break;
+    }
+    return map;
+}
+
+TMap *TModule::find(TDocument *document) const
+{
+    TMap *map = nullptr;
+    for(TMapBundle *mapBundle : mMapBundleList) {
+        map = mapBundle->find(document);
         if(map)
             break;
     }

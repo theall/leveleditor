@@ -26,6 +26,11 @@ bool TMapsDockController::joint(TMainWindow *mainWindow, TCore *core)
             this,
             SLOT(slotOnModelIndexDoubleClicked(QModelIndex)));
 
+    mMapsModel = core->mapsModel();
+    Q_ASSERT(mMapsModel);
+    connect(mMapsModel, SIGNAL(moduleAdded(TModule*,int)), this, SLOT(slotOnModuleAdded(TModule*,int)));
+    connect(mMapsModel, SIGNAL(moduleRemoved(TModule*,int)), this, SLOT(slotOnModuleRemoved(TModule*,int)));
+
     connect(core, SIGNAL(ready()), this, SLOT(slotOnCoreReady()));
     return TAbstractController::joint(mainWindow, core);
 }
@@ -52,12 +57,12 @@ void TMapsDockController::slotOnModelIndexDoubleClicked(const QModelIndex &index
     }
 }
 
-void TMapsDockController::slotOnModuleAdded(TModule *module, int)
+void TMapsDockController::slotOnModuleAdded(TModule *, int)
 {
 
 }
 
-void TMapsDockController::slotOnModuleRemoved(TModule *module, int index)
+void TMapsDockController::slotOnModuleRemoved(TModule *, int)
 {
 
 }

@@ -34,7 +34,8 @@ class TStartPoint : public TObject
     Q_OBJECT
 
 public:
-    TStartPoint(QObject *parent = nullptr);
+    explicit TStartPoint(QObject *parent = nullptr);
+    ~TStartPoint();
 
     // TObject interface
 public:

@@ -4,6 +4,7 @@
 #include <QMap>
 #include <QPair>
 #include <QList>
+#include <QImage>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 
@@ -61,6 +62,9 @@ public:
     void setEditMode(int editMode);
     void showSelectedItemsBorder(bool visible = true);
     void setSceneRect(const QRectF &rect);
+
+    QImage toImage();
+    QImage toScaledImage(const QSize &size = QSize());
 
 signals:
     void needChangeCursor(Qt::CursorShape cursor);

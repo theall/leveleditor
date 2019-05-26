@@ -24,7 +24,7 @@ bool TMainPropertyController::joint(TMainWindow *mainWindow, TCore *core)
 void TMainPropertyController::setPropertySheet(TPropertySheet *propertySheet)
 {
     TPropertyController::setPropertySheet(propertySheet);
-    mMainWindow->getPropertyDock()->setText(propertySheet!=nullptr?propertySheet->getContextName():"");
+    mMainWindow->getPropertyDock()->setText(propertySheet?propertySheet->getContextName():"");
 }
 
 void TMainPropertyController::setCurrentDocument(TDocument *document)

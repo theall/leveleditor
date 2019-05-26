@@ -12,6 +12,7 @@
 #include "respawnsmodel.h"
 #include "triggersmodel.h"
 #include "wallsmodel.h"
+#include "enemyfactorymodel.h"
 #include "../property/propertyobject.h"
 
 #include <QColor>
@@ -32,6 +33,7 @@ public:
     TRespawnsModel *getRespawnsModel() const;
     TTriggersModel *getTriggersModel() const;
     TWallsModel *getWallsModel() const;
+    TEnemyFactoryModel *getEnemyFactoryModel() const;
     TTileLayerModel *getTileLayerModel1() const;
     TTileLayerModel *getTileLayerModel2() const;
     TTileLayerModel *getTileLayerModel3() const;
@@ -73,6 +75,7 @@ private:
     TRespawnsModel *mRespawnsModel;
     TTriggersModel *mTriggersModel;
     TWallsModel *mWallsModel;
+    TEnemyFactoryModel *mEnemyFactoryModel;
     TTileLayerModel *mTileLayerModel4;
     TTileLayerModel *mTileLayerModel5;
     TTileLayerModel *mTileLayerModel6;

@@ -18,7 +18,9 @@ TFrame::~TFrame()
 
 void TFrame::saveToStream(QDataStream &stream) const
 {
-
+    stream << mPropertySheet->getValue(PID_FRAME_Background).toPoint();
+    stream << mPropertySheet->getValue(PID_FRAME_Number).toPoint();
+    stream << mPropertySheet->getValue(PID_FRAME_Duration).toPoint();
 }
 
 void TFrame::readFromStream(QDataStream &stream)

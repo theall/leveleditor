@@ -43,6 +43,11 @@ TStartPoint::TStartPoint(QObject *parent) :
     setSize(QSize(1,1));
 }
 
+TStartPoint::~TStartPoint()
+{
+
+}
+
 QString TStartPoint::typeString() const
 {
     return "Start Pos";
@@ -161,9 +166,41 @@ TTile::TTile(QObject *parent) :
 
 void TTile::saveToStream(QDataStream &stream) const
 {
-    QPointF pos1 = mPropertySheet->getValue(P_POS_1).toPointF();
-    stream << (float)pos1.x();
-    stream << (float)pos1.y();
+    QRectF rect = mPropertySheet->getValue(PID_TILE_POS_1).toRectF();
+    stream << rect.topLeft();
+    stream << mTileId->id();
+    stream << mTileId->tilesetId();
+
+    QRectF endRect(0,0,0,0);
+    if(mHasMoveModel) {
+        endRect = mDoor->rect();
+    }
+    stream << endRect.left();// xEnd1
+    stream << endRect.right();// xEnd2
+
+    QPointF rand1 = mPropertySheet->getValue(PID_TILE_RAND_1).toPoint();
+    QPointF rand2 = mPropertySheet->getValue(PID_TILE_RAND_2).toPoint();
+    stream << rand1.x();
+    stream << rand2.x();
+
+    QPointF speed = mPropertySheet->getValue(PID_TILE_SPEED).toPointF();
+    stream << speed.x();
+    stream << endRect.top();
+    stream << endRect.bottom();
+    stream << rand1.y();
+    stream << rand2.y();
+    stream << speed.y();
+
+    QPoint startPos(0,0);
+    if(mHasMoveModel) {
+        startPos = mDoor->startPoint()->pos().toPoint();
+    }
+    stream << startPos;
+    stream << mPropertySheet->getValue(PID_TILE_FOLLOW).toInt();
+    stream << mPropertySheet->getValue(PID_TILE_TARGET).toInt();
+    stream << mPropertySheet->getValue(PID_TILE_POS_2).toPoint();
+    stream << mPropertySheet->getValue(PID_TILE_FOLLOW_TYPE).toInt();
+    stream << mPropertySheet->getValue(PID_TILE_SCREEN_SPEED).toPointF();
 }
 
 void TTile::readFromStream(QDataStream &stream)
@@ -240,15 +277,15 @@ void TTile::readFromStream(QDataStream &stream)
         mHasMoveModel = false;
     }
 
-    mPropertySheet->setValue(P_POS_1, pos1);
-    mPropertySheet->setValue(P_POS_2, pos2);
-    mPropertySheet->setValue(P_RAND_1, rand1);
-    mPropertySheet->setValue(P_RAND_2, rand2);
-    mPropertySheet->setValue(P_SPEED, speed);
-    mPropertySheet->setValue(P_FOLLOW, follow);
-    mPropertySheet->setValue(P_FOLLOW_TYPE, followType);
-    mPropertySheet->setValue(P_TARGET, target);
-    mPropertySheet->setValue(P_SCREEN_SPEED, screenSpeed);
+    mPropertySheet->setValue(PID_TILE_POS_1, pos1);
+    mPropertySheet->setValue(PID_TILE_POS_2, pos2);
+    mPropertySheet->setValue(PID_TILE_RAND_1, rand1);
+    mPropertySheet->setValue(PID_TILE_RAND_2, rand2);
+    mPropertySheet->setValue(PID_TILE_SPEED, speed);
+    mPropertySheet->setValue(PID_TILE_FOLLOW, follow);
+    mPropertySheet->setValue(PID_TILE_FOLLOW_TYPE, followType);
+    mPropertySheet->setValue(PID_TILE_TARGET, target);
+    mPropertySheet->setValue(PID_TILE_SCREEN_SPEED, screenSpeed);
 
     mTileId = mDocument->getTileId(setNumber, number);
     setRect(QRectF(pos1, QSizeF()));

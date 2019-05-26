@@ -1,4 +1,5 @@
 #include "miniscenecontroller.h"
+#include "../core/document/graphics/graphicsscene.h"
 #include "../gui/component/tabwidget/graphicsview.h"
 #include "../gui/component/miniscenedock/miniscenedock.h"
 #include "../gui/component/tabwidget/tabwidget.h"
@@ -104,12 +105,7 @@ void TMiniSceneController::slotRequestLocatePoint(const QPoint &point, int delta
     if(delta != 0)
         mZoomComboBox->handleWheelDelta(delta);
 
-    QPointF centerPos = mapToScene(point);
-    QRectF viewPortRect = mGraphicsView->mapToScene(mGraphicsView->viewport()->geometry()).boundingRect();
-    viewPortRect.moveTopLeft(centerPos-viewPortRect.center());
-    //mGraphicsView->setSceneRect(viewPortRect.united(mGraphicsView->sceneRect()));
-    updateViewPortRect();
-    mGraphicsView->centerOn(centerPos);
+    mGraphicsView->forceCenterOn(point);
 }
 
 void TMiniSceneController::slotSceneModelPropertyItemValueChanged(TPropertyItem *propertyItem, const QVariant &)
@@ -144,17 +140,11 @@ QImage TMiniSceneController::convertSceneToImage()
     if(!mGraphicsView)
         return QImage();
 
-    QGraphicsScene *scene = mGraphicsView->scene();
+    TGraphicsScene *scene = static_cast<TGraphicsScene*>(mGraphicsView->scene());
     if(!scene)
         return QImage();
 
-    QSizeF imageSize = scene->sceneRect().size();
-    QImage image(imageSize.width(), imageSize.height(), QImage::Format_ARGB32);
-    //get thumbnail
-    QPainter painter(&image);
-    painter.setRenderHint(QPainter::Antialiasing);
-    scene->render(&painter);
-    return image;
+    return scene->toImage();
 }
 
 QPointF TMiniSceneController::mapToScene(const QPoint &p) const

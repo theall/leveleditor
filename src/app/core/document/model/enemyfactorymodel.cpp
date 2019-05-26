@@ -29,9 +29,13 @@ void TEnemyFactoryModel::readFromStream(QDataStream &stream)
     }
 }
 
-void TEnemyFactoryModel::saveToStream(QDataStream &) const
+void TEnemyFactoryModel::saveToStream(QDataStream &stream) const
 {
+    stream << mEnemyFactoryList.size();
 
+    for(TEnemyFactory *enemyFactory : mEnemyFactoryList) {
+        enemyFactory->saveToStream(stream);
+    }
 }
 
 int TEnemyFactoryModel::rowCount(const QModelIndex &) const

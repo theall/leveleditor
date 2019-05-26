@@ -7,6 +7,7 @@
 #include "../gui/dialogs/soundresourcedialog.h"
 
 #include <QDebug>
+#include <QStandardItem>
 
 const int g_propertyTypeMap[PT_COUNT] = {
     QVariant::Int,//PT_INT
@@ -282,12 +283,12 @@ void TPropertyController::slotCurrentItemChanged(QtBrowserItem *browserItem)
 
 void TPropertyController::slotGetSelectedImage(QString &text, QPixmap &pixmap)
 {
-//    QStandardItem *item = mPixmapResourceDialog->getSelectedItem();
-//    if(item)
-//    {
-//        text = item->text();
-//        pixmap = item->icon().pixmap(QSize(64,64));
-//    }
+    QStandardItem *item = nullptr;
+    if(item)
+    {
+        text = item->text();
+        pixmap = item->icon().pixmap(QSize(64,64));
+    }
 }
 
 void TPropertyController::slotTimerEvent()

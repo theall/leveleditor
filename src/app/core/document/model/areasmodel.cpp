@@ -32,7 +32,10 @@ void TAreasModel::readFromStream(QDataStream &stream)
 
 void TAreasModel::saveToStream(QDataStream &stream) const
 {
-
+    stream << mAreaList.size();
+    for(TArea *area : mAreaList) {
+        area->saveToStream(stream);
+    }
 }
 
 int TAreasModel::rowCount(const QModelIndex &parent) const

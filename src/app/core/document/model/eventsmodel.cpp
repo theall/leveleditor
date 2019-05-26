@@ -1,5 +1,7 @@
 #include "eventsmodel.h"
 
+#define EVENT_COUNT 100
+
 TEventsModel::TEventsModel(QObject *parent) :
     TBaseModel(TBaseModel::EVENT, parent)
 {
@@ -16,7 +18,7 @@ void TEventsModel::readFromStream(QDataStream &stream)
     mEventList.clear();
 
     int event;
-    for(int i=0;i<100;i++) {
+    for(int i=0;i<EVENT_COUNT;i++) {
         stream >> event;
         mEventList.append(event);
     }
@@ -24,7 +26,7 @@ void TEventsModel::readFromStream(QDataStream &stream)
 
 void TEventsModel::saveToStream(QDataStream &stream) const
 {
-    for(int i=0;i<100;i++) {
+    for(int i=0;i<EVENT_COUNT;i++) {
         stream << mEventList.at(i);
     }
 }

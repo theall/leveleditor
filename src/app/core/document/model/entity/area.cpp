@@ -23,7 +23,15 @@ TArea::TArea(const QRect &rect, QObject *parent) :
 
 void TArea::saveToStream(QDataStream &stream) const
 {
-
+    QRect r = mPropertySheet->getValue(PID_OBJECT_RECT).toRect();
+    stream << r.left();
+    stream << r.top();
+    stream << r.width();
+    stream << r.height();
+    stream << mPropertySheet->getValue(PID_AREA_FLEE_DIR).toInt();
+    stream << mPropertySheet->getValue(PID_AREA_DANGER_AREA).toInt();
+    stream << mPropertySheet->getValue(PID_AREA_EDGES).toInt();
+    stream << mPropertySheet->getValue(PID_AREA_MOVE_BY).toInt();
 }
 
 void TArea::readFromStream(QDataStream &stream)

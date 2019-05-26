@@ -29,7 +29,25 @@ TEnemy::TEnemy(QObject *parent) :
 
 void TEnemy::saveToStream(QDataStream &stream) const
 {
-
+    stream << mPropertySheet->getValue(PID_ENEMY_POS).toPoint();
+    stream << mPropertySheet->getValue(PID_ENEMY_DIR).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_LIFE).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_LIVES).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_DAMAGE).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_AI_LEVEL).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_TEAM).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_CATEGORY).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_TYPE).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_DELAY).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_DEAD_EVENT).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_WAIT_EVENT).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_CHUNK).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_SOUND).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_VAR1).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_VAR2).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_VAR3).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_VAR4).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_VAR5).toInt();
 }
 
 void TEnemy::readFromStream(QDataStream &stream)

@@ -2,15 +2,23 @@
 #define TTRIGGERSMODEL_H
 
 #include "basemodel.h"
+#include "entity/trigger.h"
 
 class TTriggersModel : public TBaseModel
 {
     Q_OBJECT
 
 public:
-    TTriggersModel(QObject *parent = Q_NULLPTR);
+    explicit TTriggersModel(QObject *parent = Q_NULLPTR);
+    ~TTriggersModel();
+
+    TTriggerList triggerList() const;
+    void setTriggerList(const TTriggerList &triggerList);
 
     void clear();
+
+private:
+    TTriggerList mTriggerList;
 
     // TIO interface
 public:

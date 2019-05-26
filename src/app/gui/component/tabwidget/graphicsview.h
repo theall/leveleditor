@@ -15,6 +15,7 @@ public:
 
     qreal scale() const;
     void setScale(const qreal &scale);
+    void forceCenterOn(const QPointF &pos);
 
 signals:
     void resized();
@@ -23,8 +24,8 @@ signals:
 private:
     qreal mScale;
     bool mLeftButtonDown;
+    QPoint mLastMousePos;
 
-private:
     // QWidget interface
 protected:
     void resizeEvent(QResizeEvent *event);

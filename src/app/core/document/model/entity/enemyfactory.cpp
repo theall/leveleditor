@@ -29,7 +29,15 @@ void TEnemyFactory::setEnemyList(const TEnemyList &enemyList)
 
 void TEnemyFactory::saveToStream(QDataStream &stream) const
 {
+    stream << mPropertySheet->getValue(PID_ENEMY_FACTORY_CURRENT_FRAME).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_FACTORY_DELAY).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_FACTORY_EVENT).toInt();
+    stream << mEnemyList.size();
+    stream << mPropertySheet->getValue(PID_ENEMY_FACTORY_LOOP).toInt();
 
+    for(TEnemy *enemy : mEnemyList) {
+        enemy->saveToStream(stream);
+    }
 }
 
 void TEnemyFactory::readFromStream(QDataStream &stream)

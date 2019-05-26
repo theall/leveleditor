@@ -26,7 +26,31 @@ TPlat::TPlat(QObject *parent) :
 
 void TPlat::saveToStream(QDataStream &stream) const
 {
+    QRectF rect = mPropertySheet->getValue(PID_OBJECT_RECT).toRect();
+    QPointF speed = mPropertySheet->getValue(PID_PLAT_SPEED).toPointF();
+    stream << rect.left();
+    stream << rect.top();
+    stream << speed.x();
+    stream << speed.y();
+    stream << mPropertySheet->getValue(PID_PLAT_DANGER).toInt();
+    stream << mPropertySheet->getValue(PID_PLAT_DRAW).toInt();
+    stream << (int)rect.width();
+    stream << (int)rect.height();
+    stream << mPropertySheet->getValue(PID_PLAT_CURRENT_POINT).toInt();
+    stream << mPointList.size();
+    stream << mPropertySheet->getValue(PID_PLAT_TILE).toInt();
+    stream << mPropertySheet->getValue(PID_PLAT_USE_TRIGGER).toInt();
+    stream << mPropertySheet->getValue(PID_PLAT_EVENT_NUMBER).toInt();
+    stream << mPropertySheet->getValue(PID_PLAT_FINAL_POINT).toInt();
+    stream << mPropertySheet->getValue(PID_PLAT_BREAK).toInt();
+    stream << mPropertySheet->getValue(PID_PLAT_CHUNK).toInt();
+    stream << mPropertySheet->getValue(PID_PLAT_SOUND).toInt();
+    stream << mPropertySheet->getValue(PID_PLAT_BREAKABLE).toInt();
+    stream << mPropertySheet->getValue(PID_PLAT_EVENT_NUMBER_2).toInt();
 
+    for(int i=0;i<mPointList.size();i++) {
+        stream << mPointList.at(i);
+    }
 }
 
 void TPlat::readFromStream(QDataStream &stream)

@@ -32,7 +32,33 @@ TBox::TBox(QObject *parent) :
 
 void TBox::saveToStream(QDataStream &stream) const
 {
-
+    QRectF rect = mPropertySheet->getValue(PID_OBJECT_RECT).toRect();
+    stream << rect.left();
+    stream << rect.top();
+    stream << mPropertySheet->getValue(PID_BOX_SPEED).toPointF();
+    stream << mPropertySheet->getValue(PID_BOX_TARGET).toInt();
+    stream << mPropertySheet->getValue(PID_BOX_DRAW).toInt()  ;
+    stream << (int)rect.width();
+    stream << (int)rect.height();
+    stream << 0;// curPoint
+    stream << 1;// pointsAmount
+    stream << mPropertySheet->getValue(PID_BOX_TYPE).toInt();
+    stream << mPropertySheet->getValue(PID_BOX_CHUNK_TYPE).toInt();
+    stream << mPropertySheet->getValue(PID_BOX_HIT_MODE).toInt();
+    stream << mPropertySheet->getValue(PID_BOX_HIT_TIME).toInt();
+    stream << mPropertySheet->getValue(PID_BOX_HIT_SPEED).toPointF();
+    stream << mPropertySheet->getValue(PID_BOX_DAMAGE).toInt();
+    stream << mPropertySheet->getValue(PID_BOX_HIT_SOUND).toInt();
+    stream << mPropertySheet->getValue(PID_BOX_USE_TRIGGER).toInt();
+    stream << mPropertySheet->getValue(PID_BOX_EVENTN).toInt();
+    stream << 0; // finalDest
+    stream << mPropertySheet->getValue(PID_BOX_BREAK).toInt();
+    stream << mPropertySheet->getValue(PID_BOX_SOUND).toInt();
+    stream << mPropertySheet->getValue(PID_BOX_BREAKABLE).toInt();
+    stream << mPropertySheet->getValue(PID_BOX_EVENTN2).toInt();
+    for(int i=0;i<1;i++) {
+        stream << QPoint(0,0);
+    }
 }
 
 void TBox::readFromStream(QDataStream &stream)
@@ -104,8 +130,7 @@ void TBox::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(PID_BOX_CHUNK_TYPE, chunkType);
     mPropertySheet->setValue(PID_BOX_HIT_MODE, hitMode);
     mPropertySheet->setValue(PID_BOX_HIT_TIME, hitTime);
-    mPropertySheet->setValue(PID_BOX_HIT_SPEED, hitSpeed);
-    mPropertySheet->setValue(PID_BOX_HIT_Y_SPEED, hitYSpeed);
+    mPropertySheet->setValue(PID_BOX_HIT_SPEED, QPointF(hitSpeed,hitYSpeed));
     mPropertySheet->setValue(PID_BOX_DAMAGE, damage);
     mPropertySheet->setValue(PID_BOX_HIT_SOUND, hitSound);
     mPropertySheet->setValue(PID_BOX_USE_TRIGGER, useTrigger);
@@ -125,8 +150,7 @@ void TBox::initPropertySheet()
     mPropertySheet->addProperty(PT_INT, P_CHUNK_TYPE, PID_BOX_CHUNK_TYPE);
     mPropertySheet->addProperty(PT_INT, P_HIT_MODE, PID_BOX_HIT_MODE);
     mPropertySheet->addProperty(PT_INT, P_HIT_TIME, PID_BOX_HIT_TIME);
-    mPropertySheet->addProperty(PT_INT, P_HIT_SPEED, PID_BOX_HIT_SPEED);
-    mPropertySheet->addProperty(PT_INT, P_HIT_Y_SPEED, PID_BOX_HIT_Y_SPEED);
+    mPropertySheet->addProperty(PT_VECTORF, P_HIT_SPEED, PID_BOX_HIT_SPEED);
     mPropertySheet->addProperty(PT_INT, P_DAMAGE, PID_BOX_DAMAGE);
     mPropertySheet->addProperty(PT_INT, P_HIT_SOUND, PID_BOX_HIT_SOUND);
     mPropertySheet->addProperty(PT_INT, P_USE_TRIGGER, PID_BOX_USE_TRIGGER);

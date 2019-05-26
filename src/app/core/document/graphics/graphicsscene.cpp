@@ -690,6 +690,24 @@ void TGraphicsScene::setSceneRect(const QRectF &rect)
     QGraphicsScene::setSceneRect(flatedRect);
 }
 
+QImage TGraphicsScene::toImage()
+{
+    return toScaledImage();
+}
+
+QImage TGraphicsScene::toScaledImage(const QSize &size)
+{
+    QSizeF imageSize(size);
+    if(imageSize.isEmpty())
+        imageSize = sceneRect().size();
+    QImage image(imageSize.width(), imageSize.height(), QImage::Format_ARGB32);
+    //get thumbnail
+    QPainter painter(&image);
+    painter.setRenderHint(QPainter::Antialiasing);
+    render(&painter);
+    return image;
+}
+
 void TGraphicsScene::slotOnSceneModelCurrentIndexChanged(int)
 {
     if(mSceneModel->getCurrentModel()) {

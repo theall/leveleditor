@@ -49,6 +49,7 @@ public:
     void setDocument(TDocument *document);
 
     TDocument *open();
+    void close();
     bool save();
 
 signals:
@@ -102,6 +103,7 @@ public:
     void sort();
 
     TMap *find(const QString &mapFilePath) const;
+    TMap *find(TDocument *document) const;
 
 signals:
     void mapAdded(TMap *map, int index);
@@ -145,7 +147,7 @@ public:
     void getAvailableIds(int &adv, int &vs, int &ctf) const;
 
     TMap *find(const QString &mapFilePath) const;
-
+    TMap *find(TDocument *document) const;
 
 private:
     QString mName;

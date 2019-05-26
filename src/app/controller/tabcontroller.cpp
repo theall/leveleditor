@@ -60,7 +60,7 @@ void TTabController::removeDocument(TDocument *document)
 
     if(mTabWidget->removeTab((void*)document))
     {
-        //document->disconnect(this);
+        document->disconnect(this);
     }
 }
 

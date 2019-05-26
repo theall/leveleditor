@@ -126,6 +126,9 @@ public:
     bool showTileBorder() const;
     void setShowTileBorder(bool showTileBorder);
 
+    bool useOpenGL() const;
+    void setUseOpenGL(bool useOpenGL);
+
 signals:
     void hideMenuBarChanged(bool);
     void toolbarIconSizeChanged(int);
@@ -134,6 +137,7 @@ signals:
     void applicationStyleChanged(const ApplicationStyle &applicationStyle);
     void baseColorChanged(const QColor &baseColor);
     void selectionColorChanged(const QColor &selectionColor);
+    void useOpenGLChanged(bool);
 
 private:
     QSettings *mSettings;
@@ -161,6 +165,7 @@ private:
     QColor mBaseColor;
     QColor mSelectionColor;
     bool mShowTileBorder;
+    bool mUseOpenGL;
 
     void setValue(const QString &section, const QVariant &value);
     QVariant value(const QString &section, const QVariant &defValue=QVariant());

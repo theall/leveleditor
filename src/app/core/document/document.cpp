@@ -17,8 +17,6 @@ TDocument::TDocument(const QString &file, QObject *parent) :
   , mSceneModel(new TSceneModel(this))
   , mGraphicsScene(new TGraphicsScene(this))
   , mEditMode(DEFAULT)
-  , mLastUndoStackIndex(-1)
-  , mLastUndoCommand(nullptr)
 {
     setObjectName("Document");
 
@@ -85,6 +83,8 @@ bool TDocument::save(const QString &fileName)
                 return false;
             }
             saveFile.write(byteArray);
+            saveFile.close();
+
             mUndoStack->setClean();
             mLastSaveTime = QFileInfo(mFileName).lastModified();
         }

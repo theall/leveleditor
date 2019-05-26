@@ -31,7 +31,11 @@ void TDAreasModel::readFromStream(QDataStream &stream)
 
 void TDAreasModel::saveToStream(QDataStream &stream) const
 {
+    stream << mDAreaList.size();
 
+    for(TDArea *area : mDAreaList) {
+        area->saveToStream(stream);
+    }
 }
 
 int TDAreasModel::rowCount(const QModelIndex &parent) const

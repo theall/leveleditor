@@ -20,7 +20,10 @@ void TWallsModel::readFromStream(QDataStream &stream)
 
 void TWallsModel::saveToStream(QDataStream &stream) const
 {
-
+    stream << mWallList.size();
+    for(TWall *wall : mWallList) {
+        wall->saveToStream(stream);
+    }
 }
 
 int TWallsModel::rowCount(const QModelIndex &parent) const

@@ -153,6 +153,9 @@ void TLayerView::setModel(QAbstractItemModel *model)
 {
     QTreeView::setModel(model);
 
+    if(!model)
+        return;
+
     QHeaderView *h = header();
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::ExtendedSelection);

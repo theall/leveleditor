@@ -28,7 +28,22 @@ TTrigger::TTrigger(QObject *parent) :
 
 void TTrigger::saveToStream(QDataStream &stream) const
 {
-
+    stream << mPropertySheet->getValue(PID_OBJECT_RECT).toRect();
+    stream << mPropertySheet->getValue(PID_TRIGGER_WAY).toInt();
+    stream << mPropertySheet->getValue(PID_TRIGGER_ON).toInt();
+    stream << mPropertySheet->getValue(PID_TRIGGER_ACTION).toInt();
+    stream << mPropertySheet->getValue(PID_TRIGGER_PASS_BY).toInt();
+    stream << mPropertySheet->getValue(PID_TRIGGER_OBJECT_HIT).toInt();
+    stream << mPropertySheet->getValue(PID_TRIGGER_EVENT).toInt();
+    stream << mPropertySheet->getValue(PID_TRIGGER_DRAW).toInt();
+    stream << mPropertySheet->getValue(PID_TRIGGER_IMAGE_NO).toInt();
+    stream << mPropertySheet->getValue(PID_TRIGGER_IMAGE_POS).toRect();
+    stream << mPropertySheet->getValue(PID_TRIGGER_AFFECT).toInt();
+    stream << mPropertySheet->getValue(PID_TRIGGER_SOUND).toInt();
+    stream << mPropertySheet->getValue(PID_TRIGGER_FOLLOW).toInt();
+    stream << mPropertySheet->getValue(PID_TRIGGER_PLATFORM_POS).toRect();
+    stream << mPropertySheet->getValue(PID_TRIGGER_ON_STATUS).toInt();
+    stream << mPropertySheet->getValue(PID_TRIGGER_OFF_STATUS).toInt();
 }
 
 void TTrigger::readFromStream(QDataStream &stream)
@@ -99,4 +114,14 @@ void TTrigger::initPropertySheet()
     mPropertySheet->addProperty(PT_POINT, P_PLATFORM_POS, PID_TRIGGER_PLATFORM_POS);
     mPropertySheet->addProperty(PT_INT, P_ON_STATUS, PID_TRIGGER_ON_STATUS);
     mPropertySheet->addProperty(PT_INT, P_OFF_STATUS, PID_TRIGGER_OFF_STATUS);
+}
+
+QString TTrigger::typeString() const
+{
+    return T("Trigger");
+}
+
+bool TTrigger::isCongener(TObject *object) const
+{
+    return false;
 }

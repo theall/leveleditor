@@ -24,9 +24,13 @@ void TAnimationsModel::readFromStream(QDataStream &stream)
     }
 }
 
-void TAnimationsModel::saveToStream(QDataStream &) const
+void TAnimationsModel::saveToStream(QDataStream &stream) const
 {
+    stream << mAnimationList.size();
 
+    for(TAnimation *animation : mAnimationList) {
+        animation->saveToStream(stream);
+    }
 }
 
 int TAnimationsModel::rowCount(const QModelIndex &) const

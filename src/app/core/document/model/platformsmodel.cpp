@@ -20,15 +20,19 @@ void TPlatformsModel::readFromStream(QDataStream &stream)
 
 void TPlatformsModel::saveToStream(QDataStream &stream) const
 {
+    stream << mPlatList.size();
 
+    for(TPlat *plat : mPlatList) {
+        plat->saveToStream(stream);
+    }
 }
 
-int TPlatformsModel::rowCount(const QModelIndex &parent) const
+int TPlatformsModel::rowCount(const QModelIndex &) const
 {
     return mPlatList.size();
 }
 
-int TPlatformsModel::columnCount(const QModelIndex &parent) const
+int TPlatformsModel::columnCount(const QModelIndex &) const
 {
     return 1;
 }

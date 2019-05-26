@@ -26,6 +26,7 @@ public:
     void setDirtyColor(const QColor &dirtyColor);
 
     TMap *find(const QString &mapFilePath) const;
+    TMap *find(TDocument *document) const;
     TMap *createMap(const QString &moduleName, const TMap::Type &mapType, int mapId);
 
 signals:

@@ -25,7 +25,8 @@ public:
     TDocument *find(const QString &file);
     void closeDocument(TDocument *document);
 
-    void saveAllDocuments();
+    bool saveMap(TDocument *document);
+    void saveAllMaps();
     bool hasDirtyDocument();
 
     QString getResourcePath() const;

@@ -106,6 +106,17 @@ TMap *TMapsModel::find(const QString &mapFilePath) const
     return map;
 }
 
+TMap *TMapsModel::find(TDocument *document) const
+{
+    TMap *map = nullptr;
+    for(TModule *module : mModuleList) {
+        map = module->find(document);
+        if(map)
+            break;
+    }
+    return map;
+}
+
 TMap *TMapsModel::createMap(const QString &moduleName, const TMap::Type &mapType, int mapId)
 {
     TModule *targetModule = nullptr;

@@ -34,6 +34,7 @@ TSceneModel::TSceneModel(QObject *parent) :
   , mRespawnsModel(new TRespawnsModel(this))
   , mTriggersModel(new TTriggersModel(this))
   , mWallsModel(new TWallsModel(this))
+  , mEnemyFactoryModel(new TEnemyFactoryModel(this))
   , mTileLayerModel4(new TTileLayerModel(this))
   , mTileLayerModel5(new TTileLayerModel(this))
   , mTileLayerModel6(new TTileLayerModel(this))
@@ -53,6 +54,7 @@ TSceneModel::TSceneModel(QObject *parent) :
     mBaseModelList.append(mRespawnsModel);
     mBaseModelList.append(mTriggersModel);
     mBaseModelList.append(mWallsModel);
+    mBaseModelList.append(mEnemyFactoryModel);
     mBaseModelList.append(mTileLayerModel4);
     mBaseModelList.append(mTileLayerModel5);
     mBaseModelList.append(mTileLayerModel6);
@@ -140,6 +142,11 @@ bool TSceneModel::isCurrentTileLayerModel() const
 {
     TBaseModel *m = getCurrentModel();
     return m && m->isTile();
+}
+
+TEnemyFactoryModel *TSceneModel::getEnemyFactoryModel() const
+{
+    return mEnemyFactoryModel;
 }
 
 TTileLayerModel *TSceneModel::getTileLayerModel6() const
@@ -234,7 +241,73 @@ void TSceneModel::initPropertySheet()
 
 void TSceneModel::saveToStream(QDataStream &stream) const
 {
+    mAreasModel->saveToStream(stream);
+    mDAreasModel->saveToStream(stream);
+    mPlatformsModel->saveToStream(stream);
+    mBoxesModel->saveToStream(stream);
+    mWallsModel->saveToStream(stream);
 
+    QColor backgroundColor = mPropertySheet->getValue(PID_SCENE_BACKGROUND_COLOR).value<QColor>();
+    stream << backgroundColor.red();
+    stream << backgroundColor.green();
+    stream << backgroundColor.blue();
+
+    mTileLayerModel1->saveToStream(stream);
+    mTileLayerModel2->saveToStream(stream);
+    mTileLayerModel3->saveToStream(stream);
+    mTileLayerModel4->saveToStream(stream);
+    mTileLayerModel5->saveToStream(stream);
+    mTileLayerModel6->saveToStream(stream);
+
+    mRespawnsModel->saveToStream(stream);
+
+    stream << mPropertySheet->getValue(PID_SCENE_FLAG1).toPoint();
+    stream << mPropertySheet->getValue(PID_SCENE_FLAG2).toPoint();
+    stream << mPropertySheet->getValue(PID_SCENE_SCROLLABLE).toInt();
+
+    mEventsModel->saveToStream(stream);
+    mTriggersModel->saveToStream(stream);
+
+    for(int i=0;i<5;i++) {
+        stream << mNextMap[i];
+    }
+
+    int vsMode = 0;
+    int var4 = 0;
+    int var5 = 0;
+    int var6 = 0;
+    int var7 = 0;
+    int var8 = 0;
+    int var9 = 0;
+    int var10 = 0;
+    qint8 stri1 = 0;
+    qint8 stri2 = 0;
+    qint8 stri3 = 0;
+    QRect cameraRect = mPropertySheet->getValue(PID_SCENE_CAMERA).toRect();
+    stream << mPropertySheet->getValue(PID_SCENE_START_POINT).toPoint();
+    stream << mPropertySheet->getValue(PID_SCENE_FIGHT_MODE).toInt();
+    stream << mPropertySheet->getValue(PID_SCENE_NUMBER).toInt();;
+    stream << mPropertySheet->getValue(PID_SCENE_SCREEN_LOCK).toInt();
+    stream << vsMode;
+    stream << cameraRect.bottom();
+    stream << cameraRect.top();
+    stream << mPropertySheet->getValue(PID_SCENE_AIR_STRIKE).toInt();
+    stream << var4;
+    stream << var5;
+    stream << var6;
+    stream << var7;
+    stream << var8;
+    stream << var9;
+    stream << var10;
+    stream << stri1;
+    stream << stri2;
+    stream << stri3;
+    stream << cameraRect.left();
+    stream << cameraRect.right();
+    stream << mPropertySheet->getValue(PID_SCENE_MUSIC1).toInt();
+    stream << mPropertySheet->getValue(PID_SCENE_MUSIC2).toInt();
+
+    mAnimationsModel->saveToStream(stream);
 }
 
 void TSceneModel::readFromStream(QDataStream &stream)
@@ -327,7 +400,7 @@ void TSceneModel::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(PID_SCENE_FIGHT_MODE, fightMode);
     mPropertySheet->setValue(PID_SCENE_SCREEN_LOCK, scrLock);
     mPropertySheet->setValue(PID_SCENE_CAMERA, QRect(QPoint(lScrLimit,uScrLimit), QPoint(rScrLimit, yScrCameraLimit)));
-    mPropertySheet->setValue(PID_SCENE_SCROLLABLE, scrLock);
+    mPropertySheet->setValue(PID_SCENE_SCROLLABLE, scrollMap);
     mPropertySheet->setValue(PID_SCENE_NUMBER, mapNumber);
     mPropertySheet->setValue(PID_SCENE_AIR_STRIKE, noAirStrike);
     mPropertySheet->setValue(PID_SCENE_MUSIC1, music1);
