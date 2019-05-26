@@ -105,7 +105,10 @@ void TMiniSceneController::slotRequestLocatePoint(const QPoint &point, int delta
     if(delta != 0)
         mZoomComboBox->handleWheelDelta(delta);
 
-    mGraphicsView->forceCenterOn(point);
+//    static int x = 0;
+//    qDebug() << x << point;
+//    x++;
+    mGraphicsView->forceCenterOn(mapToScene(point));
 }
 
 void TMiniSceneController::slotSceneModelPropertyItemValueChanged(TPropertyItem *propertyItem, const QVariant &)
@@ -171,6 +174,7 @@ void TMiniSceneController::updateViewPortRect() const
                      (viewRect.y() - sceneRect.y()) / sceneRect.height() * imageRect.height() + imageRect.y(),
                      viewRect.width() / sceneRect.width() * imageRect.width(),
                      viewRect.height() / sceneRect.height() * imageRect.height());
+        // qDebug() << imageRect << sceneRect << viewRect << ret;
     }
     mMiniScene->setViewPortRect(ret);
 }
