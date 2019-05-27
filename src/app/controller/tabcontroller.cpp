@@ -5,6 +5,7 @@
 #include "../gui/component/tabwidget/tabwidget.h"
 #include "../utils/utils.h"
 
+#include <QDebug>
 #include <QMessageBox>
 
 TTabController::TTabController(QObject *parent) :
@@ -115,6 +116,7 @@ int TTabController::addDocument(TDocument *document)
     if(!document)
         return -1;
 
+    qDebug() << document->baseName();
     int index = mTabWidget->addTab(document, document->baseName(), QPixmap());
     mTabWidget->setTabToolTip(index, document->fileName());
     setGraphicsScene(index, document->graphicsScene());

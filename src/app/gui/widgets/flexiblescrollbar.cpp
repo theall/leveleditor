@@ -41,6 +41,12 @@ void TFlexibleScrollBar::forceSetValue(int value)
     setValue(value);
 }
 
+bool TFlexibleScrollBar::overceed() const
+{
+    int v = value();
+    return v<=mOverrideMinimum || v>=mOverrideMaximum;
+}
+
 void TFlexibleScrollBar::sliderChange(QAbstractSlider::SliderChange change)
 {
     switch (change) {

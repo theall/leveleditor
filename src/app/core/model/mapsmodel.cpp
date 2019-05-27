@@ -7,8 +7,8 @@ TMapsModel::TMapsModel(QObject *parent) :
   , mDirtyColor(QColor(Qt::red))
   , mCurrentModule(nullptr)
 {
-    mOpenedColor.setAlpha(32);
-    mDirtyColor.setAlpha(32);
+    mOpenedColor.setAlpha(128);
+    mDirtyColor.setAlpha(128);
 }
 
 TMapsModel::~TMapsModel()

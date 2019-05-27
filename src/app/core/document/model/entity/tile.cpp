@@ -166,7 +166,7 @@ TTile::TTile(QObject *parent) :
 
 void TTile::saveToStream(QDataStream &stream) const
 {
-    QRectF rect = mPropertySheet->getValue(PID_TILE_POS_1).toRectF();
+    QRectF rect = mPropertySheet->getValue(PID_OBJECT_RECT).toRectF();
     stream << rect.topLeft();
     stream << mTileId->id();
     stream << mTileId->tilesetId();

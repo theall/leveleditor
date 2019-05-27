@@ -56,6 +56,9 @@ TTabWidget::~TTabWidget()
 
 int TTabWidget::addTab(void *document, const QString &name, const QPixmap &icon)
 {
+    if(mDocuments.indexOf(document) != -1)
+        return -1;
+
     mDocuments.append(document);
 
     TTabContainer *view = new TTabContainer(this);

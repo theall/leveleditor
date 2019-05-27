@@ -30,6 +30,7 @@ public:
     ~TFlexibleScrollBar();
 
     void forceSetValue(int value);
+    bool overceed() const;
 
 protected:
     void sliderChange(SliderChange change) override;

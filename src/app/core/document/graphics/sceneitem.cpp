@@ -51,6 +51,9 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
         }
         mModelLayerMap[baseModel] = layerItem;
         mLayerItemList.append(layerItem);
+
+        if(baseModel == mSceneModel->getCurrentModel())
+            mCurrentLayerItem = layerItem;
     }
 
     int index = 0;

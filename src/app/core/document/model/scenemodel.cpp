@@ -38,7 +38,6 @@ TSceneModel::TSceneModel(QObject *parent) :
   , mTileLayerModel4(new TTileLayerModel(this))
   , mTileLayerModel5(new TTileLayerModel(this))
   , mTileLayerModel6(new TTileLayerModel(this))
-  , mCurrentIndex(-1)
 {
     setName(tr("SceneModel"));
 
@@ -121,6 +120,11 @@ TBaseModel *TSceneModel::getCurrentModel() const
     if(mCurrentIndex>=0 && mCurrentIndex<mBaseModelList.size())
         baseModel = mBaseModelList.at(mCurrentIndex);
     return baseModel;
+}
+
+int TSceneModel::getCurrentIndex() const
+{
+    return mCurrentIndex;
 }
 
 TTileLayerModel *TSceneModel::getCurrentAsTileLayerModel() const

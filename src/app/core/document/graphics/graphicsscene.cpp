@@ -1,10 +1,12 @@
+#include "graphicsscene.h"
+
+#include <QDebug>
 #include <QCursor>
 #include <QPainter>
 #include <QWheelEvent>
 #include <QCoreApplication>
 #include <QGraphicsSceneMouseEvent>
 
-#include "graphicsscene.h"
 #include "../base/finddoc.h"
 #include "../document.h"
 #include "../undocommand/objectmovecommand.h"
@@ -663,10 +665,13 @@ void TGraphicsScene::slotPropertyItemValueChanged(TPropertyItem *item, const QVa
 
 void TGraphicsScene::slotOnSceneItemBoundingRectChanged(const QRectF &rect)
 {
-    QRectF currentRect = sceneRect();
-    if(currentRect.contains(rect))
-        return;
-    setSceneRect(currentRect.united(rect));
+    Q_UNUSED(rect);
+//    QRectF currentRect = sceneRect();
+//    if(currentRect.contains(rect))
+//        return;
+
+//    qDebug() << "Set scene rect " << currentRect.united(rect);
+//    setSceneRect(currentRect.united(rect));
 }
 
 void TGraphicsScene::setEditMode(int editMode)

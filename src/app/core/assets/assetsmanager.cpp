@@ -158,7 +158,7 @@ void TAssetsManager::loadAssets()
             for (int j = 0; j < faceFileInfoList.size(); j++) {
                 QFileInfo fileInfo = faceFileInfoList.at(j);
                 QString fileName = fileInfo.baseName().trimmed().toLower();
-                if(!fileName.startsWith("zwalk0"))
+                if(fileName != "zwalk0")
                     continue;
 
                 faceIdList.append(id);

@@ -1,5 +1,7 @@
 #include "objectitem.h"
+
 #include <QPen>
+#include <QDebug>
 #include <QPainter>
 
 TObjectItem::TObjectItem(TObject *object, QGraphicsItem *parent) :
@@ -55,6 +57,10 @@ void TObjectItem::slotPropertyItemValueChanged(TPropertyItem *item, const QVaria
     // Notify to selection item and hovering item
     if(pid==PID_OBJECT_RECT) {
         mBoundingRect = item->value().toRectF();
+
+//        static int i = 0;
+//        qDebug() << i << "Bounding changed";
+//        i++;
         emit boundingRectChanged(mBoundingRect);
     }
 }

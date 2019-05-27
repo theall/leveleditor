@@ -123,23 +123,31 @@ void TGraphicsView::mouseMoveEvent(QMouseEvent *event)
 {
     QGraphicsView::mouseMoveEvent(event);
 
-//    if(!mLeftButtonDown)
-//        return;
+    if(!mLeftButtonDown)
+        return;
 
-//    QGraphicsScene *graphicsScene = scene();
-//    if(!graphicsScene)
-//        return;
+    QGraphicsScene *graphicsScene = scene();
+    if(!graphicsScene)
+        return;
 
-//    TFlexibleScrollBar *hBar = static_cast<TFlexibleScrollBar*>(horizontalScrollBar());
-//    TFlexibleScrollBar *vBar = static_cast<TFlexibleScrollBar*>(verticalScrollBar());
-//    const QPoint d = event->globalPos() - mLastMousePos;
+    QPoint mousePos = event->globalPos();
+    TFlexibleScrollBar *hBar = static_cast<TFlexibleScrollBar*>(horizontalScrollBar());
+    TFlexibleScrollBar *vBar = static_cast<TFlexibleScrollBar*>(verticalScrollBar());
+    bool hOverceed = hBar->overceed();
+    bool vOverceed = vBar->overceed();
+    if(hOverceed || vOverceed) {
+        const QPoint d = mousePos - mLastMousePos;
 
-//    int horizontalValue = hBar->value() + (isLeftToRight()?d.x():-d.x());
-//    int verticalValue = vBar->value() + d.y();
+        int horizontalValue = hBar->value() + (isLeftToRight()?d.x():-d.x());
+        int verticalValue = vBar->value() + d.y();
 
-//    // Panning can freely move the map without restriction on boundaries
-//    //hBar->forceSetValue(horizontalValue);
-//    //vBar->forceSetValue(verticalValue);
+        // Panning can freely move the map without restriction on boundaries
+        if(hOverceed)
+            hBar->forceSetValue(horizontalValue);
 
-//    mLastMousePos = event->globalPos();
+        if(vOverceed)
+            vBar->forceSetValue(verticalValue);
+    }
+
+    mLastMousePos = mousePos;
 }

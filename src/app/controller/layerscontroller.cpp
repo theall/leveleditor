@@ -47,8 +47,8 @@ void TLayersController::setCurrentDocument(TDocument *document)
     }
     mLayerView->setModel(model);
 
-    if(model && !model->getCurrentModel()) {
-        mLayerView->selectLast();
+    if(model) {
+        mLayerView->selectRow(model->getCurrentIndex());
     }
 }
 
