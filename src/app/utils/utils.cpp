@@ -34,24 +34,28 @@ QString microSecToTimeStr(long ms, bool padZero)
 QString secToTimeStr(long seconds, bool padZero)
 {
     int hour = seconds / 3600;
-    if(hour > 99)
+    if(hour > 99) {
         hour = 99;
-
-    seconds %= 3600;
+        seconds -= hour * 3600;
+    } else {
+        seconds %= 3600;
+    }
 
     int minute = seconds / 60;
-    if(minute>99)
+    if(minute>99) {
         minute = 99;
-
-    seconds %= 60;
-
-    int second = seconds % 60;
+        seconds -= 60*minute;
+        if(seconds > 99)
+            seconds = 99;
+    } else {
+        seconds %= 60;
+    }
 
     QString result;
     if(hour > 0)
-        result = QString::asprintf("%2d:%2d:%2d", hour, minute, second);
+        result = QString::asprintf("%2d:%2d:%2d", hour, minute, (int)seconds);
     else
-        result = QString::asprintf("%2d:%2d", minute, second);
+        result = QString::asprintf("%2d:%2d", minute, (int)seconds);
 
     if(padZero)
         result = result.replace(" ", "0");
