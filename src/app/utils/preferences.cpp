@@ -58,6 +58,7 @@ const int TPreferences::ICON_SIZE_LARGE = 32;
 
 #define SEC_OPTION_GENERAL "OptionGeneral"
 #define SEC_OPTION_DISPLAY_TRAY_ICON "DisplayTrayIcon"
+#define SEC_OPTION_DEBUG_MULTI_INSTANCES "MultiInstances"
 
 #define SEC_OPTION_UI "OptionUI"
 #define SEC_OPTION_UI_APP_STYLE "AppStyle"
@@ -67,7 +68,6 @@ const int TPreferences::ICON_SIZE_LARGE = 32;
 
 #define SEC_OPTION_DEBUG "OptionDebug"
 #define SEC_OPTION_DEBUG_ENGINE_PATH "EnginePath"
-#define SEC_OPTION_DEBUG_MULTI_INSTANCES "MultiInstances"
 
 #define SET_VALUE(value,member,parent,section) \
     if(member==value)\
@@ -124,6 +124,7 @@ TPreferences::TPreferences(QObject *parent):
         // general
         mSettings->beginGroup(SEC_OPTION_GENERAL);
         mDisplayTrayIcon = boolValue(SEC_OPTION_DISPLAY_TRAY_ICON, true);
+        mEnableDebugMultiInstances = boolValue(SEC_OPTION_DEBUG_MULTI_INSTANCES);
         mSettings->endGroup();
 
         // UI
@@ -325,7 +326,7 @@ bool TPreferences::enableDebugMultiInstances() const
 
 void TPreferences::setEnableDebugMultiInstances(bool enableDebugMultiInstances)
 {
-    SET_VALUE2(enableDebugMultiInstances, mEnableDebugMultiInstances, SEC_OPTIONS, SEC_OPTION_DEBUG, SEC_OPTION_DEBUG_MULTI_INSTANCES);
+    SET_VALUE2(enableDebugMultiInstances, mEnableDebugMultiInstances, SEC_OPTIONS, SEC_OPTION_GENERAL, SEC_OPTION_DEBUG_MULTI_INSTANCES);
 }
 
 QString TPreferences::gameRoot() const
@@ -345,7 +346,7 @@ TPreferences::ApplicationStyle TPreferences::applicationStyle() const
 
 void TPreferences::setApplicationStyle(const ApplicationStyle &applicationStyle)
 {
-    SET_VALUE(applicationStyle, mApplicationStyle, SEC_OPTIONS, SEC_OPTION_UI_APP_STYLE);
+    SET_VALUE2(applicationStyle, mApplicationStyle, SEC_OPTIONS, SEC_OPTION_UI, SEC_OPTION_UI_APP_STYLE);
 }
 
 QColor TPreferences::baseColor() const
@@ -385,7 +386,7 @@ bool TPreferences::useOpenGL() const
 
 void TPreferences::setUseOpenGL(bool useOpenGL)
 {
-    SET_VALUE(useOpenGL, mUseOpenGL, SEC_GUI, SEC_OPTION_UI_USE_OPENGL);
+    SET_VALUE2(useOpenGL, mUseOpenGL, SEC_OPTIONS, SEC_OPTION_UI, SEC_OPTION_UI_USE_OPENGL);
 }
 
 void TPreferences::windowGeometryState(QByteArray *g, QByteArray *s)

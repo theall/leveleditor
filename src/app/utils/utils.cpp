@@ -152,11 +152,13 @@ QString mapNameToThumbName(const QString &mapName)
             break;
         }
     }
-    int dotIndex = result.indexOf('.');
+    int dotIndex = result.lastIndexOf('.');
     if(dotIndex != -1) {
         result.chop(nameLength - dotIndex);
+    } else {
+        result.append('.');
     }
-    result.append(".jpg");
+    result.append("jpg");
     return result;
 }
 

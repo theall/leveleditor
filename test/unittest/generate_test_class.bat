@@ -1,0 +1,1 @@
+python generate_test_class.py -s ../../src/app -d testapp -v

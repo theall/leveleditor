@@ -3,4 +3,4 @@
 
 #include "testapp/tst_app.h"
 
-QTEST_APPLESS_MAIN(TestApp)
+QTEST_MAIN(TestApp)

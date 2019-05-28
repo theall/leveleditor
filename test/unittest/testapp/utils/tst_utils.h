@@ -11,7 +11,8 @@ class TestUtils : public QObject
 public:
     explicit TestUtils(QObject *parent = 0);
 
-signals:
+private:
+    qreal mDefaultDpiScale;
 
 private Q_SLOTS:
     void testMicroSecToTimeStr();
