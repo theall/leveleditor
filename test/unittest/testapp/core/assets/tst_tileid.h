@@ -11,7 +11,9 @@ public:
     explicit TestTileId(QObject *parent = 0);
 
 private Q_SLOTS:
-    
+    void testSetId();
+    void testSetPixmap();
+    void testSetTilesetId();
 };
 
 #endif // TESTTILEID_H

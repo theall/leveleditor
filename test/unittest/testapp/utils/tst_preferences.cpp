@@ -7,6 +7,11 @@
     TPreferences::deleteInstance();\
     QCOMPARE(TPreferences::instance()->getter(), value)
 
+#define VERIFY_READ_WRITE_VALUE_INCREMENT(setter,getter,value)\
+    TPreferences::instance()->setter(value);\
+    TPreferences::deleteInstance();\
+    QCOMPARE(TPreferences::instance()->getter(), (value+1))
+
 #define VERIFY_READ_WRITE_BOOLEAN(setter,getter)\
     VERIFY_READ_WRITE_VALUE(setter,getter,true);\
     VERIFY_READ_WRITE_VALUE(setter,getter,false)
@@ -43,9 +48,9 @@ void TestPreferences::testSetAlwaysOnTop()
 
 void TestPreferences::testSetRunCount()
 {
-    VERIFY_READ_WRITE_VALUE(setRunCount, runCount, 0);
-    VERIFY_READ_WRITE_VALUE(setRunCount, runCount, 10);
-    VERIFY_READ_WRITE_VALUE(setRunCount, runCount, 9999);
+    VERIFY_READ_WRITE_VALUE_INCREMENT(setRunCount, runCount, 0);
+    VERIFY_READ_WRITE_VALUE_INCREMENT(setRunCount, runCount, 10);
+    VERIFY_READ_WRITE_VALUE_INCREMENT(setRunCount, runCount, 9999);
 }
 
 void TestPreferences::testSetLanguage()

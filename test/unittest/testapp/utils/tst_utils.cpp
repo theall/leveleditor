@@ -64,7 +64,9 @@ void TestUtils::testAbsoluteFilePath()
 
 void TestUtils::testExploreFile()
 {
+#ifndef QT_DEBUG
     QVERIFY(Utils::exploreFile("C:/windows/explorer.exe"));
+#endif
 }
 
 void TestUtils::testCpy2wchar()

@@ -62,7 +62,7 @@ int TApp::start()
     int ret = -1;
     try {
         if(!controller.joint(&gui, &core))
-            return 0;
+            return -1;
 
         connect(this, SIGNAL(requestOpenMap(QString)), &gui, SIGNAL(requestOpenMap(QString)));
         ret = exec();

@@ -145,14 +145,10 @@ TPreferences::TPreferences(QObject *parent):
     //// Keeping track of some usage information
     mSettings->beginGroup(SEC_INSTALL);
 
-    // This section wrote by main controller while write trial license
-    if(mSettings->contains(SEC_INSTALL_RUN_COUNT))
-    {
+        // This section wrote by main controller while write trial license
         mRunCount = intValue(SEC_INSTALL_RUN_COUNT) + 1;
         mSettings->setValue(SEC_INSTALL_RUN_COUNT, mRunCount);
-    }
-
-    mGameRoot = stringValue(SEC_INSTALL_GAME_ROOT);
+        mGameRoot = stringValue(SEC_INSTALL_GAME_ROOT);
     mSettings->endGroup();
 }
 
@@ -432,7 +428,7 @@ int TPreferences::runCount() const
 
 void TPreferences::setRunCount(int runCount)
 {
-    mRunCount = runCount;
+    SET_VALUE(runCount, mRunCount, SEC_INSTALL, SEC_INSTALL_RUN_COUNT);
 }
 
 QString TPreferences::language() const

@@ -4,14 +4,17 @@
 #include <QObject>
 #include "utils/tst_utils.h"
 
+class TApp;
 class TestApp : public QObject
 {
     Q_OBJECT
 
 public:
     explicit TestApp(QObject *parent = 0);
+    ~TestApp();
 
-signals:
+private:
+    TApp *mApp;
 
 private Q_SLOTS:
     void testStart();
