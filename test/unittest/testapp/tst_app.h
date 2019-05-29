@@ -2,9 +2,12 @@
 #define TESTAPP_H
 
 #include <QObject>
+#include <QStringList>
 #include "utils/tst_utils.h"
 
 class TApp;
+#define ARGC_MAX 10
+
 class TestApp : public QObject
 {
     Q_OBJECT
@@ -15,6 +18,12 @@ public:
 
 private:
     TApp *mApp;
+    int mExitCode;
+    QStringList mArguments;
+    int mArgc;
+    char *mArgv[ARGC_MAX];
+
+    void updateArgv();
 
 private Q_SLOTS:
     void testStart();

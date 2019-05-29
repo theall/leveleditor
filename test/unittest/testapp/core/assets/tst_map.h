@@ -11,7 +11,9 @@ public:
     explicit TestMap(QObject *parent = 0);
 
 private Q_SLOTS:
-    
+    void testNewMap();
+    void testOpenMap();
+    void testSaveMap();
 };
 
 #endif // TESTMAP_H

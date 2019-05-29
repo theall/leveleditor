@@ -57,12 +57,13 @@ void TMap::setThumbnail(TPixmap *thumbnail)
 
     mThumbnail = thumbnail;
 
-    emit thumbChanged(thumbnail->content());
+    if(thumbnail)
+        emit thumbChanged(thumbnail->content());
 }
 
 QPixmap TMap::thumbnailPixmap() const
 {
-    return mThumbnail->content();
+    return mThumbnail?mThumbnail->content():QPixmap();
 }
 
 TMap::Type TMap::stringToType(const QString &typeName)

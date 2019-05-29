@@ -22,7 +22,7 @@ void TestTileId::testSetPixmap()
 {
     TTileId tileId;
     VERIFY_READ_WRITE_OBJECT_VALUE(tileId, pixmap, setPixmap, (TPixmap*)nullptr);
-    VERIFY_READ_WRITE_OBJECT_VALUE(tileId, pixmap, setPixmap, (TPixmap*)123456);
+    VERIFY_READ_WRITE_OBJECT_VALUE(tileId, pixmap, setPixmap, new TPixmap(this));
 }
 
 void TestTileId::testSetTilesetId()

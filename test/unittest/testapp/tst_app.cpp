@@ -5,19 +5,44 @@
 #include "controller/tst_controller.h"
 #include "../macro_for_test.h"
 
-#include "../../../src/app/app.h"
+#include <app.h>
+#include <QtTest>
+#include <utils/preferences.h>
 
-TestApp::TestApp(QObject *parent) : QObject(parent)
+#define MAX_PATH 256
+TestApp::TestApp(QObject *parent) :
+    QObject(parent)
+  , mApp(nullptr)
+  , mExitCode(-1)
+  , mArgc(0)
 {
+    TPreferences::instance()->setGameRoot(qApp->arguments().at(1));
+
     RUN_CLASS(TestUtils);
     RUN_CLASS(TestCore);
     RUN_CLASS(TestMainWindow);
     RUN_CLASS(TestController);
+
+    mArguments.append(qApp->applicationFilePath());
+    for(int i=0;i<ARGC_MAX;i++) {
+        mArgv[i] = new char[MAX_PATH];
+    }
 }
 
 TestApp::~TestApp()
 {
+    for(int i=0;i<ARGC_MAX;i++) {
+        delete mArgv[i];
+    }
+}
 
+void TestApp::updateArgv()
+{
+    mArgc = qMin(ARGC_MAX, mArguments.size());
+    for(int i=0;i<mArgc;i++) {
+        std::string a = mArguments.at(i).toStdString();
+        strcpy(mArgv[i], a.c_str());
+    }
 }
 
 void TestApp::testStart()

@@ -11,7 +11,8 @@ public:
     explicit TestMainController(QObject *parent = 0);
 
 private Q_SLOTS:
-    
+    void testJoint();
+    void testSetCurrentDocument();
 };
 
 #endif // TESTMAINCONTROLLER_H
