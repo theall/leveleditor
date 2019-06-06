@@ -1,8 +1,8 @@
 #include "darealayeritem.h"
 #include "objectitem/dareaitem.h"
-#include "../../model/dareasmodel.h"
+#include "../../model/dareamodel.h"
 
-TDAreaLayerItem::TDAreaLayerItem(TDAreasModel *dAreasModel, QGraphicsItem *parent) :
+TDAreaLayerItem::TDAreaLayerItem(TDAreaModel *dAreasModel, QGraphicsItem *parent) :
     TObjectLayerItem(dAreasModel, parent)
 {
     Q_ASSERT(dAreasModel);

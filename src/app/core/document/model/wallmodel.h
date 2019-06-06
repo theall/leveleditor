@@ -1,19 +1,19 @@
-#ifndef TBOXESMODEL_H
-#define TBOXESMODEL_H
+#ifndef TWALLSMODEL_H
+#define TWALLSMODEL_H
 
 #include "basemodel.h"
-#include "entity/box.h"
+#include "entity/wall.h"
+#include "objectgeneric.hpp"
 
-class TBoxesModel : public TBaseModel
+class TWallModel : public TBaseModel
 {
     Q_OBJECT
 
 public:
-    TBoxesModel(QObject *parent = nullptr);
+    TWallModel(QObject *parent = Q_NULLPTR);
 
     void clear();
-
-    TBoxList boxList() const;
+    TWallList wallList() const;
 
     // TIO interface
 public:
@@ -27,8 +27,13 @@ public:
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
 private:
-    TBoxList mBoxList;
+    TWallList mWallList;
 
+public:
+    DECL_GENERIC_FUNCTIONS(Wall);
+
+signals:
+    DECL_GENERIC_SIGNALS(Wall);
 };
 
-#endif // TBOXESMODEL_H
+#endif // TWALLSMODEL_H

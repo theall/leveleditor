@@ -1,17 +1,17 @@
-#include "animationsmodel.h"
+#include "animationmodel.h"
 
-TAnimationsModel::TAnimationsModel(QObject *parent) :
+TAnimationModel::TAnimationModel(QObject *parent) :
     TBaseModel(TBaseModel::ANIMATION, parent)
 {
     setName(tr("Animation"));
 }
 
-TAnimationsModel::~TAnimationsModel()
+TAnimationModel::~TAnimationModel()
 {
 
 }
 
-void TAnimationsModel::readFromStream(QDataStream &stream)
+void TAnimationModel::readFromStream(QDataStream &stream)
 {
     int animationAmount;
     stream >> animationAmount;
@@ -24,7 +24,7 @@ void TAnimationsModel::readFromStream(QDataStream &stream)
     }
 }
 
-void TAnimationsModel::saveToStream(QDataStream &stream) const
+void TAnimationModel::saveToStream(QDataStream &stream) const
 {
     stream << mAnimationList.size();
 
@@ -33,17 +33,17 @@ void TAnimationsModel::saveToStream(QDataStream &stream) const
     }
 }
 
-int TAnimationsModel::rowCount(const QModelIndex &) const
+int TAnimationModel::rowCount(const QModelIndex &) const
 {
     return mAnimationList.size();
 }
 
-int TAnimationsModel::columnCount(const QModelIndex &) const
+int TAnimationModel::columnCount(const QModelIndex &) const
 {
     return 1;
 }
 
-QVariant TAnimationsModel::data(const QModelIndex &index, int role) const
+QVariant TAnimationModel::data(const QModelIndex &index, int role) const
 {
     if(index.isValid()) {
         if(role == Qt::DisplayRole) {
@@ -53,17 +53,17 @@ QVariant TAnimationsModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-void TAnimationsModel::clear()
+void TAnimationModel::clear()
 {
     mAnimationList.clear();
 }
 
-TAnimationList TAnimationsModel::animationList() const
+TAnimationList TAnimationModel::animationList() const
 {
     return mAnimationList;
 }
 
-void TAnimationsModel::setAnimationList(const TAnimationList &animationList)
+void TAnimationModel::setAnimationList(const TAnimationList &animationList)
 {
     mAnimationList = animationList;
 }

@@ -1,8 +1,8 @@
 #include "walllayeritem.h"
 #include "objectitem/wallitem.h"
-#include "../../model/wallsmodel.h"
+#include "../../model/wallmodel.h"
 
-TWallLayerItem::TWallLayerItem(TWallsModel *wallsModel, QGraphicsItem *parent) :
+TWallLayerItem::TWallLayerItem(TWallModel *wallsModel, QGraphicsItem *parent) :
     TObjectLayerItem(wallsModel, parent)
 {
     Q_ASSERT(wallsModel);

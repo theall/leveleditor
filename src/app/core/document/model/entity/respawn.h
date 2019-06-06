@@ -20,6 +20,11 @@ public:
 
 private:
     void initPropertySheet();
+
+    // TObject interface
+public:
+    QString typeString() const;
+    bool isCongener(TObject *object) const;
 };
 
 typedef QList<TRespawn*> TRespawnList;

@@ -1,8 +1,8 @@
-#include "eventsmodel.h"
+#include "eventmodel.h"
 
 #define EVENT_COUNT 100
 
-TEventsModel::TEventsModel(QObject *parent) :
+TEventModel::TEventModel(QObject *parent) :
     TBaseModel(TBaseModel::EVENT, parent)
 {
     setName(tr("Event"));
@@ -12,12 +12,12 @@ TEventsModel::TEventsModel(QObject *parent) :
     }
 }
 
-void TEventsModel::clear()
+void TEventModel::clear()
 {
     mEventList.clear();
 }
 
-void TEventsModel::readFromStream(QDataStream &stream)
+void TEventModel::readFromStream(QDataStream &stream)
 {
     mEventList.clear();
 
@@ -28,27 +28,27 @@ void TEventsModel::readFromStream(QDataStream &stream)
     }
 }
 
-void TEventsModel::saveToStream(QDataStream &stream) const
+void TEventModel::saveToStream(QDataStream &stream) const
 {
     for(int i=0;i<EVENT_COUNT;i++) {
         stream << mEventList.at(i);
     }
 }
 
-int TEventsModel::rowCount(const QModelIndex &parent) const
+int TEventModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return mEventList.size();
 }
 
-int TEventsModel::columnCount(const QModelIndex &parent) const
+int TEventModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
 
     return 1;
 }
 
-QVariant TEventsModel::data(const QModelIndex &index, int role) const
+QVariant TEventModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
     if(row>=0 && row<mEventList.size())
@@ -61,7 +61,7 @@ QVariant TEventsModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-QList<int> TEventsModel::eventList() const
+QList<int> TEventModel::eventList() const
 {
     return mEventList;
 }

@@ -25,15 +25,15 @@ TSceneModel::TSceneModel(QObject *parent) :
   , mTileLayerModel1(new TTileLayerModel(this))
   , mTileLayerModel2(new TTileLayerModel(this))
   , mTileLayerModel3(new TTileLayerModel(this))
-  , mAnimationsModel(new TAnimationsModel(this))
-  , mAreasModel(new TAreasModel(this))
-  , mBoxesModel(new TBoxesModel(this))
-  , mDAreasModel(new TDAreasModel(this))
-  , mEventsModel(new TEventsModel(this))
-  , mPlatformsModel(new TPlatformsModel(this))
-  , mRespawnsModel(new TRespawnsModel(this))
-  , mTriggersModel(new TTriggersModel(this))
-  , mWallsModel(new TWallsModel(this))
+  , mAnimationsModel(new TAnimationModel(this))
+  , mAreasModel(new TAreaModel(this))
+  , mBoxesModel(new TBoxModel(this))
+  , mDAreasModel(new TDAreaModel(this))
+  , mEventsModel(new TEventModel(this))
+  , mPlatformsModel(new TPlatModel(this))
+  , mRespawnsModel(new TRespawnModel(this))
+  , mTriggersModel(new TTriggerModel(this))
+  , mWallsModel(new TWallModel(this))
   , mEnemyFactoryModel(new TEnemyFactoryModel(this))
   , mTileLayerModel4(new TTileLayerModel(this))
   , mTileLayerModel5(new TTileLayerModel(this))
@@ -183,42 +183,42 @@ TTileLayerModel *TSceneModel::getTileLayerModel1() const
     return mTileLayerModel1;
 }
 
-TWallsModel *TSceneModel::getWallsModel() const
+TWallModel *TSceneModel::getWallsModel() const
 {
     return mWallsModel;
 }
 
-TTriggersModel *TSceneModel::getTriggersModel() const
+TTriggerModel *TSceneModel::getTriggersModel() const
 {
     return mTriggersModel;
 }
 
-TRespawnsModel *TSceneModel::getRespawnsModel() const
+TRespawnModel *TSceneModel::getRespawnsModel() const
 {
     return mRespawnsModel;
 }
 
-TPlatformsModel *TSceneModel::getPlatformsModel() const
+TPlatModel *TSceneModel::getPlatformsModel() const
 {
     return mPlatformsModel;
 }
 
-TEventsModel *TSceneModel::getEventsModel() const
+TEventModel *TSceneModel::getEventsModel() const
 {
     return mEventsModel;
 }
 
-TDAreasModel *TSceneModel::getDAreasModel() const
+TDAreaModel *TSceneModel::getDAreasModel() const
 {
     return mDAreasModel;
 }
 
-TBoxesModel *TSceneModel::getBoxesModel() const
+TBoxModel *TSceneModel::getBoxesModel() const
 {
     return mBoxesModel;
 }
 
-TAreasModel *TSceneModel::getAreasModel() const
+TAreaModel *TSceneModel::getAreasModel() const
 {
     return mAreasModel;
 }

@@ -3,11 +3,11 @@
 
 #include "objectlayeritem.h"
 
-class TBoxesModel;
+class TBoxModel;
 class TBoxLayerItem : public TObjectLayerItem
 {
 public:
-    explicit TBoxLayerItem(TBoxesModel *boxesModel, QGraphicsItem *parent = Q_NULLPTR);
+    explicit TBoxLayerItem(TBoxModel *boxesModel, QGraphicsItem *parent = Q_NULLPTR);
     ~TBoxLayerItem();
 };
 

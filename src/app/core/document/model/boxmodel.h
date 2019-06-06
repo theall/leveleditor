@@ -1,20 +1,20 @@
-#ifndef TRESPAWNSMODEL_H
-#define TRESPAWNSMODEL_H
+#ifndef TBOXESMODEL_H
+#define TBOXESMODEL_H
 
 #include "basemodel.h"
+#include "entity/box.h"
+#include "objectgeneric.hpp"
 
-#include <QList>
-#include <QPoint>
-
-class TRespawnsModel : public TBaseModel
+class TBoxModel : public TBaseModel
 {
     Q_OBJECT
 
 public:
-    TRespawnsModel(QObject *parent = Q_NULLPTR);
+    TBoxModel(QObject *parent = nullptr);
 
     void clear();
-    QList<QPoint> respawnPointList() const;
+
+    TBoxList boxList() const;
 
     // TIO interface
 public:
@@ -28,7 +28,13 @@ public:
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
 private:
-    QList<QPoint> mRespawnPointList;
+    TBoxList mBoxList;
+
+public:
+    DECL_GENERIC_FUNCTIONS(Box);
+
+signals:
+    DECL_GENERIC_SIGNALS(Box);
 };
 
-#endif // TRESPAWNSMODEL_H
+#endif // TBOXESMODEL_H

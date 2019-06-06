@@ -3,16 +3,24 @@
 
 #include "basemodel.h"
 #include "entity/plat.h"
+#include "objectgeneric.hpp"
 
-class TPlatformsModel : public TBaseModel
+class TPlatModel : public TBaseModel
 {
     Q_OBJECT
 
 public:
-    TPlatformsModel(QObject *parent = Q_NULLPTR);
+    TPlatModel(QObject *parent = Q_NULLPTR);
 
     void clear();
     TPlatList platList() const;
+
+    TPlat *createPlat();
+    QStringList getPlatNames() const;
+
+signals:
+    void platInserted(const TPlatList &platList, const QList<int> &indexList);
+    void platRemoved(const TPlatList &platList, const QList<int> &indexList);
 
     // TIO interface
 public:
@@ -27,6 +35,12 @@ public:
 
 private:
     TPlatList mPlatList;
+
+public:
+    DECL_GENERIC_FUNCTIONS(Plat);
+
+signals:
+    DECL_GENERIC_SIGNALS(Plat);
 };
 
 #endif // TPLATFORMSMODEL_H

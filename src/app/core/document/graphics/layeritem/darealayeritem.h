@@ -3,11 +3,11 @@
 
 #include "objectlayeritem.h"
 
-class TDAreasModel;
+class TDAreaModel;
 class TDAreaLayerItem : public TObjectLayerItem
 {
 public:
-    explicit TDAreaLayerItem(TDAreasModel *dAreasModel, QGraphicsItem *parent = Q_NULLPTR);
+    explicit TDAreaLayerItem(TDAreaModel *dAreasModel, QGraphicsItem *parent = Q_NULLPTR);
     ~TDAreaLayerItem();
 };
 

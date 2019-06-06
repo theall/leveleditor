@@ -1,12 +1,12 @@
 #include "arealayeritem.h"
-#include "../../model/areasmodel.h"
+#include "../../model/areamodel.h"
 
-TAreasLayerItem::TAreasLayerItem(TAreasModel *areasModel, QGraphicsItem *parent) :
+TAreasLayerItem::TAreasLayerItem(TAreaModel *areasModel, QGraphicsItem *parent) :
     TObjectLayerItem(areasModel, parent)
 {
     Q_ASSERT(areasModel);
-    connect(areasModel, SIGNAL(areaInserted(TAreaList,QList<int>)), this, SLOT(slotAreaInserted(TAreaList,QList<int>)));
-    connect(areasModel, SIGNAL(areaRemoved(TAreaList,QList<int>)), this, SLOT(slotAreaRemoved(TAreaList,QList<int>)));
+    connect(areasModel, SIGNAL(objectInserted(TAreaList,QList<int>)), this, SLOT(slotAreaInserted(TAreaList,QList<int>)));
+    connect(areasModel, SIGNAL(objectRemoved(TAreaList,QList<int>)), this, SLOT(slotAreaRemoved(TAreaList,QList<int>)));
 
     for(TArea *area : areasModel->areaList()) {
         addArea(area);

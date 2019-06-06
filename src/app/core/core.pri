@@ -12,15 +12,13 @@ SOURCES += \
     $$PWD/document/property/propertyitem.cpp \
     $$PWD/document/property/propertyobject.cpp \
     $$PWD/document/model/scenemodel.cpp \
-    $$PWD/document/model/areasmodel.cpp \
-    $$PWD/document/model/platformsmodel.cpp \
-    $$PWD/document/model/dareasmodel.cpp \
-    $$PWD/document/model/boxesmodel.cpp \
-    $$PWD/document/model/wallsmodel.cpp \
-    $$PWD/document/model/respawnsmodel.cpp \
-    $$PWD/document/model/eventsmodel.cpp \
-    $$PWD/document/model/triggersmodel.cpp \
-    $$PWD/document/model/animationsmodel.cpp \
+    $$PWD/document/model/areamodel.cpp \
+    $$PWD/document/model/dareamodel.cpp \
+    $$PWD/document/model/boxmodel.cpp \
+    $$PWD/document/model/wallmodel.cpp \
+    $$PWD/document/model/respawnmodel.cpp \
+    $$PWD/document/model/eventmodel.cpp \
+    $$PWD/document/model/triggermodel.cpp \
     $$PWD/document/model/entity/point.cpp \
     $$PWD/document/model/entity/area.cpp \
     $$PWD/document/model/entity/darea.cpp \
@@ -59,7 +57,7 @@ SOURCES += \
     $$PWD/document/graphics/layeritem/objectitem/dareaitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/boxitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/platitem.cpp \
-    $$PWD/model/mapsmodel.cpp \
+    $$PWD/model/mapmodel.cpp \
     $$PWD/model/charactermodel.cpp \
     $$PWD/assets/maps.cpp \
     $$PWD/document/graphics/layeritem/objectitem/wallitem.cpp \
@@ -82,7 +80,9 @@ SOURCES += \
     $$PWD/document/undocommand/removeselectioncommand.cpp \
     $$PWD/document/graphics/uiitem/objectareaitem.cpp \
     $$PWD/document/graphics/uiitem/darkmaskitem.cpp \
-    $$PWD/document/graphics/uiitem/uiitemsgroup.cpp
+    $$PWD/document/graphics/uiitem/uiitemsgroup.cpp \
+    $$PWD/document/model/animationmodel.cpp \
+    $$PWD/document/model/platmodel.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -98,15 +98,14 @@ HEADERS  += \
     $$PWD/document/property/propertyobject.h \
     $$PWD/document/model/scenemodel.h \
     $$PWD/document/base/io.h \
-    $$PWD/document/model/areasmodel.h \
-    $$PWD/document/model/platformsmodel.h \
-    $$PWD/document/model/dareasmodel.h \
-    $$PWD/document/model/boxesmodel.h \
-    $$PWD/document/model/wallsmodel.h \
-    $$PWD/document/model/respawnsmodel.h \
-    $$PWD/document/model/eventsmodel.h \
-    $$PWD/document/model/triggersmodel.h \
-    $$PWD/document/model/animationsmodel.h \
+    $$PWD/document/model/areamodel.h \
+    $$PWD/document/model/dareamodel.h \
+    $$PWD/document/model/boxmodel.h \
+    $$PWD/document/model/wallmodel.h \
+    $$PWD/document/model/respawnmodel.h \
+    $$PWD/document/model/eventmodel.h \
+    $$PWD/document/model/triggermodel.h \
+    $$PWD/document/model/animationmodel.h \
     $$PWD/document/model/entity/point.h \
     $$PWD/document/model/entity/area.h \
     $$PWD/document/model/entity/darea.h \
@@ -148,7 +147,7 @@ HEADERS  += \
     $$PWD/document/graphics/layeritem/objectitem/dareaitem.h \
     $$PWD/document/graphics/layeritem/objectitem/boxitem.h \
     $$PWD/document/graphics/layeritem/objectitem/platitem.h \
-    $$PWD/model/mapsmodel.h \
+    $$PWD/model/mapmodel.h \
     $$PWD/model/charactermodel.h \
     $$PWD/assets/maps.h \
     $$PWD/document/graphics/layeritem/objectitem/wallitem.h \
@@ -172,7 +171,8 @@ HEADERS  += \
     $$PWD/document/graphics/uiitem/objectareaitem.h \
     $$PWD/document/graphics/uiitem/darkmaskitem.h \
     $$PWD/document/model/objectgeneric.hpp \
-    $$PWD/document/graphics/uiitem/uiitemsgroup.h
+    $$PWD/document/graphics/uiitem/uiitemsgroup.h \
+    $$PWD/document/model/platmodel.h
 
 RESOURCES += \
     $$PWD/resource/core.qrc

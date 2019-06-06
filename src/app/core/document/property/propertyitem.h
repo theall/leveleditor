@@ -98,6 +98,7 @@ public:
 
 signals:
     void valueChanged(const QVariant &oldValue, const QVariant &newValue);
+    void attributeChanged(const QString &name, const QVariant &value);
 
 private:
     int mType;

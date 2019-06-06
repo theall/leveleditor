@@ -32,3 +32,13 @@ void TRespawn::initPropertySheet()
     mPropertySheet->addProperty(PT_POINT, P_START, PID_SPAWN_START);
     mPropertySheet->addProperty(PT_POINT, P_RESPAWN, PID_SPAWN_RESPAWN);
 }
+
+QString TRespawn::typeString() const
+{
+    return "Respawn";
+}
+
+bool TRespawn::isCongener(TObject *) const
+{
+    return false;
+}

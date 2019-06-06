@@ -1,17 +1,17 @@
-#include "boxesmodel.h"
+#include "boxmodel.h"
 
-TBoxesModel::TBoxesModel(QObject *parent) :
+TBoxModel::TBoxModel(QObject *parent) :
     TBaseModel(TBaseModel::BOX, parent)
 {
     setName(tr("Box"));
 }
 
-void TBoxesModel::clear()
+void TBoxModel::clear()
 {
 
 }
 
-void TBoxesModel::readFromStream(QDataStream &stream)
+void TBoxModel::readFromStream(QDataStream &stream)
 {
     int boxAmount = 0;
     stream >> boxAmount;
@@ -23,7 +23,7 @@ void TBoxesModel::readFromStream(QDataStream &stream)
     }
 }
 
-void TBoxesModel::saveToStream(QDataStream &stream) const
+void TBoxModel::saveToStream(QDataStream &stream) const
 {
     stream << mBoxList.size();
     for(TBox *box : mBoxList) {
@@ -31,19 +31,19 @@ void TBoxesModel::saveToStream(QDataStream &stream) const
     }
 }
 
-int TBoxesModel::rowCount(const QModelIndex &parent) const
+int TBoxModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return mBoxList.size();
 }
 
-int TBoxesModel::columnCount(const QModelIndex &parent) const
+int TBoxModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return 1;
 }
 
-QVariant TBoxesModel::data(const QModelIndex &index, int role) const
+QVariant TBoxModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
     if(row>=0 && row<mBoxList.size())
@@ -56,7 +56,9 @@ QVariant TBoxesModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-TBoxList TBoxesModel::boxList() const
+TBoxList TBoxModel::boxList() const
 {
     return mBoxList;
 }
+
+IMPL_GENERIC_FUNCTIONS(Box)

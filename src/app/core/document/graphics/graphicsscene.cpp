@@ -527,7 +527,7 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         TObject *newObject = nullptr;
         QRectF areaRect = mObjectAreaItem->boundingRect();
         if(modelType == TBaseModel::AREA) {
-            newObject = ((TAreasModel*)baseModel)->createArea(areaRect);
+            newObject = ((TAreaModel*)baseModel)->createArea(areaRect);
         }
         if(newObject) {
             TObjectList objectList;

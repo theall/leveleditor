@@ -89,7 +89,12 @@ void TPropertyItem::setAttribute(const PropertyAttribute &attribute, const QVari
 
 void TPropertyItem::addAttribute(const QString &name, const QVariant &value)
 {
+    if(mAttributes[name] == value)
+        return;
+
     mAttributes[name] = value;
+
+    emit attributeChanged(name, value);
 }
 
 void TPropertyItem::addAttribute(const PropertyAttribute &attribute, const QVariant &value)

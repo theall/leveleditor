@@ -1,18 +1,17 @@
-#ifndef TWALLSMODEL_H
-#define TWALLSMODEL_H
+#ifndef TEVENTSMODEL_H
+#define TEVENTSMODEL_H
 
 #include "basemodel.h"
-#include "entity/wall.h"
 
-class TWallsModel : public TBaseModel
+class TEventModel : public TBaseModel
 {
     Q_OBJECT
 
 public:
-    TWallsModel(QObject *parent = Q_NULLPTR);
+    TEventModel(QObject *parent = Q_NULLPTR);
 
     void clear();
-    TWallList wallList() const;
+    QList<int> eventList() const;
 
     // TIO interface
 public:
@@ -26,7 +25,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
 private:
-    TWallList mWallList;
+    QList<int> mEventList;
 };
 
-#endif // TWALLSMODEL_H
+#endif // TEVENTSMODEL_H

@@ -1,24 +1,22 @@
-#ifndef TTRIGGERSMODEL_H
-#define TTRIGGERSMODEL_H
+#ifndef TRESPAWNSMODEL_H
+#define TRESPAWNSMODEL_H
 
 #include "basemodel.h"
-#include "entity/trigger.h"
+#include "entity/respawn.h"
+#include "objectgeneric.hpp"
 
-class TTriggersModel : public TBaseModel
+#include <QList>
+#include <QPoint>
+
+class TRespawnModel : public TBaseModel
 {
     Q_OBJECT
 
 public:
-    explicit TTriggersModel(QObject *parent = Q_NULLPTR);
-    ~TTriggersModel();
-
-    TTriggerList triggerList() const;
-    void setTriggerList(const TTriggerList &triggerList);
+    TRespawnModel(QObject *parent = Q_NULLPTR);
 
     void clear();
-
-private:
-    TTriggerList mTriggerList;
+    TRespawnList respawnList() const;
 
     // TIO interface
 public:
@@ -30,6 +28,15 @@ public:
     int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
+
+private:
+    TRespawnList mRespawnList;
+
+public:
+    DECL_GENERIC_FUNCTIONS(Respawn);
+
+signals:
+    DECL_GENERIC_SIGNALS(Respawn);
 };
 
-#endif // TTRIGGERSMODEL_H
+#endif // TRESPAWNSMODEL_H

@@ -112,6 +112,19 @@ void TPropertyController::slotGetSelectedSound(QString &text, QMediaContent *&me
     }
 }
 
+void TPropertyController::slotPropertyAttributeChanged(const QString &attr, const QVariant &value)
+{
+    TPropertyItem *propertyItem = static_cast<TPropertyItem*>(sender());
+    if(!propertyItem)
+        return;
+
+    QtVariantProperty *property = mItemPropertyMap[propertyItem];
+    if(!property)
+        return;
+
+    property->setAttribute(attr, value);
+}
+
 void TPropertyController::setPropertySheet(TPropertySheet *propertySheet)
 {
     if(mPropertySheet == propertySheet)
@@ -240,6 +253,8 @@ QtVariantProperty *TPropertyController::createProperty(TPropertyItem *propertyIt
         QtVariantProperty *subProperty = createProperty(subPropertyItem);
         p->addSubProperty(subProperty);
     }
+
+    connect(propertyItem, SIGNAL(attributeChanged(QString,QVariant)), this, SLOT(slotPropertyAttributeChanged(QString,QVariant)));
     return p;
 }
 

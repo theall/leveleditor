@@ -1,22 +1,22 @@
-#include "dareasmodel.h"
+#include "dareamodel.h"
 
-TDAreasModel::TDAreasModel(QObject *parent) :
+TDAreaModel::TDAreaModel(QObject *parent) :
     TBaseModel(TBaseModel::DAREA, parent)
 {
     setName(tr("Danger Area"));
 }
 
-TDAreasModel::~TDAreasModel()
+TDAreaModel::~TDAreaModel()
 {
 
 }
 
-void TDAreasModel::clear()
+void TDAreaModel::clear()
 {
 
 }
 
-void TDAreasModel::readFromStream(QDataStream &stream)
+void TDAreaModel::readFromStream(QDataStream &stream)
 {
     int areaAmount = 0;
     stream >> areaAmount;
@@ -29,7 +29,7 @@ void TDAreasModel::readFromStream(QDataStream &stream)
     }
 }
 
-void TDAreasModel::saveToStream(QDataStream &stream) const
+void TDAreaModel::saveToStream(QDataStream &stream) const
 {
     stream << mDAreaList.size();
 
@@ -38,19 +38,19 @@ void TDAreasModel::saveToStream(QDataStream &stream) const
     }
 }
 
-int TDAreasModel::rowCount(const QModelIndex &parent) const
+int TDAreaModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return mDAreaList.size();
 }
 
-int TDAreasModel::columnCount(const QModelIndex &parent) const
+int TDAreaModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return 1;
 }
 
-QVariant TDAreasModel::data(const QModelIndex &index, int role) const
+QVariant TDAreaModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
     if(row>=0 && row<mDAreaList.size())
@@ -63,12 +63,14 @@ QVariant TDAreasModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-TDAreaList TDAreasModel::dAreaList() const
+TDAreaList TDAreaModel::dAreaList() const
 {
     return mDAreaList;
 }
 
-void TDAreasModel::setDAreaList(const TDAreaList &dAreaList)
+void TDAreaModel::setDAreaList(const TDAreaList &dAreaList)
 {
     mDAreaList = dAreaList;
 }
+
+IMPL_GENERIC_FUNCTIONS(DArea)

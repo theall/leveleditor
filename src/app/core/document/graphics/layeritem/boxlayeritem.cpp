@@ -1,8 +1,8 @@
 #include "boxlayeritem.h"
 #include "objectitem/boxitem.h"
-#include "../../model/boxesmodel.h"
+#include "../../model/boxmodel.h"
 
-TBoxLayerItem::TBoxLayerItem(TBoxesModel *boxesModel, QGraphicsItem *parent) :
+TBoxLayerItem::TBoxLayerItem(TBoxModel *boxesModel, QGraphicsItem *parent) :
     TObjectLayerItem(boxesModel, parent)
 {
     Q_ASSERT(boxesModel);

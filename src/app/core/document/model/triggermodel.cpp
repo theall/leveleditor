@@ -1,32 +1,32 @@
-#include "triggersmodel.h"
+#include "triggermodel.h"
 
-TTriggersModel::TTriggersModel(QObject *parent) :
+TTriggerModel::TTriggerModel(QObject *parent) :
     TBaseModel(TBaseModel::TRIGGER, parent)
 {
     setName(tr("TriggerModel"));
 }
 
-TTriggersModel::~TTriggersModel()
+TTriggerModel::~TTriggerModel()
 {
 
 }
 
-void TTriggersModel::clear()
+void TTriggerModel::clear()
 {
 
 }
 
-TTriggerList TTriggersModel::triggerList() const
+TTriggerList TTriggerModel::triggerList() const
 {
     return mTriggerList;
 }
 
-void TTriggersModel::setTriggerList(const TTriggerList &triggerList)
+void TTriggerModel::setTriggerList(const TTriggerList &triggerList)
 {
     mTriggerList = triggerList;
 }
 
-void TTriggersModel::readFromStream(QDataStream &stream)
+void TTriggerModel::readFromStream(QDataStream &stream)
 {
     int triggerAmount;
     stream >> triggerAmount;
@@ -38,7 +38,7 @@ void TTriggersModel::readFromStream(QDataStream &stream)
     }
 }
 
-void TTriggersModel::saveToStream(QDataStream &stream) const
+void TTriggerModel::saveToStream(QDataStream &stream) const
 {
     stream << mTriggerList.size();
 
@@ -47,17 +47,19 @@ void TTriggersModel::saveToStream(QDataStream &stream) const
     }
 }
 
-int TTriggersModel::rowCount(const QModelIndex &) const
+int TTriggerModel::rowCount(const QModelIndex &) const
 {
     return mTriggerList.size();
 }
 
-int TTriggersModel::columnCount(const QModelIndex &parent) const
+int TTriggerModel::columnCount(const QModelIndex &parent) const
 {
     return TBaseModel::columnCount(parent);
 }
 
-QVariant TTriggersModel::data(const QModelIndex &index, int role) const
+QVariant TTriggerModel::data(const QModelIndex &index, int role) const
 {
     return TBaseModel::data(index, role);
 }
+
+IMPL_GENERIC_FUNCTIONS(Trigger)

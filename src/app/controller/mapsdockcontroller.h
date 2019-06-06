@@ -2,7 +2,7 @@
 #define TMAPSDOCKCONTROLLER_H
 
 #include "abstractcontroller.h"
-#include "core/model/mapsmodel.h"
+#include "core/model/mapmodel.h"
 
 class TMapsProxyView;
 class TMapsDockController : public TAbstractController

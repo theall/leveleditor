@@ -3,6 +3,7 @@
 
 #include "basemodel.h"
 #include "entity/enemyfactory.h"
+#include "objectgeneric.hpp"
 
 class TEnemyFactoryModel : public TBaseModel
 {
@@ -30,5 +31,11 @@ public:
 
 private:
     TEnemyFactoryList mEnemyFactoryList;
+
+public:
+    DECL_GENERIC_FUNCTIONS(EnemyFactory);
+
+signals:
+    DECL_GENERIC_SIGNALS(EnemyFactory);
 };
 #endif // TENEMYFACTORYMODEL_H

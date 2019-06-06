@@ -1,4 +1,4 @@
-#include "mapsmodel.h"
+#include "mapmodel.h"
 #include "../assets/pixmap.h"
 
 TMapsModel::TMapsModel(QObject *parent) :

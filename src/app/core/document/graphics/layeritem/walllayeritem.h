@@ -3,11 +3,11 @@
 
 #include "objectlayeritem.h"
 
-class TWallsModel;
+class TWallModel;
 class TWallLayerItem : public TObjectLayerItem
 {
 public:
-    explicit TWallLayerItem(TWallsModel *wallsModel, QGraphicsItem *parent = Q_NULLPTR);
+    explicit TWallLayerItem(TWallModel *wallsModel, QGraphicsItem *parent = Q_NULLPTR);
     ~TWallLayerItem();
 };
 

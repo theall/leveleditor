@@ -75,4 +75,94 @@ QList<T> removeFromContainer(QList<T> &container, QList<int> &indexList)
     return objectList;
 }
 
+#define DECL_GENERIC_FUNCTIONS(Type)\
+    void insertObjects(const TObjectList &objectList, const QList<int> &indexList);\
+    QList<int> removeObjects(const TObjectList &objectList);\
+    void insert##Type(T##Type *object, int index = -1);\
+    void insert##Type(const T##Type##List &objectList, const QList<int> &indexList = QList<int>());\
+    int remove##Type(int index);\
+    int remove##Type(T##Type *object);\
+    QList<int> remove##Type(const QList<int> &indexList);\
+    QList<int> remove##Type(const T##Type##List &objectList)
+
+#define DECL_GENERIC_SIGNALS(Type)\
+    void objectInserted(const T##Type##List &objectList, const QList<int> &indexList);\
+    void objectRemoved(const T##Type##List &objectList, const QList<int> &indexList)
+
+#define IMPL_GENERIC_FUNCTIONS(Type)\
+void T##Type##Model::insert##Type(T##Type *object, int index)\
+{\
+    if(!object)\
+        return;\
+\
+    T##Type##List objectList;\
+    QList<int> indexList;\
+    objectList.append(object);\
+    indexList.append(index);\
+    insert##Type(objectList, indexList);\
+}\
+\
+void T##Type##Model::insert##Type(const T##Type##List &objectList, const QList<int> &indexList)\
+{\
+    T##Type##List objectInsertedList = objectList;\
+    QList<int> insertedIndexList = indexList;\
+    insertIntoContainer<T##Type*>(m##Type##List, objectInsertedList, insertedIndexList);\
+    emit objectInserted(objectInsertedList, insertedIndexList);\
+}\
+\
+int T##Type##Model::remove##Type(int index)\
+{\
+    QList<int> indexList;\
+    indexList.append(index);\
+\
+    QList<int> indexRemovedList = remove##Type(indexList);\
+    index = -1;\
+    if(!indexRemovedList.isEmpty())\
+        index = indexRemovedList.at(0);\
+    return index;\
+}\
+\
+int T##Type##Model::remove##Type(T##Type *object)\
+{\
+    T##Type##List objectList;\
+    objectList.append(object);\
+\
+    QList<int> indexRemovedList = remove##Type(objectList);\
+    int index = -1;\
+    if(!indexRemovedList.isEmpty())\
+        index = indexRemovedList.at(0);\
+    return index;\
+}\
+\
+QList<int> T##Type##Model::remove##Type(const QList<int> &indexList)\
+{\
+    T##Type##List objectList;\
+    QList<int> indexRemoved = indexList;\
+    objectList = removeFromContainer<T##Type*>(m##Type##List, indexRemoved);\
+    if(!indexRemoved.isEmpty())\
+        emit objectRemoved(objectList, indexRemoved);\
+    return indexRemoved;\
+}\
+\
+QList<int> T##Type##Model::remove##Type(const T##Type##List &objectList)\
+{\
+    QList<int> indexRemoved;\
+    T##Type##List objectListRemoved = objectList;\
+    indexRemoved = removeFromContainer<T##Type*>(m##Type##List, objectListRemoved);\
+    if(!indexRemoved.isEmpty())\
+        emit objectRemoved(objectList, indexRemoved);\
+    return indexRemoved;\
+}\
+\
+void T##Type##Model::insertObjects(const TObjectList &objectList, const QList<int> &indexList)\
+{\
+    T##Type##List _objectList = convert<T##Type*>(objectList);\
+    insert##Type(_objectList, indexList);\
+}\
+\
+QList<int> T##Type##Model::removeObjects(const TObjectList &objectList)\
+{\
+    T##Type##List _objectList = convert<T##Type*>(objectList);\
+    return remove##Type(_objectList);\
+}
 #endif // GENERIC_H

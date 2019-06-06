@@ -71,3 +71,4 @@ void TEnemyFactoryModel::setEnemyFactoryList(const TEnemyFactoryList &enemyFacto
     mEnemyFactoryList = enemyFactoryList;
 }
 
+IMPL_GENERIC_FUNCTIONS(EnemyFactory)

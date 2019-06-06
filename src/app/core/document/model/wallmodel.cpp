@@ -1,12 +1,12 @@
-#include "wallsmodel.h"
+#include "wallmodel.h"
 
-TWallsModel::TWallsModel(QObject *parent) :
+TWallModel::TWallModel(QObject *parent) :
     TBaseModel(TBaseModel::WALL, parent)
 {
     setName(tr("Wall"));
 }
 
-void TWallsModel::readFromStream(QDataStream &stream)
+void TWallModel::readFromStream(QDataStream &stream)
 {
     int wallAmount = 0;
     stream >> wallAmount;
@@ -18,7 +18,7 @@ void TWallsModel::readFromStream(QDataStream &stream)
     }
 }
 
-void TWallsModel::saveToStream(QDataStream &stream) const
+void TWallModel::saveToStream(QDataStream &stream) const
 {
     stream << mWallList.size();
     for(TWall *wall : mWallList) {
@@ -26,19 +26,19 @@ void TWallsModel::saveToStream(QDataStream &stream) const
     }
 }
 
-int TWallsModel::rowCount(const QModelIndex &parent) const
+int TWallModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return mWallList.size();
 }
 
-int TWallsModel::columnCount(const QModelIndex &parent) const
+int TWallModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return 1;
 }
 
-QVariant TWallsModel::data(const QModelIndex &index, int role) const
+QVariant TWallModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
     if(row>=0 && row<mWallList.size())
@@ -51,12 +51,14 @@ QVariant TWallsModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-TWallList TWallsModel::wallList() const
+TWallList TWallModel::wallList() const
 {
     return mWallList;
 }
 
-void TWallsModel::clear()
+void TWallModel::clear()
 {
     mWallList.clear();
 }
+
+IMPL_GENERIC_FUNCTIONS(Wall)

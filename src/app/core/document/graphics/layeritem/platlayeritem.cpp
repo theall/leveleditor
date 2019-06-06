@@ -1,8 +1,8 @@
 #include "platlayeritem.h"
 #include "objectitem/platitem.h"
-#include "../../model/platformsmodel.h"
+#include "../../model/platmodel.h"
 
-TPlatLayerItem::TPlatLayerItem(TPlatformsModel *platformsModel, QGraphicsItem *parent) :
+TPlatLayerItem::TPlatLayerItem(TPlatModel *platformsModel, QGraphicsItem *parent) :
     TObjectLayerItem(platformsModel, parent)
 {
     Q_ASSERT(platformsModel);

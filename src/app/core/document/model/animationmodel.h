@@ -1,21 +1,24 @@
-#ifndef TDAREASMODEL_H
-#define TDAREASMODEL_H
+#ifndef TANIMATIONSMODEL_H
+#define TANIMATIONSMODEL_H
 
 #include "basemodel.h"
-#include "entity/darea.h"
+#include "entity/animation.h"
 
-class TDAreasModel : public TBaseModel
+class TAnimationModel : public TBaseModel
 {
     Q_OBJECT
 
 public:
-    TDAreasModel(QObject *parent = Q_NULLPTR);
-    ~TDAreasModel();
+    explicit TAnimationModel(QObject *parent = nullptr);
+    ~TAnimationModel();
 
-    TDAreaList dAreaList() const;
-    void setDAreaList(const TDAreaList &dAreaList);
+    TAnimationList animationList() const;
+    void setAnimationList(const TAnimationList &animationList);
 
     void clear();
+
+private:
+    TAnimationList mAnimationList;
 
     // TIO interface
 public:
@@ -27,9 +30,6 @@ public:
     int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
-
-private:
-    TDAreaList mDAreaList;
 };
 
-#endif // TDAREASMODEL_H
+#endif // TANIMATIONSMODEL_H

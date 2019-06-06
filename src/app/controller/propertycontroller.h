@@ -52,6 +52,7 @@ private slots:
     void slotCurrentItemChanged(QtBrowserItem * browserItem);
     void slotGetSelectedImage(QString &text, QPixmap &pixmap);
     void slotGetSelectedSound(QString &text, QMediaContent *&mediaContent);
+    void slotPropertyAttributeChanged(const QString &attr, const QVariant &value);
 
 protected slots:
     void slotTimerEvent() Q_DECL_OVERRIDE;

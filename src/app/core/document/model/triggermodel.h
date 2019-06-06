@@ -1,17 +1,25 @@
-#ifndef TEVENTSMODEL_H
-#define TEVENTSMODEL_H
+#ifndef TTRIGGERSMODEL_H
+#define TTRIGGERSMODEL_H
 
 #include "basemodel.h"
+#include "entity/trigger.h"
+#include "objectgeneric.hpp"
 
-class TEventsModel : public TBaseModel
+class TTriggerModel : public TBaseModel
 {
     Q_OBJECT
 
 public:
-    TEventsModel(QObject *parent = Q_NULLPTR);
+    explicit TTriggerModel(QObject *parent = Q_NULLPTR);
+    ~TTriggerModel();
+
+    TTriggerList triggerList() const;
+    void setTriggerList(const TTriggerList &triggerList);
 
     void clear();
-    QList<int> eventList() const;
+
+private:
+    TTriggerList mTriggerList;
 
     // TIO interface
 public:
@@ -24,8 +32,11 @@ public:
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
-private:
-    QList<int> mEventList;
+public:
+    DECL_GENERIC_FUNCTIONS(Trigger);
+
+signals:
+    DECL_GENERIC_SIGNALS(Trigger);
 };
 
-#endif // TEVENTSMODEL_H
+#endif // TTRIGGERSMODEL_H

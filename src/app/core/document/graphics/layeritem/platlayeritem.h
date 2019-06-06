@@ -3,11 +3,11 @@
 
 #include "objectlayeritem.h"
 
-class TPlatformsModel;
+class TPlatModel;
 class TPlatLayerItem : public TObjectLayerItem
 {
 public:
-    explicit TPlatLayerItem(TPlatformsModel *platformsModel, QGraphicsItem *parent = Q_NULLPTR);
+    explicit TPlatLayerItem(TPlatModel *platformsModel, QGraphicsItem *parent = Q_NULLPTR);
     ~TPlatLayerItem();
 };
 

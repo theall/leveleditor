@@ -14,6 +14,8 @@ public:
     explicit TArea(QObject *parent = Q_NULLPTR);
     TArea(const QRect &rect, QObject *parent = Q_NULLPTR);
 
+    void setPlatNameList(const QStringList &platNames);
+
 private:
     void initPropertySheet();
 

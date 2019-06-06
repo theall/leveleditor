@@ -2,16 +2,16 @@
 #define SCENEMODEL_H
 
 #include "basemodel.h"
-#include "animationsmodel.h"
-#include "areasmodel.h"
-#include "boxesmodel.h"
-#include "dareasmodel.h"
-#include "eventsmodel.h"
+#include "animationmodel.h"
+#include "areamodel.h"
+#include "boxmodel.h"
+#include "dareamodel.h"
+#include "eventmodel.h"
 #include "tilelayermodel.h"
-#include "platformsmodel.h"
-#include "respawnsmodel.h"
-#include "triggersmodel.h"
-#include "wallsmodel.h"
+#include "platmodel.h"
+#include "respawnmodel.h"
+#include "triggermodel.h"
+#include "wallmodel.h"
 #include "enemyfactorymodel.h"
 #include "../property/propertyobject.h"
 
@@ -25,14 +25,14 @@ public:
     explicit TSceneModel(QObject *parent = nullptr);
     ~TSceneModel();
 
-    TAreasModel *getAreasModel() const;
-    TBoxesModel *getBoxesModel() const;
-    TDAreasModel *getDAreasModel() const;
-    TEventsModel *getEventsModel() const;
-    TPlatformsModel *getPlatformsModel() const;
-    TRespawnsModel *getRespawnsModel() const;
-    TTriggersModel *getTriggersModel() const;
-    TWallsModel *getWallsModel() const;
+    TAreaModel *getAreasModel() const;
+    TBoxModel *getBoxesModel() const;
+    TDAreaModel *getDAreasModel() const;
+    TEventModel *getEventsModel() const;
+    TPlatModel *getPlatformsModel() const;
+    TRespawnModel *getRespawnsModel() const;
+    TTriggerModel *getTriggersModel() const;
+    TWallModel *getWallsModel() const;
     TEnemyFactoryModel *getEnemyFactoryModel() const;
     TTileLayerModel *getTileLayerModel1() const;
     TTileLayerModel *getTileLayerModel2() const;
@@ -68,15 +68,15 @@ private:
     TTileLayerModel *mTileLayerModel1;
     TTileLayerModel *mTileLayerModel2;
     TTileLayerModel *mTileLayerModel3;
-    TAnimationsModel *mAnimationsModel;
-    TAreasModel *mAreasModel;
-    TBoxesModel *mBoxesModel;
-    TDAreasModel *mDAreasModel;
-    TEventsModel *mEventsModel;
-    TPlatformsModel *mPlatformsModel;
-    TRespawnsModel *mRespawnsModel;
-    TTriggersModel *mTriggersModel;
-    TWallsModel *mWallsModel;
+    TAnimationModel *mAnimationsModel;
+    TAreaModel *mAreasModel;
+    TBoxModel *mBoxesModel;
+    TDAreaModel *mDAreasModel;
+    TEventModel *mEventsModel;
+    TPlatModel *mPlatformsModel;
+    TRespawnModel *mRespawnsModel;
+    TTriggerModel *mTriggersModel;
+    TWallModel *mWallsModel;
     TEnemyFactoryModel *mEnemyFactoryModel;
     TTileLayerModel *mTileLayerModel4;
     TTileLayerModel *mTileLayerModel5;

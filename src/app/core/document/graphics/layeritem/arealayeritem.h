@@ -4,13 +4,13 @@
 #include "objectlayeritem.h"
 #include "objectitem/areaitem.h"
 
-class TAreasModel;
+class TAreaModel;
 class TAreasLayerItem : public TObjectLayerItem
 {
     Q_OBJECT
 
 public:
-    explicit TAreasLayerItem(TAreasModel *areasModel, QGraphicsItem *parent = Q_NULLPTR);
+    explicit TAreasLayerItem(TAreaModel *areasModel, QGraphicsItem *parent = Q_NULLPTR);
     ~TAreasLayerItem();
 
 private slots:
@@ -18,7 +18,7 @@ private slots:
     void slotAreaRemoved(const TAreaList &areaList, const QList<int> &indexList);
 
 private:
-    TAreasModel *mAreasModel;
+    TAreaModel *mAreasModel;
     TAreaItemList mAreaItemList;
     QMap<TArea*, TAreaItem*> mAreaItemMap;
 

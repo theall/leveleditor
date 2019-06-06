@@ -5,11 +5,11 @@
 #include "layeritem/darealayeritem.h"
 #include "layeritem/platlayeritem.h"
 #include "layeritem/walllayeritem.h"
-#include "../model/areasmodel.h"
-#include "../model/boxesmodel.h"
-#include "../model/dareasmodel.h"
-#include "../model/platformsmodel.h"
-#include "../model/wallsmodel.h"
+#include "../model/areamodel.h"
+#include "../model/boxmodel.h"
+#include "../model/dareamodel.h"
+#include "../model/platmodel.h"
+#include "../model/wallmodel.h"
 
 #include <QDebug>
 
@@ -32,15 +32,15 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
         TLayerItem *layerItem = nullptr;
         if(TTileLayerModel *tileLayerModel = dynamic_cast<TTileLayerModel*>(baseModel)) {
             layerItem = new TTileLayerItem(tileLayerModel, this);
-        } else if(TAreasModel *areaModel = dynamic_cast<TAreasModel*>(baseModel)) {
+        } else if(TAreaModel *areaModel = dynamic_cast<TAreaModel*>(baseModel)) {
             layerItem = new TAreasLayerItem(areaModel, this);
-        } else if(TBoxesModel *boxModel = dynamic_cast<TBoxesModel*>(baseModel)) {
+        } else if(TBoxModel *boxModel = dynamic_cast<TBoxModel*>(baseModel)) {
             layerItem = new TBoxLayerItem(boxModel, this);
-        } else if(TDAreasModel *dareasModel = dynamic_cast<TDAreasModel*>(baseModel)) {
+        } else if(TDAreaModel *dareasModel = dynamic_cast<TDAreaModel*>(baseModel)) {
             layerItem = new TDAreaLayerItem(dareasModel, this);
-        } else if(TPlatformsModel *platModel = dynamic_cast<TPlatformsModel*>(baseModel)) {
+        } else if(TPlatModel *platModel = dynamic_cast<TPlatModel*>(baseModel)) {
             layerItem = new TPlatLayerItem(platModel, this);
-        } else if(TWallsModel *wallModel = dynamic_cast<TWallsModel*>(baseModel)) {
+        } else if(TWallModel *wallModel = dynamic_cast<TWallModel*>(baseModel)) {
             layerItem = new TWallLayerItem(wallModel, this);
         }
         if(layerItem) {

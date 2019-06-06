@@ -7,7 +7,7 @@
 #include "document/document.h"
 #include "model/tilesetmodel.h"
 #include "model/charactermodel.h"
-#include "model/mapsmodel.h"
+#include "model/mapmodel.h"
 
 class TCore : public QObject
 {
