@@ -82,7 +82,8 @@ SOURCES += \
     $$PWD/document/graphics/uiitem/darkmaskitem.cpp \
     $$PWD/document/graphics/uiitem/uiitemsgroup.cpp \
     $$PWD/document/model/animationmodel.cpp \
-    $$PWD/document/model/platmodel.cpp
+    $$PWD/document/model/platmodel.cpp \
+    $$PWD/document/graphics/cameraitem.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -172,7 +173,8 @@ HEADERS  += \
     $$PWD/document/graphics/uiitem/darkmaskitem.h \
     $$PWD/document/model/objectgeneric.hpp \
     $$PWD/document/graphics/uiitem/uiitemsgroup.h \
-    $$PWD/document/model/platmodel.h
+    $$PWD/document/model/platmodel.h \
+    $$PWD/document/graphics/cameraitem.h
 
 RESOURCES += \
     $$PWD/resource/core.qrc

@@ -11,7 +11,7 @@ public:
     explicit TestSceneModel(QObject *parent = 0);
 
 private Q_SLOTS:
-    
+    void testReadSave();
 };
 
 #endif // TESTSCENEMODEL_H

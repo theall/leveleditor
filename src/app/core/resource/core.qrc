@@ -2,5 +2,6 @@
     <qresource prefix="/scenemodel">
         <file>images/layer-image.png</file>
         <file>images/layer-object.png</file>
+        <file>images/camera.png</file>
     </qresource>
 </RCC>

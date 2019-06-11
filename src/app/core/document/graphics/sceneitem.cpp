@@ -13,11 +13,13 @@
 
 #include <QDebug>
 
-#define ZINDEX_BASE 1000
+#define ZINDEX_TOP 1000
 
 TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
     QGraphicsObject(parent)
+  , mIsHovered(false)
   , mSceneModel(sceneModel)
+  , mCameraItem(new TCameraItem(this))
   , mBorderRectangle(new QGraphicsRectItem(this))
   , mCurrentLayerItem(nullptr)
   , mDarkMaskItem(new TDarkMaskItem(this))
@@ -63,6 +65,19 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
 
         layerItem->setZValue(index++);
     }
+
+    TPropertySheet *sceneModelPropertySheet = mSceneModel->propertySheet();
+    if(!sceneModelPropertySheet)
+        throw("Property sheet needed in scene model!");
+    connect(sceneModelPropertySheet,
+            SIGNAL(propertyItemValueChanged(TPropertyItem*,QVariant)),
+            this,
+            SLOT(slotSceneModelPropertyItemValueChanged(TPropertyItem*,QVariant)));
+
+
+    QRect cameraRect = sceneModelPropertySheet->getValue(PID_SCENE_CAMERA).toRect();
+    mCameraItem->setBoundingRect(cameraRect);
+    mCameraItem->setZValue(ZINDEX_TOP);
 }
 
 TSceneItem::~TSceneItem()
@@ -115,8 +130,20 @@ void TSceneItem::slotLayerBoundingRectChanged(const QRectF &rect)
 {
     if(mBoundingRect.contains(rect))
         return;
+
     mBoundingRect = mBoundingRect.united(rect);
     emit boundingRectChanged(mBoundingRect);
+}
+
+void TSceneItem::slotSceneModelPropertyItemValueChanged(TPropertyItem *item, const QVariant &)
+{
+    if(!item)
+        return;
+
+    PropertyID pid = item->propertyId();
+    if(pid == PID_SCENE_CAMERA) {
+        mCameraItem->setBoundingRect(item->value().toRect());
+    }
 }
 
 TLayerItem *TSceneItem::getCurrentLayerItem() const

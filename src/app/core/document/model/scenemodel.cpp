@@ -305,9 +305,9 @@ void TSceneModel::saveToStream(QDataStream &stream) const
     int var8 = 0;
     int var9 = 0;
     int var10 = 0;
-    qint8 stri1 = 0;
-    qint8 stri2 = 0;
-    qint8 stri3 = 0;
+    int stri1 = 0;
+    int stri2 = 0;
+    int stri3 = 0;
     QRect cameraRect = mPropertySheet->getValue(PID_SCENE_CAMERA).toRect();
     stream << mPropertySheet->getValue(PID_SCENE_START_POINT).toPoint();
     stream << mPropertySheet->getValue(PID_SCENE_FIGHT_MODE).toInt();
@@ -333,6 +333,7 @@ void TSceneModel::saveToStream(QDataStream &stream) const
     stream << mPropertySheet->getValue(PID_SCENE_MUSIC2).toInt();
 
     mAnimationsModel->saveToStream(stream);
+    mEnemyFactoryModel->saveToStream(stream);
 }
 
 void TSceneModel::readFromStream(QDataStream &stream)

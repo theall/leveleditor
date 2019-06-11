@@ -1,12 +1,16 @@
 #include "frame.h"
+#include "tile.h"
 #include "../../base/tr.h"
 
-static const QString P_BACKGROUND = T("Tile Layer");
+static const QString P_TILE_LAYER = T("Tile Layer");
 static const QString P_NUMBER = T("Number");
 static const QString P_DURATION = T("Duration");
 
 TFrame::TFrame(QObject *parent) :
     TObject(TObject::FRAME, parent)
+  , mTile(nullptr)
+  , mTileLayer(-1)
+  , mTileNumber(-1)
 {
     initPropertySheet();
 }
@@ -14,6 +18,31 @@ TFrame::TFrame(QObject *parent) :
 TFrame::~TFrame()
 {
 
+}
+
+TTile *TFrame::getTile() const
+{
+    return mTile;
+}
+
+void TFrame::setTile(TTile *tile)
+{
+    mTile = tile;
+}
+
+QPixmap TFrame::getPixmap() const
+{
+    return mTile?mTile->pixmap():QPixmap();
+}
+
+int TFrame::getTileNumber() const
+{
+    return mTileNumber;
+}
+
+int TFrame::getTileLayer() const
+{
+    return mTileLayer;
 }
 
 void TFrame::saveToStream(QDataStream &stream) const
@@ -25,20 +54,18 @@ void TFrame::saveToStream(QDataStream &stream) const
 
 void TFrame::readFromStream(QDataStream &stream)
 {
-    int background;
-    int number;
     int duration;
-    stream >> background;
-    stream >> number;
+    stream >> mTileLayer;
+    stream >> mTileNumber;
     stream >> duration;
-    mPropertySheet->setValue(PID_FRAME_TILE_LAYER, background);
-    mPropertySheet->setValue(PID_FRAME_TILE_NUMBER, number);
+    mPropertySheet->setValue(PID_FRAME_TILE_LAYER, mTileLayer);
+    mPropertySheet->setValue(PID_FRAME_TILE_NUMBER, mTileNumber);
     mPropertySheet->setValue(PID_FRAME_DURATION, duration);
 }
 
 void TFrame::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_INT, P_BACKGROUND, PID_FRAME_TILE_LAYER);
+    mPropertySheet->addProperty(PT_INT, P_TILE_LAYER, PID_FRAME_TILE_LAYER);
     mPropertySheet->addProperty(PT_INT, P_NUMBER, PID_FRAME_TILE_NUMBER);
     mPropertySheet->addProperty(PT_INT, P_DURATION, PID_FRAME_DURATION);
 }

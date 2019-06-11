@@ -46,8 +46,13 @@ int TAnimationModel::columnCount(const QModelIndex &) const
 QVariant TAnimationModel::data(const QModelIndex &index, int role) const
 {
     if(index.isValid()) {
+        int row = index.row();
         if(role == Qt::DisplayRole) {
-            return tr("Animation %1").arg(index.row());
+            return tr("Animation %1").arg(row+1);
+        } else if(role == Qt::EditRole) {
+            if(row>=0 && row<mAnimationList.size()) {
+                mAnimationList.at(row)->getIcon();
+            }
         }
     }
     return QVariant();

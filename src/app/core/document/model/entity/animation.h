@@ -7,6 +7,7 @@
 #include "frame.h"
 #include "../../base/io.h"
 
+class TTile;
 class TAnimation : public TObject, TIO
 {
     Q_OBJECT
@@ -18,7 +19,16 @@ public:
     TFrameList frameList() const;
     void setFrameList(const TFrameList &frameList);
 
+    int getTileLayer() const;
+    int getTileNumber() const;
+    QPixmap getIcon() const;
+    TTile *getTile() const;
+    void setTile(TTile *tile);
+
 private:
+    TTile *mTile;
+    int mTileLayer;
+    int mTileNumber;
     TFrameList mFrameList;
     void initPropertySheet();
 

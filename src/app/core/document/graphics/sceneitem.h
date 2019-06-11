@@ -3,6 +3,7 @@
 
 #include <QGraphicsObject>
 
+#include "cameraitem.h"
 #include "layeritem/layeritem.h"
 #include "uiitem/hovereditem.h"
 #include "../model/scenemodel.h"
@@ -28,11 +29,13 @@ signals:
 private slots:
     void slotOnSceneModelCurrentIndexChanged(int index);
     void slotLayerBoundingRectChanged(const QRectF &rect);
+    void slotSceneModelPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);
 
 private:
     QRectF mBoundingRect;
-    bool mIsHovered = false;
+    bool mIsHovered;
     TSceneModel *mSceneModel;
+    TCameraItem *mCameraItem;
     QGraphicsRectItem *mBorderRectangle;
     TLayerItemList mLayerItemList;
     QMap<TBaseModel*, TLayerItem*> mModelLayerMap;

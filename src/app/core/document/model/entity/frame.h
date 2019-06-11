@@ -6,6 +6,7 @@
 #include "object.h"
 #include "../../base/io.h"
 
+class TTile;
 class TFrame : public TObject, TIO
 {
     Q_OBJECT
@@ -14,7 +15,17 @@ public:
     explicit TFrame(QObject *parent = nullptr);
     ~TFrame();
 
+    int getTileLayer() const;
+    int getTileNumber() const;
+
+    TTile *getTile() const;
+    void setTile(TTile *tile);
+    QPixmap getPixmap() const;
+
 private:
+    TTile *mTile;
+    int mTileLayer;
+    int mTileNumber;
     void initPropertySheet();
 
     // TObject interface

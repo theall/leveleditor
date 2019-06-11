@@ -63,6 +63,8 @@ signals:
 
 private:
     int mNextMap[5];
+
+    // As TSceneModel can not extra extend TPropertyObject, this variable is crated to expose property sheet.
     TPropertyObject *mPropertyObject;
     TPropertySheet *mPropertySheet;
 

@@ -1,4 +1,5 @@
 #include "animation.h"
+#include "tile.h"
 #include "../../base/tr.h"
 
 static const QString P_SEQUENCE = T("Sequence");
@@ -8,6 +9,9 @@ static const QString P_CURRENT_FRAME = T("Current frame");
 
 TAnimation::TAnimation(QObject *parent) :
     TObject(TObject::ANIMATION, parent)
+  , mTile(nullptr)
+  , mTileLayer(-1)
+  , mTileNumber(-1)
 {
     initPropertySheet();
 }
@@ -25,6 +29,31 @@ TFrameList TAnimation::frameList() const
 void TAnimation::setFrameList(const TFrameList &frameList)
 {
     mFrameList = frameList;
+}
+
+QPixmap TAnimation::getIcon() const
+{
+    return mTile?mTile->pixmap():QPixmap();
+}
+
+void TAnimation::setTile(TTile *tile)
+{
+    mTile = tile;
+}
+
+TTile *TAnimation::getTile() const
+{
+    return mTile;
+}
+
+int TAnimation::getTileNumber() const
+{
+    return mTileNumber;
+}
+
+int TAnimation::getTileLayer() const
+{
+    return mTileLayer;
 }
 
 void TAnimation::saveToStream(QDataStream &stream) const

@@ -6460,13 +6460,13 @@ void QtColorPropertyManager::initializeProperty(QtProperty *property)
     d_ptr->m_bToProperty[bProp] = property;
     property->addSubProperty(bProp);
 
-    QtProperty *aProp = d_ptr->m_intPropertyManager->addProperty();
-    aProp->setPropertyName(tr("Alpha"));
-    d_ptr->m_intPropertyManager->setValue(aProp, val.alpha());
-    d_ptr->m_intPropertyManager->setRange(aProp, 0, 0xFF);
-    d_ptr->m_propertyToA[property] = aProp;
-    d_ptr->m_aToProperty[aProp] = property;
-    property->addSubProperty(aProp);
+//    QtProperty *aProp = d_ptr->m_intPropertyManager->addProperty();
+//    aProp->setPropertyName(tr("Alpha"));
+//    d_ptr->m_intPropertyManager->setValue(aProp, val.alpha());
+//    d_ptr->m_intPropertyManager->setRange(aProp, 0, 0xFF);
+//    d_ptr->m_propertyToA[property] = aProp;
+//    d_ptr->m_aToProperty[aProp] = property;
+//    property->addSubProperty(aProp);
 }
 
 /*!
