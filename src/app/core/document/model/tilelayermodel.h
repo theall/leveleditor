@@ -30,6 +30,7 @@ public:
     QList<int> removeTile(const TTileList &tileList);
 
     TTile *createTile(TTileId *tileId, const QPointF &pos = QPointF());
+    TTile *getTile(int index) const;
 
 signals:
     void tileInserted(const TTileList &tileList, const QList<int> &indexList);

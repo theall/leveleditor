@@ -9,15 +9,15 @@ TRandomRegionItem::TRandomRegionItem(TDoorItem *doorItem) :
 
 QRectF TRandomRegionItem::boundingRect() const
 {
-
+    return QRectF();
 }
 
-void TRandomRegionItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void TRandomRegionItem::paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *)
 {
 
 }
 
-void TRandomRegionItem::propertyValueChanged(PropertyID pid)
+void TRandomRegionItem::propertyValueChanged(PropertyID)
 {
 
 }

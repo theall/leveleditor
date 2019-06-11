@@ -1,9 +1,9 @@
 #include "frame.h"
 #include "../../base/tr.h"
 
-static const QString P_Background = T("Background");
-static const QString P_Number = T("Number");
-static const QString P_Duration = T("Duration");
+static const QString P_BACKGROUND = T("Tile Layer");
+static const QString P_NUMBER = T("Number");
+static const QString P_DURATION = T("Duration");
 
 TFrame::TFrame(QObject *parent) :
     TObject(TObject::FRAME, parent)
@@ -18,9 +18,9 @@ TFrame::~TFrame()
 
 void TFrame::saveToStream(QDataStream &stream) const
 {
-    stream << mPropertySheet->getValue(PID_FRAME_Background).toPoint();
-    stream << mPropertySheet->getValue(PID_FRAME_Number).toPoint();
-    stream << mPropertySheet->getValue(PID_FRAME_Duration).toPoint();
+    stream << mPropertySheet->getValue(PID_FRAME_TILE_LAYER).toPoint();
+    stream << mPropertySheet->getValue(PID_FRAME_TILE_NUMBER).toPoint();
+    stream << mPropertySheet->getValue(PID_FRAME_DURATION).toPoint();
 }
 
 void TFrame::readFromStream(QDataStream &stream)
@@ -31,16 +31,16 @@ void TFrame::readFromStream(QDataStream &stream)
     stream >> background;
     stream >> number;
     stream >> duration;
-    mPropertySheet->setValue(PID_FRAME_Background, background);
-    mPropertySheet->setValue(PID_FRAME_Number, number);
-    mPropertySheet->setValue(PID_FRAME_Duration, duration);
+    mPropertySheet->setValue(PID_FRAME_TILE_LAYER, background);
+    mPropertySheet->setValue(PID_FRAME_TILE_NUMBER, number);
+    mPropertySheet->setValue(PID_FRAME_DURATION, duration);
 }
 
 void TFrame::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_INT, P_Background, PID_FRAME_Background);
-    mPropertySheet->addProperty(PT_INT, P_Number, PID_FRAME_Number);
-    mPropertySheet->addProperty(PT_INT, P_Duration, PID_FRAME_Duration);
+    mPropertySheet->addProperty(PT_INT, P_BACKGROUND, PID_FRAME_TILE_LAYER);
+    mPropertySheet->addProperty(PT_INT, P_NUMBER, PID_FRAME_TILE_NUMBER);
+    mPropertySheet->addProperty(PT_INT, P_DURATION, PID_FRAME_DURATION);
 }
 
 QString TFrame::typeString() const

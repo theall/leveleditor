@@ -54,10 +54,13 @@ TAssetsManager::~TAssetsManager()
 bool TAssetsManager::setResourcePath(const QString &path)
 {
     mPath = path.trimmed();
-    mDir.setPath(path);
+    mDir.setPath(mPath);
     mGfxDir.setPath(mDir.absoluteFilePath(GFX_PATH));
     mMapsDir.setPath(mDir.absoluteFilePath(MAPS_PATH));
-    return isValidPath();
+    bool ret = isValidPath();
+    if(!ret)
+        mPath.clear();
+    return ret;
 }
 
 bool TAssetsManager::load(const QString &path, bool asynLoad)

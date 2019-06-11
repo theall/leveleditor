@@ -139,6 +139,9 @@ TPropertySheet *TDocument::propertySheet() const
 
 void TDocument::load(const QString &file)
 {
+    if(file.isEmpty())
+        return;
+
     QFileInfo fileInfo(file);
     setFileName(file);
     if(fileInfo.isFile() && fileInfo.exists())

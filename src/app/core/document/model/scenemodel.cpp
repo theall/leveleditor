@@ -65,6 +65,14 @@ TSceneModel::TSceneModel(QObject *parent) :
     mTileLayerModel4->setName(tr("Foreground 1"));
     mTileLayerModel5->setName(tr("Foreground 2"));
     mTileLayerModel6->setName(tr("Foreground 3"));
+
+    mTileLayerModelList.append(mTileLayerModel1);
+    mTileLayerModelList.append(mTileLayerModel2);
+    mTileLayerModelList.append(mTileLayerModel3);
+    mTileLayerModelList.append(mTileLayerModel4);
+    mTileLayerModelList.append(mTileLayerModel5);
+    mTileLayerModelList.append(mTileLayerModel6);
+
     initPropertySheet();
 }
 
@@ -146,6 +154,17 @@ bool TSceneModel::isCurrentTileLayerModel() const
 {
     TBaseModel *m = getCurrentModel();
     return m && m->isTile();
+}
+
+TTile *TSceneModel::getTile(int tileset, int number) const
+{
+    if(tileset<0 || tileset>=mTileLayerModelList.size())
+        return nullptr;
+
+    TTileLayerModel *tileLayerModel = mTileLayerModelList.at(tileset);
+    if(!tileLayerModel)
+        return nullptr;
+    return tileLayerModel->getTile(number);
 }
 
 TEnemyFactoryModel *TSceneModel::getEnemyFactoryModel() const
@@ -349,7 +368,9 @@ void TSceneModel::readFromStream(QDataStream &stream)
     mTriggersModel->readFromStream(stream);
 
     for(int i=0;i<5;i++) {
-        stream >> mNextMap[i];
+        int temp = 0;
+        stream >> temp;
+        mNextMap[i] = temp;
     }
 
     int xScrStart;
@@ -368,9 +389,9 @@ void TSceneModel::readFromStream(QDataStream &stream)
     int var8;
     int var9;
     int var10;
-    qint8 stri1;
-    qint8 stri2;
-    qint8 stri3;
+    int stri1;
+    int stri2;
+    int stri3;
     int lScrLimit;
     int rScrLimit;
     int music1;
@@ -400,6 +421,7 @@ void TSceneModel::readFromStream(QDataStream &stream)
     stream >> music2;
 
     mAnimationsModel->readFromStream(stream);
+    mEnemyFactoryModel->readFromStream(stream);
 
     mPropertySheet->setValue(PID_SCENE_BACKGROUND_COLOR, QColor(r,g,b));
     mPropertySheet->setValue(PID_SCENE_START_POINT, QPoint(xScrStart, yScrStart));
@@ -411,7 +433,6 @@ void TSceneModel::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(PID_SCENE_AIR_STRIKE, noAirStrike);
     mPropertySheet->setValue(PID_SCENE_MUSIC1, music1);
     mPropertySheet->setValue(PID_SCENE_MUSIC2, music2);
-
     mPropertySheet->setValue(PID_SCENE_FLAG1, flag1);
     mPropertySheet->setValue(PID_SCENE_FLAG2, flag2);
 }

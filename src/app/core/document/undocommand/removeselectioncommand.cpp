@@ -7,8 +7,8 @@ TRemoveSelectionCommand::TRemoveSelectionCommand(
         TSelectedItems *selectedItems,
         QUndoCommand *parent) :
     QUndoCommand(parent)
-  , mLayerItem(layerItem)
   , mBaseModel(baseModel)
+  , mLayerItem(layerItem)
   , mSelectedItems(selectedItems)
 {
     Q_ASSERT(mLayerItem);

@@ -42,8 +42,8 @@ TPixmap::TPixmap(const QSize &size, QObject *parent) :
 TPixmap::TPixmap(const QString &file, QObject *parent) :
     QObject(parent)
   , mIsValid(false)
-  , mFileFullName(file)
   , mThumbnailFixedSize(QSize(DEFAULT_THUMB_SIZE,DEFAULT_THUMB_SIZE))
+  , mFileFullName(file)
   , mFileName(QFileInfo(file).fileName())
 {
 

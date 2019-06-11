@@ -56,6 +56,7 @@ public:
     TBaseModel::Type getCurretnModelType() const;
 
     bool isCurrentTileLayerModel() const;
+    TTile *getTile(int tileset, int number) const;
 
 signals:
     void currentIndexChanged(int index);
@@ -82,6 +83,7 @@ private:
     TTileLayerModel *mTileLayerModel5;
     TTileLayerModel *mTileLayerModel6;
     TBaseModelList mBaseModelList;
+    QList<TTileLayerModel*> mTileLayerModelList;
     int mCurrentIndex;
 
     void initPropertySheet();

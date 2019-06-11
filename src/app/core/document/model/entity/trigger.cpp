@@ -121,7 +121,7 @@ QString TTrigger::typeString() const
     return T("Trigger");
 }
 
-bool TTrigger::isCongener(TObject *object) const
+bool TTrigger::isCongener(TObject *) const
 {
     return false;
 }

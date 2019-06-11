@@ -62,12 +62,12 @@ void TLayerView::slotCurrentChanged(const QModelIndex &current, const QModelInde
     emit currentRowChanged(current.row());
 }
 
-void TLayerView::slotPressed(const QModelIndex &index)
+void TLayerView::slotPressed(const QModelIndex &)
 {
 
 }
 
-void TLayerView::slotOnActivated(const QModelIndex &index)
+void TLayerView::slotOnActivated(const QModelIndex &)
 {
 
 }

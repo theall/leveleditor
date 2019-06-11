@@ -10,11 +10,12 @@ TestMap::TestMap(QObject *parent) :
 
 void TestMap::testNewMap()
 {
-    TMapBundle mapBundle;
+    TModule module;
+    TMapBundle mapBundle(&module);
     TMap map(TMap::ADV, &mapBundle);
     QCOMPARE(map.type(), TMap::ADV);
     QCOMPARE(map.id(), -1);
-    QCOMPARE(map.thumbnail(), nullptr);
+    QVERIFY(map.thumbnail());
     QCOMPARE(map.indexInMapBundle(), -1);
 
     map.setType(TMap::VS);
@@ -26,7 +27,8 @@ void TestMap::testNewMap()
 
 void TestMap::testOpenMap()
 {
-    TMapBundle mapBundle;
+    TModule module;
+    TMapBundle mapBundle(&module);
     TMap map(TMap::ADV, &mapBundle);
     QVERIFY(map.open());
 }

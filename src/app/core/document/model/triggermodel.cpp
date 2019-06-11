@@ -34,6 +34,7 @@ void TTriggerModel::readFromStream(QDataStream &stream)
     mTriggerList.clear();
     for(int i=0;i<triggerAmount;i++) {
         TTrigger *trigger = new TTrigger(this);
+        trigger->readFromStream(stream);
         mTriggerList.append(trigger);
     }
 }

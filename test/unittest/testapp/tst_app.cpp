@@ -16,7 +16,19 @@ TestApp::TestApp(QObject *parent) :
   , mExitCode(-1)
   , mArgc(0)
 {
-    TPreferences::instance()->setGameRoot(qApp->arguments().at(1));
+    QStringList sl = qApp->arguments();
+    QString validPath;
+    sl.pop_front();
+    for(QString s : sl) {
+        if(!s.startsWith('-')) {
+            validPath = s;
+            break;
+        }
+    }
+    if(validPath.isEmpty())
+        throw("Need game root as test argument!");
+
+    TPreferences::instance()->setGameRoot(validPath);
 
     RUN_CLASS(TestUtils);
     RUN_CLASS(TestCore);

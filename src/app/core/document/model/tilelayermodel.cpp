@@ -141,6 +141,13 @@ TTile *TTileLayerModel::createTile(TTileId *tileId, const QPointF &pos)
     return tile;
 }
 
+TTile *TTileLayerModel::getTile(int index) const
+{
+    if(index<0 || index>=mTileList.size())
+        return nullptr;
+    return mTileList.at(index);
+}
+
 int TTileLayerModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);

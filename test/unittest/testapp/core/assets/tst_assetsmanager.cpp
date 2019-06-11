@@ -31,7 +31,7 @@ void TestAssetsManager::testSetResourcePath()
 {
     QVERIFY(!mAssetsManager->setResourcePath("c:/"));
     QVERIFY(!mAssetsManager->setResourcePath("y:/"));
-    QVERIFY(mAssetsManager->setResourcePath(TPreferences::instance()->gameRoot()));
+    QVERIFY(!mAssetsManager->setResourcePath(TPreferences::instance()->gameRoot()));
 }
 
 void TestAssetsManager::testLoadResource()
