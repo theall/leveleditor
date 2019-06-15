@@ -28,10 +28,10 @@ void TPlat::saveToStream(QDataStream &stream) const
 {
     QRectF rect = mPropertySheet->getValue(PID_OBJECT_RECT).toRect();
     QPointF speed = mPropertySheet->getValue(PID_PLAT_SPEED).toPointF();
-    stream << rect.left();
-    stream << rect.top();
-    stream << speed.x();
-    stream << speed.y();
+    stream << (float)rect.left();
+    stream << (float)rect.top();
+    stream << (float)speed.x();
+    stream << (float)speed.y();
     stream << mPropertySheet->getValue(PID_PLAT_DANGER).toInt();
     stream << mPropertySheet->getValue(PID_PLAT_DRAW).toInt();
     stream << (int)rect.width();
@@ -48,8 +48,8 @@ void TPlat::saveToStream(QDataStream &stream) const
     stream << mPropertySheet->getValue(PID_PLAT_BREAKABLE).toInt();
     stream << mPropertySheet->getValue(PID_PLAT_EVENT_NUMBER_2).toInt();
 
-    for(int i=0;i<mPointList.size();i++) {
-        stream << mPointList.at(i);
+    for(QPoint point : mPointList) {
+        stream << point;
     }
 }
 
@@ -97,9 +97,10 @@ void TPlat::readFromStream(QDataStream &stream)
     for(int i=0;i<pointsAmount;i++) {
         QPoint point;
         stream >> point;
+        mPointList.append(point);
     }
     setRect(QRectF(x, y, width, height));
-    mPropertySheet->setValue(PID_PLAT_SPEED, QSizeF(xSpeed, ySpeed));
+    mPropertySheet->setValue(PID_PLAT_SPEED, QPointF(xSpeed, ySpeed));
     mPropertySheet->setValue(PID_PLAT_DANGER, danger);
     mPropertySheet->setValue(PID_PLAT_DRAW, draw);
     mPropertySheet->setValue(PID_PLAT_CURRENT_POINT, curPoint);

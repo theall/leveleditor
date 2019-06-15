@@ -27,7 +27,7 @@ TSceneModel::TSceneModel(QObject *parent) :
   , mTileLayerModel3(new TTileLayerModel(this))
   , mAnimationModel(new TAnimationModel(this))
   , mAreasModel(new TAreaModel(this))
-  , mBoxesModel(new TBoxModel(this))
+  , mBoxModel(new TBoxModel(this))
   , mDAreasModel(new TDAreaModel(this))
   , mEventsModel(new TEventModel(this))
   , mPlatformsModel(new TPlatModel(this))
@@ -46,7 +46,7 @@ TSceneModel::TSceneModel(QObject *parent) :
     mBaseModelList.append(mTileLayerModel3);
     //mBaseModelList.append(mAnimationModel);
     mBaseModelList.append(mAreasModel);
-    mBaseModelList.append(mBoxesModel);
+    mBaseModelList.append(mBoxModel);
     mBaseModelList.append(mDAreasModel);
     mBaseModelList.append(mEventsModel);
     mBaseModelList.append(mPlatformsModel);
@@ -239,7 +239,7 @@ TDAreaModel *TSceneModel::getDAreasModel() const
 
 TBoxModel *TSceneModel::getBoxesModel() const
 {
-    return mBoxesModel;
+    return mBoxModel;
 }
 
 TAreaModel *TSceneModel::getAreasModel() const
@@ -274,7 +274,7 @@ void TSceneModel::saveToStream(QDataStream &stream) const
     mAreasModel->saveToStream(stream);
     mDAreasModel->saveToStream(stream);
     mPlatformsModel->saveToStream(stream);
-    mBoxesModel->saveToStream(stream);
+    mBoxModel->saveToStream(stream);
     mWallsModel->saveToStream(stream);
 
     QColor backgroundColor = mPropertySheet->getValue(PID_SCENE_BACKGROUND_COLOR).value<QColor>();
@@ -346,7 +346,7 @@ void TSceneModel::readFromStream(QDataStream &stream)
     mAreasModel->readFromStream(stream);
     mDAreasModel->readFromStream(stream);
     mPlatformsModel->readFromStream(stream);
-    mBoxesModel->readFromStream(stream);
+    mBoxModel->readFromStream(stream);
     mWallsModel->readFromStream(stream);
 
     int r, g, b;

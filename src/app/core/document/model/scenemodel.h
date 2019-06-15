@@ -74,7 +74,7 @@ private:
     TTileLayerModel *mTileLayerModel3;
     TAnimationModel *mAnimationModel;
     TAreaModel *mAreasModel;
-    TBoxModel *mBoxesModel;
+    TBoxModel *mBoxModel;
     TDAreaModel *mDAreasModel;
     TEventModel *mEventsModel;
     TPlatModel *mPlatformsModel;

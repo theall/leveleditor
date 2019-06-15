@@ -114,9 +114,10 @@ TMainWindow::TMainWindow(QWidget *parent) :
     addDockWidget(Qt::RightDockWidgetArea, mPropertyDock);
     addDockWidget(Qt::LeftDockWidgetArea, mLayerDock);
     addDockWidget(Qt::BottomDockWidgetArea, mAnimationDock);
-    tabifyDockWidget(mMapsDock, mTilesetDock);
-    tabifyDockWidget(mTilesetDock, mCharacterDock);
-    tabifyDockWidget(mLayerDock, mUndoDock);
+
+//    tabifyDockWidget(mMapsDock, mTilesetDock);
+//    tabifyDockWidget(mTilesetDock, mCharacterDock);
+//    tabifyDockWidget(mLayerDock, mUndoDock);
 
     mViewsAndToolbarsMenu->setMenu(createPopupMenu());
 

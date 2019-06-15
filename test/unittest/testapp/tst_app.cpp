@@ -28,12 +28,13 @@ TestApp::TestApp(QObject *parent) :
     if(validPath.isEmpty())
         throw("Need game root as test argument!");
 
+    RUN_CLASS(TestUtils);
+
     TPreferences::instance()->setGameRoot(validPath);
 
-    RUN_CLASS(TestUtils);
     RUN_CLASS(TestCore);
-    RUN_CLASS(TestMainWindow);
-    RUN_CLASS(TestController);
+    //RUN_CLASS(TestMainWindow);
+    //RUN_CLASS(TestController);
 
     mArguments.append(qApp->applicationFilePath());
     for(int i=0;i<ARGC_MAX;i++) {

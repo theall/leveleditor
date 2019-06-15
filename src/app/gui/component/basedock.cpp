@@ -7,7 +7,7 @@ TBaseDock::TBaseDock(const QString &name, QWidget *parent) :
 {
     setFloating(false);
     setFeatures(QDockWidget::AllDockWidgetFeatures);
-    setAllowedAreas(Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea);
+    setAllowedAreas(Qt::AllDockWidgetAreas);
     setObjectName(name);
 }
 
