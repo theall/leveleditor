@@ -22,6 +22,7 @@ TMainController::TMainController(QObject *parent) :
   , mCharacterController(new TCharacterPanelController(this))
   , mMapsDockController(new TMapsDockController(this))
   , mLayersController(new TLayersController(this))
+  , mAnimationController(new TAnimationController(this))
 {
     connect(mTabController, SIGNAL(requestCloseDocument(TDocument*)), this, SLOT(slotRequestCloseDocument(TDocument*)));
     connect(mTabController, SIGNAL(requestSwitchToDocument(TDocument*)), this, SLOT(slotRequestSwitchToDocument(TDocument*)));
@@ -39,6 +40,11 @@ TMainController::TMainController(QObject *parent) :
     connect(mMapsDockController, SIGNAL(requestOpenMap(TMap*)), this, SLOT(slotRequestOpenMap(TMap*)));
 
     connect(mLayersController, SIGNAL(layerSelected(int)), this, SLOT(slotOnLayerSelected(int)));
+    connect(mAnimationController,
+            SIGNAL(requestDisplayPropertySheet(TPropertySheet*)),
+            this,
+            SLOT(slotRequestDisplayPropertySheet(TPropertySheet*)));
+
     connect(TAssetsManager::getInstance(), SIGNAL(onProgress(int,int)), this, SLOT(slotOnResourceLoadProgress(int,int)));
 }
 
@@ -243,6 +249,7 @@ void TMainController::slotRequestSwitchToDocument(TDocument *document)
     mMiniSceneController->setCurrentDocument(document);
     mLayersController->setCurrentDocument(document);
     mTilesetController->setCurrentDocument(document);
+    mAnimationController->setCurrentDocument(document);
 
     if(mDocument)
         mDocument->disconnect(this);
@@ -334,6 +341,11 @@ void TMainController::slotOnEditModeChanged(const EditMode &current, const EditM
         mMainWindow->checkSelectAction();
         break;
     }
+}
+
+void TMainController::slotRequestDisplayPropertySheet(TPropertySheet *propertySheet)
+{
+    mMainPropertyController->setPropertySheet(propertySheet);
 }
 
 bool TMainController::confirmAllSaved()

@@ -25,7 +25,10 @@ class TLoadingDialog;
 class TTilesetDock;
 class TCharacterDock;
 class TLayerDock;
+class TAnimationDock;
 class TNewMapDialog;
+class TGraphicsView;
+class QGraphicsScene;
 
 class TMainWindow : public QMainWindow
 {
@@ -56,6 +59,8 @@ public:
     TMapsDock *getMapsDock() const;
     TPropertiesDock *getPropertyDock() const;
     TTabWidget *getTabWidget() const;
+    TGraphicsView *getCurrentGraphicsView() const;
+    QGraphicsScene *getCurrentGraphicsScene() const;
     TLoadingDialog *getLoadingDialog() const;
     TMiniSceneDock *getMiniSceneDock() const;
     TZoomComboBox *getZoomComboBox() const;
@@ -63,6 +68,7 @@ public:
     TCharacterDock *getCharacterDock() const;
     TLayerDock *getLayerDock() const;
     TNewMapDialog *getNewMapDialog() const;
+    TAnimationDock *getAnimationDock() const;
 
     void showExceptionDialog(const QString &msg, const QString &trace = QString());
 
@@ -136,6 +142,7 @@ private:
     TTilesetDock *mTilesetDock;
     TCharacterDock *mCharacterDock;
     TLayerDock *mLayerDock;
+    TAnimationDock *mAnimationDock;
 
     TAboutDialog *mAboutDialog;
     TLoadingDialog *mLoadingDialog;

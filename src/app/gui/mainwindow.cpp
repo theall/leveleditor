@@ -17,6 +17,7 @@
 #include "component/characterdock/characterdock.h"
 #include "component/propertydock/propertiesdock.h"
 #include "component/tilesetdock/tilesetdock.h"
+#include "component/animationdock/animationdock.h"
 
 #include "widgets/zoomcombobox.h"
 #include "../utils/preferences.h"
@@ -38,6 +39,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
   , mTilesetDock(new TTilesetDock(this))
   , mCharacterDock(new TCharacterDock(this))
   , mLayerDock(new TLayerDock(this))
+  , mAnimationDock(new TAnimationDock(this))
   , mAboutDialog(new TAboutDialog(this))
   , mLoadingDialog(new TLoadingDialog(this))
   , mNewMapDialog(new TNewMapDialog(this))
@@ -111,6 +113,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
     addDockWidget(Qt::RightDockWidgetArea, mMiniSceneDock);
     addDockWidget(Qt::RightDockWidgetArea, mPropertyDock);
     addDockWidget(Qt::LeftDockWidgetArea, mLayerDock);
+    addDockWidget(Qt::BottomDockWidgetArea, mAnimationDock);
     tabifyDockWidget(mMapsDock, mTilesetDock);
     tabifyDockWidget(mTilesetDock, mCharacterDock);
     tabifyDockWidget(mLayerDock, mUndoDock);
@@ -425,6 +428,16 @@ TTabWidget *TMainWindow::getTabWidget() const
     return mCentralWidget->tabWidget();
 }
 
+TGraphicsView *TMainWindow::getCurrentGraphicsView() const
+{
+    return mCentralWidget->tabWidget()->currentGraphicsView();
+}
+
+QGraphicsScene *TMainWindow::getCurrentGraphicsScene() const
+{
+    return mCentralWidget->tabWidget()->currentGraphicsScene();
+}
+
 void TMainWindow::slotOnTabCountChanged(int count)
 {
     ui->actionCloseMap->setEnabled(count>0);
@@ -612,6 +625,11 @@ void TMainWindow::on_actionAlwaysOnTop_triggered(bool)
 void TMainWindow::on_actionCloseGame_triggered()
 {
 
+}
+
+TAnimationDock *TMainWindow::getAnimationDock() const
+{
+    return mAnimationDock;
 }
 
 TNewMapDialog *TMainWindow::getNewMapDialog() const

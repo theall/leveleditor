@@ -24,6 +24,7 @@ public:
         TRIGGER,
         RESPAWN,
         ANIMATION,
+        FRAME,
         SCENE,
         INVALID = -1,
     };

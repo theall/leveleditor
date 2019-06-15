@@ -151,6 +151,16 @@ void TGraphicsScene::setSceneModel(TSceneModel *sceneModel)
     }
 }
 
+void TGraphicsScene::selectObjectItemList(const TObjectItemList &objectItemList)
+{
+    mSelectedItems->setObjectItemList(objectItemList);
+}
+
+void TGraphicsScene::selectObjectItem(TObjectItem *objectItem)
+{
+    mSelectedItems->setObjectItem(objectItem);
+}
+
 void TGraphicsScene::removeSelectedItems()
 {
     TObjectList objectList = mSelectedItems->getSelectedObjectList();

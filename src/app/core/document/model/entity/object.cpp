@@ -73,6 +73,10 @@ void TObject::move(const QPointF &offset)
 
 void TObject::initPropertySheet()
 {
+    if(mType==ANIMATION
+        || mType==FRAME)
+        return;
+
     mPropertySheet->addProperty(PT_RECTF, P_RECT, PID_OBJECT_RECT);
 }
 

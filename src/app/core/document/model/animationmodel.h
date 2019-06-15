@@ -2,7 +2,7 @@
 #define TANIMATIONSMODEL_H
 
 #include "basemodel.h"
-#include "entity/animation.h"
+#include "framemodel.h"
 
 class TAnimationModel : public TBaseModel
 {
@@ -12,13 +12,13 @@ public:
     explicit TAnimationModel(QObject *parent = nullptr);
     ~TAnimationModel();
 
-    TAnimationList animationList() const;
-    void setAnimationList(const TAnimationList &animationList);
-
     void clear();
+    TFrameModelList frameModelList() const;
+    void setFrameModelList(const TFrameModelList &frameModelList);
+    TFrameModel *getFrameModel(int index) const;
 
 private:
-    TAnimationList mAnimationList;
+    TFrameModelList mFrameModelList;
 
     // TIO interface
 public:

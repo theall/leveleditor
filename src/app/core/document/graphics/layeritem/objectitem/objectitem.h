@@ -14,12 +14,14 @@ class TObjectItem : public QGraphicsObject
 public:
     enum { Type = UserType + 1 };
     TObjectItem(TObject *object, QGraphicsItem *parent = nullptr);
+    ~TObjectItem();
 
     int type() const;
 
     TObject *object() const;
     TObject::Type objectType() const;
     bool isCongener(TObjectItem *objectItem) const;
+    static TObjectItem *getObjectItem(TObject *object);
 
     virtual void propertyValueChanged(PropertyID pid) = 0;
 
@@ -56,6 +58,7 @@ private:
     bool mNeedGrabMouse;
     bool mDrawBorder;
     QColor mBorderColor;
+    static QMap<TObject*, TObjectItem*> mObjectItemMap;
 
     // QGraphicsItem interface
 public:

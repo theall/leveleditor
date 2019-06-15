@@ -40,6 +40,7 @@ public:
     TTileLayerModel *getTileLayerModel4() const;
     TTileLayerModel *getTileLayerModel5() const;
     TTileLayerModel *getTileLayerModel6() const;
+    TAnimationModel *getAnimationsModel() const;
 
     QColor getBackgroundColor() const;
     TPropertySheet *propertySheet() const;
@@ -71,7 +72,7 @@ private:
     TTileLayerModel *mTileLayerModel1;
     TTileLayerModel *mTileLayerModel2;
     TTileLayerModel *mTileLayerModel3;
-    TAnimationModel *mAnimationsModel;
+    TAnimationModel *mAnimationModel;
     TAreaModel *mAreasModel;
     TBoxModel *mBoxesModel;
     TDAreaModel *mDAreasModel;

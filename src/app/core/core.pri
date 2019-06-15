@@ -83,7 +83,8 @@ SOURCES += \
     $$PWD/document/graphics/uiitem/uiitemsgroup.cpp \
     $$PWD/document/model/animationmodel.cpp \
     $$PWD/document/model/platmodel.cpp \
-    $$PWD/document/graphics/cameraitem.cpp
+    $$PWD/document/graphics/cameraitem.cpp \
+    $$PWD/document/model/framemodel.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -174,7 +175,8 @@ HEADERS  += \
     $$PWD/document/model/objectgeneric.hpp \
     $$PWD/document/graphics/uiitem/uiitemsgroup.h \
     $$PWD/document/model/platmodel.h \
-    $$PWD/document/graphics/cameraitem.h
+    $$PWD/document/graphics/cameraitem.h \
+    $$PWD/document/model/framemodel.h
 
 RESOURCES += \
     $$PWD/resource/core.qrc

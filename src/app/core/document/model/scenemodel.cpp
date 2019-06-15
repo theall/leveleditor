@@ -25,7 +25,7 @@ TSceneModel::TSceneModel(QObject *parent) :
   , mTileLayerModel1(new TTileLayerModel(this))
   , mTileLayerModel2(new TTileLayerModel(this))
   , mTileLayerModel3(new TTileLayerModel(this))
-  , mAnimationsModel(new TAnimationModel(this))
+  , mAnimationModel(new TAnimationModel(this))
   , mAreasModel(new TAreaModel(this))
   , mBoxesModel(new TBoxModel(this))
   , mDAreasModel(new TDAreaModel(this))
@@ -44,7 +44,7 @@ TSceneModel::TSceneModel(QObject *parent) :
     mBaseModelList.append(mTileLayerModel1);
     mBaseModelList.append(mTileLayerModel2);
     mBaseModelList.append(mTileLayerModel3);
-    mBaseModelList.append(mAnimationsModel);
+    //mBaseModelList.append(mAnimationModel);
     mBaseModelList.append(mAreasModel);
     mBaseModelList.append(mBoxesModel);
     mBaseModelList.append(mDAreasModel);
@@ -165,6 +165,11 @@ TTile *TSceneModel::getTile(int tileset, int number) const
     if(!tileLayerModel)
         return nullptr;
     return tileLayerModel->getTile(number);
+}
+
+TAnimationModel *TSceneModel::getAnimationsModel() const
+{
+    return mAnimationModel;
 }
 
 TEnemyFactoryModel *TSceneModel::getEnemyFactoryModel() const
@@ -332,7 +337,7 @@ void TSceneModel::saveToStream(QDataStream &stream) const
     stream << mPropertySheet->getValue(PID_SCENE_MUSIC1).toInt();
     stream << mPropertySheet->getValue(PID_SCENE_MUSIC2).toInt();
 
-    mAnimationsModel->saveToStream(stream);
+    mAnimationModel->saveToStream(stream);
     mEnemyFactoryModel->saveToStream(stream);
 }
 
@@ -421,7 +426,26 @@ void TSceneModel::readFromStream(QDataStream &stream)
     stream >> music1;
     stream >> music2;
 
-    mAnimationsModel->readFromStream(stream);
+    mAnimationModel->readFromStream(stream);
+    // Process animation
+    for(TFrameModel *frameModel : mAnimationModel->frameModelList()) {
+        TAnimation *animation = frameModel->animation();
+        if(!animation)
+            continue;
+
+        int tileLayer = animation->getTileLayer();
+        if(tileLayer>=0 && tileLayer<mTileLayerModelList.size()) {
+            animation->setTile(getTile(tileLayer,animation->getTileNumber()));
+        }
+
+        for(TFrame *frame : animation->frameList()) {
+            tileLayer = frame->getTileLayer();
+            if(tileLayer>=0 && tileLayer<mTileLayerModelList.size()) {
+                frame->setTile(getTile(tileLayer,frame->getTileNumber()));
+            }
+        }
+    }
+
     mEnemyFactoryModel->readFromStream(stream);
 
     mPropertySheet->setValue(PID_SCENE_BACKGROUND_COLOR, QColor(r,g,b));

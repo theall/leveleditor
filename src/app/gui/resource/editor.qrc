@@ -43,7 +43,7 @@
         <file>images/about.png</file>
         <file>images/clear.png</file>
     </qresource>
-    <qresource prefix="/actionsdock">
+    <qresource prefix="/animationdock">
         <file>images/add.png</file>
         <file>images/remove.png</file>
         <file>images/pause.png</file>
@@ -67,5 +67,13 @@
         <file>images/hidden.png</file>
         <file>images/unlocked.png</file>
         <file>images/visible.png</file>
+    </qresource>
+    <qresource prefix="/framelistview">
+        <file>images/newimage.png</file>
+        <file>images/removeimage.png</file>
+        <file>images/down.png</file>
+        <file>images/left.png</file>
+        <file>images/right.png</file>
+        <file>images/up.png</file>
     </qresource>
 </RCC>

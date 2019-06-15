@@ -3,7 +3,7 @@
 TAnimationModel::TAnimationModel(QObject *parent) :
     TBaseModel(TBaseModel::ANIMATION, parent)
 {
-    setName(tr("Animation"));
+    setName(tr("AnimationModel"));
 }
 
 TAnimationModel::~TAnimationModel()
@@ -16,26 +16,26 @@ void TAnimationModel::readFromStream(QDataStream &stream)
     int animationAmount;
     stream >> animationAmount;
 
-    mAnimationList.clear();
+    mFrameModelList.clear();
     for(int i=0;i<animationAmount;i++) {
-        TAnimation *animation = new TAnimation(this);
-        animation->readFromStream(stream);
-        mAnimationList.append(animation);
+        TFrameModel *frameModel = new TFrameModel(this);
+        frameModel->readFromStream(stream);
+        mFrameModelList.append(frameModel);
     }
 }
 
 void TAnimationModel::saveToStream(QDataStream &stream) const
 {
-    stream << mAnimationList.size();
+    stream << mFrameModelList.size();
 
-    for(TAnimation *animation : mAnimationList) {
-        animation->saveToStream(stream);
+    for(TFrameModel *frameModel : mFrameModelList) {
+        frameModel->saveToStream(stream);
     }
 }
 
 int TAnimationModel::rowCount(const QModelIndex &) const
 {
-    return mAnimationList.size();
+    return mFrameModelList.size();
 }
 
 int TAnimationModel::columnCount(const QModelIndex &) const
@@ -47,11 +47,11 @@ QVariant TAnimationModel::data(const QModelIndex &index, int role) const
 {
     if(index.isValid()) {
         int row = index.row();
-        if(role == Qt::DisplayRole) {
-            return tr("Animation %1").arg(row+1);
-        } else if(role == Qt::EditRole) {
-            if(row>=0 && row<mAnimationList.size()) {
-                mAnimationList.at(row)->getIcon();
+        if(row>=0 && row<mFrameModelList.size()) {
+            if(role == Qt::DisplayRole) {
+                return tr("Animation %1").arg(row+1);
+            } else if(role == Qt::DecorationRole) {
+                return mFrameModelList.at(row)->getIcon();
             }
         }
     }
@@ -60,15 +60,22 @@ QVariant TAnimationModel::data(const QModelIndex &index, int role) const
 
 void TAnimationModel::clear()
 {
-    mAnimationList.clear();
+    mFrameModelList.clear();
 }
 
-TAnimationList TAnimationModel::animationList() const
+TFrameModelList TAnimationModel::frameModelList() const
 {
-    return mAnimationList;
+    return mFrameModelList;
 }
 
-void TAnimationModel::setAnimationList(const TAnimationList &animationList)
+void TAnimationModel::setFrameModelList(const TFrameModelList &frameModelList)
 {
-    mAnimationList = animationList;
+    mFrameModelList = frameModelList;
+}
+
+TFrameModel *TAnimationModel::getFrameModel(int index) const
+{
+    if(index<0 || index>=mFrameModelList.size())
+        return nullptr;
+    return mFrameModelList.at(index);
 }

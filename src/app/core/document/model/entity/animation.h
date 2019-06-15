@@ -17,6 +17,7 @@ public:
     ~TAnimation();
 
     TFrameList frameList() const;
+    int getFrameSize() const;
     void setFrameList(const TFrameList &frameList);
 
     int getTileLayer() const;
@@ -24,6 +25,11 @@ public:
     QPixmap getIcon() const;
     TTile *getTile() const;
     void setTile(TTile *tile);
+    QPixmap getFramePixmap(int index) const;
+    void clear();
+    TFrame *getFrame(int index) const;
+    TTile *getFrameTile(int index) const;
+    TPropertySheet *getFramePropertySheet(int index) const;
 
 private:
     TTile *mTile;

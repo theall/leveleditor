@@ -4,6 +4,8 @@
 #include <QDebug>
 #include <QPainter>
 
+QMap<TObject*, TObjectItem*> TObjectItem::mObjectItemMap;
+
 TObjectItem::TObjectItem(TObject *object, QGraphicsItem *parent) :
     QGraphicsObject(parent)
   , mObject(object)
@@ -21,7 +23,13 @@ TObjectItem::TObjectItem(TObject *object, QGraphicsItem *parent) :
             SLOT(slotPropertyItemValueChanged(TPropertyItem*,QVariant))
             );
 
-    setToolTip(object->toString());
+    setToolTip(mObject->toString());
+    mObjectItemMap.insert(mObject, this);
+}
+
+TObjectItem::~TObjectItem()
+{
+
 }
 
 int TObjectItem::type() const
@@ -45,6 +53,11 @@ bool TObjectItem::isCongener(TObjectItem *objectItem) const
         return false;
 
     return mObject->isCongener(objectItem->object());
+}
+
+TObjectItem *TObjectItem::getObjectItem(TObject *object)
+{
+    return mObjectItemMap[object];
 }
 
 void TObjectItem::slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &)

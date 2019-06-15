@@ -12,6 +12,7 @@
 #include "characterpanelcontroller.h"
 #include "mapsdockcontroller.h"
 #include "layerscontroller.h"
+#include "animationcontroller.h"
 
 class TMainController : public TAbstractController
 {
@@ -64,6 +65,9 @@ private slots:
     void slotOnDirtyFlagChanged(bool isDirty);
     void slotOnEditModeChanged(const EditMode &current, const EditMode &prev);
 
+    // From TAnimationController
+    void slotRequestDisplayPropertySheet(TPropertySheet *propertySheet);
+
 private:
     TOptionsController *mOptionsController;
     TTabController *mTabController;
@@ -74,6 +78,7 @@ private:
     TCharacterPanelController *mCharacterController;
     TMapsDockController *mMapsDockController;
     TLayersController *mLayersController;
+    TAnimationController *mAnimationController;
 
     bool confirmAllSaved();
     void createNewDocument(const QString &moduleName, const TMap::Type &mapType, int mapId);

@@ -26,6 +26,11 @@ TFrameList TAnimation::frameList() const
     return mFrameList;
 }
 
+int TAnimation::getFrameSize() const
+{
+    return mFrameList.size();
+}
+
 void TAnimation::setFrameList(const TFrameList &frameList)
 {
     mFrameList = frameList;
@@ -38,7 +43,47 @@ QPixmap TAnimation::getIcon() const
 
 void TAnimation::setTile(TTile *tile)
 {
+    if(mTile == tile)
+        return;
+
     mTile = tile;
+}
+
+QPixmap TAnimation::getFramePixmap(int index) const
+{
+    if(index<0 || index>=mFrameList.size())
+        return QPixmap();
+
+    return mFrameList.at(index)->getPixmap();
+}
+
+void TAnimation::clear()
+{
+    mFrameList.clear();
+}
+
+TFrame *TAnimation::getFrame(int index) const
+{
+    if(index<0 || index>=mFrameList.size())
+        return nullptr;
+
+    return mFrameList.at(index);
+}
+
+TTile *TAnimation::getFrameTile(int index) const
+{
+    if(index<0 || index>=mFrameList.size())
+        return nullptr;
+
+    return mFrameList.at(index)->getTile();
+}
+
+TPropertySheet *TAnimation::getFramePropertySheet(int index) const
+{
+    if(index<0 || index>=mFrameList.size())
+        return nullptr;
+
+    return mFrameList.at(index)->propertySheet();
 }
 
 TTile *TAnimation::getTile() const
@@ -80,13 +125,11 @@ void TAnimation::readFromStream(QDataStream &stream)
 {
     int frameSequences; // Frame counter, shift next frame if frameSequences > current frame duration
     int frameCount;
-    int tileLayer;
-    int tileNumber;
     int currentFrame;
     stream >> frameSequences;
     stream >> frameCount;
-    stream >> tileLayer;
-    stream >> tileNumber;
+    stream >> mTileLayer;
+    stream >> mTileNumber;
     stream >> currentFrame;
     mFrameList.clear();
     for(int i=0;i<frameCount;i++) {
@@ -95,8 +138,8 @@ void TAnimation::readFromStream(QDataStream &stream)
         mFrameList.append(frame);
     }
     mPropertySheet->setValue(PID_ANIMATION_SEQUENCE, frameSequences);
-    mPropertySheet->setValue(PID_ANIMATION_TILE_LAYER, tileLayer);
-    mPropertySheet->setValue(PID_ANIMATION_TILE_NUMBER, tileNumber);
+    mPropertySheet->setValue(PID_ANIMATION_TILE_LAYER, mTileLayer);
+    mPropertySheet->setValue(PID_ANIMATION_TILE_NUMBER, mTileNumber);
     mPropertySheet->setValue(PID_ANIMATION_CURRENT_FRAME, currentFrame);
 }
 

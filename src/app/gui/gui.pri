@@ -66,7 +66,11 @@ SOURCES += \
     $$PWD/component/tabwidget/graphicsviewcontexmenu.cpp \
     $$PWD/dialogs/newmapdialog.cpp \
     $$PWD/widgets/flexiblescrollbar.cpp \
-    $$PWD/dialogs/exceptiondialog.cpp
+    $$PWD/dialogs/exceptiondialog.cpp \
+    $$PWD/component/animationdock/animationdock.cpp \
+    $$PWD/component/animationdock/animationlistview.cpp \
+    $$PWD/component/animationdock/container.cpp \
+    $$PWD/component/animationdock/framelistview.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -123,7 +127,11 @@ HEADERS += \
     $$PWD/component/tabwidget/graphicsviewcontexmenu.h \
     $$PWD/dialogs/newmapdialog.h \
     $$PWD/widgets/flexiblescrollbar.h \
-    $$PWD/dialogs/exceptiondialog.h
+    $$PWD/dialogs/exceptiondialog.h \
+    $$PWD/component/animationdock/animationdock.h \
+    $$PWD/component/animationdock/animationlistview.h \
+    $$PWD/component/animationdock/container.h \
+    $$PWD/component/animationdock/framelistview.h
 
 FORMS += \
     $$PWD/mainwindow.ui \
