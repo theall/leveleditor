@@ -84,6 +84,9 @@ void TAnimationController::slotOnFrameListViewIndexPressed(int index)
 
 void TAnimationController::selectAndCenterOn(TObjectItem *objectItem)
 {
+    if(!objectItem)
+        return;
+
     TGraphicsScene *graphicsScene = static_cast<TGraphicsScene*>(mMainWindow->getCurrentGraphicsScene());
     if(!graphicsScene)
         return;
