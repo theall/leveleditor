@@ -45,7 +45,7 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
         } else if(TWallModel *wallModel = dynamic_cast<TWallModel*>(baseModel)) {
             layerItem = new TWallLayerItem(wallModel, this);
         } else if(TEnemyFactoryModel *enemyFactoryModel = dynamic_cast<TEnemyFactoryModel*>(baseModel)) {
-            layerItem = new TWallLayerItem(wallModel, this);
+            layerItem = nullptr;
         }
         if(layerItem) {
             connect(layerItem, SIGNAL(boundingRectChanged(QRectF)), this, SLOT(slotLayerBoundingRectChanged(QRectF)));

@@ -7,9 +7,8 @@ TEnemyFactoryItem::TEnemyFactoryItem(TEnemyFactoryModel *enemyFactoryModel, QGra
 {
     Q_ASSERT(enemyFactoryModel);
 
-    for(TWall *wall : enemyFactoryModel.()) {
-        TWallItem *wallItem = new TWallItem(wall, this);
-        mObjectItemList.append(wallItem);
+    for(TEnemyFactory *enemyFactory : enemyFactoryModel->enemyFactoryList()) {
+
     }
 
     calcBoundingRect();
