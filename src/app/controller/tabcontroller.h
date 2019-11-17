@@ -47,6 +47,7 @@ private slots:
     void slotRequestSwithToDocument(void *document);
     void slotRequestCloseDocument(void *document);
     void slotRequestExploreFile(const QString &file);
+    void slotRequestStartMove(void* document);
 
     // From TDocument
     void slotDocumentDirtyFlagChanged(bool isDirty);

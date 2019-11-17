@@ -56,10 +56,23 @@ void TTileItem::setShowBorder(bool showBorder)
     mShowBorder = showBorder;
 }
 
+void TTileItem::step()
+{
+    if(!mTile)
+        return;
+
+    QPointF speed = mTile->getSpeed();
+    QPointF position = mTile->getPos();
+    if(speed.x() > 0.01 || speed.y() > 0.01) {
+        position += speed;
+        mTile->setMovingPos(position);
+    }
+}
+
 void TTileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QRectF r = mTile->rect();
-    painter->drawPixmap(r.topLeft(), mTile->pixmap());
+    QPointF p = mTile->getPos();
+    painter->drawPixmap(p, mTile->pixmap());
 
     if(mShowBorder)
         TObjectItem::paint(painter, option, widget);

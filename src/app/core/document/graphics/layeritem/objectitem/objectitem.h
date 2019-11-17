@@ -43,6 +43,8 @@ public:
 
     void setBoundingRect(const QRectF &boundingRect);
 
+    virtual void step();
+
 signals:
     void boundingRectChanged(const QRectF &boundingRect);
 

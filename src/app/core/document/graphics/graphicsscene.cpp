@@ -16,6 +16,7 @@
 #define TOP_Z_VALUE 10000
 TGraphicsScene::TGraphicsScene(QObject *parent) :
     QGraphicsScene(parent)
+  , mFps(60)
   , mStepMode(false)
   , mTimerId(-1)
   , mLeftButtonDown(false)
@@ -190,7 +191,7 @@ void TGraphicsScene::setScale(const qreal &scale)
 
 void TGraphicsScene::step()
 {
-
+    mSceneItem->step();
 }
 
 void TGraphicsScene::setSelectedObjectItem(TObjectItem *objectItem)

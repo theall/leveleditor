@@ -83,6 +83,11 @@ void TObjectItem::setBoundingRect(const QRectF &boundingRect)
     mBoundingRect = boundingRect;
 }
 
+void TObjectItem::step()
+{
+
+}
+
 bool TObjectItem::drawBorder() const
 {
     return mDrawBorder;

@@ -10,41 +10,41 @@
 TFrameListView::TFrameListView(QWidget *parent) :
     QTableView(parent)
   , mContextMenu(new QMenu(this))
-  , mHighlightColor(Qt::green)
+  , mHighlightColor(Qt::green)//设置为绿色
 {
     setObjectName(QStringLiteral("framesView"));
 
-    setFrameShape(QFrame::Panel);
-    setFrameShadow(QFrame::Sunken);
+    setFrameShape(QFrame::Panel);//设置形状
+    setFrameShadow(QFrame::Sunken);//设置阴影
 
-    setSelectionBehavior(QAbstractItemView::SelectItems);
-    setSelectionMode(QAbstractItemView::ExtendedSelection);
+    setSelectionBehavior(QAbstractItemView::SelectItems);//设置是按单个项还是行列进行选择 选择项
+    setSelectionMode(QAbstractItemView::ExtendedSelection);//此视图从那个选择模式下工作 扩展选项（当用户以通常的方式选择一个项目时，将清除选择并选择新项目。）
 
     horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     horizontalHeader()->setVisible(false);
     verticalHeader()->setVisible(false);
     verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-    setLayoutDirection(Qt::LeftToRight);
+    setLayoutDirection(Qt::LeftToRight);//小部件布局方向为左
 
-    setMouseTracking(true);
-    setSortingEnabled(false);
-    setShowGrid(false);
-    setContextMenuPolicy(Qt::DefaultContextMenu);
+    setMouseTracking(true);//设置小部件是否启动鼠标追踪
+    setSortingEnabled(false);//是否启用排序
+    setShowGrid(false);//是否绘制网格
+    setContextMenuPolicy(Qt::DefaultContextMenu);//设置上下文处理方式为小部件的上下文处理
     //setDropIndicatorShown(true);
     setDragEnabled(true);
-    viewport()->setAcceptDrops(true);
+    viewport()->setAcceptDrops(true);//是否为小部件保留启用删除
 
     mActionCopy = mContextMenu->addAction(QString(), this, SLOT(slotActionCopyTriggered()));
     mActionClone = mContextMenu->addAction(QString(), this, SLOT(slotActionCloneTriggered()));
     mActionPaste = mContextMenu->addAction(QString(), this, SLOT(slotActionPasteTriggered()));
     mActionInsert = mContextMenu->addAction(QString(), this, SLOT(slotActionInsertTriggered()));
-    mContextMenu->addSeparator();
+    mContextMenu->addSeparator();//分割符
     mActionRemove = mContextMenu->addAction(QString(), this, SLOT(slotActionRemoveTriggered()));
-    mContextMenu->addSeparator();
+    mContextMenu->addSeparator();//分割符
     mActionShowGrid = mContextMenu->addAction(QString(), this, SLOT(slotActionShowGridTriggered(bool)));
     mActionShowGrid->setCheckable(true);
-    mContextMenu->addSeparator();
+    mContextMenu->addSeparator();//分隔符
     mActionSetStandardFrame = mContextMenu->addAction(QString(), this, SLOT(slotActionSetStandardFrameTriggered()));
 
     retranslateUi();
@@ -58,7 +58,7 @@ TFrameListView::~TFrameListView()
 QList<int> TFrameListView::getSelectedIndexes()
 {
     QList<int> selectedRows;
-    for(QModelIndex index : selectionModel()->selectedIndexes())
+    for(QModelIndex index : selectionModel()->selectedIndexes())//返回选定模型项的索引列表
     {
         int i = getIndex(index);
         if(i != -1)
@@ -114,7 +114,7 @@ void TFrameListView::slotActionRemoveTriggered()
 
 void TFrameListView::slotActionInsertTriggered()
 {
-    int i = currentIndex().column();
+    int i = currentIndex().column();//返回当前项的模型索引.返回此模型索引引用的列
     emit requestInsertFrames(i);
 }
 
@@ -140,7 +140,7 @@ void TFrameListView::slotActionCopyTriggered()
 
 void TFrameListView::slotActionPasteTriggered()
 {
-    int pos = getCurrentIndex();
+    int pos = getCurrentIndex();//返回当前项的模型索引
     emit requestPasteFrames(pos);
 }
 
@@ -156,12 +156,12 @@ void TFrameListView::setCheckMimeType(const QString &checkMimeType)
 
 int TFrameListView::getIndex(const QModelIndex &index)
 {
-    QAbstractItemModel *m = model();
+    QAbstractItemModel *m = model();//返回此视图显示的模型
     if(!m)
         return -1;
 
-    int columnSize = m->columnCount();
-    return columnSize*index.row()+index.column();
+    int columnSize = m->columnCount();//返回给定父级的子级的列数
+    return columnSize*index.row()+index.column();//列数*行数+列数
 }
 
 void TFrameListView::retranslateUi()

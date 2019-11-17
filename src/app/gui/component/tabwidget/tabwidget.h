@@ -34,6 +34,8 @@ signals:
     void requestSwitchToDocument(void *document);
     void requestCloseDocument(void *document);
     void requestExploreFile(const QString &file);
+    void requestStartMove(void *document);
+    void requestStopMove(void *document);
 
     // To main window
     void onTabCountChanged(int count);
@@ -43,6 +45,7 @@ private slots:
     void slotOnCurrentIndexChanged(int index);
     void slotRequestCloseTab(int index);
     void slotOnTabMoved(int from, int to);
+    void slotRequestStartMove();
     void slotSwitchToLeft();
     void slotSwitchToRight();
     void slotCustomContextMenuRequested(const QPoint &pos);
@@ -53,15 +56,20 @@ private slots:
     void slotActionSaveTriggered();
     void slotActionExploreTriggered();
 
+    void slotActionStartMoveTriggered(int index);
+    void slotActionStopMoveTriggered(int index);
+
 private:
-    QList<void*> mDocuments;
-    QMenu *mContextMenu;
+    QList<void*> mDocuments;//函数列表
+    QMenu *mContextMenu;  //QMenu 设置菜单图标 生成菜单树 类如左上角文件
     QAction *mActionClose;
     QAction *mActionCloseLeft;
     QAction *mActionCloseRight;
     QAction *mActionCloseOther;
     QAction *mActionSave;
     QAction *mActionExplore;
+    QAction *mActionStartMove;
+    QAction *mActionStopMove;
 
     void switchTo(int diff);
     void setTabDirty(int index, bool isDirty);

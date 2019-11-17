@@ -11,6 +11,7 @@
 #include "../model/platmodel.h"
 #include "../model/wallmodel.h"
 
+
 #include <QDebug>
 
 #define ZINDEX_TOP 1000
@@ -29,7 +30,6 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
     setAcceptHoverEvents(true);
 
     connect(mSceneModel, SIGNAL(currentIndexChanged(int)), this, SLOT(slotOnSceneModelCurrentIndexChanged(int)));
-
     for(TBaseModel *baseModel : mSceneModel->getBaseModelList()) {
         TLayerItem *layerItem = nullptr;
         if(TTileLayerModel *tileLayerModel = dynamic_cast<TTileLayerModel*>(baseModel)) {
@@ -80,6 +80,7 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
     QRect cameraRect = sceneModelPropertySheet->getValue(PID_SCENE_CAMERA).toRect();
     mCameraItem->setBoundingRect(cameraRect);
     mCameraItem->setZValue(ZINDEX_TOP);
+
 }
 
 TSceneItem::~TSceneItem()
@@ -179,4 +180,13 @@ void TSceneItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     QPen pen(Qt::green, 1, Qt::SolidLine);
     painter->setPen(pen);
     painter->drawRect(mBoundingRect);
+}
+
+void TSceneItem::step()
+{
+    for(TLayerItem *layerItem : mLayerItemList) {
+        if(!layerItem)
+            continue;
+        layerItem->step();
+    }
 }

@@ -23,6 +23,8 @@ public:
     TLayerItem *getCurrentLayerItem() const;
     void setCurrentLayerItem(TLayerItem *currentLayerItem);
 
+    void step();
+
 signals:
     void boundingRectChanged(const QRectF &newRect);
 
@@ -41,7 +43,6 @@ private:
     QMap<TBaseModel*, TLayerItem*> mModelLayerMap;
     TLayerItem *mCurrentLayerItem;
     TDarkMaskItem *mDarkMaskItem;
-
     void calcBoundingRect();
 
     // QGraphicsItem interface

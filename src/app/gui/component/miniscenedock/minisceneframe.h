@@ -31,15 +31,15 @@ signals:
     void requestLocatePoint(const QPoint &point, int delta = 0);
 
 protected:
-    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-    void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;//画图
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;//调整大小
+    void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;//轮事件
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 private:
-    QRect mImageRect;
+    QRect mImageRect;//矩形中存放按照比例缩小的窗口图像
     QRect mViewPortRect;
     QImage mSceneImage;
     bool mIsDragging;

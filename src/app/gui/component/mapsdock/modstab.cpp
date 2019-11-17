@@ -4,8 +4,8 @@
 TModsTab::TModsTab(QWidget *parent) :
     QTabWidget(parent)
 {
-    setDocumentMode(true);
-    setTabsClosable(false);
+    setDocumentMode(true);//此属性保留是否以适合文档页的模式呈现选项卡小部件。
+    setTabsClosable(false);//此属性保留是否自动将关闭按钮添加到每个选项卡。
 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     resize(240, 320);

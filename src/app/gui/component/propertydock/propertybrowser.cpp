@@ -9,7 +9,7 @@ TPropertyBrowser::TPropertyBrowser(QWidget *parent) :
   , mSorting(false)
   , mTreeIndex(-1)
   , mButtonIndex(-1)
-  , mStackedWidget(new QStackedWidget)
+  , mStackedWidget(new QStackedWidget)//提供了一个小部件堆栈，其中一次只能看到一个小部件
   , mTreeBrowser(nullptr)
   , mButtonBrowser(nullptr)
   , mCurrentBrowser(nullptr)

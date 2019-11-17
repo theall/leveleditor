@@ -33,6 +33,7 @@ bool TTabController::joint(TMainWindow *mainWindow, TCore *core)
     connect(mTabWidget, SIGNAL(requestCloseDocument(void*)), this, SLOT(slotRequestCloseDocument(void*)));
     connect(mTabWidget, SIGNAL(requestSwitchToDocument(void*)), this, SLOT(slotRequestSwithToDocument(void*)));
     connect(mTabWidget, SIGNAL(requestExploreFile(QString)), this, SLOT(slotRequestExploreFile(QString)));
+    connect(mTabWidget, SIGNAL(requestStartMove(void*)),this,SLOT(slotRequestStartMove(void*)));
 
     connect(core, SIGNAL(documentFileChanged(QString)), this, SLOT(slotDocumentFileChanged(QString)));
 
@@ -139,6 +140,19 @@ void TTabController::slotRequestCloseDocument(void *document)
 void TTabController::slotRequestExploreFile(const QString &file)
 {
     Utils::exploreFile(file);
+}
+
+void TTabController::slotRequestStartMove(void* document)
+{
+    TDocument *doc = (TDocument*)document;
+    if(!doc)
+        return;
+
+    TGraphicsScene *graphicsScene = doc->graphicsScene();
+    if(!graphicsScene)
+        return;
+
+    graphicsScene->play();
 }
 
 void TTabController::slotDocumentDirtyFlagChanged(bool isDirty)

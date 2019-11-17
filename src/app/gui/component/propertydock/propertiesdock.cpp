@@ -6,12 +6,12 @@
 
 TPropertiesDock::TPropertiesDock(QWidget *parent) :
     TBaseDock("propertiesDock", parent)
-  , mIcon(new QLabel(this))
+  , mIcon(new QLabel(this))//标签
   , mText(new QLabel(this))
   , mSearchLabel(new QLabel(this))
-  , mFindWhat(new QLineEdit(this))
-  , mFindWidgetsWrap(new QWidget(this))
-  , mPropertyBrowser(new TPropertyBrowser(this))
+  , mFindWhat(new QLineEdit(this))//单行文本编辑器
+  , mFindWidgetsWrap(new QWidget(this))//窗口
+  , mPropertyBrowser(new TPropertyBrowser(this))//窗口
 {
     mIcon->setFixedSize(24, 24);
     mIcon->setVisible(false);

@@ -49,9 +49,9 @@ class TDoor : public TObject
 
 public:
     enum Dir {
-        Horizontal,
-        Vertical,
-        None,
+        Horizontal,//水平
+        Vertical,//垂直
+        None,//无
     };
     enum Edge {
         Left = 0x1,
@@ -108,6 +108,10 @@ public:
     TTileId *tileId() const;
     void setTileId(TTileId *tileId);
 
+    QPointF getSpeed() const;
+    QPointF getPos() const;
+    void setMovingPos(const QPointF &p);
+
 private slots:
     void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);
 
@@ -119,6 +123,7 @@ private:
     TTileId *mTileId;
     bool mHasMoveModel;
     int mTargetNumber;
+    QPointF mCurrentPos;
 
     void setUp();
     void initPropertySheet();

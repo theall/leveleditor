@@ -31,19 +31,19 @@
 TMainWindow::TMainWindow(QWidget *parent) :
     QMainWindow(parent)
   , ui(new Ui::MainWindow)
-  , mCentralWidget(new TCentralWidget(this))
-  , mUndoDock(new TUndoDock(this))
-  , mMapsDock(new TMapsDock(this))
-  , mMiniSceneDock(new TMiniSceneDock(this))
-  , mPropertyDock(new TPropertiesDock(this))
-  , mTilesetDock(new TTilesetDock(this))
-  , mCharacterDock(new TCharacterDock(this))
-  , mLayerDock(new TLayerDock(this))
-  , mAnimationDock(new TAnimationDock(this))
-  , mAboutDialog(new TAboutDialog(this))
-  , mLoadingDialog(new TLoadingDialog(this))
-  , mNewMapDialog(new TNewMapDialog(this))
-  , mZoomComboBox(new TZoomComboBox(this))
+  , mCentralWidget(new TCentralWidget(this)) //集中 中心窗口
+  , mUndoDock(new TUndoDock(this))//History
+  , mMapsDock(new TMapsDock(this))//maps
+  , mMiniSceneDock(new TMiniSceneDock(this))//miniscene
+  , mPropertyDock(new TPropertiesDock(this))//Properties 不看
+  , mTilesetDock(new TTilesetDock(this))//tileset
+  , mCharacterDock(new TCharacterDock(this))//Character
+  , mLayerDock(new TLayerDock(this))//layerDock
+  , mAnimationDock(new TAnimationDock(this))//Animation
+  , mAboutDialog(new TAboutDialog(this))    //关于
+  , mLoadingDialog(new TLoadingDialog(this)) //加载
+  , mNewMapDialog(new TNewMapDialog(this))//新的快捷键窗口
+  , mZoomComboBox(new TZoomComboBox(this))//缩放 滑轮
   , mHideMenu(false)
   , mActionGroup(new QActionGroup(this))
 {
@@ -51,6 +51,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
     mLoadingDialog->setWindowIcon(windowIcon());
 
     // Initialize menu
+    //设置快捷键
     ui->actionNewMap->setShortcuts(QKeySequence::New);
     ui->actionOpenGame->setShortcuts(QKeySequence::Open);
     ui->actionSaveMap->setShortcuts(QKeySequence::Save);
@@ -63,6 +64,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
     ui->actionDelete->setShortcuts(QKeySequence::Delete);
     ui->actionUndo->setShortcut(QKeySequence::Undo);
     ui->actionRedo->setShortcut(QKeySequence::Redo);
+    //设置状态为不可按(Set the status to not press)
     ui->actionSaveMap->setEnabled(false);
     ui->actionSaveAs->setEnabled(false);
     ui->actionSaveAllMaps->setEnabled(false);
@@ -76,9 +78,11 @@ TMainWindow::TMainWindow(QWidget *parent) :
     // Toolbar action list
     mActionGroup->addAction(ui->actionSelectMode);
     mActionGroup->addAction(ui->actionInsertMode);
+    //默认选择(Default choice)
     ui->actionSelectMode->setChecked(true);
 
     // Add recent file actions to the recent files menu
+    //将最近的文件操作添加到最近的文件菜单
     for(int i=0;i<TPreferences::MAX_RECENT_FILES;i++)
     {
         QAction* action = new QAction(this);
@@ -90,6 +94,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
     ui->menuRecentFiles->insertSeparator(ui->actionClearRecentFiles);
 
     // Make sure Ctrl+= also works for zooming in
+    //确保Ctrl+=也适用于放大
     QList<QKeySequence> keys = QKeySequence::keyBindings(QKeySequence::ZoomIn);
     keys += QKeySequence(tr("Ctrl+="));
     keys += QKeySequence(tr("+"));
@@ -101,7 +106,9 @@ TMainWindow::TMainWindow(QWidget *parent) :
     ui->menuEdit->insertSeparator(ui->actionSettings);
     ui->MainToolBar->addSeparator();
     // Add the 'Views and Toolbars' submenu.This needs to happen after all
+    //添加“视图和工具栏”子菜单。这毕竟需要发生
     // the dock widgets and toolbars have been added to the main window
+    //停靠小部件和工具栏已添加到主窗口
     mViewsAndToolbarsMenu = new QAction(tr("Views and Toolbars"), this);
     ui->menuView->insertAction(ui->actionShowBorder, mViewsAndToolbarsMenu);
     ui->menuView->insertSeparator(ui->actionShowBorder);
@@ -145,7 +152,7 @@ TMainWindow::~TMainWindow()
 
     delete ui;
 }
-
+//启用/关闭
 void TMainWindow::enableUndoAction(bool enabled)
 {
     ui->actionUndo->setEnabled(enabled);
@@ -366,7 +373,7 @@ void TMainWindow::raiseLoadingDialog()
 
 void TMainWindow::checkActionWithoutEmitSignal(QAction *action, bool checked)
 {
-    action->blockSignals(true);
+    action->blockSignals(true);//阻塞信号
     action->setChecked(checked);
     action->blockSignals(false);
 }

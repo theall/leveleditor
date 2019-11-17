@@ -263,7 +263,7 @@ void TTile::readFromStream(QDataStream &stream)
     QPointF speed(xSpeed, ySpeed);
     QPoint startPos(xStart, yStart);
     QPointF screenSpeed(xScrSpeed, yScrSpeed);
-
+    mCurrentPos = pos1;
     TDoor::Dir moveDir = TDoor::None;
     if(xSpeed>=0.1 || xScrSpeed>=0.1)
         moveDir = TDoor::Horizontal;
@@ -368,6 +368,21 @@ void TTile::setTileId(TTileId *tileId)
 
     mTileId = tileId;
     setUp();
+}
+
+QPointF TTile::getSpeed() const
+{
+    return mPropertySheet->getValue(PID_TILE_SPEED).toPointF();
+}
+
+QPointF TTile::getPos() const
+{
+    return mCurrentPos;
+}
+
+void TTile::setMovingPos(const QPointF &p)
+{
+    mCurrentPos = p;
 }
 
 void TTile::setUp()

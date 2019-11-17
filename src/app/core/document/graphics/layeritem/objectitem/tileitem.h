@@ -23,6 +23,8 @@ public:
     static bool showBorder();
     static void setShowBorder(bool showBorder);
 
+    void step() Q_DECL_OVERRIDE;
+
 private:
     TTile *mTile;
     TDoorItem *mDoorItem;

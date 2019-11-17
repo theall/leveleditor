@@ -7,12 +7,12 @@ TMapsProxyView::TMapsProxyView(QWidget *parent) :
   , mModsTab(new TModsTab(this))
   , mModsTree(new TModsTree(this))
 {
-    QVBoxLayout *vboxLayout = new QVBoxLayout;
+    QVBoxLayout *vboxLayout = new QVBoxLayout;//垂直排列小部件
     vboxLayout->addWidget(mModsTab);
     vboxLayout->addWidget(mModsTree);
-    vboxLayout->setContentsMargins(0, 0, 0, 0);
-    vboxLayout->setMargin(0);
-    vboxLayout->setSpacing(0);
+    vboxLayout->setContentsMargins(0, 0, 0, 0);//设置上下左右的边距
+    vboxLayout->setMargin(0);//外部边框的距离
+    vboxLayout->setSpacing(0);//重新实现QLayout：：setspace（）。设置两个控件的上下间距
     setLayout(vboxLayout);
 
     connect(mModsTab,
@@ -36,11 +36,11 @@ void TMapsProxyView::setViewMode(const TMapsProxyView::ViewMode &viewMode)
 {
     mViewMode = viewMode;
     if(mViewMode == Tree) {
-        mModsTab->setVisible(false);
-        mModsTree->setVisible(true);
+        mModsTab->setVisible(false);//隐藏
+        mModsTree->setVisible(true);//显示
     } else if(mViewMode == Tab) {
-        mModsTab->setVisible(true);
-        mModsTree->setVisible(false);
+        mModsTab->setVisible(true);//显示
+        mModsTree->setVisible(false);//隐藏
     }
 }
 

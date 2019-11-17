@@ -7,10 +7,10 @@ TCentralWidget::TCentralWidget(QWidget *parent) :
     QWidget(parent)
   , mTabWidget(new TTabWidget(this))
 {
-    QVBoxLayout *vbl = new QVBoxLayout;
-    vbl->setMargin(0);
+    QVBoxLayout *vbl = new QVBoxLayout;//垂直排列
+    vbl->setMargin(0);//设置页边距
     vbl->addWidget(mTabWidget);
-    setLayout(vbl);
+    setLayout(vbl);//设置当前布局为垂直排列
 
 #ifdef GUI_STAND_ALONE
     for(int i=0;i<10;i++)

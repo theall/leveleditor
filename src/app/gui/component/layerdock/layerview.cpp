@@ -16,21 +16,21 @@ TLayerView::TLayerView(QWidget *parent):
   , mActionUnLock(new QAction(this))
   , mContextMenu(new QMenu(this))
 {
-    setRootIsDecorated(false);
-    setHeaderHidden(true);
+    setRootIsDecorated(false);//是否显示展开和折叠
+    setHeaderHidden(true);//是否不保留标题
     setItemsExpandable(false);
-    setUniformRowHeights(true);
+    setUniformRowHeights(true);//判断每一项高度是否相同 如果相同就会进行一些优化
 
     mContextMenu->addAction(mActionShow);
     mContextMenu->addAction(mActionHide);
-    mContextMenu->addSeparator();
+    mContextMenu->addSeparator();//分隔符
     mContextMenu->addAction(mActionLock);
     mContextMenu->addAction(mActionUnLock);
 
-    connect(mActionShow, SIGNAL(triggered(bool)), this, SLOT(slotActionShowTriggered(bool)));
-    connect(mActionHide, SIGNAL(triggered(bool)), this, SLOT(slotActionHideTriggered(bool)));
-    connect(mActionLock, SIGNAL(triggered(bool)), this, SLOT(slotActionLockTriggered(bool)));
-    connect(mActionUnLock, SIGNAL(triggered(bool)), this, SLOT(slotActionUnLockTriggered(bool)));
+    connect(mActionShow, SIGNAL(triggered(bool)), this, SLOT(slotActionShowTriggered(bool)));//开眼
+    connect(mActionHide, SIGNAL(triggered(bool)), this, SLOT(slotActionHideTriggered(bool)));//关眼
+    connect(mActionLock, SIGNAL(triggered(bool)), this, SLOT(slotActionLockTriggered(bool)));//上锁
+    connect(mActionUnLock, SIGNAL(triggered(bool)), this, SLOT(slotActionUnLockTriggered(bool)));//开锁
 
     retranslateUi();
 }
@@ -49,7 +49,7 @@ void TLayerView::changeEvent(QEvent *e)
 {
     QTreeView::changeEvent(e);
     switch (e->type()) {
-    case QEvent::LanguageChange:
+    case QEvent::LanguageChange://翻译已更改
         retranslateUi();
         break;
     default:
@@ -140,13 +140,13 @@ void TLayerView::retranslateUi()
 QList<int> TLayerView::getSelectedRows() const
 {
     QSet<int> rows;
-    QItemSelectionModel *sm = selectionModel();
-    if(sm) {
-        for(QModelIndex index : sm->selectedIndexes()) {
-            rows.insert(index.row());
+    QItemSelectionModel *sm = selectionModel();//定义一个QItemSelectionModel接受返回的指针 返回当前选择模型
+    if(sm) {    //该指针不为空
+        for(QModelIndex index : sm->selectedIndexes()) {//选定索引
+            rows.insert(index.row());//如果值不在集合中 则将项值插入集合
         }
     }
-    return rows.toList();
+    return rows.toList();//返回一个新列表 包含集合中的元素
 }
 
 void TLayerView::setModel(QAbstractItemModel *model)

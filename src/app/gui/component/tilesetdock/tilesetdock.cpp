@@ -8,8 +8,8 @@
 TTilesetDock::TTilesetDock(QWidget *parent) :
     TBaseDock(QLatin1String("TilesetDock"), parent)
 {
-    CREATE_ACTION(mActionAddTileset, ":/actionsdock/images/add.png", slotAddTilesetTriggered);
-    CREATE_ACTION(mActionRemoveTileset, ":/actionsdock/images/remove.png", slotRemoveTilesetTriggered);
+    CREATE_ACTION(mActionAddTileset, ":/animationdock/images/add.png", slotAddTilesetTriggered);
+    CREATE_ACTION(mActionRemoveTileset, ":/animationdock/images/remove.png", slotRemoveTilesetTriggered);
 
     QWidget *container = new QWidget(this);
     mTilesetTab = new TTilesetTab(container);
@@ -20,13 +20,13 @@ TTilesetDock::TTilesetDock(QWidget *parent) :
     }
 #endif
     QToolBar *toolBar = new QToolBar(container);
-    toolBar->setFloatable(false);
-    toolBar->setMovable(false);
+    toolBar->setFloatable(false);//否定工具栏作为独立窗口
+    toolBar->setMovable(false);//工具栏控件在工具栏中拖动
     toolBar->setIconSize(QSize(16, 16));
     toolBar->addAction(mActionAddTileset);
     toolBar->addAction(mActionRemoveTileset);
 
-    QVBoxLayout *vboxLayout = new QVBoxLayout;
+    QVBoxLayout *vboxLayout = new QVBoxLayout;//垂直
     vboxLayout->addWidget(toolBar);
     vboxLayout->addWidget(mTilesetTab);
     container->setLayout(vboxLayout);
@@ -39,7 +39,7 @@ void TTilesetDock::changeEvent(QEvent *e)
 {
     QDockWidget::changeEvent(e);
     switch (e->type()) {
-    case QEvent::LanguageChange:
+    case QEvent::LanguageChange://语言变化
         retranslateUi();
         break;
     default:

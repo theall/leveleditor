@@ -17,9 +17,9 @@ TCharacterView::TCharacterView(QWidget *parent) :
   , mIconSize(ICON_LARGE)
   , mLastPushedButton(nullptr)
 {
-    setFlow(LeftToRight);
-    setFrameShadow(QFrame::Plain);
-    setFrameShape(QFrame::NoFrame);
+    setFlow(LeftToRight);//设置排列为从左向右排列
+    setFrameShadow(QFrame::Plain);//为框架添加阴影
+    setFrameShape(QFrame::NoFrame);//设置框架边线为什么都不做
 }
 
 TCharacterView::~TCharacterView()

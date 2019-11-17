@@ -10,11 +10,11 @@ TMiniSceneDock::TMiniSceneDock(QWidget *parent) :
     retranslateUi();
 }
 
-void TMiniSceneDock::changeEvent(QEvent *e)
+void TMiniSceneDock::changeEvent(QEvent *e)//改变事件
 {
     QDockWidget::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
+    switch (e->type()) {//返回事件类型
+    case QEvent::LanguageChange://应用程序翻译已更改。
         retranslateUi();
         break;
     default:
