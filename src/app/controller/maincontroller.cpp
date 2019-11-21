@@ -251,9 +251,10 @@ void TMainController::slotRequestSwitchToDocument(TDocument *document)
     mTilesetController->setCurrentDocument(document);
     mAnimationController->setCurrentDocument(document);
 
-    if(mDocument)
+    if(mDocument) {
         mDocument->disconnect(this);
-
+        mDocument->graphicsScene()->stop();
+    }
     mDocument = document;
 
     if(mDocument) {

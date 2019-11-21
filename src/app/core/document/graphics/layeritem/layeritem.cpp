@@ -75,10 +75,7 @@ void TLayerItem::setBoundingRect(const QRectF &rect)
 
 void TLayerItem::step()
 {
-    for(QGraphicsItem *graphicsItem : childItems()) {
-        if(TObjectItem *objectItem = dynamic_cast<TObjectItem*>(graphicsItem))
-            objectItem->step();
-    }
+
 }
 
 void TLayerItem::slotLayerVisibilityChanged(bool visible)

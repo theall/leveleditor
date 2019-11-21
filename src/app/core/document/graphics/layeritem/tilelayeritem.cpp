@@ -18,6 +18,35 @@ TTileLayerItem::~TTileLayerItem()
 
 }
 
+bool TTileLayerItem::replace(TAnimationItem *animationItem)
+{
+    if(!animationItem)
+        return false;
+
+    TTile *tile = animationItem->getFirstTile();
+    if(!mTileItemMap.contains(tile)) {
+        return false;
+    }
+    TTileItem *tileItem = mTileItemMap[tile];
+    mTileItemMap[tile] = animationItem;
+    int index = mTileItemList.indexOf(tileItem);
+    if(index == -1)
+        return false;
+
+    delete tileItem;
+    animationItem->setParentItem(this);
+    mTileItemList.replace(index, animationItem);
+    return true;
+}
+
+void TTileLayerItem::step()
+{
+    for(TTileItem *tileItem : mTileItemList) {
+        if(TAnimationItem *animationItem = dynamic_cast<TAnimationItem*>(tileItem))
+            animationItem->step();
+    }
+}
+
 void TTileLayerItem::slotTileInserted(const TTileList &tileList, const QList<int> &)
 {
     TTileItemList tileItemList;

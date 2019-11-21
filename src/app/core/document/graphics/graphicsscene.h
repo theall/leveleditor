@@ -38,6 +38,7 @@ public:
     void setScale(const qreal &scale);
 
     void play();
+    void suspend();
     bool isPlaying();
     void stop();
 

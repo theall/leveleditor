@@ -46,13 +46,14 @@ TTabWidget::TTabWidget(QWidget *parent) ://构造函数里面传递了一个QWid
     mActionExplore = mContextMenu->addAction(QString(), this, SLOT(slotActionExploreTriggered()));//返回当前文档的位置
     mContextMenu->addSeparator();
     mActionStartMove = mContextMenu->addAction(QString(),this,SLOT(slotRequestStartMove()));
-    mActionStopMove = mContextMenu->addAction(QString());
+    mActionStopMove = mContextMenu->addAction(QString(),this,SLOT(slotRequestStopMove()));
 
     mActionCloseOther->setVisible(true);
     mActionCloseLeft->setVisible(true);
     mActionCloseRight->setVisible(true);
 
     retranslateUi();
+
 }
 
 TTabWidget::~TTabWidget()
@@ -180,6 +181,13 @@ void TTabWidget::slotOnTabMoved(int from, int to)
 {
     void *d = mDocuments.takeAt(to);
     mDocuments.insert(from, d);
+}
+
+void TTabWidget::slotRequestStopMove()
+{
+    int index = currentIndex();
+    if(index != -1)
+        slotActionStopMoveTriggered(index);
 }
 
 void TTabWidget::slotSwitchToLeft()
@@ -313,7 +321,13 @@ void TTabWidget::slotActionStartMoveTriggered(int index)
 
 void TTabWidget::slotActionStopMoveTriggered(int index)
 {
+    if(index>-1 && index < mDocuments.size())
+    {
+        void *document = mDocuments.at(index);
+        Q_ASSERT(document);
 
+        emit requestStopMove(document);
+    }
 }
 
 

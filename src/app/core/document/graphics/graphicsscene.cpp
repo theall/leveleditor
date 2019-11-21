@@ -88,6 +88,15 @@ void TGraphicsScene::play()
     mTimerId = startTimer(1000.0/mFps);
 }
 
+void TGraphicsScene::suspend()
+{
+    if(mTimerId != -1)
+    {
+        killTimer(mTimerId);
+        mTimerId = -1;
+    }
+}
+
 bool TGraphicsScene::isPlaying()
 {
     return mTimerId != -1;
@@ -192,6 +201,9 @@ void TGraphicsScene::setScale(const qreal &scale)
 void TGraphicsScene::step()
 {
     mSceneItem->step();
+
+    QRectF r = sceneRect();
+    update(r);
 }
 
 void TGraphicsScene::setSelectedObjectItem(TObjectItem *objectItem)

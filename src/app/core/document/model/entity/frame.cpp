@@ -27,12 +27,20 @@ TTile *TFrame::getTile() const
 
 void TFrame::setTile(TTile *tile)
 {
+    if(mTile == tile)
+        return;
+
     mTile = tile;
 }
 
 QPixmap TFrame::getPixmap() const
 {
     return mTile?mTile->pixmap():QPixmap();
+}
+
+int TFrame::getDuration() const
+{
+     return mDuration;
 }
 
 int TFrame::getTileNumber() const
@@ -54,13 +62,13 @@ void TFrame::saveToStream(QDataStream &stream) const
 
 void TFrame::readFromStream(QDataStream &stream)
 {
-    int duration;
     stream >> mTileLayer;
     stream >> mTileNumber;
-    stream >> duration;
+    stream >> mDuration;
+    mTileNumber--;
     mPropertySheet->setValue(PID_FRAME_TILE_LAYER, mTileLayer);
     mPropertySheet->setValue(PID_FRAME_TILE_NUMBER, mTileNumber);
-    mPropertySheet->setValue(PID_FRAME_DURATION, duration);
+    mPropertySheet->setValue(PID_FRAME_DURATION, mDuration);
 }
 
 void TFrame::initPropertySheet()

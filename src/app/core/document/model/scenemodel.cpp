@@ -44,7 +44,7 @@ TSceneModel::TSceneModel(QObject *parent) :
     mBaseModelList.append(mTileLayerModel1);
     mBaseModelList.append(mTileLayerModel2);
     mBaseModelList.append(mTileLayerModel3);
-    //mBaseModelList.append(mAnimationModel);
+    mBaseModelList.append(mAnimationModel);
     mBaseModelList.append(mAreasModel);
     mBaseModelList.append(mBoxModel);
     mBaseModelList.append(mDAreasModel);
@@ -435,13 +435,13 @@ void TSceneModel::readFromStream(QDataStream &stream)
 
         int tileLayer = animation->getTileLayer();
         if(tileLayer>=0 && tileLayer<mTileLayerModelList.size()) {
-            animation->setTile(getTile(tileLayer,animation->getTileNumber()));
+            animation->setTile(getTile(tileLayer, animation->getTileNumber()));
         }
 
         for(TFrame *frame : animation->frameList()) {
             tileLayer = frame->getTileLayer();
             if(tileLayer>=0 && tileLayer<mTileLayerModelList.size()) {
-                frame->setTile(getTile(tileLayer,frame->getTileNumber()));
+                frame->setTile(getTile(tileLayer, frame->getTileNumber()));
             }
         }
     }

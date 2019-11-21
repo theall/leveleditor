@@ -31,6 +31,9 @@ public:
     TTile *getFrameTile(int index) const;
     TPropertySheet *getFramePropertySheet(int index) const;
 
+    TFrameList getFrameList() const;
+    int getTotalDuration() const;
+
 private:
     TTile *mTile;
     int mTileLayer;

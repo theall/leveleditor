@@ -5,6 +5,8 @@
 #include "layeritem/darealayeritem.h"
 #include "layeritem/platlayeritem.h"
 #include "layeritem/walllayeritem.h"
+#include "layeritem/objectitem/animationitem.h"
+
 #include "../model/areamodel.h"
 #include "../model/boxmodel.h"
 #include "../model/dareamodel.h"
@@ -30,10 +32,13 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
     setAcceptHoverEvents(true);
 
     connect(mSceneModel, SIGNAL(currentIndexChanged(int)), this, SLOT(slotOnSceneModelCurrentIndexChanged(int)));
+
+    TAnimationItemList animationItemList;
     for(TBaseModel *baseModel : mSceneModel->getBaseModelList()) {
         TLayerItem *layerItem = nullptr;
         if(TTileLayerModel *tileLayerModel = dynamic_cast<TTileLayerModel*>(baseModel)) {
             layerItem = new TTileLayerItem(tileLayerModel, this);
+            mTileLayerItemList.append((TTileLayerItem*)layerItem);
         } else if(TAreaModel *areaModel = dynamic_cast<TAreaModel*>(baseModel)) {
             layerItem = new TAreasLayerItem(areaModel, this);
         } else if(TBoxModel *boxModel = dynamic_cast<TBoxModel*>(baseModel)) {
@@ -44,6 +49,14 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
             layerItem = new TPlatLayerItem(platModel, this);
         } else if(TWallModel *wallModel = dynamic_cast<TWallModel*>(baseModel)) {
             layerItem = new TWallLayerItem(wallModel, this);
+        } else if(TAnimationModel *animationModel = dynamic_cast<TAnimationModel*>(baseModel)) {
+            for(TFrameModel *frameModel : animationModel->frameModelList()) {
+                TAnimation *animation = frameModel->animation();
+                if(!animation || !animation->getTile())
+                    continue;
+                TAnimationItem *item = new TAnimationItem(frameModel->animation(), nullptr);
+                animationItemList.append(item);
+            }
         } else if(TEnemyFactoryModel *enemyFactoryModel = dynamic_cast<TEnemyFactoryModel*>(baseModel)) {
             layerItem = nullptr;
         }
@@ -58,6 +71,13 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
 
         if(baseModel == mSceneModel->getCurrentModel())
             mCurrentLayerItem = layerItem;
+    }
+
+    // Replace animation item into tilelayeritem
+    for(TAnimationItem *animationItem : animationItemList) {
+        for(TTileLayerItem *tileLayerItem : mTileLayerItemList) {
+           tileLayerItem->replace(animationItem);
+        }
     }
 
     int index = 0;
@@ -184,9 +204,10 @@ void TSceneItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
 
 void TSceneItem::step()
 {
-    for(TLayerItem *layerItem : mLayerItemList) {
-        if(!layerItem)
+    for(TTileLayerItem *tileLayerItem : mTileLayerItemList) {
+        if(!tileLayerItem)
             continue;
-        layerItem->step();
+
+        tileLayerItem->step();
     }
 }

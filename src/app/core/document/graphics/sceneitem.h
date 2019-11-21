@@ -4,9 +4,10 @@
 #include <QGraphicsObject>
 
 #include "cameraitem.h"
-#include "layeritem/layeritem.h"
-#include "uiitem/hovereditem.h"
 #include "../model/scenemodel.h"
+#include "layeritem/layeritem.h"
+#include "layeritem/tilelayeritem.h"
+#include "uiitem/hovereditem.h"
 #include "uiitem/darkmaskitem.h"
 
 class TSceneItem : public QGraphicsObject
@@ -40,6 +41,7 @@ private:
     TCameraItem *mCameraItem;
     QGraphicsRectItem *mBorderRectangle;
     TLayerItemList mLayerItemList;
+    TTileLayerItemList mTileLayerItemList;
     QMap<TBaseModel*, TLayerItem*> mModelLayerMap;
     TLayerItem *mCurrentLayerItem;
     TDarkMaskItem *mDarkMaskItem;

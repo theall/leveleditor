@@ -28,6 +28,7 @@ public:
 
     void setDocumentIcon(void *document, const QIcon &icon);
     void moveTab(int from, int to);
+    void indexChange();
 
 signals:
     // To TTabController
@@ -45,6 +46,7 @@ private slots:
     void slotOnCurrentIndexChanged(int index);
     void slotRequestCloseTab(int index);
     void slotOnTabMoved(int from, int to);
+    void slotRequestStopMove();
     void slotRequestStartMove();
     void slotSwitchToLeft();
     void slotSwitchToRight();

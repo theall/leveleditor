@@ -86,6 +86,20 @@ TPropertySheet *TAnimation::getFramePropertySheet(int index) const
     return mFrameList.at(index)->propertySheet();
 }
 
+TFrameList TAnimation::getFrameList() const
+{
+    return mFrameList;
+}
+
+int TAnimation::getTotalDuration() const
+{
+    int duration = 0;
+    for(TFrame *frame : mFrameList) {
+        duration += frame->getDuration();
+    }
+    return duration;
+}
+
 TTile *TAnimation::getTile() const
 {
     return mTile;
@@ -125,13 +139,14 @@ void TAnimation::readFromStream(QDataStream &stream)
 {
     int frameSequences; // Frame counter, shift next frame if frameSequences > current frame duration
     int frameCount;
-    int currentFrame;
+    int currentIndex;
     stream >> frameSequences;
     stream >> frameCount;
     stream >> mTileLayer;
     stream >> mTileNumber;
-    stream >> currentFrame;
+    stream >> currentIndex;
     mFrameList.clear();
+    mTileNumber--;
     for(int i=0;i<frameCount;i++) {
         TFrame *frame = new TFrame(this);
         frame->readFromStream(stream);
@@ -140,7 +155,7 @@ void TAnimation::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(PID_ANIMATION_SEQUENCE, frameSequences);
     mPropertySheet->setValue(PID_ANIMATION_TILE_LAYER, mTileLayer);
     mPropertySheet->setValue(PID_ANIMATION_TILE_NUMBER, mTileNumber);
-    mPropertySheet->setValue(PID_ANIMATION_CURRENT_FRAME, currentFrame);
+    mPropertySheet->setValue(PID_ANIMATION_CURRENT_FRAME, currentIndex);
 }
 
 void TAnimation::initPropertySheet()

@@ -21,11 +21,14 @@ public:
     TTile *getTile() const;
     void setTile(TTile *tile);
     QPixmap getPixmap() const;
+    int getDuration() const;
 
 private:
     TTile *mTile;
     int mTileLayer;
     int mTileNumber;
+    int mDuration;
+
     void initPropertySheet();
 
     // TObject interface

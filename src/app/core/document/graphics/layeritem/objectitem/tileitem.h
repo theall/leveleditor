@@ -15,6 +15,8 @@ public:
     ~TTileItem();
 
     TTile *tile() const;
+    void setTile(TTile *tile);
+
     TDoor *door() const;
 
     TTileItem *targetTileItem() const;
@@ -23,10 +25,8 @@ public:
     static bool showBorder();
     static void setShowBorder(bool showBorder);
 
-    void step() Q_DECL_OVERRIDE;
-
 private:
-    TTile *mTile;
+
     TDoorItem *mDoorItem;
     TTrackItem *mTileDoorTrackItem;
     TTileItem *mTargetTileItem;
@@ -36,6 +36,7 @@ private:
 public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
+    TTile *mTile;
 
     // TObjectItem interface
 public:
