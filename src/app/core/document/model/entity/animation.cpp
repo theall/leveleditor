@@ -145,8 +145,8 @@ void TAnimation::readFromStream(QDataStream &stream)
     stream >> mTileLayer;
     stream >> mTileNumber;
     stream >> currentIndex;
-    mFrameList.clear();
     mTileNumber--;
+    mFrameList.clear();
     for(int i=0;i<frameCount;i++) {
         TFrame *frame = new TFrame(this);
         frame->readFromStream(stream);

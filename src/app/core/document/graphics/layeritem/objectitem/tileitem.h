@@ -25,8 +25,11 @@ public:
     static bool showBorder();
     static void setShowBorder(bool showBorder);
 
-private:
+    virtual void step() Q_DECL_OVERRIDE;
 
+private:
+    TTile *mTile;
+    QPointF mCurrentPos;
     TDoorItem *mDoorItem;
     TTrackItem *mTileDoorTrackItem;
     TTileItem *mTargetTileItem;
@@ -36,7 +39,6 @@ private:
 public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
-    TTile *mTile;
 
     // TObjectItem interface
 public:

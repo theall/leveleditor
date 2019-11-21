@@ -11,6 +11,7 @@ TTileItem::TTileItem(TTile *tile, QGraphicsItem *parent) :
   , mTileDoorTrackItem(nullptr)
 {
     Q_ASSERT(mTile);
+    mCurrentPos = mTile->pos();
     if(mTile->hasMoveModel()) {
         mDoorItem = new TDoorItem(this);
         mTileDoorTrackItem = new TTrackItem(this, mDoorItem);
@@ -63,9 +64,20 @@ void TTileItem::setShowBorder(bool showBorder)
     mShowBorder = showBorder;
 }
 
+void TTileItem::step()
+{
+    if(!mTile)
+        return;
+
+    QPointF speed = mTile->getSpeed();
+    if(speed.x() > 0.01 || speed.y() > 0.01) {
+        mCurrentPos += speed;
+    }
+}
+
 void TTileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QPointF p = mTile->getPos();
+    QPointF p = mCurrentPos;
     painter->drawPixmap(p, mTile->pixmap());
 
     if(mShowBorder)

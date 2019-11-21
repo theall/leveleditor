@@ -42,8 +42,7 @@ bool TTileLayerItem::replace(TAnimationItem *animationItem)
 void TTileLayerItem::step()
 {
     for(TTileItem *tileItem : mTileItemList) {
-        if(TAnimationItem *animationItem = dynamic_cast<TAnimationItem*>(tileItem))
-            animationItem->step();
+        tileItem->step();
     }
 }
 

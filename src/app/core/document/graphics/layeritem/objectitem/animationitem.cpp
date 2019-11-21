@@ -12,7 +12,7 @@ TAnimationItem::TAnimationItem(TAnimation *animation, QGraphicsItem *parent) :
 
     mFirstTile = animation->getTile();
     mCurrentTile = mFirstTile;
-    mCurrentPos = mFirstTile->getPos();
+    mCurrentPos = mFirstTile->pos();
 }
 
 void TAnimationItem::step()
@@ -84,6 +84,8 @@ void TAnimationItem::setCurrentTile(TTile *tile)
 
 void TAnimationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
     if(!mCurrentTile)
         return;
 
