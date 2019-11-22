@@ -21,6 +21,8 @@ public:
                const QStyleOptionGraphicsItem *,
                QWidget *) override;
 
+    void move(const QPointF &offset);
+
 private slots:
     void slotObjectBoundingRectChanged(const QRectF &rect);
     void slotOnObjectDestroyed(QObject *object);

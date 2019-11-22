@@ -115,6 +115,16 @@ bool TSelectedItems::isEmpty() const
     return mObjectItemMap.isEmpty();
 }
 
+void TSelectedItems::move(const QPointF &offset)
+{
+    if(offset.isNull())
+        return;
+
+    for(TSelectedItem *selectedItem : mObjectItemMap.values()) {
+        selectedItem->move(offset);
+    }
+}
+
 TObject::Type TSelectedItems::getObjectType() const
 {
     TObjectItemList objectItemList = mObjectItemMap.keys();

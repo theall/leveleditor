@@ -89,6 +89,17 @@ void TSelectedItem::paint(QPainter *painter,
     painter->drawLines(lines, 4);
 }
 
+void TSelectedItem::move(const QPointF &offset)
+{
+    if(offset.isNull())
+        return;
+
+    if(mObjectItem) {
+        mObjectItem->move(offset);
+        setBoundingRect(mObjectItem->boundingRect());
+    }
+}
+
 void TSelectedItem::slotObjectBoundingRectChanged(const QRectF &)
 {
     if(mObjectItem)

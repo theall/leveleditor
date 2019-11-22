@@ -23,6 +23,8 @@ public:
     void clear();
     bool isEmpty() const;
 
+    void move(const QPointF &offset);
+
     /**
      * @brief Retrieve object's type if all objects are congeneric.
      * @return TObject::Type

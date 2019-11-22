@@ -45,6 +45,10 @@ public:
 
     virtual void step();
 
+    QPointF getCurrentPos() const;
+    void setCurrentPos(const QPointF &currentPos);
+    void move(const QPointF &offset);
+
 signals:
     void boundingRectChanged(const QRectF &boundingRect);
 
@@ -52,6 +56,7 @@ private slots:
     void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);
 
 protected:
+    QPointF mCurrentPos;
     QRectF mBoundingRect;
 
 private:

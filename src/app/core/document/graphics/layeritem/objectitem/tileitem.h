@@ -29,7 +29,6 @@ public:
 
 private:
     TTile *mTile;
-    QPointF mCurrentPos;
     TDoorItem *mDoorItem;
     TTrackItem *mTileDoorTrackItem;
     TTileItem *mTargetTileItem;

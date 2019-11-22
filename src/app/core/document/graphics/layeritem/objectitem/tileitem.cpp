@@ -77,8 +77,7 @@ void TTileItem::step()
 
 void TTileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QPointF p = mCurrentPos;
-    painter->drawPixmap(p, mTile->pixmap());
+    painter->drawPixmap(mCurrentPos, mTile->pixmap());
 
     if(mShowBorder)
         TObjectItem::paint(painter, option, widget);

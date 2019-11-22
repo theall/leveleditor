@@ -18,7 +18,6 @@ private:
     TAnimation *mAnimation;
     int mCurrentIndex;
     TTile *mFirstTile;
-    QPointF mCurrentPos;
     TTile *mCurrentTile;
 
     TFrame *getCurrentFrame() const;

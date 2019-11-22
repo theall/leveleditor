@@ -360,10 +360,11 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
         if(button == Qt::RightButton)
         {
-            if(mTimerId == -1)
+            if(!isPlaying()) {
                 play();
-            else
+            } else {
                 stop();
+            }
         } else if(button == Qt::LeftButton) {
             mCommandId = qAbs(((int)mLeftButtonDownPos.x())<<16) + qAbs(mLeftButtonDownPos.y());
             Qt::KeyboardModifiers modifers = event->modifiers();
@@ -451,13 +452,11 @@ void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 }
             }
             if(mAction == Moving) {
+                mHoveredItem->setObjectItem(nullptr);
                 // Move selected object item
-                TObjectList objectList = mSelectedItems->getSelectedObjectList();
-                if(objectList.size() > 0) {
-                    QPointF offset = mMouseMovingPos - event->lastScenePos();
-                    if(!offset.isNull()) {
-                        pushObjectMoveCommand(objectList, offset, mCommandId);
-                    }
+                QPointF offset = mMouseMovingPos - event->lastScenePos();
+                if(!offset.isNull()) {
+                    mSelectedItems->move(offset);
                 }
             } else if(mAction == Selecting) {
                 mSelectionRectangle->setRectangle(QRectF(mLeftButtonDownPos, mMouseMovingPos));
@@ -526,6 +525,11 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 }
             } else if(mAction == Moving) {
                 mAction = NoAction;
+                TObjectList objectList = mSelectedItems->getSelectedObjectList();
+                QPointF offset = event->scenePos() - mLeftButtonDownPos;
+                if(!objectList.isEmpty() && !offset.isNull()) {
+                    pushObjectMoveCommand(objectList, offset, mCommandId);
+                }
             } else if(mAction == Selecting) {
                 mAction = NoAction;
 

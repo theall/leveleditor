@@ -70,12 +70,28 @@ void TObjectItem::slotPropertyItemValueChanged(TPropertyItem *item, const QVaria
     // Notify to selection item and hovering item
     if(pid==PID_OBJECT_RECT) {
         mBoundingRect = item->value().toRectF();
-
+        mCurrentPos = mBoundingRect.topLeft();
 //        static int i = 0;
 //        qDebug() << i << "Bounding changed";
 //        i++;
         emit boundingRectChanged(mBoundingRect);
     }
+}
+
+QPointF TObjectItem::getCurrentPos() const
+{
+    return mCurrentPos;
+}
+
+void TObjectItem::setCurrentPos(const QPointF &currentPos)
+{
+    mCurrentPos = currentPos;
+}
+
+void TObjectItem::move(const QPointF &offset)
+{
+    mCurrentPos += offset;
+    mBoundingRect.moveTopLeft(mBoundingRect.topLeft() + offset);
 }
 
 void TObjectItem::setBoundingRect(const QRectF &boundingRect)
