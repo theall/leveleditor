@@ -26,3 +26,13 @@ deploy:
   force_update: false
   on:
     appveyor_repo_tag: false
+notifications:
+- provider: Email
+  to:
+  - wazcd_1608@qq.com
+  - 975098440@qq.com
+  - 1161294726@qq.com
+  subject: Build status of leveleditor
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: false
