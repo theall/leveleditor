@@ -6,6 +6,8 @@ TAnimationDock::TAnimationDock(QWidget *parent) :
 {
     setWidget(mContainer);
     retranslateUi();
+    connect(mContainer,SIGNAL(requestPlayAnimation(int)),this,SLOT(slotPlayTriggered(int)));
+    connect(mContainer,SIGNAL(requestStopPlayAnimation()),this,SLOT(slotStopTriggered()));
 }
 
 TAnimationDock::~TAnimationDock()

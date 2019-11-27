@@ -79,22 +79,27 @@ void TGraphicsScene::setBackgroundColor(const QColor &color)
     setBackgroundBrush(QBrush(color));
 }
 
-void TGraphicsScene::play()
+bool TGraphicsScene::play()
 {
-    if(mTimerId != -1)
+    if(mTimerId != -1){
         killTimer(mTimerId);
+        return true;
+    }
 
     mStepMode = false;
     mTimerId = startTimer(1000.0/mFps);
+    return false;
 }
 
-void TGraphicsScene::suspend()
+bool TGraphicsScene::suspend()
 {
     if(mTimerId != -1)
     {
         killTimer(mTimerId);
         mTimerId = -1;
+        return true;
     }
+    return false;
 }
 
 bool TGraphicsScene::isPlaying()
@@ -102,13 +107,14 @@ bool TGraphicsScene::isPlaying()
     return mTimerId != -1;
 }
 
-void TGraphicsScene::stop()
+bool TGraphicsScene::stop()
 {
     if(mTimerId != -1)
     {
         killTimer(mTimerId);
         mTimerId = -1;
     }
+    return false;
 }
 
 int TGraphicsScene::fps() const
@@ -360,11 +366,7 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
         if(button == Qt::RightButton)
         {
-            if(!isPlaying()) {
-                play();
-            } else {
-                stop();
-            }
+
         } else if(button == Qt::LeftButton) {
             mCommandId = qAbs(((int)mLeftButtonDownPos.x())<<16) + qAbs(mLeftButtonDownPos.y());
             Qt::KeyboardModifiers modifers = event->modifiers();

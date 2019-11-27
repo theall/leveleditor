@@ -23,6 +23,7 @@
 #include "../utils/preferences.h"
 
 #include <QUrl>
+#include <QIcon>
 #include <QMimeData>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -186,6 +187,13 @@ void TMainWindow::enableCloseAllAction(bool enabled)
 void TMainWindow::enableRunAction(bool enabled)
 {
     ui->actionRun->setEnabled(enabled);
+}
+
+void TMainWindow::enableMoveStateAction(bool enabled)
+{
+    ui->actionMoveState->blockSignals(true);
+    ui->actionMoveState->setChecked(enabled);
+    ui->actionMoveState->blockSignals(false);
 }
 
 void TMainWindow::checkSelectAction()
@@ -633,6 +641,13 @@ void TMainWindow::on_actionAlwaysOnTop_triggered(bool)
 void TMainWindow::on_actionCloseGame_triggered()
 {
 
+}
+
+void TMainWindow::on_actionMoveState_triggered()
+{
+    bool result = false;
+    requestMoveState(ui->actionMoveState->isChecked(), result);
+    ui->actionMoveState->setChecked(!result);
 }
 
 TAnimationDock *TMainWindow::getAnimationDock() const

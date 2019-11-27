@@ -83,6 +83,7 @@ bool TMainController::joint(TMainWindow *mainWindow, TCore *core)
         connect(mainWindow, SIGNAL(requestDisplayMapProperties()), this, SLOT(slotRequestDisplayMapProperties()));
         connect(mainWindow, SIGNAL(requestExitApp(bool&)), this, SLOT(slotRequestExitApp(bool&)));
         connect(mainWindow, SIGNAL(requestRunCurrentMap()), this, SLOT(slotRequestRunCurrentMap()));
+        connect(mainWindow, SIGNAL(requestMoveState(bool,bool&)), this, SLOT(slotRequestMoveState(bool,bool&)));
         connect(mainWindow, SIGNAL(requestShowBorder(bool)), this, SLOT(slotRequestShowBorder(bool)));
         connect(mainWindow, SIGNAL(onActionSelectPushed()), this, SLOT(slotOnActionSelectPushed()));
         connect(mainWindow, SIGNAL(onActionInsertPushed()), this, SLOT(slotOnActionInsertPushed()));
@@ -253,7 +254,6 @@ void TMainController::slotRequestSwitchToDocument(TDocument *document)
 
     if(mDocument) {
         mDocument->disconnect(this);
-        mDocument->graphicsScene()->stop();
     }
     mDocument = document;
 
@@ -261,9 +261,9 @@ void TMainController::slotRequestSwitchToDocument(TDocument *document)
         connect(mDocument, SIGNAL(dirtyFlagChanged(bool)), this, SLOT(slotOnDirtyFlagChanged(bool)));
         connect(mDocument, SIGNAL(editModeChanged(EditMode,EditMode)), this, SLOT(slotOnEditModeChanged(EditMode,EditMode)));
     }
-
     mMainWindow->enableSaveAction(document&&document->isDirty());
     mMainWindow->enableRunAction(document!=nullptr);
+    mMainWindow->enableMoveStateAction(document&&document->graphicsScene()->stop());
 }
 
 void TMainController::slotDocumentDirtyFlagChanged(TDocument *document, bool isDirty)
@@ -430,6 +430,20 @@ void TMainController::slotRequestRunCurrentMap()
                               tr("Error"),
                               tr("Fail to start process with command %1").arg(enginePath),
                               QMessageBox::Ok);
+}
+
+void TMainController::slotRequestMoveState(bool isChecked, bool &result)
+{
+    if(!mDocument)
+        return;
+
+    TGraphicsScene *graphicsScene = mDocument->graphicsScene();
+    if(!graphicsScene)
+        return;
+    if(isChecked)
+        result = graphicsScene->play();
+    else
+        result = graphicsScene->suspend();
 }
 
 void TMainController::slotRequestShowBorder(bool show)

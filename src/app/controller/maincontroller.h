@@ -39,6 +39,7 @@ private slots:
     void slotRequestReloadCurrentMap();
     void slotRequestDisplayMapProperties();
     void slotRequestRunCurrentMap();
+    void slotRequestMoveState(bool idChecked, bool &result);
     void slotRequestShowBorder(bool show);
     void slotOnActionSelectPushed();
     void slotOnActionInsertPushed();
