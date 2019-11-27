@@ -22,6 +22,7 @@ bool TAnimationController::joint(TMainWindow *mainWindow, TCore *core)
     Q_ASSERT(mainWindow);
     Q_ASSERT(core);
 
+    mAnimationDock = mainWindow->getAnimationDock();
     mAnimationListView = mainWindow->getAnimationDock()->getAnimationListView();
     connect(mAnimationListView, SIGNAL(indexPressed(int)), this, SLOT(slotOnAnimationListViewIndexPressed(int)));
 
@@ -81,6 +82,7 @@ void TAnimationController::slotOnFrameListViewIndexPressed(int index)
     // Notify main controller to set property sheet to main property controller
     emit requestDisplayPropertySheet(frameModel->getFramePropertySheet(index));
 }
+
 
 void TAnimationController::selectAndCenterOn(TObjectItem *objectItem)
 {

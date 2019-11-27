@@ -61,7 +61,7 @@
      <x>0</x>
      <y>0</y>
      <width>1062</width>
-     <height>23</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -185,6 +185,18 @@
    </attribute>
    <addaction name="actionSelectMode"/>
    <addaction name="actionInsertMode"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionMoveState"/>
   </widget>
   <action name="actionHelp">
    <property name="icon">
@@ -798,7 +810,7 @@
   </action>
   <action name="actionRemoveArea">
    <property name="icon">
-    <iconset resource="resource/editor.qrc">
+    <iconset>
      <normaloff>:/actionsdock/images/remove.png</normaloff>:/actionsdock/images/remove.png</iconset>
    </property>
    <property name="text">
@@ -877,15 +889,6 @@
     <string>Show undertake area</string>
    </property>
   </action>
-  <action name="actionRun">
-   <property name="icon">
-    <iconset resource="resource/editor.qrc">
-     <normaloff>:/toolbar/images/run.png</normaloff>:/toolbar/images/run.png</iconset>
-   </property>
-   <property name="text">
-    <string>Run</string>
-   </property>
-  </action>
   <action name="actionInsertMode">
    <property name="checkable">
     <bool>true</bool>
@@ -904,6 +907,30 @@
   <action name="actionCloseGame">
    <property name="text">
     <string>Close Game</string>
+   </property>
+  </action>
+  <action name="actionMoveState">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/run.png</normaloff>:/toolbar/images/run.png</iconset>
+   </property>
+   <property name="text">
+    <string>Move State</string>
+   </property>
+   <property name="toolTip">
+    <string>Move State</string>
+   </property>
+  </action>
+  <action name="actionRun">
+   <property name="icon">
+    <iconset resource="resource/editor.qrc">
+     <normaloff>:/toolbar/images/run.png</normaloff>:/toolbar/images/run.png</iconset>
+   </property>
+   <property name="text">
+    <string>Run</string>
    </property>
   </action>
  </widget>

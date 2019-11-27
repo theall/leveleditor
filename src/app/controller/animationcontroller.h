@@ -3,6 +3,7 @@
 
 #include "abstractcontroller.h"
 
+class TAnimationDock;
 class TAnimationListView;
 class TFrameListView;
 
@@ -25,6 +26,7 @@ private slots:
     void slotOnFrameListViewIndexPressed(int index);
 
 private:
+    TAnimationDock *mAnimationDock;
     TAnimationListView *mAnimationListView;
     TFrameListView *mFrameListView;
 

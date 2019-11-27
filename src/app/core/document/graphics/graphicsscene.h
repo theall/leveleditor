@@ -37,10 +37,10 @@ public:
     qreal scale() const;
     void setScale(const qreal &scale);
 
-    void play();
-    void suspend();
+    bool play();
+    bool suspend();
     bool isPlaying();
-    void stop();
+    bool stop();
 
     int fps() const;
     void setFps(int fps);
