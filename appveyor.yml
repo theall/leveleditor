@@ -1,31 +1,56 @@
-version: 1.0.{build}
-build_script:
-- cmd: >-
-    set PATH=C:\Qt\5.6\mingw49_32\bin;C:\Qt\Tools\mingw492_32\bin;
-    cd src
-    qmake leveleditor.pro
-    mingw32-make -j16
-    copy release\*.exe ..\
+version: 0.0.0.{build}
 environment:
+  ZIP: C:\Program Files\7-Zip
   QTDIR: C:\Qt\5.6\mingw53_32\bin
   EDITOR_OUTPUT_PATH: c:\leveleditor
   QTMINGW: C:\Qt\Tools\mingw530_32\bin
   NSIS: C:\Program Files (x86)\NSIS
-  ZIP: C:\Program Files\7-Zip
   PYTHON: C:\Python34
+build_script:
+- cmd: >-
+    set PATH=%QTDIR%;%MINGW%;%ZIP%
+
+    cd src
+
+    qmake leveleditor.pro
+
+    mingw32-make -j16
+
+    md dist
+
+    copy release\*.exe .\dist
+
+    cd dist
+
+    @echo Coping qt dependency libraries...
+
+    windeployqt --no-opengl-sw --no-system-d3d-compiler leveleditor.exe
+
+    7z a leveleditor.7z *
+
+    cd ..
+
+    cd ..
+test_script:
+- cmd: >-
+    set PATH=%QTDIR%;%MINGW%
+
+    cd test/unittest
+
+    qmake unittest.pro
+
+    mingw32-make -j16
+
+    rem release\unittest_leveleditor.exe
 artifacts:
-- path: src\release\leveleditor.exe
+- path: src\dist\leveleditor.7z
   name: demo
-- path: leveleditor.exe
 deploy:
 - provider: GitHub
   auth_token:
-    secure: icaJlPkqzI3IUxSqUHgI34BtCpffDWxpp4otuYUAwA1RqMtQvAtdmXjOL9UOdqQI
+    secure: D/3LJCvnQzb2LT6rtq7KCPZcyW4fCmh9S0zJw4jsxGLRLSPRMaIdmd2iw/Yri+vT
   artifact: /leveleditor.*\.(exe|7z|zip)/
-  draft: true
-  force_update: false
-  on:
-    appveyor_repo_tag: false
+  draft: false
 notifications:
 - provider: Email
   to:
