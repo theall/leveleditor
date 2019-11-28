@@ -17,7 +17,8 @@ public:
 
     TAnimationListView *getAnimationListView() const;
     TFrameListView *getFrameListView() const;
-
+signals:
+    void requestAdjustFPS(int fps);
 private:
     TContainer *mContainer;
 

@@ -6,8 +6,9 @@ TAnimationDock::TAnimationDock(QWidget *parent) :
 {
     setWidget(mContainer);
     retranslateUi();
-    connect(mContainer,SIGNAL(requestPlayAnimation(int)),this,SLOT(slotPlayTriggered(int)));
-    connect(mContainer,SIGNAL(requestStopPlayAnimation()),this,SLOT(slotStopTriggered()));
+    connect(mContainer, SIGNAL(requestPlayAnimation(int)), this, SLOT(slotPlayTriggered(int)));
+    connect(mContainer, SIGNAL(requestStopPlayAnimation()), this, SLOT(slotStopTriggered()));
+    connect(mContainer, SIGNAL(requestAdjustFPS(int)), this, SIGNAL(requestAdjustFPS(int)));
 }
 
 TAnimationDock::~TAnimationDock()

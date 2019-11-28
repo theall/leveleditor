@@ -20,6 +20,7 @@ public:
 
 signals:
     void requestDisplayPropertySheet(TPropertySheet *propertySheet);
+    void requestAdjustFPS(int fps);
 
 private slots:
     void slotOnAnimationListViewIndexPressed(int index);

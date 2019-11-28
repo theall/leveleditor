@@ -68,6 +68,7 @@ private slots:
 
     // From TAnimationController
     void slotRequestDisplayPropertySheet(TPropertySheet *propertySheet);
+    void slotRequestAdjustFPS(int fps);
 
 private:
     TOptionsController *mOptionsController;

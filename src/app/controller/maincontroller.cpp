@@ -45,6 +45,8 @@ TMainController::TMainController(QObject *parent) :
             this,
             SLOT(slotRequestDisplayPropertySheet(TPropertySheet*)));
 
+    connect(mAnimationController, SIGNAL(requestAdjustFPS(int)), this, SLOT(slotRequestAdjustFPS(int)));
+
     connect(TAssetsManager::getInstance(), SIGNAL(onProgress(int,int)), this, SLOT(slotOnResourceLoadProgress(int,int)));
 }
 
@@ -347,6 +349,17 @@ void TMainController::slotOnEditModeChanged(const EditMode &current, const EditM
 void TMainController::slotRequestDisplayPropertySheet(TPropertySheet *propertySheet)
 {
     mMainPropertyController->setPropertySheet(propertySheet);
+}
+
+void TMainController::slotRequestAdjustFPS(int fps)
+{
+    if(!mDocument)
+        return;
+
+    TGraphicsScene *graphicsScene = mDocument->graphicsScene();
+    if(!graphicsScene)
+        return;
+    graphicsScene->setFps(fps);
 }
 
 bool TMainController::confirmAllSaved()

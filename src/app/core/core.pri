@@ -87,7 +87,8 @@ SOURCES += \
     $$PWD/document/model/framemodel.cpp \
     $$PWD/document/graphics/layeritem/enemyfactoryitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/enemyitem.cpp \
-    $$PWD/document/graphics/layeritem/objectitem/animationitem.cpp
+    $$PWD/document/graphics/layeritem/objectitem/animationitem.cpp \
+    $$PWD/shared/updateanimationthread.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -182,7 +183,8 @@ HEADERS  += \
     $$PWD/document/model/framemodel.h \
     $$PWD/document/graphics/layeritem/enemyfactoryitem.h \
     $$PWD/document/graphics/layeritem/objectitem/enemyitem.h \
-    $$PWD/document/graphics/layeritem/objectitem/animationitem.h
+    $$PWD/document/graphics/layeritem/objectitem/animationitem.h \
+    $$PWD/shared/updateanimationthread.h
 
 RESOURCES += \
     $$PWD/resource/core.qrc

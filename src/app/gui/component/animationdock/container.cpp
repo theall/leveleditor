@@ -4,7 +4,6 @@
 #include <QSplitter>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-
 #define CREATE_ACTION(action,image,func) \
     action = toolbar->addAction(QString());\
     action->setIcon(QIcon(image));\
@@ -43,8 +42,9 @@ TContainer::TContainer(QWidget *parent) :
     mSbFps->setMaximumSize(QSize(40, 24));//图片最大
     mSbFps->setMinimum(1);//最小值
     mSbFps->setMaximum(120);//最大值
-    mSbFps->setValue(60);//默认显示值
-    connect(mSbFps, SIGNAL(valueChanged(int)), this, SIGNAL(requestAdjustFPS(int)));//槽函数没写
+    mSbFps->setValue(60);
+
+    connect(mSbFps, SIGNAL(valueChanged(int)), this, SIGNAL(requestAdjustFPS(int)));
     horizontalLayout->addWidget(mSbFps);
 
     QSpacerItem *horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);//给一个首选高度首选宽度 控件可以自行增大或者缩小 控件的sizeHint为控件的最小尺寸。控件不能小于这个sizeHint
