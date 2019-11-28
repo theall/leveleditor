@@ -14,7 +14,8 @@ TObjectItem::TObjectItem(TObject *object, QGraphicsItem *parent) :
   , mDrawBorder(true)
   , mBorderColor(Qt::black)
 {
-    Q_ASSERT(mObject);
+    if(!mObject)
+        throw tr("Null object checked!");
 
     setBoundingRect(mObject->rect());
     connect(mObject->propertySheet(),
@@ -58,6 +59,11 @@ bool TObjectItem::isCongener(TObjectItem *objectItem) const
 TObjectItem *TObjectItem::getObjectItem(TObject *object)
 {
     return mObjectItemMap[object];
+}
+
+void TObjectItem::setObjectItem(TObject *object, TObjectItem *objectItem)
+{
+    mObjectItemMap[object] = objectItem;
 }
 
 void TObjectItem::slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &)

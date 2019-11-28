@@ -315,9 +315,13 @@ void TMainController::slotRequestOpenMap(TMap *map)
     if(!map)
         return;
 
-    TDocument *document = mCore->open(map);
-    setCurrentDocument(document);
-    mMainWindow->addRecentFile(document->fileName());
+    try {
+        TDocument *document = mCore->open(map);
+        setCurrentDocument(document);
+        mMainWindow->addRecentFile(document->fileName());
+    } catch(const QString &e) {
+        mMainWindow->showExceptionDialog(e);
+    }
 }
 
 void TMainController::slotOnLayerSelected(int index)

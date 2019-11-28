@@ -22,6 +22,7 @@ public:
     TObject::Type objectType() const;
     bool isCongener(TObjectItem *objectItem) const;
     static TObjectItem *getObjectItem(TObject *object);
+    static void setObjectItem(TObject *object, TObjectItem *objectItem);
 
     virtual void propertyValueChanged(PropertyID pid) = 0;
 

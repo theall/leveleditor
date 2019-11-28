@@ -62,7 +62,8 @@ void TAnimationController::slotOnAnimationListViewIndexPressed(int index)
     TFrameModel *frameModel = animationModel->getFrameModel(index);
     mFrameListView->setModel(frameModel);
 
-    TObjectItem *objectItem = TObjectItem::getObjectItem(frameModel->animation()->getTile());
+    TTile *tile = frameModel->animation()->getTile();
+    TObjectItem *objectItem = TObjectItem::getObjectItem(tile);
     selectAndCenterOn(objectItem);
 
     // Notify main controller to set property sheet to main property controller
@@ -84,6 +85,7 @@ void TAnimationController::slotOnFrameListViewIndexPressed(int index)
     // Notify main controller to set property sheet to main property controller
     emit requestDisplayPropertySheet(frameModel->getFramePropertySheet(index));
 }
+
 
 void TAnimationController::selectAndCenterOn(TObjectItem *objectItem)
 {

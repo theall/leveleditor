@@ -34,6 +34,7 @@ bool TTileLayerItem::replace(TAnimationItem *animationItem)
         return false;
 
     delete tileItem;
+    TObjectItem::setObjectItem(tile, animationItem);
     animationItem->setParentItem(this);
     mTileItemList.replace(index, animationItem);
     return true;
@@ -102,6 +103,9 @@ void TTileLayerItem::create()
 
 TTileItem *TTileLayerItem::addTile(TTile *tile)
 {
+    if(!tile)
+        return nullptr;
+
     TTileItem *tileItem = new TTileItem(tile, this);
     connect(tileItem, SIGNAL(boundingRectChanged(QRectF)), this, SLOT(slotOnTileItemBoundingRectChanged(QRectF)));
     mTileItemList.append(tileItem);

@@ -4,6 +4,7 @@
 #include <QSplitter>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+
 #define CREATE_ACTION(action,image,func) \
     action = toolbar->addAction(QString());\
     action->setIcon(QIcon(image));\

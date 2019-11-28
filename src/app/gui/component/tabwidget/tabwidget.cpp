@@ -45,8 +45,8 @@ TTabWidget::TTabWidget(QWidget *parent) ://构造函数里面传递了一个QWid
     mContextMenu->addSeparator();//添加新建的分割符
     mActionExplore = mContextMenu->addAction(QString(), this, SLOT(slotActionExploreTriggered()));//返回当前文档的位置
     mContextMenu->addSeparator();
-    mActionStartMove = mContextMenu->addAction(QString(),this,SLOT(slotRequestStartMove()));
-    mActionStopMove = mContextMenu->addAction(QString(),this,SLOT(slotRequestStopMove()));
+    // mActionStartMove = mContextMenu->addAction(QString(),this,SLOT(slotRequestStartMove()));
+    // mActionStopMove = mContextMenu->addAction(QString(),this,SLOT(slotRequestStopMove()));
 
     mActionCloseOther->setVisible(true);
     mActionCloseLeft->setVisible(true);
@@ -250,8 +250,6 @@ void TTabWidget::retranslateUi()
     mActionCloseOther->setText(tr("Close All except this"));
     mActionSave->setText(tr("Save"));
     mActionExplore->setText(tr("Explore"));
-    mActionStartMove->setText(tr("Move Start"));
-    mActionStopMove->setText(tr("Move Suspend"));
 }
 
 void TTabWidget::slotActionCloseTriggered()

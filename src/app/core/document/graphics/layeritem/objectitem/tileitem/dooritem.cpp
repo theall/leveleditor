@@ -26,7 +26,7 @@ TDoorItem::TDoorItem(TTileItem *tileItem) :
         mStartPointItem = new TStartPointItem(this);
         mDoorStartPointTrackItem = new TTrackItem(this, mStartPointItem);
     } else if(doorType == TDoor::Random) {
-        mRandomRegionItem = new TRandomRegionItem(this);
+        //mRandomRegionItem = new TRandomRegionItem(this);
     } else if(doorType == TDoor::Follow) {
         //mFollowTileTrackItem = new TTrackItem(this, mFollowTileItem);
     }
