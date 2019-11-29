@@ -60,6 +60,9 @@ void TAnimationController::slotOnAnimationListViewIndexPressed(int index)
         return;
 
     TFrameModel *frameModel = animationModel->getFrameModel(index);
+    if(!frameModel)
+        return;
+
     mFrameListView->setModel(frameModel);
 
     TTile *tile = frameModel->animation()->getTile();

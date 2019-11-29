@@ -121,7 +121,9 @@ void TAnimationListView::setModel(QAbstractItemModel *model)
 void TAnimationListView::mousePressEvent(QMouseEvent *event)
 {
     QTableView::mousePressEvent(event);
-    emit indexPressed(indexAt(event->pos()).row());
+    int row = indexAt(event->pos()).row();
+    if(row != -1)
+        emit indexPressed(row);
 }
 
 void TAnimationListView::contextMenuEvent(QContextMenuEvent *event)
