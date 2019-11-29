@@ -8,6 +8,8 @@
 
 #include "../../property/propertyobject.h"
 
+class TDocument;
+
 class TObject : public TPropertyObject
 {
 public:
@@ -48,11 +50,13 @@ public:
     void setVisible(bool visible);
 
 protected:
-    virtual void initPropertySheet();
+    TDocument *mDocument;
 
 private:
     Type mType;
     bool mVisible;
+
+    void initPropertySheet();
 };
 
 typedef QList<TObject*> TObjectList;

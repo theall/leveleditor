@@ -1,7 +1,7 @@
 #include "tile.h"
 #include "../../base/tr.h"
-#include "../../base/finddoc.h"
 #include "../../document.h"
+#include "../../../assets/tileid.h"
 #include "../../../assets/cachedpixmap.h"
 
 #include <QPoint>
@@ -56,6 +56,11 @@ QString TStartPoint::typeString() const
 bool TStartPoint::isCongener(TObject *) const
 {
     return false;
+}
+
+void TStartPoint::initPropertySheet()
+{
+
 }
 
 TDoor::TDoor(QObject *parent) :
@@ -149,19 +154,21 @@ bool TDoor::isCongener(TObject *) const
     return false;
 }
 
+void TDoor::initPropertySheet()
+{
+
+}
+
 TTile::TTile(QObject *parent) :
     TObject(TObject::TILE, parent)
   , mPixmap(nullptr)
-  , mDocument(nullptr)
   , mDoor(nullptr)
   , mTarget(nullptr)
   , mTileId(nullptr)
   , mHasMoveModel(false)
   , mTargetNumber(-1)
 {
-    FIND_DOCUMENT;
 
-    initPropertySheet();
 }
 
 void TTile::saveToStream(QDataStream &stream) const

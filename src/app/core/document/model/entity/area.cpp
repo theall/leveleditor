@@ -55,7 +55,7 @@ void TArea::saveToStream(QDataStream &stream) const
     stream << r.height();
     stream << enumIndexToFleeDirValue(mPropertySheet->getValue(PID_AREA_FLEE_DIR).toInt());
     stream << (int)mPropertySheet->getValue(PID_AREA_DANGER_AREA).toBool();
-    stream << 0;//mPropertySheet->getValue(PID_AREA_EDGES).toInt();
+    stream << mPropertySheet->getValue(PID_AREA_EDGES).toInt();
     stream << mPropertySheet->getValue(PID_AREA_MOVE_BY).toInt();
 }
 
@@ -73,7 +73,7 @@ void TArea::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(PID_OBJECT_RECT, QRectF(x,y,w,h));
     mPropertySheet->setValue(PID_AREA_FLEE_DIR, fleeDirToEnumIndex(fleeDir));
     mPropertySheet->setValue(PID_AREA_DANGER_AREA, (bool)dangerArea);
-    //mPropertySheet->setValue(PID_AREA_EDGES, edges);
+    mPropertySheet->setValue(PID_AREA_EDGES, edges);
     mPropertySheet->setValue(PID_AREA_MOVE_BY, moveBy);
 }
 
@@ -87,7 +87,7 @@ void TArea::initPropertySheet()
     propertyItem->addAttribute(PA_ENUM_NAMES, dirs);
 
     mPropertySheet->addProperty(PT_BOOL, P_DANGER_AREA, PID_AREA_DANGER_AREA);
-    //mPropertySheet->addProperty(PT_INT, P_EDGES, PID_AREA_EDGES);
+    mPropertySheet->addProperty(PT_INT, P_EDGES, PID_AREA_EDGES);
     mPropertySheet->addProperty(PA_ENUM_NAMES, P_MOVE_BY, PID_AREA_MOVE_BY);
 }
 

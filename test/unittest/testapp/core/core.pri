@@ -86,7 +86,8 @@ HEADERS += \
     $$PWD/model/tst_mapsmodel.h \
     $$PWD/model/tst_tilesetmodel.h \
     $$PWD/model/tst_tilesetmodelmanager.h \
-    $$PWD/shared/tst_filesystemwatcher.h
+    $$PWD/shared/tst_filesystemwatcher.h \
+    $$PWD/document/model/streamiotest.h
 
 SOURCES += \
     $$PWD/tst_core.cpp \
@@ -176,4 +177,5 @@ SOURCES += \
     $$PWD/model/tst_mapsmodel.cpp \
     $$PWD/model/tst_tilesetmodel.cpp \
     $$PWD/model/tst_tilesetmodelmanager.cpp \
-    $$PWD/shared/tst_filesystemwatcher.cpp
+    $$PWD/shared/tst_filesystemwatcher.cpp \
+    $$PWD/document/model/streamiotest.cpp

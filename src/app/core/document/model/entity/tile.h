@@ -37,6 +37,9 @@ public:
     explicit TStartPoint(QObject *parent = nullptr);
     ~TStartPoint();
 
+private:
+	void initPropertySheet();
+	
     // TObject interface
 public:
     QString typeString() const Q_DECL_OVERRIDE;
@@ -83,6 +86,8 @@ private:
     Type mType;
     TStartPoint *mStartPoint;
 
+    void initPropertySheet();
+
     // TObject interface
 public:
     QString typeString() const Q_DECL_OVERRIDE;
@@ -115,7 +120,6 @@ private slots:
 
 private:
     TPixmap *mPixmap;
-    TDocument *mDocument;
     TDoor *mDoor;
     TTile *mTarget;
     TTileId *mTileId;
@@ -123,7 +127,7 @@ private:
     int mTargetNumber;
 
     void setUp();
-    void initPropertySheet();
+	void initPropertySheet();
 
     // TObject interface
 public:

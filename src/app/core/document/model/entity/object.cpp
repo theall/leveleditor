@@ -1,12 +1,19 @@
 #include "object.h"
+#include "../../document.h"
 #include "../../base/tr.h"
+#include "../../base/finddoc.h"
 
 static const QString P_RECT = T("Rect");
 
 TObject::TObject(Type type, QObject *parent) :
     TPropertyObject(parent)
+  , mDocument(nullptr)
   , mType(type)
 {
+#ifndef TEST
+    FIND_DOCUMENT;
+#endif
+
     initPropertySheet();
 }
 
@@ -73,11 +80,9 @@ void TObject::move(const QPointF &offset)
 
 void TObject::initPropertySheet()
 {
-    if(mType==ANIMATION
-        || mType==FRAME)
-        return;
-
-    mPropertySheet->addProperty(PT_RECTF, P_RECT, PID_OBJECT_RECT);
+    if(mType!=ANIMATION && mType!=FRAME) {
+        mPropertySheet->addProperty(PT_RECTF, P_RECT, PID_OBJECT_RECT);
+    }
 }
 
 bool TObject::visible() const

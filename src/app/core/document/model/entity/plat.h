@@ -16,10 +16,10 @@ public:
     explicit TPlat(QObject *parent = nullptr);
 
 private:
-    TDocument *mDocument;
     QPixmap mPixmap;
     QList<QPoint> mPointList;
-    void initPropertySheet();
+
+	void initPropertySheet();
 
     // TObject interface
 public:

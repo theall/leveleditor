@@ -14,6 +14,8 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
+DEFINES += TEST
+
 include($$PWD/../../src/app/app.pri)
 include($$PWD/testapp/testapp.pri)
 

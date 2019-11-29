@@ -29,7 +29,9 @@ TPropertyItem::TPropertyItem(
   , mPropertyId(undoCommand)
   , mDocument(nullptr)
 {
+#ifndef TEST
     FIND_DOCUMENT;
+#endif
 }
 
 TPropertyItem::~TPropertyItem()

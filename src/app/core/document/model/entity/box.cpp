@@ -40,8 +40,8 @@ void TBox::saveToStream(QDataStream &stream) const
     stream << mPropertySheet->getValue(PID_BOX_DRAW).toInt()  ;
     stream << (int)rect.width();
     stream << (int)rect.height();
-    stream << 0;// curPoint
-    stream << 1;// pointsAmount
+    stream << mCurrentPoint;// curPoint
+    stream << mPointList.size();// pointsAmount
     stream << mPropertySheet->getValue(PID_BOX_TYPE).toInt();
     stream << mPropertySheet->getValue(PID_BOX_CHUNK_TYPE).toInt();
     stream << mPropertySheet->getValue(PID_BOX_HIT_MODE).toInt();
@@ -51,13 +51,13 @@ void TBox::saveToStream(QDataStream &stream) const
     stream << mPropertySheet->getValue(PID_BOX_HIT_SOUND).toInt();
     stream << mPropertySheet->getValue(PID_BOX_USE_TRIGGER).toInt();
     stream << mPropertySheet->getValue(PID_BOX_EVENTN).toInt();
-    stream << 0; // finalDest
+    stream << mFinalPoint; // finalDest
     stream << mPropertySheet->getValue(PID_BOX_BREAK).toInt();
     stream << mPropertySheet->getValue(PID_BOX_SOUND).toInt();
     stream << mPropertySheet->getValue(PID_BOX_BREAKABLE).toInt();
     stream << mPropertySheet->getValue(PID_BOX_EVENTN2).toInt();
-    for(int i=0;i<1;i++) {
-        stream << QPoint(0,0);
+    for(QPoint point : mPointList) {
+        stream << point;
     }
 }
 
@@ -113,10 +113,14 @@ void TBox::readFromStream(QDataStream &stream)
     stream >> sound;
     stream >> breakable;
     stream >> eventN2;
+    mPointList.clear();
     for(int i=0;i<pointsAmount;i++) {
         QPoint point;
         stream >> point;
+        mPointList.append(point);
     }
+    mCurrentPoint = curPoint;
+    mFinalPoint = finalDest;
 
     QPointF pos(x, y);
     QPointF speed(xSpeed, ySpeed);

@@ -14,7 +14,11 @@ public:
     explicit TBox(QObject *parent = nullptr);
 
 private:
-    void initPropertySheet();
+    int mCurrentPoint;
+    int mFinalPoint;
+    QList<QPoint> mPointList;
+    
+	void initPropertySheet();
 
     // TObject interface
 public:

@@ -8,4 +8,3 @@ TestDocument::TestDocument(QObject *parent) :
 {
     RUN_CLASS(TestSceneModel);
 }
-

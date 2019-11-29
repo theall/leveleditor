@@ -1,6 +1,4 @@
 #include "plat.h"
-#include "../../document.h"
-#include "../../base/finddoc.h"
 #include "../../base/tr.h"
 
 static const QString P_SPEED = T("Speed");
@@ -19,9 +17,8 @@ static const QString P_EVENT_NUMBER_2 = T("Event number 2");
 
 TPlat::TPlat(QObject *parent) :
     TObject(TObject::PLAT, parent)
-  , mDocument(nullptr)
 {
-    FIND_DOCUMENT;
+    initPropertySheet();
 }
 
 void TPlat::saveToStream(QDataStream &stream) const
@@ -120,7 +117,7 @@ void TPlat::readFromStream(QDataStream &stream)
 
 void TPlat::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_INT, P_SPEED, PID_PLAT_SPEED);
+    mPropertySheet->addProperty(PT_DOUBLE, P_SPEED, PID_PLAT_SPEED);
     mPropertySheet->addProperty(PT_INT, P_DANGER, PID_PLAT_DANGER);
     mPropertySheet->addProperty(PT_INT, P_DRAW, PID_PLAT_DRAW);
     mPropertySheet->addProperty(PT_INT, P_CURRENT_POINT, PID_PLAT_CURRENT_POINT);
