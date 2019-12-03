@@ -23,7 +23,7 @@ TPlat::TPlat(QObject *parent) :
 
 void TPlat::saveToStream(QDataStream &stream) const
 {
-    QRectF rect = mPropertySheet->getValue(PID_OBJECT_RECT).toRect();
+    QRectF rect = mPropertySheet->getValue(PID_OBJECT_RECT).toRectF();
     QPointF speed = mPropertySheet->getValue(PID_PLAT_SPEED).toPointF();
     stream << (float)rect.left();
     stream << (float)rect.top();

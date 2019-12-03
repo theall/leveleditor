@@ -37,11 +37,11 @@ void TTrigger::saveToStream(QDataStream &stream) const
     stream << mPropertySheet->getValue(PID_TRIGGER_EVENT).toInt();
     stream << mPropertySheet->getValue(PID_TRIGGER_DRAW).toInt();
     stream << mPropertySheet->getValue(PID_TRIGGER_IMAGE_NO).toInt();
-    stream << mPropertySheet->getValue(PID_TRIGGER_IMAGE_POS).toRect();
+    stream << mPropertySheet->getValue(PID_TRIGGER_IMAGE_POS).toPoint();
     stream << mPropertySheet->getValue(PID_TRIGGER_AFFECT).toInt();
     stream << mPropertySheet->getValue(PID_TRIGGER_SOUND).toInt();
     stream << mPropertySheet->getValue(PID_TRIGGER_FOLLOW).toInt();
-    stream << mPropertySheet->getValue(PID_TRIGGER_PLATFORM_POS).toRect();
+    stream << mPropertySheet->getValue(PID_TRIGGER_PLATFORM_POS).toPoint();
     stream << mPropertySheet->getValue(PID_TRIGGER_ON_STATUS).toInt();
     stream << mPropertySheet->getValue(PID_TRIGGER_OFF_STATUS).toInt();
 }
@@ -80,6 +80,7 @@ void TTrigger::readFromStream(QDataStream &stream)
     stream >> platPos;
     stream >> onStatus;
     stream >> offStatus;
+    mPropertySheet->setValue(PID_OBJECT_RECT, rect);
     mPropertySheet->setValue(PID_TRIGGER_WAY, way);
     mPropertySheet->setValue(PID_TRIGGER_ON, on);
     mPropertySheet->setValue(PID_TRIGGER_ACTION, action);

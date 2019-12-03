@@ -121,7 +121,7 @@ void TAnimation::saveToStream(QDataStream &stream) const
     int frameCount = mFrameList.size();
     int tileLayer = mPropertySheet->getValue(PID_ANIMATION_TILE_LAYER).toInt();
     int tileNumber = mPropertySheet->getValue(PID_ANIMATION_TILE_NUMBER).toInt();
-
+    tileNumber += 1;
     // Current frame start from 1
     int currentFrame = mPropertySheet->getValue(PID_ANIMATION_CURRENT_FRAME).toInt();
     stream << frameSequences;
@@ -140,11 +140,11 @@ void TAnimation::readFromStream(QDataStream &stream)
     int frameSequences; // Frame counter, shift next frame if frameSequences > current frame duration
     int frameCount;
     int currentIndex;
-    stream >> frameSequences;
-    stream >> frameCount;
-    stream >> mTileLayer;
-    stream >> mTileNumber;
-    stream >> currentIndex;
+    stream >> frameSequences;//1821135938
+    stream >> frameCount;//0
+    stream >> mTileLayer;//-1998642601
+    stream >> mTileNumber;//0
+    stream >> currentIndex;//0
     mTileNumber--;
     mFrameList.clear();
     for(int i=0;i<frameCount;i++) {

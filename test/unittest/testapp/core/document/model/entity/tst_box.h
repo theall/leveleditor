@@ -9,9 +9,12 @@ class TestBox : public QObject
 
 public:
     explicit TestBox(QObject *parent = 0);
+private:
+    void readWriteTest(const char *buf, int size);
 
 private Q_SLOTS:
-    
+    void testReadWrite1();
+
 };
 
 #endif // TESTBOX_H

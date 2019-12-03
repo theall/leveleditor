@@ -145,6 +145,7 @@ TTile *TTileLayerModel::getTile(int index) const
 {
     if(index<0 || index>=mTileList.size())
         return nullptr;
+
     return mTileList.at(index);
 }
 
@@ -152,16 +153,19 @@ int TTileLayerModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
 
-    return 2;
+    return 1;
 }
 
 QVariant TTileLayerModel::data(const QModelIndex &index, int role) const
 {
-    if(role == Qt::DisplayRole) {
-        int row = index.row();
-        if(row>=0 && row<mTileList.size())
-        {
-
+    int row = index.row();
+    if(row>=0 && row<mTileList.size())
+    {
+        if(role == Qt::DisplayRole) {
+            return tr("tile%1").arg(row);
+        } else if(role == Qt::DecorationRole) {
+            TTile *tile = mTileList.at(row);
+            return tile->pixmap();
         }
     }
 

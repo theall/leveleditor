@@ -10,8 +10,11 @@ class TestTrigger : public QObject
 public:
     explicit TestTrigger(QObject *parent = 0);
 
-private Q_SLOTS:
-    
-};
+private:
+    void readWriteTest(const char *buf, int size);
 
+private Q_SLOTS:
+    void testReadWrite1();
+
+};
 #endif // TESTTRIGGER_H

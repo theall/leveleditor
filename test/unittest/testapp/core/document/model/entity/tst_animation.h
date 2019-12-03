@@ -10,7 +10,11 @@ class TestAnimation : public QObject
 public:
     explicit TestAnimation(QObject *parent = 0);
 
+private:
+    void readWriteTest(const char *buf, int size);
+
 private Q_SLOTS:
+    void testReadWrite1();
     
 };
 

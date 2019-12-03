@@ -32,7 +32,7 @@ TBox::TBox(QObject *parent) :
 
 void TBox::saveToStream(QDataStream &stream) const
 {
-    QRectF rect = mPropertySheet->getValue(PID_OBJECT_RECT).toRect();
+    QRectF rect = mPropertySheet->getValue(PID_OBJECT_RECT).toRectF();
     stream << rect.left();
     stream << rect.top();
     stream << mPropertySheet->getValue(PID_BOX_SPEED).toPointF();
@@ -45,7 +45,7 @@ void TBox::saveToStream(QDataStream &stream) const
     stream << mPropertySheet->getValue(PID_BOX_TYPE).toInt();
     stream << mPropertySheet->getValue(PID_BOX_CHUNK_TYPE).toInt();
     stream << mPropertySheet->getValue(PID_BOX_HIT_MODE).toInt();
-    stream << mPropertySheet->getValue(PID_BOX_HIT_TIME).toInt();
+    stream << mPropertySheet->getValue(PID_BOX_HIT_TIME).toFloat();
     stream << mPropertySheet->getValue(PID_BOX_HIT_SPEED).toPointF();
     stream << mPropertySheet->getValue(PID_BOX_DAMAGE).toInt();
     stream << mPropertySheet->getValue(PID_BOX_HIT_SOUND).toInt();

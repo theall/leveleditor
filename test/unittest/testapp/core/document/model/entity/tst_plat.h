@@ -10,8 +10,12 @@ class TestPlat : public QObject
 public:
     explicit TestPlat(QObject *parent = 0);
 
+private:
+    void readWriteTest(const char *buf, int size);
+
 private Q_SLOTS:
-    
+    void testReadWrite1();
+
 };
 
 #endif // TESTPLAT_H
