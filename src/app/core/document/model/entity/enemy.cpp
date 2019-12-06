@@ -1,5 +1,6 @@
 #include "enemy.h"
 #include "../../base/tr.h"
+#include "../../../assets/assetsmanager.h"
 
 static const QString P_POS = T("Position");
 static const QString P_DIR = T("Dir");
@@ -23,8 +24,43 @@ static const QString P_VAR5 = T("Var5");
 
 TEnemy::TEnemy(QObject *parent) :
     TObject(TObject::ENEMY, parent)
+  , mPixmapId(nullptr)
+  , mCategoryPropertyItem(nullptr)
+  , mEnemyPropertyItem(nullptr)
 {
     initPropertySheet();
+}
+
+TPixmap *TEnemy::getPixmap() const
+{
+    return mPixmapId?mPixmapId->pixmap():nullptr;
+}
+
+TPixmapId *TEnemy::pixmapId() const
+{
+    return mPixmapId;
+}
+
+void TEnemy::setPixmapId(TPixmapId *pixmapId)
+{
+    mPixmapId = pixmapId;
+}
+
+QPointF TEnemy::pos() const
+{
+    return mPropertySheet->getValue(PID_ENEMY_POS).toPointF();
+}
+
+void TEnemy::move(const QPointF &offset)
+{
+    TObject::move(offset);
+
+    if(offset.isNull())
+        return;
+
+    QPointF currentPos = mPropertySheet->getValue(PID_ENEMY_POS).toPoint();
+    currentPos += offset;
+    mPropertySheet->setValue(PID_ENEMY_POS, currentPos.toPoint());
 }
 
 void TEnemy::saveToStream(QDataStream &stream) const
@@ -36,7 +72,7 @@ void TEnemy::saveToStream(QDataStream &stream) const
     stream << mPropertySheet->getValue(PID_ENEMY_DAMAGE).toInt();
     stream << mPropertySheet->getValue(PID_ENEMY_AI_LEVEL).toInt();
     stream << mPropertySheet->getValue(PID_ENEMY_TEAM).toInt();
-    stream << mPropertySheet->getValue(PID_ENEMY_CATEGORY).toInt();
+    stream << mPropertySheet->getValue(PID_ENEMY_CATEGORY).toInt()+1;
     stream << mPropertySheet->getValue(PID_ENEMY_TYPE).toInt();
     stream << mPropertySheet->getValue(PID_ENEMY_DELAY).toInt();
     stream << mPropertySheet->getValue(PID_ENEMY_DEAD_EVENT).toInt();
@@ -93,6 +129,7 @@ void TEnemy::readFromStream(QDataStream &stream)
     stream >> var3;
     stream >> var4;
     stream >> var5;
+    category--;
     mPropertySheet->setValue(PID_ENEMY_POS, QPoint(x,y));
     mPropertySheet->setValue(PID_ENEMY_DIR, dir);
     mPropertySheet->setValue(PID_ENEMY_LIFE, life);
@@ -112,19 +149,31 @@ void TEnemy::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(PID_ENEMY_VAR3, var3);
     mPropertySheet->setValue(PID_ENEMY_VAR4, var4);
     mPropertySheet->setValue(PID_ENEMY_VAR5, var5);
+
+    setUpPixmapId();
 }
 
 void TEnemy::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_INT, P_POS, PID_ENEMY_POS);
-    mPropertySheet->addProperty(PT_INT, P_DIR, PID_ENEMY_DIR);
-    mPropertySheet->addProperty(PT_INT, P_LIFE, PID_ENEMY_LIFE);
-    mPropertySheet->addProperty(PT_INT, P_LIVES, PID_ENEMY_LIVES);
+    mPropertySheet->addProperty(PT_POINT, P_POS, PID_ENEMY_POS);
+    mPropertySheet->addProperty(PT_INT, P_DIR, PID_ENEMY_DIR)->addDirectionAttribute();
+    mPropertySheet->addProperty(PT_INT, P_LIFE, PID_ENEMY_LIFE)->setRange(100);
+    mPropertySheet->addProperty(PT_INT, P_LIVES, PID_ENEMY_LIVES)->setRange(99);
     mPropertySheet->addProperty(PT_INT, P_DAMAGE, PID_ENEMY_DAMAGE);
-    mPropertySheet->addProperty(PT_INT, P_AI_LEVEL, PID_ENEMY_AI_LEVEL);
+    mPropertySheet->addProperty(PT_INT, P_AI_LEVEL, PID_ENEMY_AI_LEVEL)->setRange(5);
     mPropertySheet->addProperty(PT_INT, P_TEAM, PID_ENEMY_TEAM);
-    mPropertySheet->addProperty(PT_INT, P_CATEGORY, PID_ENEMY_CATEGORY);
-    mPropertySheet->addProperty(PT_INT, P_TYPE, PID_ENEMY_TYPE);
+
+    QStringList category;
+    category.append(tr("Player"));
+    category.append(tr("Item"));
+    category.append(tr("Shot"));
+    category.append(tr("Chunk"));
+    mCategoryPropertyItem = mPropertySheet->addProperty(PT_INT, P_CATEGORY, PID_ENEMY_CATEGORY);
+    mCategoryPropertyItem->addAttribute(PA_ENUM_NAMES, category);
+    connect(mCategoryPropertyItem, SIGNAL(valueChanged(QVariant,QVariant)), SLOT(slotCategoryChanged(QVariant,QVariant)));
+
+    mEnemyPropertyItem = mPropertySheet->addProperty(PT_INT, P_TYPE, PID_ENEMY_TYPE);
+
     mPropertySheet->addProperty(PT_INT, P_DELAY, PID_ENEMY_DELAY);
     mPropertySheet->addProperty(PT_INT, P_DEAD_EVENT, PID_ENEMY_DEAD_EVENT);
     mPropertySheet->addProperty(PT_INT, P_WAIT_EVENT, PID_ENEMY_WAIT_EVENT);
@@ -135,6 +184,35 @@ void TEnemy::initPropertySheet()
     mPropertySheet->addProperty(PT_INT, P_VAR3, PID_ENEMY_VAR3);
     mPropertySheet->addProperty(PT_INT, P_VAR4, PID_ENEMY_VAR4);
     mPropertySheet->addProperty(PT_INT, P_VAR5, PID_ENEMY_VAR5);
+}
+
+void TEnemy::setUpPixmapId()
+{
+    if(!mCategoryPropertyItem || !mEnemyPropertyItem)
+        return;
+
+    Category category = (Category)mCategoryPropertyItem->value().toInt();
+    int number = mEnemyPropertyItem->value().toInt();
+    mPixmapId = TAssetsManager::getInstance()->getPixmapId(category, number);
+
+    if(mPixmapId) {
+        TPixmap *pixmap = mPixmapId->pixmap();
+        if(pixmap) {
+            QSize pixmapSize = pixmap->size();
+            QPointF currentPos = pos();
+            currentPos -= QPoint(pixmapSize.width()/2, pixmapSize.height());
+            QRectF r(currentPos, pixmapSize);
+            setRect(r);
+        }
+    }
+}
+
+void TEnemy::slotCategoryChanged(const QVariant &oldValue, const QVariant &newValue)
+{
+    Q_UNUSED(oldValue);
+    Q_UNUSED(newValue);
+
+    setUpPixmapId();
 }
 
 QString TEnemy::typeString() const

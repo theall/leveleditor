@@ -89,6 +89,13 @@ void TPropertyItem::setAttribute(const PropertyAttribute &attribute, const QVari
     addAttribute(g_propertyAttrMap[attribute], value);
 }
 
+void TPropertyItem::setRange(int max, int min, int step)
+{
+    setAttribute(PA_SINGLE_STEP, step);
+    setAttribute(PA_MINIMUM, min);
+    setAttribute(PA_MAXIMUM, max);
+}
+
 void TPropertyItem::addAttribute(const QString &name, const QVariant &value)
 {
     if(mAttributes[name] == value)
@@ -102,6 +109,15 @@ void TPropertyItem::addAttribute(const QString &name, const QVariant &value)
 void TPropertyItem::addAttribute(const PropertyAttribute &attribute, const QVariant &value)
 {
     addAttribute(g_propertyAttrMap[attribute], value);
+}
+
+void TPropertyItem::addDirectionAttribute()
+{
+    QStringList dirs;
+    dirs.append(tr("None"));
+    dirs.append(tr("Left"));
+    dirs.append(tr("Right"));
+    addAttribute(PA_ENUM_NAMES, dirs);
 }
 
 void TPropertyItem::setReadOnly(bool readOnly)

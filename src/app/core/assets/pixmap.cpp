@@ -78,6 +78,11 @@ int TPixmap::height() const
     return mPixmap.height();
 }
 
+QSize TPixmap::size() const
+{
+    return mPixmap.size();
+}
+
 bool TPixmap::isValid() const
 {
     return mIsValid;

@@ -3,25 +3,16 @@
 
 #include <QList>
 
-#include "pixmap.h"
+#include "pixmapid.h"
 
-class TFaceId
+class TFaceId : public TPixmapId
 {
 public:
-    TFaceId();
     TFaceId(int id, TPixmap *pixmap);
     ~TFaceId();
 
-    int id() const;
-    void setId(int id);
-
-    TPixmap *pixmap() const;
-    void setPixmap(TPixmap *pixmap);
-
 private:
-    int mId;
-    TPixmap *mPixmap;
 };
-
 typedef QList<TFaceId*> TFaceList;
+
 #endif // TFACEID_H

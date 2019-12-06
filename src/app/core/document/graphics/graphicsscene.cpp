@@ -235,7 +235,8 @@ QList<QGraphicsItem*> TGraphicsScene::itemsOfCurrentLayerItem(
     if(currentLayerItem) {
         itemList = items(pos, mode);
         QSet<QGraphicsItem*> itemSet = QSet<QGraphicsItem*>::fromList(itemList);
-        QSet<QGraphicsItem*> childItemSet = QSet<QGraphicsItem*>::fromList(currentLayerItem->childItems());
+        QList<QGraphicsItem*> childItemList = currentLayerItem->childItems();
+        QSet<QGraphicsItem*> childItemSet = QSet<QGraphicsItem*>::fromList(childItemList);
         itemList = itemSet.intersect(childItemSet).toList();
     }
     return itemList;

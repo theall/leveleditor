@@ -5,6 +5,7 @@
 
 #include "object.h"
 #include "../../base/io.h"
+#include "../../../assets/assetsmanager.h"
 
 class TEnemy : public TObject, TIO
 {
@@ -13,8 +14,23 @@ class TEnemy : public TObject, TIO
 public:
     explicit TEnemy(QObject *parent = nullptr);
 
+    TPixmap *getPixmap() const;
+    TPixmapId *pixmapId() const;
+    void setPixmapId(TPixmapId *pixmapId);
+
+    QPointF pos() const;
+    void move(const QPointF &offset) Q_DECL_OVERRIDE;
+
 private:
+    TPixmapId *mPixmapId;
+    TPropertyItem *mCategoryPropertyItem;
+    TPropertyItem *mEnemyPropertyItem;
+
     void initPropertySheet();
+    void setUpPixmapId();
+
+private slots:
+    void slotCategoryChanged(const QVariant &oldValue, const QVariant &newValue);
 
     // TObject interface
 public:

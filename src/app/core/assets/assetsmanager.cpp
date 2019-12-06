@@ -137,6 +137,20 @@ QString TAssetsManager::getMapFullName(const QString &module, const QString &map
     return moduleDir.absoluteFilePath(mapName);
 }
 
+TPixmapId *TAssetsManager::getPixmapId(Category category, int id) const
+{
+    TPixmapId *pixmapId = nullptr;
+    if(category == PLAYER) {
+        for(TFaceId *faceId : mFaceList) {
+            if(faceId->id() == id) {
+                pixmapId = faceId;
+                break;
+            }
+        }
+    }
+    return pixmapId;
+}
+
 void TAssetsManager::loadAssets()
 {
     // Enumate face list
@@ -169,6 +183,8 @@ void TAssetsManager::loadAssets()
             }
         }
     }
+
+    // Shot list
 
     // Enumate tile set
     QList<int> tileSetIdList;
@@ -316,6 +332,7 @@ void TAssetsManager::loadAssets()
             emit onProgress(assetsLoaded, totalAssets);
     }
 
+    // Load shot
     emit onProgress(assetsLoaded, totalAssets);
     emit loadCompleted();
 }

@@ -8,6 +8,7 @@ QMap<TObject*, TObjectItem*> TObjectItem::mObjectItemMap;
 
 TObjectItem::TObjectItem(TObject *object, QGraphicsItem *parent) :
     QGraphicsObject(parent)
+  , mAnchor(LEFT_TOP)
   , mObject(object)
   , mAutonomy(false)
   , mNeedGrabMouse(false)
@@ -76,12 +77,31 @@ void TObjectItem::slotPropertyItemValueChanged(TPropertyItem *item, const QVaria
     // Notify to selection item and hovering item
     if(pid==PID_OBJECT_RECT) {
         mBoundingRect = item->value().toRectF();
-        mCurrentPos = mBoundingRect.topLeft();
+
+        switch (mAnchor) {
+        case BOTTOM_CENTER:
+            mCurrentPos = QPointF(mBoundingRect.center().x(), mBoundingRect.bottom());
+            break;
+        default:
+            mCurrentPos = mBoundingRect.topLeft();
+            break;
+        }
+
 //        static int i = 0;
 //        qDebug() << i << "Bounding changed";
 //        i++;
         emit boundingRectChanged(mBoundingRect);
     }
+}
+
+TObjectItem::Anchor TObjectItem::getAnchor() const
+{
+    return mAnchor;
+}
+
+void TObjectItem::setAnchor(const Anchor &anchor)
+{
+    mAnchor = anchor;
 }
 
 QPointF TObjectItem::getCurrentPos() const

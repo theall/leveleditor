@@ -69,7 +69,7 @@ void TEnemyFactory::initPropertySheet()
     mPropertySheet->addProperty(PT_INT, P_CURRENT_FRAME, PID_ENEMY_FACTORY_CURRENT_FRAME);
     mPropertySheet->addProperty(PT_INT, P_DELAY, PID_ENEMY_FACTORY_DELAY);
     mPropertySheet->addProperty(PT_INT, P_EVENT, PID_ENEMY_FACTORY_EVENT);
-    mPropertySheet->addProperty(PT_INT, P_LOOP, PID_ENEMY_FACTORY_LOOP);
+    mPropertySheet->addProperty(PT_BOOL, P_LOOP, PID_ENEMY_FACTORY_LOOP);
 }
 
 QString TEnemyFactory::typeString() const

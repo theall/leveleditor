@@ -11,6 +11,15 @@
 #include "faceid.h"
 #include "tileset.h"
 #include "maps.h"
+#include "shotid.h"
+#include "chunkid.h"
+
+enum Category {
+    PLAYER = 0,
+    ITEM,
+    SHOT,
+    CHUNK
+};
 
 class TCachedSound;
 class TCachedPixmap;
@@ -41,6 +50,8 @@ public:
     QString getPath() const;
     QString getMapFullName(const QString &module, const QString &mapName) const;
 
+    TPixmapId *getPixmapId(Category category, int id) const;
+
 signals:
     // Notify external object
     void loadCompleted();
@@ -54,6 +65,9 @@ private:
     QDir mSoundDir;
     QDir mTilesDir;
     TFaceList mFaceList;
+    TShotList mShotList;
+    TChunkList mChunkList;
+
     TCachedPixmap *mCachedPixmaps;
     TCachedSound *mCachedSounds;
     TilesetList mTilesetList;

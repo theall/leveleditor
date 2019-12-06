@@ -5,6 +5,7 @@
 #include "layeritem/darealayeritem.h"
 #include "layeritem/platlayeritem.h"
 #include "layeritem/walllayeritem.h"
+#include "layeritem/enemyfactorylayeritem.h"
 #include "layeritem/objectitem/animationitem.h"
 
 #include "../model/areamodel.h"
@@ -58,7 +59,7 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
                 animationItemList.append(item);
             }
         } else if(TEnemyFactoryModel *enemyFactoryModel = dynamic_cast<TEnemyFactoryModel*>(baseModel)) {
-            layerItem = nullptr;
+            layerItem = new TEnemyFactoryLayerItem(enemyFactoryModel, this);
         }
         if(layerItem) {
             connect(layerItem, SIGNAL(boundingRectChanged(QRectF)), this, SLOT(slotLayerBoundingRectChanged(QRectF)));

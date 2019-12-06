@@ -24,7 +24,6 @@ void TTileLayerModel::setLayerType(const LayerType &layerType)
     mLayerType = layerType;
 }
 
-
 void TTileLayerModel::saveToStream(QDataStream &stream) const
 {
     stream << mTileList.size();

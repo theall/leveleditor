@@ -85,10 +85,16 @@ SOURCES += \
     $$PWD/document/model/platmodel.cpp \
     $$PWD/document/graphics/cameraitem.cpp \
     $$PWD/document/model/framemodel.cpp \
-    $$PWD/document/graphics/layeritem/enemyfactoryitem.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/enemyfactoryitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/enemyitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/animationitem.cpp \
-    $$PWD/shared/updateanimationthread.cpp
+    $$PWD/shared/updateanimationthread.cpp \
+    $$PWD/document/graphics/layeritem/enemyfactorylayeritem.cpp \
+    $$PWD/assets/category.cpp \
+    $$PWD/assets/itemid.cpp \
+    $$PWD/assets/shotid.cpp \
+    $$PWD/assets/chunkid.cpp \
+    $$PWD/assets/pixmapid.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -181,10 +187,16 @@ HEADERS  += \
     $$PWD/document/model/platmodel.h \
     $$PWD/document/graphics/cameraitem.h \
     $$PWD/document/model/framemodel.h \
-    $$PWD/document/graphics/layeritem/enemyfactoryitem.h \
+    $$PWD/document/graphics/layeritem/objectitem/enemyfactoryitem.h \
     $$PWD/document/graphics/layeritem/objectitem/enemyitem.h \
     $$PWD/document/graphics/layeritem/objectitem/animationitem.h \
-    $$PWD/shared/updateanimationthread.h
+    $$PWD/shared/updateanimationthread.h \
+    $$PWD/document/graphics/layeritem/enemyfactorylayeritem.h \
+    $$PWD/assets/category.h \
+    $$PWD/assets/itemid.h \
+    $$PWD/assets/shotid.h \
+    $$PWD/assets/chunkid.h \
+    $$PWD/assets/pixmapid.h
 
 RESOURCES += \
     $$PWD/resource/core.qrc

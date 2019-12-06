@@ -73,9 +73,9 @@ void TFrame::readFromStream(QDataStream &stream)
 
 void TFrame::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_INT, P_TILE_LAYER, PID_FRAME_TILE_LAYER);
-    mPropertySheet->addProperty(PT_INT, P_NUMBER, PID_FRAME_TILE_NUMBER);
-    mPropertySheet->addProperty(PT_INT, P_DURATION, PID_FRAME_DURATION);
+    mPropertySheet->addProperty(PT_INT, P_TILE_LAYER, PID_FRAME_TILE_LAYER)->setReadOnly(true);
+    mPropertySheet->addProperty(PT_INT, P_NUMBER, PID_FRAME_TILE_NUMBER)->setReadOnly(true);
+    mPropertySheet->addProperty(PT_INT, P_DURATION, PID_FRAME_DURATION)->setRange();
 }
 
 QString TFrame::typeString() const

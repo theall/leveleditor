@@ -28,6 +28,7 @@ public:
 
     int width() const;
     int height() const;
+    QSize size() const;
 
     bool isValid() const;
 

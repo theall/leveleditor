@@ -76,9 +76,11 @@ public:
 
     void setAttribute(const QString &name, const QVariant &value);
     void setAttribute(const PropertyAttribute &attribute, const QVariant &value);
+    void setRange(int max = 0x7fffffff, int min = 1, int step = 1);
 
     void addAttribute(const QString &name, const QVariant &value);
     void addAttribute(const PropertyAttribute &attribute, const QVariant &value);
+    void addDirectionAttribute();
 
     void setReadOnly(bool readOnly = true);
 
