@@ -26,6 +26,7 @@ class TTilesetDock;
 class TCharacterDock;
 class TLayerDock;
 class TAnimationDock;
+class TObjectDock;
 class TNewMapDialog;
 class TGraphicsView;
 class QGraphicsScene;
@@ -70,6 +71,7 @@ public:
     TLayerDock *getLayerDock() const;
     TNewMapDialog *getNewMapDialog() const;
     TAnimationDock *getAnimationDock() const;
+    TObjectDock *getObjectDock() const;
 
     void showExceptionDialog(const QString &msg, const QString &trace = QString());
 
@@ -146,6 +148,7 @@ private:
     TCharacterDock *mCharacterDock;
     TLayerDock *mLayerDock;
     TAnimationDock *mAnimationDock;
+    TObjectDock *mObjectDock;
 
     TAboutDialog *mAboutDialog;
     TLoadingDialog *mLoadingDialog;

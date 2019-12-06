@@ -18,6 +18,7 @@
 #include "component/propertydock/propertiesdock.h"
 #include "component/tilesetdock/tilesetdock.h"
 #include "component/animationdock/animationdock.h"
+#include "component/objectdock/objectdock.h"
 
 #include "widgets/zoomcombobox.h"
 #include "../utils/preferences.h"
@@ -41,6 +42,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
   , mCharacterDock(new TCharacterDock(this))//Character
   , mLayerDock(new TLayerDock(this))//layerDock
   , mAnimationDock(new TAnimationDock(this))//Animation
+  , mObjectDock(new TObjectDock(this))
   , mAboutDialog(new TAboutDialog(this))    //关于
   , mLoadingDialog(new TLoadingDialog(this)) //加载
   , mNewMapDialog(new TNewMapDialog(this))//新的快捷键窗口
@@ -122,6 +124,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
     addDockWidget(Qt::RightDockWidgetArea, mPropertyDock);
     addDockWidget(Qt::LeftDockWidgetArea, mLayerDock);
     addDockWidget(Qt::BottomDockWidgetArea, mAnimationDock);
+    addDockWidget(Qt::TopDockWidgetArea, mObjectDock);
 
 //    tabifyDockWidget(mMapsDock, mTilesetDock);
 //    tabifyDockWidget(mTilesetDock, mCharacterDock);
@@ -653,6 +656,11 @@ void TMainWindow::on_actionMoveState_triggered()
 TAnimationDock *TMainWindow::getAnimationDock() const
 {
     return mAnimationDock;
+}
+
+TObjectDock *TMainWindow::getObjectDock() const
+{
+    return mObjectDock;
 }
 
 TNewMapDialog *TMainWindow::getNewMapDialog() const

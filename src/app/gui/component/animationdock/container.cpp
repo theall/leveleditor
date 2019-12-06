@@ -60,11 +60,11 @@ TContainer::TContainer(QWidget *parent) :
     verticalSplitter->setOpaqueResize(true);//保留大小调整是否不透明
     verticalSplitter->setHandleWidth(2);//设置拆分器句柄的宽度
     verticalSplitter->setChildrenCollapsible(true);//保留用户是否可以将子小部件的大小调整为0
-    verticalSplitter->addWidget(mAnimationView);
+    verticalSplitter->addWidget(mAnimationView);//空白区
     verticalSplitter->setStretchFactor(0, 5);//设置控件0占5
     verticalSplitter->setStretchFactor(1, 5);//设置控件1占5
 
-    QSplitter *horrizontalSplitter = new QSplitter(this);//分离器
+    QSplitter *horrizontalSplitter = new QSplitter(this);//分离器  工具区
     horrizontalSplitter->setOrientation(Qt::Horizontal);//水平
     horrizontalSplitter->setOpaqueResize(true);//设置不透明
     horrizontalSplitter->setHandleWidth(2);//设置分离器的句柄长度

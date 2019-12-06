@@ -70,7 +70,10 @@ SOURCES += \
     $$PWD/component/animationdock/animationdock.cpp \
     $$PWD/component/animationdock/animationlistview.cpp \
     $$PWD/component/animationdock/container.cpp \
-    $$PWD/component/animationdock/framelistview.cpp
+    $$PWD/component/objectdock/objectdock.cpp \
+    $$PWD/component/objectdock/objectcontainer.cpp \
+    $$PWD/component/animationdock/framelistview.cpp \
+    $$PWD/component/objectdock/objectlistview.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -131,7 +134,10 @@ HEADERS += \
     $$PWD/component/animationdock/animationdock.h \
     $$PWD/component/animationdock/animationlistview.h \
     $$PWD/component/animationdock/container.h \
-    $$PWD/component/animationdock/framelistview.h
+    $$PWD/component/animationdock/framelistview.h \
+    $$PWD/component/objectdock/objectdock.h \
+    $$PWD/component/objectdock/objectcontainer.h \
+    $$PWD/component/objectdock/objectlistview.h
 
 FORMS += \
     $$PWD/mainwindow.ui \
