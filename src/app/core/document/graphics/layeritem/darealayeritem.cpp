@@ -1,5 +1,4 @@
 #include "darealayeritem.h"
-#include "objectitem/dareaitem.h"
 #include "../../model/dareamodel.h"
 
 TDAreaLayerItem::TDAreaLayerItem(TDAreaModel *dAreasModel, QGraphicsItem *parent) :
@@ -7,9 +6,10 @@ TDAreaLayerItem::TDAreaLayerItem(TDAreaModel *dAreasModel, QGraphicsItem *parent
 {
     Q_ASSERT(dAreasModel);
 
-    for(TDArea *darea : dAreasModel->dAreaList()) {
-        TDAreaItem *dareaItem = new TDAreaItem(darea, this);
-        mObjectItemList.append(dareaItem);
+    CONNECT_GENERIC_SLOTS(dAreasModel,DArea);
+
+    for(TDArea *dArea : dAreasModel->dAreaList()) {
+        internalAdd(dArea);
     }
 
     calcBoundingRect();
@@ -19,3 +19,5 @@ TDAreaLayerItem::~TDAreaLayerItem()
 {
 
 }
+
+IMPL_GENERIC_SLOTS(DArea)

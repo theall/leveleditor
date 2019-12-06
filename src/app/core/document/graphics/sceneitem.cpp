@@ -5,6 +5,7 @@
 #include "layeritem/darealayeritem.h"
 #include "layeritem/platlayeritem.h"
 #include "layeritem/walllayeritem.h"
+#include "layeritem/triggerlayeritem.h"
 #include "layeritem/enemyfactorylayeritem.h"
 #include "layeritem/objectitem/animationitem.h"
 
@@ -41,7 +42,7 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
             layerItem = new TTileLayerItem(tileLayerModel, this);
             mTileLayerItemList.append((TTileLayerItem*)layerItem);
         } else if(TAreaModel *areaModel = dynamic_cast<TAreaModel*>(baseModel)) {
-            layerItem = new TAreasLayerItem(areaModel, this);
+            layerItem = new TAreaLayerItem(areaModel, this);
         } else if(TBoxModel *boxModel = dynamic_cast<TBoxModel*>(baseModel)) {
             layerItem = new TBoxLayerItem(boxModel, this);
         } else if(TDAreaModel *dareasModel = dynamic_cast<TDAreaModel*>(baseModel)) {
@@ -60,6 +61,8 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
             }
         } else if(TEnemyFactoryModel *enemyFactoryModel = dynamic_cast<TEnemyFactoryModel*>(baseModel)) {
             layerItem = new TEnemyFactoryLayerItem(enemyFactoryModel, this);
+        } else if(TTriggerModel *triggerModel = dynamic_cast<TTriggerModel*>(baseModel)) {
+            layerItem = new TTriggerLayerItem(triggerModel, this);
         }
         if(layerItem) {
             connect(layerItem, SIGNAL(boundingRectChanged(QRectF)), this, SLOT(slotLayerBoundingRectChanged(QRectF)));

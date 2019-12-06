@@ -12,6 +12,7 @@ class TDArea : public TObject, TIO
 
 public:
     explicit TDArea(QObject *parent = nullptr);
+    TDArea(const QRect &rect, QObject *parent = Q_NULLPTR);
 
 private:
     void initPropertySheet();

@@ -14,6 +14,13 @@ TDArea::TDArea(QObject *parent) :
     initPropertySheet();
 }
 
+TDArea::TDArea(const QRect &rect, QObject *parent) :
+    TObject(TObject::DAREA, parent)
+{
+    initPropertySheet();
+    setRect(rect);
+}
+
 void TDArea::saveToStream(QDataStream &stream) const
 {
     QRect r = mPropertySheet->getValue(PID_OBJECT_RECT).toRect();

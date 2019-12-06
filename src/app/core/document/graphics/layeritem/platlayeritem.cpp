@@ -1,5 +1,4 @@
 #include "platlayeritem.h"
-#include "objectitem/platitem.h"
 #include "../../model/platmodel.h"
 
 TPlatLayerItem::TPlatLayerItem(TPlatModel *platformsModel, QGraphicsItem *parent) :
@@ -7,9 +6,10 @@ TPlatLayerItem::TPlatLayerItem(TPlatModel *platformsModel, QGraphicsItem *parent
 {
     Q_ASSERT(platformsModel);
 
+    CONNECT_GENERIC_SLOTS(platformsModel,Plat);
+
     for(TPlat *plat : platformsModel->platList()) {
-        TPlatItem *platItem = new TPlatItem(plat, this);
-        mObjectItemList.append(platItem);
+        internalAdd(plat);
     }
 
     calcBoundingRect();
@@ -19,3 +19,5 @@ TPlatLayerItem::~TPlatLayerItem()
 {
 
 }
+
+IMPL_GENERIC_SLOTS(Plat)

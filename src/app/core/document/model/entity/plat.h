@@ -14,6 +14,7 @@ class TPlat : public TObject, TIO
 
 public:
     explicit TPlat(QObject *parent = nullptr);
+    TPlat(const QRect &rect, QObject *parent = Q_NULLPTR);
 
 private:
     QPixmap mPixmap;

@@ -30,6 +30,13 @@ TBox::TBox(QObject *parent) :
     initPropertySheet();
 }
 
+TBox::TBox(const QRect &rect, QObject *parent) :
+    TObject(TObject::DAREA, parent)
+{
+    initPropertySheet();
+    setRect(rect);
+}
+
 void TBox::saveToStream(QDataStream &stream) const
 {
     QRectF rect = mPropertySheet->getValue(PID_OBJECT_RECT).toRectF();

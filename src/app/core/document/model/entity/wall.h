@@ -11,7 +11,8 @@ class TWall : public TObject, TIO
     Q_OBJECT
 
 public:
-    TWall(QObject *parent = nullptr);
+    explicit TWall(QObject *parent = nullptr);
+    TWall(const QRect &rect, QObject *parent = Q_NULLPTR);
 
 private:
     void initPropertySheet();

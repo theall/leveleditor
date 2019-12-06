@@ -555,9 +555,33 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         TBaseModel *baseModel = mSceneModel->getCurrentModel();
         TBaseModel::Type modelType = baseModel->type();
         TObject *newObject = nullptr;
-        QRectF areaRect = mObjectAreaItem->boundingRect();
-        if(modelType == TBaseModel::AREA) {
-            newObject = ((TAreaModel*)baseModel)->createArea(areaRect);
+        QRect areaRect = mObjectAreaItem->boundingRect().toRect();
+        switch(modelType) {
+        case TBaseModel::AREA:
+            newObject = new TArea(areaRect, baseModel);
+            break;
+        case TBaseModel::DAREA:
+            newObject = new TDArea(areaRect, baseModel);
+            break;
+        case TBaseModel::PLAT:
+            newObject = new TPlat(areaRect, baseModel);
+            break;
+        case TBaseModel::WALL:
+            newObject = new TWall(areaRect, baseModel);
+            break;
+        case TBaseModel::BOX:
+            newObject = new TBox(areaRect, baseModel);
+            break;
+        case TBaseModel::EVENT:
+        case TBaseModel::TRIGGER:
+        case TBaseModel::RESPAWN:
+        case TBaseModel::ANIMATION:
+        case TBaseModel::FRAME:
+        case TBaseModel::SCENE:
+        case TBaseModel::TILE:
+        case TBaseModel::INVALID:
+        default:
+            break;
         }
         if(newObject) {
             TObjectList objectList;

@@ -2,27 +2,25 @@
 #define TAREALAYERITEM_H
 
 #include "objectlayeritem.h"
+#include "generic.hpp"
 #include "objectitem/areaitem.h"
 
 class TAreaModel;
-class TAreasLayerItem : public TObjectLayerItem
+class TAreaLayerItem : public TObjectLayerItem
 {
     Q_OBJECT
 
 public:
-    explicit TAreasLayerItem(TAreaModel *areasModel, QGraphicsItem *parent = Q_NULLPTR);
-    ~TAreasLayerItem();
+    explicit TAreaLayerItem(TAreaModel *areasModel, QGraphicsItem *parent = Q_NULLPTR);
+    ~TAreaLayerItem();
 
 private slots:
-    void slotAreaInserted(const TAreaList &areaList, const QList<int> &indexList);
-    void slotAreaRemoved(const TAreaList &areaList, const QList<int> &indexList);
+    DECL_GENERIC_SLOTS(Area);
 
 private:
     TAreaModel *mAreasModel;
-    TAreaItemList mAreaItemList;
-    QMap<TArea*, TAreaItem*> mAreaItemMap;
 
-    TAreaItem *addArea(TArea *area);
+    DECL_GENERIC_VARS(Area);
 };
 
 #endif // TAREALAYERITEM_H

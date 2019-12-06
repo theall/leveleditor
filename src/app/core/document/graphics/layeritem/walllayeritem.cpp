@@ -1,5 +1,4 @@
 #include "walllayeritem.h"
-#include "objectitem/wallitem.h"
 #include "../../model/wallmodel.h"
 
 TWallLayerItem::TWallLayerItem(TWallModel *wallsModel, QGraphicsItem *parent) :
@@ -7,9 +6,10 @@ TWallLayerItem::TWallLayerItem(TWallModel *wallsModel, QGraphicsItem *parent) :
 {
     Q_ASSERT(wallsModel);
 
+    CONNECT_GENERIC_SLOTS(wallsModel,Wall);
+
     for(TWall *wall : wallsModel->wallList()) {
-        TWallItem *wallItem = new TWallItem(wall, this);
-        mObjectItemList.append(wallItem);
+        internalAdd(wall);
     }
 
     calcBoundingRect();
@@ -19,3 +19,5 @@ TWallLayerItem::~TWallLayerItem()
 {
 
 }
+
+IMPL_GENERIC_SLOTS(Wall)

@@ -94,7 +94,9 @@ SOURCES += \
     $$PWD/assets/itemid.cpp \
     $$PWD/assets/shotid.cpp \
     $$PWD/assets/chunkid.cpp \
-    $$PWD/assets/pixmapid.cpp
+    $$PWD/assets/pixmapid.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/triggeritem.cpp \
+    $$PWD/document/graphics/layeritem/triggerlayeritem.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -196,7 +198,10 @@ HEADERS  += \
     $$PWD/assets/itemid.h \
     $$PWD/assets/shotid.h \
     $$PWD/assets/chunkid.h \
-    $$PWD/assets/pixmapid.h
+    $$PWD/assets/pixmapid.h \
+    $$PWD/document/graphics/layeritem/objectitem/triggeritem.h \
+    $$PWD/document/graphics/layeritem/triggerlayeritem.h \
+    $$PWD/document/graphics/layeritem/generic.hpp
 
 RESOURCES += \
     $$PWD/resource/core.qrc

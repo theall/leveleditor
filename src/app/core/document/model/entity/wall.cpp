@@ -9,6 +9,13 @@ TWall::TWall(QObject *parent) :
     initPropertySheet();
 }
 
+TWall::TWall(const QRect &rect, QObject *parent) :
+    TObject(TObject::DAREA, parent)
+{
+    initPropertySheet();
+    setRect(rect);
+}
+
 void TWall::saveToStream(QDataStream &stream) const
 {
     stream << mPropertySheet->getValue(PID_OBJECT_RECT).toRect();

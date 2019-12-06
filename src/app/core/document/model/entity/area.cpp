@@ -38,7 +38,7 @@ TArea::TArea(const QRect &rect, QObject *parent) :
     TObject(TObject::AREA, parent)
 {
     initPropertySheet();
-    mPropertySheet->setValue(PID_OBJECT_RECT, QRectF(rect));
+    setRect(rect);
 }
 
 void TArea::setPlatNameList(const QStringList &platNames)

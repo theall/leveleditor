@@ -12,6 +12,7 @@ class TBox : public TObject, TIO
 
 public:
     explicit TBox(QObject *parent = nullptr);
+    TBox(const QRect &rect, QObject *parent = Q_NULLPTR);
 
 private:
     int mCurrentPoint;

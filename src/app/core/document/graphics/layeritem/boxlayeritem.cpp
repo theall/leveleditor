@@ -1,5 +1,4 @@
 #include "boxlayeritem.h"
-#include "objectitem/boxitem.h"
 #include "../../model/boxmodel.h"
 
 TBoxLayerItem::TBoxLayerItem(TBoxModel *boxesModel, QGraphicsItem *parent) :
@@ -7,9 +6,10 @@ TBoxLayerItem::TBoxLayerItem(TBoxModel *boxesModel, QGraphicsItem *parent) :
 {
     Q_ASSERT(boxesModel);
 
+    CONNECT_GENERIC_SLOTS(boxesModel,Box);
+
     for(TBox *box : boxesModel->boxList()) {
-        TBoxItem *boxItem = new TBoxItem(box, this);
-        mObjectItemList.append(boxItem);
+        internalAdd(box);
     }
 
     calcBoundingRect();
@@ -19,3 +19,5 @@ TBoxLayerItem::~TBoxLayerItem()
 {
 
 }
+
+IMPL_GENERIC_SLOTS(Box)
