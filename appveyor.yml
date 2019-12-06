@@ -57,6 +57,7 @@ notifications:
   - wazcd_1608@qq.com
   - 975098440@qq.com
   - 1161294726@qq.com
+  - 184773349@qq.com
   subject: Build status of leveleditor
   on_build_success: true
   on_build_failure: true

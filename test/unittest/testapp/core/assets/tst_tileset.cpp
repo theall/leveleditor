@@ -16,7 +16,7 @@ void TestTileset::testSetId()
 void TestTileset::testAddTile()
 {
     TTileset tileset;
-    TTileId *tileId = new TTileId;
+    TTileId *tileId = new TTileId(0, nullptr);
     tileset.add(tileId);
     QCOMPARE(tileset.getTileId(0), tileId);
     tileset.add(0);
@@ -26,11 +26,11 @@ void TestTileset::testAddTile()
 void TestTileset::testSort()
 {
     TTileset tileset;
-    TTileId *tile1 = new TTileId;
-    TTileId *tile2 = new TTileId;
-    TTileId *tile3 = new TTileId;
-    TTileId *tile4 = new TTileId;
-    TTileId *tile5 = new TTileId;
+    TTileId *tile1 = new TTileId(0, nullptr);
+    TTileId *tile2 = new TTileId(0, nullptr);
+    TTileId *tile3 = new TTileId(0, nullptr);
+    TTileId *tile4 = new TTileId(0, nullptr);
+    TTileId *tile5 = new TTileId(0, nullptr);
     tileset.add(tile1);
     tileset.add(tile2);
     tileset.add(tile3);
@@ -49,11 +49,11 @@ void TestTileset::testSetTileIdList()
 {
     TTileset tileset;
     TTileIdList tileIdList;
-    tileIdList.append(new TTileId);
-    tileIdList.append(new TTileId);
-    tileIdList.append(new TTileId);
-    tileIdList.append(new TTileId);
-    tileIdList.append(new TTileId);
+    tileIdList.append(new TTileId(0, nullptr));
+    tileIdList.append(new TTileId(0, nullptr));
+    tileIdList.append(new TTileId(0, nullptr));
+    tileIdList.append(new TTileId(0, nullptr));
+    tileIdList.append(new TTileId(0, nullptr));
     tileset.setTileList(tileIdList);
     QCOMPARE(tileset.tileList(), tileIdList);
 }

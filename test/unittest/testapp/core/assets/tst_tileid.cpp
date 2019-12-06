@@ -10,7 +10,7 @@ TestTileId::TestTileId(QObject *parent) :
 
 void TestTileId::testSetId()
 {
-    TTileId tileId;
+    TTileId tileId(0, nullptr);
     VERIFY_READ_WRITE_OBJECT_VALUE(tileId, id, setId, 0);
     VERIFY_READ_WRITE_OBJECT_VALUE(tileId, id, setId, 1);
     VERIFY_READ_WRITE_OBJECT_VALUE(tileId, id, setId, -1);
@@ -20,14 +20,14 @@ void TestTileId::testSetId()
 
 void TestTileId::testSetPixmap()
 {
-    TTileId tileId;
+    TTileId tileId(0, nullptr);
     VERIFY_READ_WRITE_OBJECT_VALUE(tileId, pixmap, setPixmap, (TPixmap*)nullptr);
     VERIFY_READ_WRITE_OBJECT_VALUE(tileId, pixmap, setPixmap, new TPixmap(this));
 }
 
 void TestTileId::testSetTilesetId()
 {
-    TTileId tileId;
+    TTileId tileId(0, nullptr);
     VERIFY_READ_WRITE_OBJECT_VALUE(tileId, tilesetId, setTilesetId, 2345);
 }
 
