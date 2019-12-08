@@ -34,3 +34,8 @@ void TPixmapId::setPixmap(TPixmap *pixmap)
 {
     mPixmap = pixmap;
 }
+
+QPixmap TPixmapId::primitive() const
+{
+    return mPixmap?mPixmap->pixmap():QPixmap();
+}

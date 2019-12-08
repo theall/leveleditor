@@ -3,11 +3,16 @@
 #include "shared/filesystemwatcher.h"
 #include "assets/assetsmanager.h"
 
+#include "model/mapmodel.h"
+#include "model/charactermodel.h"
+#include "model/itemmodel.h"
+
 TCore::TCore(QObject *parent) :
     QObject(parent)
   , mMapsModel(new TMapsModel(this))
   , mFileWatcher(new TFileSystemWatcher(this))
   , mCharacterModel(new TCharacterModel(this))
+  , mItemModel(new TItemModel(this))
   , mTilesetModelManager(new TTilesetModelManager(this))
 {
     TPreferences::instance();
@@ -167,8 +172,15 @@ void TCore::slotOnResourceLoadCompleted()
 
     mTilesetModelManager->setTilsetModelList(tilesetModelList);
     mCharacterModel->setFaceList(assetsManager->getFaceList());
+    mItemModel->setItemList(assetsManager->getItemIdList());
     mMapsModel->setModuleList(assetsManager->getModuleList());
+
     emit ready();
+}
+
+TItemModel *TCore::getItemModel() const
+{
+    return mItemModel;
 }
 
 TTilesetModelManager *TCore::tilesetModelManager() const

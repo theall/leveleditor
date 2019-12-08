@@ -9,6 +9,7 @@
 #include "sound.h"
 #include "pixmap.h"
 #include "faceid.h"
+#include "itemid.h"
 #include "tileset.h"
 #include "maps.h"
 #include "shotid.h"
@@ -52,6 +53,12 @@ public:
 
     TPixmapId *getPixmapId(Category category, int id) const;
 
+    TItemIdList getItemIdList() const;
+
+    TShotList getShotList() const;
+
+    TChunkList getChunkList() const;
+
 signals:
     // Notify external object
     void loadCompleted();
@@ -65,6 +72,7 @@ private:
     QDir mSoundDir;
     QDir mTilesDir;
     TFaceList mFaceList;
+    TItemIdList mItemIdList;
     TShotList mShotList;
     TChunkList mChunkList;
 
@@ -73,6 +81,7 @@ private:
     TilesetList mTilesetList;
     TModuleList mModuleList;
 
+    void clear();
     void loadAssets();
     bool isValidPath() const;
 
