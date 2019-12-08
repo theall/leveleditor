@@ -29,16 +29,15 @@ int enumIndexToFleeDirValue(int index)
 }
 
 TArea::TArea(QObject *parent) :
-    TObject(TObject::AREA, parent)
+    TRectObject(TObject::AREA, parent)
 {
     initPropertySheet();
 }
 
 TArea::TArea(const QRect &rect, QObject *parent) :
-    TObject(TObject::AREA, parent)
+    TRectObject(rect, TObject::AREA, parent)
 {
     initPropertySheet();
-    setRect(rect);
 }
 
 void TArea::setPlatNameList(const QStringList &platNames)
@@ -48,7 +47,7 @@ void TArea::setPlatNameList(const QStringList &platNames)
 
 void TArea::saveToStream(QDataStream &stream) const
 {
-    QRect r = mPropertySheet->getValue(PID_OBJECT_RECT).toRect();
+    QRect r = getRect().toRect();
     stream << r.left();
     stream << r.top();
     stream << r.width();
@@ -70,7 +69,7 @@ void TArea::readFromStream(QDataStream &stream)
     stream >> dangerArea;
     stream >> edges;
     stream >> moveBy;
-    mPropertySheet->setValue(PID_OBJECT_RECT, QRectF(x,y,w,h));
+    setRect(x, y, w, h);
     mPropertySheet->setValue(PID_AREA_FLEE_DIR, fleeDirToEnumIndex(fleeDir));
     mPropertySheet->setValue(PID_AREA_DANGER_AREA, (bool)dangerArea);
     mPropertySheet->setValue(PID_AREA_EDGES, edges);

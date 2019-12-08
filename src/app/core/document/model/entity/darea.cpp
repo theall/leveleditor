@@ -9,21 +9,20 @@ static const QString P_TARGET = T("Target");
 static const QString P_MOVE_BY = T("Move By");
 
 TDArea::TDArea(QObject *parent) :
-    TObject(TObject::DAREA, parent)
+    TRectObject(TObject::DAREA, parent)
 {
     initPropertySheet();
 }
 
 TDArea::TDArea(const QRect &rect, QObject *parent) :
-    TObject(TObject::DAREA, parent)
+    TRectObject(rect, TObject::DAREA, parent)
 {
     initPropertySheet();
-    setRect(rect);
 }
 
 void TDArea::saveToStream(QDataStream &stream) const
 {
-    QRect r = mPropertySheet->getValue(PID_OBJECT_RECT).toRect();
+    QRect r = getRect().toRect();
     stream << r.left();
     stream << r.top();
     stream << r.width();
@@ -45,7 +44,7 @@ void TDArea::readFromStream(QDataStream &stream)
     stream >> type;
     stream >> target;
     stream >> moveBy;
-    mPropertySheet->setValue(PID_OBJECT_RECT, QRectF(x,y,w,h));
+    setRect(x, y, w, h);
     mPropertySheet->setValue(PID_DAREA_FLEE_DIR, fleeDir);
     mPropertySheet->setValue(PID_DAREA_TYPE, type);
     mPropertySheet->setValue(PID_DAREA_TARGET, target);

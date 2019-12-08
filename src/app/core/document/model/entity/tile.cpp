@@ -38,9 +38,9 @@ void TTileMoveModel::setType(const Type &type)
 }
 
 TStartPoint::TStartPoint(QObject *parent) :
-    TObject(TObject::POINT, parent)
+    TPointObject(parent)
 {
-    setSize(QSize(1,1));
+
 }
 
 TStartPoint::~TStartPoint()
@@ -64,7 +64,7 @@ void TStartPoint::initPropertySheet()
 }
 
 TDoor::TDoor(QObject *parent) :
-    TObject(TObject::DOOR, parent)
+    TRectObject(TObject::DOOR, parent)
   , mDir(None)
   , mType(TDoor::Recycle)
   , mStartPoint(new TStartPoint(this))
@@ -84,7 +84,7 @@ void TDoor::setDir(const Dir &dir)
 
 void TDoor::move(qreal offset, const Edge &edge)
 {
-    QRectF r = rect();
+    QRectF r = getRect();
     qreal dx1 = 0;
     qreal dy1 = 0;
     qreal dx2 = 0;
@@ -116,7 +116,7 @@ void TDoor::slide(const QPointF &offset)
     } else if(mDir == Vertical) {
         distance.setY(0);
     }
-    TObject::move(distance);
+    //TObject::move(distance);
 }
 
 TDoor::Type TDoor::type() const
@@ -131,7 +131,7 @@ void TDoor::setType(const Type &type)
 
 void TDoor::setPos(const QPointF &pos)
 {
-    TObject::setPos(pos);
+    //TObject::setPos(pos);
 }
 
 TStartPoint *TDoor::startPoint() const
@@ -160,7 +160,7 @@ void TDoor::initPropertySheet()
 }
 
 TTile::TTile(QObject *parent) :
-    TObject(TObject::TILE, parent)
+    TPointObject(TObject::TILE, parent)
   , mPixmap(nullptr)
   , mDoor(nullptr)
   , mTarget(nullptr)
@@ -168,19 +168,19 @@ TTile::TTile(QObject *parent) :
   , mHasMoveModel(false)
   , mTargetNumber(-1)
 {
-
+    initPropertySheet();
 }
 
 void TTile::saveToStream(QDataStream &stream) const
 {
-    QRectF rect = mPropertySheet->getValue(PID_OBJECT_RECT).toRectF();
-    stream << rect.topLeft();
+    QPointF p = pos();
+    stream << p;
     stream << mTileId->id();
     stream << mTileId->tilesetId();
 
     QRectF endRect(0,0,0,0);
     if(mHasMoveModel) {
-        endRect = mDoor->rect();
+        endRect = mDoor->getRect();
     }
     stream << endRect.left();// xEnd1
     stream << endRect.right();// xEnd2
@@ -294,8 +294,8 @@ void TTile::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(PID_TILE_SCREEN_SPEED, screenSpeed);
 
     mTileId = mDocument->getTileId(setNumber, number);
-    setRect(QRectF(pos1, QSizeF()));
 
+    setPos(pos1);
     setUp();
 
     if(mHasMoveModel) {
@@ -311,7 +311,7 @@ void TTile::readFromStream(QDataStream &stream)
             end1.setX(tileLeft);
         }
 
-        QSize tileSize = size();
+        QSize tileSize = mTileId->pixmap()->size();
         if(end2.y() < 1)
             end2.setY(tileTop + tileSize.height());
         if(end2.x() < 1)
@@ -352,11 +352,10 @@ bool TTile::hasMoveModel() const
 void TTile::slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue)
 {
     PropertyID pid = item->propertyId();
-    if(pid == PID_OBJECT_RECT) {
+    if(pid == PID_OBJECT_POS) {
         if(mDoor) {
             // Slide door with tile
-            QPointF offset = item->value().toRectF().topLeft();
-            offset -= oldValue.toPointF();
+            QPointF offset = item->value().toPointF() - oldValue.toPointF();
             mDoor->slide(offset);
         }
     }
@@ -381,15 +380,16 @@ QPointF TTile::getSpeed() const
     return mPropertySheet->getValue(PID_TILE_SPEED).toPointF();
 }
 
+QRectF TTile::getRect() const
+{
+    return mPixmap?QRectF(pos(),mPixmap->pixmap().size()):QRectF();
+}
+
 void TTile::setUp()
 {
     if(mTileId) {
         mPixmap = mTileId->pixmap();
         mPropertySheet->setValue(P_IMAGE, mPixmap->fileName());
-
-        QRectF r = rect();
-        r.setSize(mPixmap->pixmap().size());
-        setRect(r);
     }
 }
 

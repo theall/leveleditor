@@ -12,6 +12,8 @@ class TDocument;
 
 class TObject : public TPropertyObject
 {
+    Q_OBJECT
+
 public:
     enum Type {
         AREA,
@@ -25,6 +27,7 @@ public:
         FRAME,
         ANIMATION,
         ENEMY,
+        TRIGGER,
         INVALID
     };
 
@@ -32,15 +35,6 @@ public:
 
     Type type() const;
     virtual QString typeString() const = 0;
-
-    virtual QPointF pos() const;
-    virtual void setPos(const QPointF &pos);
-
-    virtual QSize size() const;
-    virtual void setSize(const QSize &size);
-
-    virtual QRectF rect() const;
-    virtual void setRect(const QRectF &rect);
 
     virtual void move(const QPointF &offset);
 
@@ -58,6 +52,6 @@ private:
 
     void initPropertySheet();
 };
-
 typedef QList<TObject*> TObjectList;
+
 #endif // TOBJECT_H

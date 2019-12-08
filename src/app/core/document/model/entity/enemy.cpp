@@ -2,7 +2,6 @@
 #include "../../base/tr.h"
 #include "../../../assets/assetsmanager.h"
 
-static const QString P_POS = T("Position");
 static const QString P_DIR = T("Dir");
 static const QString P_LIFE = T("Life");
 static const QString P_LIVES = T("Lives");
@@ -23,7 +22,7 @@ static const QString P_VAR4 = T("Var4");
 static const QString P_VAR5 = T("Var5");
 
 TEnemy::TEnemy(QObject *parent) :
-    TObject(TObject::ENEMY, parent)
+    TPointObject(TObject::ENEMY, parent)
   , mPixmapId(nullptr)
   , mCategoryPropertyItem(nullptr)
   , mEnemyPropertyItem(nullptr)
@@ -46,26 +45,24 @@ void TEnemy::setPixmapId(TPixmapId *pixmapId)
     mPixmapId = pixmapId;
 }
 
-QPointF TEnemy::pos() const
+QRectF TEnemy::getRect() const
 {
-    return mPropertySheet->getValue(PID_ENEMY_POS).toPointF();
-}
+    if(!mPixmapId)
+        return QRectF();
 
-void TEnemy::move(const QPointF &offset)
-{
-    TObject::move(offset);
+    TPixmap *pixmap = mPixmapId->pixmap();
+    if(!pixmap)
+        return QRectF();
 
-    if(offset.isNull())
-        return;
-
-    QPointF currentPos = mPropertySheet->getValue(PID_ENEMY_POS).toPoint();
-    currentPos += offset;
-    mPropertySheet->setValue(PID_ENEMY_POS, currentPos.toPoint());
+    QSize pixmapSize = pixmap->size();
+    QPointF currentPos = pos();
+    currentPos -= QPoint(pixmapSize.width()/2, pixmapSize.height());
+    return QRectF(currentPos, pixmapSize);
 }
 
 void TEnemy::saveToStream(QDataStream &stream) const
 {
-    stream << mPropertySheet->getValue(PID_ENEMY_POS).toPoint();
+    stream << pos().toPoint();
     stream << mPropertySheet->getValue(PID_ENEMY_DIR).toInt();
     stream << mPropertySheet->getValue(PID_ENEMY_LIFE).toInt();
     stream << mPropertySheet->getValue(PID_ENEMY_LIVES).toInt();
@@ -130,7 +127,7 @@ void TEnemy::readFromStream(QDataStream &stream)
     stream >> var4;
     stream >> var5;
     category--;
-    mPropertySheet->setValue(PID_ENEMY_POS, QPoint(x,y));
+    setPos(QPoint(x,y));
     mPropertySheet->setValue(PID_ENEMY_DIR, dir);
     mPropertySheet->setValue(PID_ENEMY_LIFE, life);
     mPropertySheet->setValue(PID_ENEMY_LIVES, lives);
@@ -155,7 +152,6 @@ void TEnemy::readFromStream(QDataStream &stream)
 
 void TEnemy::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_POINT, P_POS, PID_ENEMY_POS);
     mPropertySheet->addProperty(PT_INT, P_DIR, PID_ENEMY_DIR)->addDirectionAttribute();
     mPropertySheet->addProperty(PT_INT, P_LIFE, PID_ENEMY_LIFE)->setRange(100);
     mPropertySheet->addProperty(PT_INT, P_LIVES, PID_ENEMY_LIVES)->setRange(99);
@@ -168,7 +164,7 @@ void TEnemy::initPropertySheet()
     category.append(tr("Item"));
     category.append(tr("Shot"));
     category.append(tr("Chunk"));
-    mCategoryPropertyItem = mPropertySheet->addProperty(PT_INT, P_CATEGORY, PID_ENEMY_CATEGORY);
+    mCategoryPropertyItem = mPropertySheet->addProperty(PT_ENUM, P_CATEGORY, PID_ENEMY_CATEGORY);
     mCategoryPropertyItem->addAttribute(PA_ENUM_NAMES, category);
     connect(mCategoryPropertyItem, SIGNAL(valueChanged(QVariant,QVariant)), SLOT(slotCategoryChanged(QVariant,QVariant)));
 
@@ -194,17 +190,6 @@ void TEnemy::setUpPixmapId()
     Category category = (Category)mCategoryPropertyItem->value().toInt();
     int number = mEnemyPropertyItem->value().toInt();
     mPixmapId = TAssetsManager::getInstance()->getPixmapId(category, number);
-
-    if(mPixmapId) {
-        TPixmap *pixmap = mPixmapId->pixmap();
-        if(pixmap) {
-            QSize pixmapSize = pixmap->size();
-            QPointF currentPos = pos();
-            currentPos -= QPoint(pixmapSize.width()/2, pixmapSize.height());
-            QRectF r(currentPos, pixmapSize);
-            setRect(r);
-        }
-    }
 }
 
 void TEnemy::slotCategoryChanged(const QVariant &oldValue, const QVariant &newValue)

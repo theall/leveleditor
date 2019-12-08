@@ -36,7 +36,7 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
   , mTileId(nullptr)
   , mEditMode(DEFAULT)
 {
-    setSize(640, 480);
+    setSize(50000, 50000);
 
     mUiItemsGroup->setZValue(TOP_Z_VALUE);
     addItem(mUiItemsGroup);

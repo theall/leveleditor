@@ -25,21 +25,20 @@ static const QString P_EVENTN = T("Eventn");
 static const QString P_EVENTN2 = T("Eventn2");
 
 TBox::TBox(QObject *parent) :
-    TObject(TObject::BOX, parent)
+    TRectObject(TObject::BOX, parent)
 {
     initPropertySheet();
 }
 
 TBox::TBox(const QRect &rect, QObject *parent) :
-    TObject(TObject::DAREA, parent)
+    TRectObject(rect, TObject::DAREA, parent)
 {
     initPropertySheet();
-    setRect(rect);
 }
 
 void TBox::saveToStream(QDataStream &stream) const
 {
-    QRectF rect = mPropertySheet->getValue(PID_OBJECT_RECT).toRectF();
+    QRectF rect = getRect();
     stream << rect.left();
     stream << rect.top();
     stream << mPropertySheet->getValue(PID_BOX_SPEED).toPointF();
@@ -132,8 +131,8 @@ void TBox::readFromStream(QDataStream &stream)
     QPointF pos(x, y);
     QPointF speed(xSpeed, ySpeed);
     QSizeF size(width, height);
+    setRect(QRectF(pos, size));
 
-    mPropertySheet->setValue(PID_OBJECT_RECT, QRectF(pos, size));
     mPropertySheet->setValue(PID_BOX_SPEED, speed);
     mPropertySheet->setValue(PID_BOX_TARGET, target);
     mPropertySheet->setValue(PID_BOX_DRAW, draw);
@@ -154,14 +153,14 @@ void TBox::readFromStream(QDataStream &stream)
 
 void TBox::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_VECTORF, P_SPEED, PID_BOX_SPEED);
+    mPropertySheet->addProperty(PT_POINTF, P_SPEED, PID_BOX_SPEED);
     mPropertySheet->addProperty(PT_INT, P_TARGET, PID_BOX_TARGET);
     mPropertySheet->addProperty(PT_INT, P_DRAW, PID_BOX_DRAW);
     mPropertySheet->addProperty(PT_INT, P_TYPE, PID_BOX_TYPE);
     mPropertySheet->addProperty(PT_INT, P_CHUNK_TYPE, PID_BOX_CHUNK_TYPE);
     mPropertySheet->addProperty(PT_INT, P_HIT_MODE, PID_BOX_HIT_MODE);
     mPropertySheet->addProperty(PT_INT, P_HIT_TIME, PID_BOX_HIT_TIME);
-    mPropertySheet->addProperty(PT_VECTORF, P_HIT_SPEED, PID_BOX_HIT_SPEED);
+    mPropertySheet->addProperty(PT_POINTF, P_HIT_SPEED, PID_BOX_HIT_SPEED);
     mPropertySheet->addProperty(PT_INT, P_DAMAGE, PID_BOX_DAMAGE);
     mPropertySheet->addProperty(PT_INT, P_HIT_SOUND, PID_BOX_HIT_SOUND);
     mPropertySheet->addProperty(PT_INT, P_USE_TRIGGER, PID_BOX_USE_TRIGGER);

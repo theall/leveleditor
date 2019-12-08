@@ -4,6 +4,7 @@
 
 TLayerItem::TLayerItem(TBaseModel *baseModel, QGraphicsItem *parent) :
     QGraphicsObject(parent)
+  , mBaseModel(baseModel)
 {
     connect(baseModel, SIGNAL(visibilityChanged(bool)), this, SLOT(slotLayerVisibilityChanged(bool)));
     connect(baseModel, SIGNAL(lockChanged(bool)), this, SLOT(slotLayerLockChanged(bool)));
@@ -62,6 +63,15 @@ TObjectItemList TLayerItem::getObjectItemList() const
             objectItemList.append(objectItem);
     }
     return objectItemList;
+}
+
+QRectF TLayerItem::calcBoundingRect()
+{
+    mBoundingRect = QRectF();
+    for(QGraphicsItem *item : childItems()) {
+        mBoundingRect = mBoundingRect.united(item->boundingRect());
+    }
+    return mBoundingRect;
 }
 
 void TLayerItem::setBoundingRect(const QRectF &rect)

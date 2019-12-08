@@ -3,10 +3,9 @@
 
 #include <QList>
 
-#include "object.h"
-#include "../../base/io.h"
+#include "rectobject.h"
 
-class TWall : public TObject, TIO
+class TWall : public TRectObject
 {
     Q_OBJECT
 

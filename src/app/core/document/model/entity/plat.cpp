@@ -16,21 +16,20 @@ static const QString P_BREAKABLE = T("Breakable");
 static const QString P_EVENT_NUMBER_2 = T("Event number 2");
 
 TPlat::TPlat(QObject *parent) :
-    TObject(TObject::PLAT, parent)
+    TRectObject(TObject::PLAT, parent)
 {
     initPropertySheet();
 }
 
 TPlat::TPlat(const QRect &rect, QObject *parent) :
-    TObject(TObject::DAREA, parent)
+    TRectObject(rect, TObject::DAREA, parent)
 {
     initPropertySheet();
-    setRect(rect);
 }
 
 void TPlat::saveToStream(QDataStream &stream) const
 {
-    QRectF rect = mPropertySheet->getValue(PID_OBJECT_RECT).toRectF();
+    QRectF rect = getRect();
     QPointF speed = mPropertySheet->getValue(PID_PLAT_SPEED).toPointF();
     stream << (float)rect.left();
     stream << (float)rect.top();

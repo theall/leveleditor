@@ -13,12 +13,13 @@ class TObjectItem : public QGraphicsObject
 
 public:
     enum { Type = UserType + 1 };
-    enum Anchor{
-        LEFT_TOP,
+    enum Anchor {
+        TOP_LEFT,
         CENTER,
         BOTTOM_CENTER,
         BOTTOM_RIGHT
     };
+
     TObjectItem(TObject *object, QGraphicsItem *parent = nullptr);
     ~TObjectItem();
 
@@ -56,7 +57,7 @@ public:
     void setCurrentPos(const QPointF &currentPos);
     void move(const QPointF &offset);
 
-    Anchor getAnchor() const;
+    Anchor anchor() const;
     void setAnchor(const Anchor &anchor);
 
 signals:
@@ -70,12 +71,13 @@ protected:
     QRectF mBoundingRect;
 
 private:
-    Anchor mAnchor;
     TObject *mObject;
     bool mAutonomy;
     bool mNeedGrabMouse;
     bool mDrawBorder;
     QColor mBorderColor;
+    Anchor mAnchor;
+
     static QMap<TObject*, TObjectItem*> mObjectItemMap;
 
     // QGraphicsItem interface

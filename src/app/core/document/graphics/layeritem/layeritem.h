@@ -34,7 +34,7 @@ public:
 
     TObjectItemList getObjectItemList() const;
 
-    virtual QRectF calcBoundingRect() = 0;
+    virtual QRectF calcBoundingRect();
 
     void setBoundingRect(const QRectF &rect);
 

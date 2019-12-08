@@ -1,7 +1,7 @@
 #include "platitem.h"
 
 TPlatItem::TPlatItem(TPlat *plat, QGraphicsItem *parent) :
-    TObjectItem(plat, parent)
+    TRectObjectItem(plat, parent)
   , mPlat(plat)
 {
     Q_ASSERT(mPlat);

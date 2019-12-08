@@ -1,10 +1,10 @@
 #ifndef TENEMYITEM_H
 #define TENEMYITEM_H
 
-#include "objectitem.h"
+#include "pointobjectitem.h"
 #include "../../../model/entity/enemy.h"
 
-class TEnemyItem : public TObjectItem
+class TEnemyItem : public TPointObjectItem
 {
     Q_OBJECT
 

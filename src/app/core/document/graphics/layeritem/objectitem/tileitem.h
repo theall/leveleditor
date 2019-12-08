@@ -2,11 +2,13 @@
 #define TTILEITEM_H
 
 #include <QList>
+
+#include "pointobjectitem.h"
 #include "tileitem/dooritem.h"
 #include "tileitem/trackitem.h"
 #include "../../../model/entity/tile.h"
 
-class TTileItem : public TObjectItem
+class TTileItem : public TPointObjectItem
 {
     Q_OBJECT
 
@@ -37,7 +39,6 @@ private:
     // QGraphicsItem interface
 public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
-    QPainterPath shape() const Q_DECL_OVERRIDE;
 
     // TObjectItem interface
 public:

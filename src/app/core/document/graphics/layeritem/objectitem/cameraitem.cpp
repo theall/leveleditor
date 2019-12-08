@@ -7,7 +7,6 @@ TCameraItem::TCameraItem(QGraphicsItem *parent) :
     QGraphicsObject(parent)
   , mBorderColor(QColor(Qt::white))
   , mBoundingRect(QRectF(QPointF(),QSize(400,400)))
-  , mIcon(new QPixmap(":/scenemodel/images/camera.png"))
 {
 
 }
@@ -47,6 +46,4 @@ void TCameraItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWi
     pen.setStyle(Qt::SolidLine);
     painter->setPen(pen);
     painter->drawRect(mBoundingRect);
-
-    painter->drawPixmap(mBoundingRect.x()+10, mBoundingRect.y()+10, *mIcon);
 }

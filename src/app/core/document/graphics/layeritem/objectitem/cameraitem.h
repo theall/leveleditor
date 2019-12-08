@@ -18,7 +18,6 @@ public:
 private:
     QColor mBorderColor;
     QRectF mBoundingRect;
-    QPixmap *mIcon;
 
     // QGraphicsItem interface
 public:

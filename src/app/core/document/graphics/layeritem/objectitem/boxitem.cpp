@@ -1,7 +1,7 @@
 #include "boxitem.h"
 
 TBoxItem::TBoxItem(TBox *box, QGraphicsItem *parent) :
-    TObjectItem(box, parent)
+    TRectObjectItem(box, parent)
   , mBox(box)
 {
     Q_ASSERT(mBox);

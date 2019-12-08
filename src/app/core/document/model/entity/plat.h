@@ -4,11 +4,10 @@
 #include <QList>
 #include <QPixmap>
 
-#include "object.h"
-#include "../../base/io.h"
+#include "rectobject.h"
 
 class TDocument;
-class TPlat : public TObject, TIO
+class TPlat : public TRectObject
 {
     Q_OBJECT
 

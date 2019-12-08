@@ -57,6 +57,7 @@ SOURCES += \
     $$PWD/document/graphics/layeritem/objectitem/dareaitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/boxitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/platitem.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/flagitem.cpp \
     $$PWD/model/mapmodel.cpp \
     $$PWD/model/charactermodel.cpp \
     $$PWD/assets/maps.cpp \
@@ -83,11 +84,11 @@ SOURCES += \
     $$PWD/document/graphics/uiitem/uiitemsgroup.cpp \
     $$PWD/document/model/animationmodel.cpp \
     $$PWD/document/model/platmodel.cpp \
-    $$PWD/document/graphics/cameraitem.cpp \
     $$PWD/document/model/framemodel.cpp \
     $$PWD/document/graphics/layeritem/objectitem/enemyfactoryitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/enemyitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/animationitem.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/cameraitem.cpp \
     $$PWD/shared/updateanimationthread.cpp \
     $$PWD/document/graphics/layeritem/enemyfactorylayeritem.cpp \
     $$PWD/assets/category.cpp \
@@ -96,7 +97,13 @@ SOURCES += \
     $$PWD/assets/chunkid.cpp \
     $$PWD/assets/pixmapid.cpp \
     $$PWD/document/graphics/layeritem/objectitem/triggeritem.cpp \
-    $$PWD/document/graphics/layeritem/triggerlayeritem.cpp
+    $$PWD/document/graphics/layeritem/triggerlayeritem.cpp \
+    $$PWD/document/model/entity/pointobject.cpp \
+    $$PWD/document/graphics/base/graphicsobject.cpp \
+    $$PWD/document/graphics/layeritem/propertylayeritem.cpp \
+    $$PWD/document/model/entity/rectobject.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/rectobjectitem.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/pointobjectitem.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -161,6 +168,7 @@ HEADERS  += \
     $$PWD/document/graphics/layeritem/objectitem/dareaitem.h \
     $$PWD/document/graphics/layeritem/objectitem/boxitem.h \
     $$PWD/document/graphics/layeritem/objectitem/platitem.h \
+    $$PWD/document/graphics/layeritem/objectitem/flagitem.h \
     $$PWD/model/mapmodel.h \
     $$PWD/model/charactermodel.h \
     $$PWD/assets/maps.h \
@@ -187,11 +195,11 @@ HEADERS  += \
     $$PWD/document/model/objectgeneric.hpp \
     $$PWD/document/graphics/uiitem/uiitemsgroup.h \
     $$PWD/document/model/platmodel.h \
-    $$PWD/document/graphics/cameraitem.h \
     $$PWD/document/model/framemodel.h \
     $$PWD/document/graphics/layeritem/objectitem/enemyfactoryitem.h \
     $$PWD/document/graphics/layeritem/objectitem/enemyitem.h \
     $$PWD/document/graphics/layeritem/objectitem/animationitem.h \
+    $$PWD/document/graphics/layeritem/objectitem/cameraitem.h \
     $$PWD/shared/updateanimationthread.h \
     $$PWD/document/graphics/layeritem/enemyfactorylayeritem.h \
     $$PWD/assets/category.h \
@@ -201,7 +209,13 @@ HEADERS  += \
     $$PWD/assets/pixmapid.h \
     $$PWD/document/graphics/layeritem/objectitem/triggeritem.h \
     $$PWD/document/graphics/layeritem/triggerlayeritem.h \
-    $$PWD/document/graphics/layeritem/generic.hpp
+    $$PWD/document/graphics/layeritem/generic.hpp \
+    $$PWD/document/model/entity/pointobject.h \
+    $$PWD/document/graphics/base/graphicsobject.h \
+    $$PWD/document/graphics/layeritem/propertylayeritem.h \
+    $$PWD/document/model/entity/rectobject.h \
+    $$PWD/document/graphics/layeritem/objectitem/rectobjectitem.h \
+    $$PWD/document/graphics/layeritem/objectitem/pointobjectitem.h
 
 RESOURCES += \
     $$PWD/resource/core.qrc

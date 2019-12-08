@@ -4,21 +4,20 @@
 #include <QRect>
 
 TWall::TWall(QObject *parent) :
-    TObject(TObject::WALL, parent)
+    TRectObject(TObject::WALL, parent)
 {
     initPropertySheet();
 }
 
 TWall::TWall(const QRect &rect, QObject *parent) :
-    TObject(TObject::DAREA, parent)
+    TRectObject(rect, TObject::DAREA, parent)
 {
     initPropertySheet();
-    setRect(rect);
 }
 
 void TWall::saveToStream(QDataStream &stream) const
 {
-    stream << mPropertySheet->getValue(PID_OBJECT_RECT).toRect();
+    stream << getRect().toRect();
 }
 
 void TWall::readFromStream(QDataStream &stream)
@@ -28,7 +27,7 @@ void TWall::readFromStream(QDataStream &stream)
     stream >> y;
     stream >> w;
     stream >> h;
-    mPropertySheet->setValue(PID_OBJECT_RECT, QRectF(x,y,w,h));
+    setRect(x, y, w, h);
 }
 
 void TWall::initPropertySheet()

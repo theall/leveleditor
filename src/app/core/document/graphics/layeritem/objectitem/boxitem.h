@@ -1,10 +1,10 @@
 #ifndef TBOXITEM_H
 #define TBOXITEM_H
 
-#include "objectitem.h"
+#include "rectobjectitem.h"
 #include "../../../model/entity/box.h"
 
-class TBoxItem : public TObjectItem
+class TBoxItem : public TRectObjectItem
 {
     Q_OBJECT
 

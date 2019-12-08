@@ -8,17 +8,17 @@ QMap<TObject*, TObjectItem*> TObjectItem::mObjectItemMap;
 
 TObjectItem::TObjectItem(TObject *object, QGraphicsItem *parent) :
     QGraphicsObject(parent)
-  , mAnchor(LEFT_TOP)
+  , mCurrentPos(QPointF(0,0))
   , mObject(object)
   , mAutonomy(false)
   , mNeedGrabMouse(false)
   , mDrawBorder(true)
   , mBorderColor(Qt::black)
+  , mAnchor(TOP_LEFT)
 {
     if(!mObject)
         throw tr("Null object checked!");
 
-    setBoundingRect(mObject->rect());
     connect(mObject->propertySheet(),
             SIGNAL(propertyItemValueChanged(TPropertyItem*,QVariant)),
             this,
@@ -75,33 +75,16 @@ void TObjectItem::slotPropertyItemValueChanged(TPropertyItem *item, const QVaria
     propertyValueChanged(pid);
 
     // Notify to selection item and hovering item
-    if(pid==PID_OBJECT_RECT) {
-        mBoundingRect = item->value().toRectF();
-
-        switch (mAnchor) {
-        case BOTTOM_CENTER:
-            mCurrentPos = QPointF(mBoundingRect.center().x(), mBoundingRect.bottom());
-            break;
-        default:
-            mCurrentPos = mBoundingRect.topLeft();
-            break;
-        }
-
-//        static int i = 0;
-//        qDebug() << i << "Bounding changed";
-//        i++;
+    if(pid == PID_OBJECT_POS) {
+        QPointF newPos = item->value().toPointF();
+        QPointF offset = newPos - mCurrentPos;
+        mCurrentPos = newPos;
+        mBoundingRect.translate(offset);
+        emit boundingRectChanged(mBoundingRect);
+    } else if(pid == PID_OBJECT_SIZE) {
+        mBoundingRect.setSize(item->value().toSizeF());
         emit boundingRectChanged(mBoundingRect);
     }
-}
-
-TObjectItem::Anchor TObjectItem::getAnchor() const
-{
-    return mAnchor;
-}
-
-void TObjectItem::setAnchor(const Anchor &anchor)
-{
-    mAnchor = anchor;
 }
 
 QPointF TObjectItem::getCurrentPos() const
@@ -117,7 +100,7 @@ void TObjectItem::setCurrentPos(const QPointF &currentPos)
 void TObjectItem::move(const QPointF &offset)
 {
     mCurrentPos += offset;
-    mBoundingRect.moveTopLeft(mBoundingRect.topLeft() + offset);
+    mBoundingRect.translate(offset);
 }
 
 void TObjectItem::setBoundingRect(const QRectF &boundingRect)
@@ -152,6 +135,16 @@ void TObjectItem::setBorderColor(const QColor &borderColor)
 
     mBorderColor = borderColor;
     update(mBoundingRect);
+}
+
+TObjectItem::Anchor TObjectItem::anchor() const
+{
+    return mAnchor;
+}
+
+void TObjectItem::setAnchor(const Anchor &anchor)
+{
+    mAnchor = anchor;
 }
 
 QRectF TObjectItem::boundingRect() const

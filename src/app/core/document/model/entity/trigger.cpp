@@ -21,14 +21,14 @@ static const QString P_ON_STATUS = T("On Status");
 static const QString P_OFF_STATUS = T("Off Status");
 
 TTrigger::TTrigger(QObject *parent) :
-    TObject(TObject::INVALID, parent)
+    TRectObject(TObject::TRIGGER, parent)
 {
     initPropertySheet();
 }
 
 void TTrigger::saveToStream(QDataStream &stream) const
 {
-    stream << mPropertySheet->getValue(PID_OBJECT_RECT).toRect();
+    stream << getRect();
     stream << mPropertySheet->getValue(PID_TRIGGER_WAY).toInt();
     stream << mPropertySheet->getValue(PID_TRIGGER_ON).toInt();
     stream << mPropertySheet->getValue(PID_TRIGGER_ACTION).toInt();
@@ -80,7 +80,7 @@ void TTrigger::readFromStream(QDataStream &stream)
     stream >> platPos;
     stream >> onStatus;
     stream >> offStatus;
-    mPropertySheet->setValue(PID_OBJECT_RECT, rect);
+    setRect(rect);
     mPropertySheet->setValue(PID_TRIGGER_WAY, way);
     mPropertySheet->setValue(PID_TRIGGER_ON, on);
     mPropertySheet->setValue(PID_TRIGGER_ACTION, action);

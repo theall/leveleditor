@@ -1,7 +1,7 @@
 #include "triggeritem.h"
 
 TTriggerItem::TTriggerItem(TTrigger *trigger, QGraphicsItem *parent) :
-    TObjectItem(trigger, parent)
+    TRectObjectItem(trigger, parent)
 {
 
 }
@@ -16,12 +16,12 @@ void TTriggerItem::setTrigger(TTrigger *trigger)
     mTrigger = trigger;
 }
 
-void TTriggerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void TTriggerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
 
 }
 
-void TTriggerItem::propertyValueChanged(PropertyID pid)
+void TTriggerItem::propertyValueChanged(PropertyID)
 {
 
 }

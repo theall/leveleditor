@@ -1,6 +1,5 @@
 #include "objectcontainer.h"
 
-
 #include <QToolBar>
 #include <QSplitter>
 #include <QPushButton>

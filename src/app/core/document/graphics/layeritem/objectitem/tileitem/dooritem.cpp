@@ -47,7 +47,7 @@ TStartPoint *TDoorItem::startPoint() const
 
 void TDoorItem::updateBoundingRect()
 {
-    mRealRect = mDoor->rect();
+    mRealRect = mDoor->getRect();
     setBoundingRect(mRealRect.adjusted(-GAP, -GAP, GAP, GAP));
     mIsVertical = mDoor->dir()==TDoor::Vertical;
     update();
@@ -145,7 +145,7 @@ void TDoorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidg
 
 void TDoorItem::propertyValueChanged(PropertyID pid)
 {
-    if(pid==PID_OBJECT_RECT) {
+    if(pid == PID_OBJECT_POS) {
         updateBoundingRect();
     }
 }

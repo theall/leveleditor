@@ -1,4 +1,5 @@
 #include "sceneModel.h"
+#include "entity/pointobject.h"
 #include "../base/tr.h"
 
 static const QString P_BACKGROUND_COLOR = T("Background Color");
@@ -38,8 +39,11 @@ TSceneModel::TSceneModel(QObject *parent) :
   , mTileLayerModel4(new TTileLayerModel(this))
   , mTileLayerModel5(new TTileLayerModel(this))
   , mTileLayerModel6(new TTileLayerModel(this))
+  , mCurrentIndex(-1)
+  , mFlagPointObject1(new TPointObject(this))
+  , mFlagPointObject2(new TPointObject(this))
 {
-    setName(tr("SceneModel"));
+    setName(tr("Map Property"));
 
     mBaseModelList.append(mTileLayerModel1);
     mBaseModelList.append(mTileLayerModel2);
@@ -57,6 +61,7 @@ TSceneModel::TSceneModel(QObject *parent) :
     mBaseModelList.append(mTileLayerModel4);
     mBaseModelList.append(mTileLayerModel5);
     mBaseModelList.append(mTileLayerModel6);
+    mBaseModelList.append(this);
     mCurrentIndex = mBaseModelList.size() - 1;
 
     mTileLayerModel1->setName(tr("Background 1"));
@@ -74,6 +79,9 @@ TSceneModel::TSceneModel(QObject *parent) :
     mTileLayerModelList.append(mTileLayerModel6);
 
     initPropertySheet();
+
+    mFlagPointObject1->setTypeString(P_FLAG1);
+    mFlagPointObject2->setTypeString(P_FLAG2);
 }
 
 TSceneModel::~TSceneModel()
@@ -167,6 +175,36 @@ TTile *TSceneModel::getTile(int tileset, int number) const
     return tileLayerModel->getTile(number);
 }
 
+QRectF TSceneModel::getCamera() const
+{
+    return mPropertySheet->getValue(PID_SCENE_CAMERA).toRectF();
+}
+
+QRect TSceneModel::getCameraAsRect() const
+{
+    return mPropertySheet->getValue(PID_SCENE_CAMERA).toRect();
+}
+
+QPointF TSceneModel::getFlag1Point() const
+{
+    return mFlagPointObject1->pos();
+}
+
+QPointF TSceneModel::getFlag2Point() const
+{
+    return mFlagPointObject2->pos();
+}
+
+TPointObject *TSceneModel::getFlagPointObject2() const
+{
+    return mFlagPointObject2;
+}
+
+TPointObject *TSceneModel::getFlagPointObject1() const
+{
+    return mFlagPointObject1;
+}
+
 TAnimationModel *TSceneModel::getAnimationsModel() const
 {
     return mAnimationModel;
@@ -252,14 +290,21 @@ void TSceneModel::initPropertySheet()
     TPropertyItem *propertyItem = mPropertySheet->addProperty(PT_COLOR, P_BACKGROUND_COLOR, PID_SCENE_BACKGROUND_COLOR);
     propertyItem->setValue(QColor(Qt::blue));
 
-    mPropertySheet->addProperty(PT_VECTOR, P_FLAG1, PID_SCENE_FLAG1);
-    mPropertySheet->addProperty(PT_VECTOR, P_FLAG2, PID_SCENE_FLAG2);
+    propertyItem = mFlagPointObject1->posPropertyItem();
+    propertyItem->setName(P_FLAG1);
+    mPropertySheet->addProperty(propertyItem);
+
+    propertyItem = mFlagPointObject2->posPropertyItem();
+    propertyItem->setName(P_FLAG2);
+    mPropertySheet->addProperty(propertyItem);
+
     mPropertySheet->addProperty(PT_BOOL, P_SCROLLABLE, PID_SCENE_SCROLLABLE);
-    mPropertySheet->addProperty(PT_VECTOR, P_START_POINT, PID_SCENE_START_POINT);
+    mPropertySheet->addProperty(PT_POINTF, P_START_POINT, PID_SCENE_START_POINT);
     TPropertyItem *fightModeItem = mPropertySheet->addProperty(PT_ENUM, P_FIGHT_MODE, PID_SCENE_FIGHT_MODE);
     QStringList fightModeNames;
     fightModeNames.append("Death Match");
     fightModeNames.append("Hit Target");
+    fightModeNames.append("Catch Flag");
     fightModeItem->addAttribute(PA_ENUM_NAMES, fightModeNames);
     mPropertySheet->addProperty(PT_INT, P_NUMBER, PID_SCENE_NUMBER);
     mPropertySheet->addProperty(PT_BOOL, P_SCREEN_LOCK, PID_SCENE_SCREEN_LOCK);
@@ -363,9 +408,8 @@ void TSceneModel::readFromStream(QDataStream &stream)
 
     mRespawnsModel->readFromStream(stream);
 
-    QPoint flag1, flag2;
-    stream >> flag1;
-    stream >> flag2;
+    mFlagPointObject1->readFromStream(stream);
+    mFlagPointObject2->readFromStream(stream);
 
     int scrollMap;
     stream >> scrollMap;
@@ -427,6 +471,7 @@ void TSceneModel::readFromStream(QDataStream &stream)
     stream >> music2;
 
     mAnimationModel->readFromStream(stream);
+
     // Process animation
     for(TFrameModel *frameModel : mAnimationModel->frameModelList()) {
         TAnimation *animation = frameModel->animation();
@@ -458,8 +503,8 @@ void TSceneModel::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(PID_SCENE_AIR_STRIKE, noAirStrike);
     mPropertySheet->setValue(PID_SCENE_MUSIC1, music1);
     mPropertySheet->setValue(PID_SCENE_MUSIC2, music2);
-    mPropertySheet->setValue(PID_SCENE_FLAG1, flag1);
-    mPropertySheet->setValue(PID_SCENE_FLAG2, flag2);
+    mPropertySheet->setValue(PID_SCENE_FLAG1, mFlagPointObject1->pos(), false);
+    mPropertySheet->setValue(PID_SCENE_FLAG2, mFlagPointObject2->pos(), false);
 }
 
 int TSceneModel::rowCount(const QModelIndex &) const
@@ -470,8 +515,12 @@ int TSceneModel::rowCount(const QModelIndex &) const
 QVariant TSceneModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
-    if(row<0 || row>=mBaseModelList.size())
+    if(row<0 || row>=mBaseModelList.size()) {
+        if(role==Qt::DisplayRole) {
+            return "Unimplemented";
+        }
         return QVariant();
+    }
 
     TBaseModel *baseModel = mBaseModelList.at(row);
     int column = index.column();

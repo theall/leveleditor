@@ -1,10 +1,10 @@
 #ifndef TWALLITEM_H
 #define TWALLITEM_H
 
-#include "objectitem.h"
+#include "rectobjectitem.h"
 #include "../../../model/entity/wall.h"
 
-class TWallItem : public TObjectItem
+class TWallItem : public TRectObjectItem
 {
     Q_OBJECT
 

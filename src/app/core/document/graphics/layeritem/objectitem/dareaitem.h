@@ -1,10 +1,10 @@
 #ifndef TDAREAITEM_H
 #define TDAREAITEM_H
 
-#include "objectitem.h"
+#include "rectobjectitem.h"
 #include "../../../model/entity/darea.h"
 
-class TDAreaItem : public TObjectItem
+class TDAreaItem : public TRectObjectItem
 {
     Q_OBJECT
 

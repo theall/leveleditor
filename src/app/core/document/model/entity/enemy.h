@@ -3,11 +3,10 @@
 
 #include <QList>
 
-#include "object.h"
-#include "../../base/io.h"
+#include "pointobject.h"
 #include "../../../assets/assetsmanager.h"
 
-class TEnemy : public TObject, TIO
+class TEnemy : public TPointObject
 {
     Q_OBJECT
 
@@ -18,8 +17,7 @@ public:
     TPixmapId *pixmapId() const;
     void setPixmapId(TPixmapId *pixmapId);
 
-    QPointF pos() const;
-    void move(const QPointF &offset) Q_DECL_OVERRIDE;
+    QRectF getRect() const;
 
 private:
     TPixmapId *mPixmapId;

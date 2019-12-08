@@ -17,6 +17,7 @@
 
 #include <QColor>
 
+class TPointObject;
 class TSceneModel : public TBaseModel
 {
     Q_OBJECT
@@ -59,6 +60,14 @@ public:
     bool isCurrentTileLayerModel() const;
     TTile *getTile(int tileset, int number) const;
 
+    QRectF getCamera() const;
+    QRect getCameraAsRect() const;
+    QPointF getFlag1Point() const;
+    QPointF getFlag2Point() const;
+
+    TPointObject *getFlagPointObject1() const;
+    TPointObject *getFlagPointObject2() const;
+
 signals:
     void currentIndexChanged(int index);
 
@@ -88,6 +97,8 @@ private:
     TBaseModelList mBaseModelList;
     QList<TTileLayerModel*> mTileLayerModelList;
     int mCurrentIndex;
+    TPointObject *mFlagPointObject1;
+    TPointObject *mFlagPointObject2;
 
     void initPropertySheet();
 

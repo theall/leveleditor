@@ -33,9 +33,9 @@ QVariant TPropertyObject::getValue(const QString &name) const
     return mPropertySheet->getValue(name);
 }
 
-void TPropertyObject::setValue(const QString &name, const QVariant &value)
+void TPropertyObject::setValue(const QString &name, const QVariant &value, bool emitSignal)
 {
-    mPropertySheet->setValue(name, value);
+    mPropertySheet->setValue(name, value, emitSignal);
 }
 
 TPropertyItem *TPropertyObject::operator [](const QString &name) const
@@ -53,9 +53,9 @@ QVariant TPropertyObject::getValue(const PropertyID &pid) const
     return mPropertySheet->getValue(pid);
 }
 
-void TPropertyObject::setValue(const PropertyID &pid, const QVariant &value)
+void TPropertyObject::setValue(const PropertyID &pid, const QVariant &value, bool emitSignal)
 {
-    setValue(pid, value);
+    mPropertySheet->setValue(pid, value, emitSignal);
 }
 
 TPropertyItem *TPropertyObject::operator [](const PropertyID &pid) const

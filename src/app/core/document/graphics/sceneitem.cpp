@@ -6,15 +6,17 @@
 #include "layeritem/platlayeritem.h"
 #include "layeritem/walllayeritem.h"
 #include "layeritem/triggerlayeritem.h"
+#include "layeritem/propertylayeritem.h"
 #include "layeritem/enemyfactorylayeritem.h"
 #include "layeritem/objectitem/animationitem.h"
+
+#include "uiitem/darkmaskitem.h"
 
 #include "../model/areamodel.h"
 #include "../model/boxmodel.h"
 #include "../model/dareamodel.h"
 #include "../model/platmodel.h"
 #include "../model/wallmodel.h"
-
 
 #include <QDebug>
 
@@ -24,12 +26,13 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
     QGraphicsObject(parent)
   , mIsHovered(false)
   , mSceneModel(sceneModel)
-  , mCameraItem(new TCameraItem(this))
   , mBorderRectangle(new QGraphicsRectItem(this))
   , mCurrentLayerItem(nullptr)
   , mDarkMaskItem(new TDarkMaskItem(this))
+  , mPropertylayerItem(new TPropertyLayerItem(sceneModel, this))
 {
-    Q_ASSERT(mSceneModel);
+    Q_ASSERT(sceneModel);
+
     setFlag(QGraphicsItem::ItemHasNoContents);
     setAcceptHoverEvents(true);
 
@@ -70,12 +73,13 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
         } else {
             qDebug() << "Unprocessed model:" << baseModel->name();
         }
-        mModelLayerMap[baseModel] = layerItem;
-        mLayerItemList.append(layerItem);
+        internalAdd(baseModel, layerItem);
 
         if(baseModel == mSceneModel->getCurrentModel())
             mCurrentLayerItem = layerItem;
     }
+
+    internalAdd(sceneModel, mPropertylayerItem);
 
     // Replace animation item into tilelayeritem
     for(TAnimationItem *animationItem : animationItemList) {
@@ -91,20 +95,6 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
 
         layerItem->setZValue(index++);
     }
-
-    TPropertySheet *sceneModelPropertySheet = mSceneModel->propertySheet();
-    if(!sceneModelPropertySheet)
-        throw("Property sheet needed in scene model!");
-    connect(sceneModelPropertySheet,
-            SIGNAL(propertyItemValueChanged(TPropertyItem*,QVariant)),
-            this,
-            SLOT(slotSceneModelPropertyItemValueChanged(TPropertyItem*,QVariant)));
-
-
-    QRect cameraRect = sceneModelPropertySheet->getValue(PID_SCENE_CAMERA).toRect();
-    mCameraItem->setBoundingRect(cameraRect);
-    mCameraItem->setZValue(ZINDEX_TOP);
-
 }
 
 TSceneItem::~TSceneItem()
@@ -140,9 +130,14 @@ void TSceneItem::slotOnSceneModelCurrentIndexChanged(int index)
         setCurrentLayerItem(layerItem);
 
         if(layerItem) {
+//            for(TLayerItem *layerItem : mLayerItemList) {
+//                layerItem->setVisible(false);
+//            }
+//            layerItem->setVisible(true);
             layerItem->setOpacity(1.0);
             mDarkMaskItem->setZValue(layerItem->zValue() - 0.5);
         }
+
         for(int i=index+1;i<mLayerItemList.size();i++) {
             TLayerItem *layerItem = mLayerItemList.at(i);
             if(layerItem) {
@@ -150,6 +145,7 @@ void TSceneItem::slotOnSceneModelCurrentIndexChanged(int index)
             }
         }
     }
+    mDarkMaskItem->setVisible(false);
     mDarkMaskItem->setVisible(index>0 && baseModel);
 }
 
@@ -162,15 +158,9 @@ void TSceneItem::slotLayerBoundingRectChanged(const QRectF &rect)
     emit boundingRectChanged(mBoundingRect);
 }
 
-void TSceneItem::slotSceneModelPropertyItemValueChanged(TPropertyItem *item, const QVariant &)
+void TSceneItem::slotSceneModelPropertyItemValueChanged(TPropertyItem *, const QVariant &)
 {
-    if(!item)
-        return;
 
-    PropertyID pid = item->propertyId();
-    if(pid == PID_SCENE_CAMERA) {
-        mCameraItem->setBoundingRect(item->value().toRect());
-    }
 }
 
 TLayerItem *TSceneItem::getCurrentLayerItem() const
@@ -192,6 +182,15 @@ void TSceneItem::calcBoundingRect()
         tempRect = tempRect.united(layerItem->calcBoundingRect());
     }
     mBoundingRect = tempRect;
+}
+
+void TSceneItem::internalAdd(TBaseModel *baseModel, TLayerItem *layerItem)
+{
+    if(!baseModel || !layerItem)
+        return;
+
+    mModelLayerMap[baseModel] = layerItem;
+    mLayerItemList.append(layerItem);
 }
 
 QRectF TSceneItem::boundingRect() const

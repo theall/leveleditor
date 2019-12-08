@@ -3,14 +3,14 @@
 #include <QPainter>
 
 TEnemyItem::TEnemyItem(TEnemy *enemy, QGraphicsItem *parent) :
-    TObjectItem(enemy, parent)
+    TPointObjectItem(enemy, parent)
   , mEnemy(enemy)
 {
     Q_ASSERT(mEnemy);
 
-    mCurrentPos = mEnemy->pos();
+    setCurrentPos(mEnemy->pos());
+    setBoundingRect(mEnemy->getRect());
     setBorderColor(Qt::yellow);
-    setAnchor(TObjectItem::BOTTOM_CENTER);
 }
 
 TEnemyItem::~TEnemyItem()

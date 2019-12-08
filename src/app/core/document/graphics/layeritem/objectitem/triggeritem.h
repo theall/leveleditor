@@ -1,10 +1,10 @@
 #ifndef TTRIGGERITEM_H
 #define TTRIGGERITEM_H
 
-#include "objectitem.h"
+#include "rectobjectitem.h"
 #include "../../../model/entity/trigger.h"
 
-class TTriggerItem : public TObjectItem
+class TTriggerItem : public TRectObjectItem
 {
 public:
     TTriggerItem(TTrigger *trigger, QGraphicsItem *parent = Q_NULLPTR);

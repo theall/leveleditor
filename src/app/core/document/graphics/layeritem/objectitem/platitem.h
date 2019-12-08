@@ -1,10 +1,10 @@
 #ifndef TPLATITEM_H
 #define TPLATITEM_H
 
-#include "objectitem.h"
+#include "rectobjectitem.h"
 #include "../../../model/entity/plat.h"
 
-class TPlatItem : public TObjectItem
+class TPlatItem : public TRectObjectItem
 {
     Q_OBJECT
 

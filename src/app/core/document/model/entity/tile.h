@@ -4,8 +4,7 @@
 #include <QList>
 #include <QPainter>
 
-#include "object.h"
-#include "../../base/io.h"
+#include "rectobject.h"
 
 class TTileId;
 class TPixmap;
@@ -29,7 +28,7 @@ private:
     Type mType;
 };
 
-class TStartPoint : public TObject
+class TStartPoint : public TPointObject
 {
     Q_OBJECT
 
@@ -46,7 +45,7 @@ public:
     bool isCongener(TObject *object) const Q_DECL_OVERRIDE;
 };
 
-class TDoor : public TObject
+class TDoor : public TRectObject
 {
     Q_OBJECT
 
@@ -94,7 +93,7 @@ public:
     bool isCongener(TObject *object) const Q_DECL_OVERRIDE;
 };
 
-class TTile : public TObject, TIO
+class TTile : public TPointObject
 {
     Q_OBJECT
 
@@ -114,6 +113,8 @@ public:
     void setTileId(TTileId *tileId);
 
     QPointF getSpeed() const;
+
+    QRectF getRect() const;
 
 private slots:
     void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);

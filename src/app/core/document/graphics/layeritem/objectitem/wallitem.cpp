@@ -1,7 +1,7 @@
 #include "wallitem.h"
 
 TWallItem::TWallItem(TWall *wall, QGraphicsItem *parent) :
-    TObjectItem(wall, parent)
+    TRectObjectItem(wall, parent)
   , mWall(wall)
 {
     Q_ASSERT(mWall);

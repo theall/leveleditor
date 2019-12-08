@@ -2,7 +2,7 @@
 #include <QPainter>
 
 TAreaItem::TAreaItem(TArea *area, QGraphicsItem *parent) :
-    TObjectItem(area, parent)
+    TRectObjectItem(area, parent)
   , mArea(area)
 {
     Q_ASSERT(mArea);

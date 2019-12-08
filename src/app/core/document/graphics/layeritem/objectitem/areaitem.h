@@ -1,10 +1,10 @@
 #ifndef TAREAITEM_H
 #define TAREAITEM_H
 
-#include "objectitem.h"
+#include "rectobjectitem.h"
 #include "../../../model/entity/area.h"
 
-class TAreaItem : public TObjectItem
+class TAreaItem : public TRectObjectItem
 {
     Q_OBJECT
 

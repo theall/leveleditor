@@ -3,13 +3,12 @@
 
 #include <QGraphicsObject>
 
-#include "cameraitem.h"
 #include "../model/scenemodel.h"
 #include "layeritem/layeritem.h"
 #include "layeritem/tilelayeritem.h"
-#include "uiitem/hovereditem.h"
-#include "uiitem/darkmaskitem.h"
 
+class TDarkMaskItem;
+class TPropertyLayerItem;
 class TSceneItem : public QGraphicsObject
 {
     Q_OBJECT
@@ -38,14 +37,16 @@ private:
     QRectF mBoundingRect;
     bool mIsHovered;
     TSceneModel *mSceneModel;
-    TCameraItem *mCameraItem;
     QGraphicsRectItem *mBorderRectangle;
     TLayerItemList mLayerItemList;
     TTileLayerItemList mTileLayerItemList;
     QMap<TBaseModel*, TLayerItem*> mModelLayerMap;
     TLayerItem *mCurrentLayerItem;
     TDarkMaskItem *mDarkMaskItem;
+    TPropertyLayerItem *mPropertylayerItem;
+
     void calcBoundingRect();
+    void internalAdd(TBaseModel *baseModel, TLayerItem *layerItem);
 
     // QGraphicsItem interface
 public:

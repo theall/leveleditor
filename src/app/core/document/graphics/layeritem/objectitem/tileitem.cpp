@@ -5,7 +5,7 @@
 
 bool TTileItem::mShowBorder = false;
 TTileItem::TTileItem(TTile *tile, QGraphicsItem *parent) :
-    TObjectItem(tile, parent)
+    TPointObjectItem(tile, parent)
   , mTile(tile)
   , mDoorItem(nullptr)
   , mTileDoorTrackItem(nullptr)
@@ -16,6 +16,7 @@ TTileItem::TTileItem(TTile *tile, QGraphicsItem *parent) :
         mDoorItem = new TDoorItem(this);
         mTileDoorTrackItem = new TTrackItem(this, mDoorItem);
     }
+    setBoundingRect(mTile->getRect());
 }
 
 TTileItem::~TTileItem()
@@ -83,16 +84,9 @@ void TTileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         TObjectItem::paint(painter, option, widget);
 }
 
-QPainterPath TTileItem::shape() const
-{
-    QPainterPath painterPath;
-    painterPath.addRect(mTile->rect());
-    return painterPath;
-}
-
 void TTileItem::propertyValueChanged(PropertyID pid)
 {
-    if(pid==PID_OBJECT_RECT) {
+    if(pid==PID_OBJECT_POS) {
         // Position changed, synchrony update door's position
     }
 }
