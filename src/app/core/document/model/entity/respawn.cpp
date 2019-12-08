@@ -8,34 +8,48 @@ static const QString P_RESPAWN = T("Respawn Point");
 
 TRespawn::TRespawn(QObject *parent) :
     TObject(TObject::POINT, parent)
+  , mStartPointObject(new TPointObject(parent))
+  , mRespownPointObject(new TPointObject(parent))
 {
     initPropertySheet();
 }
 
 void TRespawn::saveToStream(QDataStream &stream) const
 {
-    stream << mPropertySheet->getValue(P_START).toPoint();
-    stream << mPropertySheet->getValue(P_RESPAWN).toPoint();
+    mStartPointObject->saveToStream(stream);
+    mRespownPointObject->saveToStream(stream);
 }
 
 void TRespawn::readFromStream(QDataStream &stream)
 {
-    QPoint start, respawn;
-    stream >> start;
-    stream >> respawn;
-    mPropertySheet->setValue(PID_SPAWN_START, start);
-    mPropertySheet->setValue(PID_SPAWN_RESPAWN, respawn);
+    mStartPointObject->readFromStream(stream);
+    mRespownPointObject->readFromStream(stream);
+}
+
+TPointObject *TRespawn::respownPointObject() const
+{
+    return mRespownPointObject;
+}
+
+TPointObject *TRespawn::startPointObject() const
+{
+    return mStartPointObject;
 }
 
 void TRespawn::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_POINT, P_START, PID_SPAWN_START);
-    mPropertySheet->addProperty(PT_POINT, P_RESPAWN, PID_SPAWN_RESPAWN);
+    TPropertyItem *propertyItem = mStartPointObject->posPropertyItem();
+    propertyItem->setName(P_START);
+    mPropertySheet->addProperty(propertyItem);
+
+    propertyItem = mRespownPointObject->posPropertyItem();
+    propertyItem->setName(P_RESPAWN);
+    mPropertySheet->addProperty(propertyItem);
 }
 
 QString TRespawn::typeString() const
 {
-    return "Respawn";
+    return tr("Respawn");
 }
 
 bool TRespawn::isCongener(TObject *) const

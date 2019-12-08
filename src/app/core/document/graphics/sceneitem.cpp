@@ -5,13 +5,12 @@
 #include "layeritem/darealayeritem.h"
 #include "layeritem/platlayeritem.h"
 #include "layeritem/walllayeritem.h"
+#include "layeritem/respownlayeritem.h"
 #include "layeritem/triggerlayeritem.h"
 #include "layeritem/propertylayeritem.h"
 #include "layeritem/enemyfactorylayeritem.h"
 #include "layeritem/objectitem/animationitem.h"
-
 #include "uiitem/darkmaskitem.h"
-
 #include "../model/areamodel.h"
 #include "../model/boxmodel.h"
 #include "../model/dareamodel.h"
@@ -31,8 +30,7 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
   , mDarkMaskItem(new TDarkMaskItem(this))
   , mPropertylayerItem(new TPropertyLayerItem(sceneModel, this))
 {
-    Q_ASSERT(sceneModel);
-
+    Q_ASSERT(mSceneModel);
     setFlag(QGraphicsItem::ItemHasNoContents);
     setAcceptHoverEvents(true);
 
@@ -54,6 +52,8 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
             layerItem = new TPlatLayerItem(platModel, this);
         } else if(TWallModel *wallModel = dynamic_cast<TWallModel*>(baseModel)) {
             layerItem = new TWallLayerItem(wallModel, this);
+        } else if(TRespawnModel *respawModel = dynamic_cast<TRespawnModel*>(baseModel)){
+            layerItem = new TRespownLayerItem(respawModel, this);
         } else if(TAnimationModel *animationModel = dynamic_cast<TAnimationModel*>(baseModel)) {
             for(TFrameModel *frameModel : animationModel->frameModelList()) {
                 TAnimation *animation = frameModel->animation();
@@ -130,10 +130,6 @@ void TSceneItem::slotOnSceneModelCurrentIndexChanged(int index)
         setCurrentLayerItem(layerItem);
 
         if(layerItem) {
-//            for(TLayerItem *layerItem : mLayerItemList) {
-//                layerItem->setVisible(false);
-//            }
-//            layerItem->setVisible(true);
             layerItem->setOpacity(1.0);
             mDarkMaskItem->setZValue(layerItem->zValue() - 0.5);
         }
@@ -145,7 +141,6 @@ void TSceneItem::slotOnSceneModelCurrentIndexChanged(int index)
             }
         }
     }
-    mDarkMaskItem->setVisible(false);
     mDarkMaskItem->setVisible(index>0 && baseModel);
 }
 

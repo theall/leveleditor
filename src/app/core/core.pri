@@ -90,6 +90,10 @@ SOURCES += \
     $$PWD/document/graphics/layeritem/objectitem/animationitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/cameraitem.cpp \
     $$PWD/shared/updateanimationthread.cpp \
+    $$PWD/document/graphics/layeritem/respownlayeritem.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/bornpositem.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/respownpositem.cpp \
+    $$PWD/document/graphics/layeritem/objectitem/playeritem.cpp \
     $$PWD/document/graphics/layeritem/enemyfactorylayeritem.cpp \
     $$PWD/assets/category.cpp \
     $$PWD/assets/itemid.cpp \
@@ -201,6 +205,10 @@ HEADERS  += \
     $$PWD/document/graphics/layeritem/objectitem/animationitem.h \
     $$PWD/document/graphics/layeritem/objectitem/cameraitem.h \
     $$PWD/shared/updateanimationthread.h \
+    $$PWD/document/graphics/layeritem/respownlayeritem.h \
+    $$PWD/document/graphics/layeritem/objectitem/bornpositem.h \
+    $$PWD/document/graphics/layeritem/objectitem/respownpositem.h \
+    $$PWD/document/graphics/layeritem/objectitem/playeritem.h \
     $$PWD/document/graphics/layeritem/enemyfactorylayeritem.h \
     $$PWD/assets/category.h \
     $$PWD/assets/itemid.h \
