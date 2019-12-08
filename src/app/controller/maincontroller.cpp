@@ -106,6 +106,10 @@ bool TMainController::joint(TMainWindow *mainWindow, TCore *core)
             }
         } while(!success);
         prefs->setGameRoot(gameRoot);
+
+        QString gameExeFileName = gameRoot + "/mh.exe";
+        prefs->setEnginePath(gameExeFileName);
+
         mainWindow->asShow();
         if(prefs->openLastFile())
         {
@@ -441,11 +445,13 @@ void TMainController::slotRequestRunCurrentMap()
     if(mDocument->isDirty())
         mDocument->save();
 
-    QString enginePath = TPreferences::instance()->enginePath();
+    TPreferences *prefs = TPreferences::instance();
+    QString enginePath = prefs->enginePath();
+    QString gameRoot = prefs->gameRoot();
     enginePath.append(' ');
-    QString parameter = QString("\"%1\"").arg(mDocument->fileName());
-    enginePath += QDir::toNativeSeparators(parameter);
-    if(!QProcess::startDetached(enginePath))
+    QStringList parameters;
+    parameters.append(QString("\"%1\"").arg(mDocument->fileName()));
+    if(!QProcess::startDetached(enginePath, parameters, gameRoot))
         QMessageBox::critical(mMainWindow,
                               tr("Error"),
                               tr("Fail to start process with command %1").arg(enginePath),
