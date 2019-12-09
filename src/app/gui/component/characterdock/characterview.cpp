@@ -44,6 +44,21 @@ int TCharacterView::add(const QPixmap &face)
     return mButtonList.size();
 }
 
+void TCharacterView::setPixmapSet(const QList<QPixmap> &pixmapSet)
+{
+    clear();
+
+    for(QPixmap pixmap : pixmapSet) {
+        add(pixmap);
+    }
+}
+
+void TCharacterView::clear()
+{
+    QListWidget::clear();
+    mButtonList.clear();;
+}
+
 void TCharacterView::slotOnFaceButtonToggled(bool toggled)
 {
     QPushButton *button = static_cast<QPushButton*>(sender());

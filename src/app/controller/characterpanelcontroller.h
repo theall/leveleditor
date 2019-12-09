@@ -2,7 +2,8 @@
 #define TCHARACTER_PANEL_CONTROLLER_H
 
 #include "abstractcontroller.h"
-class TCharacterView;
+
+class TCharacterDock;
 class TCharacterPanelController : public TAbstractController
 {
     Q_OBJECT
@@ -12,7 +13,7 @@ public:
     ~TCharacterPanelController();
 
 private:
-    TCharacterView *mCharacterPanel;
+    TCharacterDock *mCharacterDock;
 
     // TAbstractController interface
 public:

@@ -15,6 +15,8 @@ public:
     TPixmap *pixmap() const;
     void setPixmap(TPixmap *pixmap);
 
+    QPixmap primitive() const;
+
 private:
     int mId;
     TPixmap *mPixmap;

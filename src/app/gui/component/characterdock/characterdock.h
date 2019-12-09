@@ -3,9 +3,19 @@
 
 #include <QAction>
 #include <QToolBar>
+#include <QActionGroup>
+#include <QStackedWidget>
 
 #include "../basedock.h"
 #include "characterview.h"
+
+enum PanelType {
+    PA_CHARACTER,
+    PA_ITEM,
+    PA_SHOT,
+    PA_CHUNK,
+    PA_TOTAL_COUNT
+};
 
 class TCharacterDock : public TBaseDock
 {
@@ -16,13 +26,22 @@ public:
     ~TCharacterDock();
 
     TCharacterView *characterView() const;
+    TCharacterView *itemView() const;
+    TCharacterView *shotView() const;
+    TCharacterView *chunkView() const;
+
+    void setPixmapSet(const PanelType &panelType, const QList<QPixmap> &pixmapSet);
 
 private slots:
-    void slotActionShowIconToggled(bool);
+    void slotActionToggled();
 
 private:
-    QAction *mActionShowIcon;
     TCharacterView *mCharacterView;
+    TCharacterView *mItemView;
+    TCharacterView *mShotView;
+    TCharacterView *mChunkView;
+    QStackedWidget *mStackedWidget;
+    QActionGroup *mActionGroup;
 
     // TBaseDock interface
 public:

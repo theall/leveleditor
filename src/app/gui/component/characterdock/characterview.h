@@ -15,6 +15,7 @@ public:
     ~TCharacterView();
 
     int add(const QPixmap &face);
+    void setPixmapSet(const QList<QPixmap> &pixmapSet);
 
 signals:
     void characterToggled(int index, bool toggled);
@@ -23,6 +24,8 @@ private:
     int mIconSize;
     QPushButton *mLastPushedButton;
     QList<QPushButton*> mButtonList;
+
+    void clear();
 
 private slots:
     void slotOnFaceButtonToggled(bool);

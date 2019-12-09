@@ -37,6 +37,7 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
     connect(mSceneModel, SIGNAL(currentIndexChanged(int)), this, SLOT(slotOnSceneModelCurrentIndexChanged(int)));
 
     TAnimationItemList animationItemList;
+    TLayerItem *currentLayerItem = nullptr;
     for(TBaseModel *baseModel : mSceneModel->getBaseModelList()) {
         TLayerItem *layerItem = nullptr;
         if(TTileLayerModel *tileLayerModel = dynamic_cast<TTileLayerModel*>(baseModel)) {
@@ -70,13 +71,14 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
         if(layerItem) {
             connect(layerItem, SIGNAL(boundingRectChanged(QRectF)), this, SLOT(slotLayerBoundingRectChanged(QRectF)));
             mBoundingRect = mBoundingRect.united(layerItem->boundingRect());
+            internalAdd(baseModel, layerItem);
         } else {
             qDebug() << "Unprocessed model:" << baseModel->name();
         }
-        internalAdd(baseModel, layerItem);
 
-        if(baseModel == mSceneModel->getCurrentModel())
-            mCurrentLayerItem = layerItem;
+        if(baseModel == mSceneModel->getCurrentModel()) {
+            currentLayerItem = layerItem;
+        }
     }
 
     internalAdd(sceneModel, mPropertylayerItem);
@@ -95,6 +97,7 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
 
         layerItem->setZValue(index++);
     }
+    setCurrentLayerItem(currentLayerItem);
 }
 
 TSceneItem::~TSceneItem()

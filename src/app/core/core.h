@@ -4,10 +4,13 @@
 #include <QList>
 #include <QString>
 #include <QStringList>
+
 #include "document/document.h"
 #include "model/tilesetmodel.h"
-#include "model/charactermodel.h"
-#include "model/mapmodel.h"
+
+class TItemModel;
+class TMapsModel;
+class TCharacterModel;
 
 class TCore : public QObject
 {
@@ -43,6 +46,8 @@ public:
 
     TTilesetModelManager *tilesetModelManager() const;
 
+    TItemModel *getItemModel() const;
+
 signals:
     void documentFileChanged(const QString &file);
     void ready();
@@ -54,6 +59,7 @@ private:
     TMapsModel *mMapsModel;
     TFileSystemWatcher *mFileWatcher;
     TCharacterModel *mCharacterModel;
+    TItemModel *mItemModel;
     TTilesetModelManager *mTilesetModelManager;
     QList<TDocument*> mDocuments;
 

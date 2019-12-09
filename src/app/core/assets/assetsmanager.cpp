@@ -47,8 +47,7 @@ TAssetsManager::TAssetsManager(QObject *parent) :
 
 TAssetsManager::~TAssetsManager()
 {
-    FREE_CONTAINER(mFaceList);
-    FREE_CONTAINER(mTilesetList);
+    clear();
 }
 
 bool TAssetsManager::setResourcePath(const QString &path)
@@ -147,15 +146,46 @@ TPixmapId *TAssetsManager::getPixmapId(Category category, int id) const
                 break;
             }
         }
+    } else if(category == ITEM) {
+        for(TItemId *itemId : mItemIdList) {
+            if(itemId->id() == id) {
+                pixmapId = itemId;
+                break;
+            }
+        }
     }
     return pixmapId;
 }
 
+TItemIdList TAssetsManager::getItemIdList() const
+{
+    return mItemIdList;
+}
+
+TShotList TAssetsManager::getShotList() const
+{
+    return mShotList;
+}
+
+TChunkList TAssetsManager::getChunkList() const
+{
+    return mChunkList;
+}
+
+void TAssetsManager::clear()
+{
+    FREE_CONTAINER(mFaceList);
+    FREE_CONTAINER(mItemIdList);
+    FREE_CONTAINER(mShotList);
+    FREE_CONTAINER(mChunkList);
+    FREE_CONTAINER(mTilesetList);
+}
+
 void TAssetsManager::loadAssets()
 {
-    // Enumate face list
-    FREE_CONTAINER(mFaceList);
+    clear();
 
+    // Enumate face list
     QList<int> faceIdList;
     QStringList faceFileList;
     mGfxDir.setFilter(QDir::Dirs);
@@ -184,7 +214,56 @@ void TAssetsManager::loadAssets()
         }
     }
 
-    // Shot list
+    // Stuff list
+    QList<int> stuffIdList;
+    QList<Category> stuffTypeList;
+    QStringList stuffBitmapList;
+    QDir stuffDir = mGfxDir.absoluteFilePath("stuff");
+    stuffDir.setFilter(QDir::Files | QDir::Hidden);
+    QFileInfoList stuffFileInfoList = stuffDir.entryInfoList();
+    for (int i = 0; i < stuffFileInfoList.size(); ++i) {
+        QFileInfo stuffFileInfo = stuffFileInfoList.at(i);
+        QString stuffFileName = stuffFileInfo.baseName();// "obj1_a1.bmp"
+        QStringList stuffNameList = stuffFileName.split("_");
+        if(stuffNameList.size() != 2) // invalid file name
+            continue;
+
+        QString stuffSuffixName = stuffNameList.at(1);
+        stuffSuffixName = stuffSuffixName.toLower();
+        if(stuffSuffixName!="1" && stuffSuffixName!="a1")
+            // Only load first picture of object
+            continue;
+
+        bool ok = false;
+        // Extract type name "obj1" from file name "obj1_a1.bmp"
+        QString stuffPrefixName = stuffNameList.at(0);
+
+        // Find index of first digit
+        int index = stuffPrefixName.indexOf(QRegExp("\\d"));
+        if(index == -1)
+            // Invalid file?
+            continue;
+
+        QString stuffIdName = stuffPrefixName.right(stuffPrefixName.size() - index);
+        int stuffId = stuffIdName.toInt(&ok);
+        if(!ok)
+            // Not found id
+            continue;
+
+        QString stuffTypeName = stuffPrefixName.left(index);
+        stuffTypeName = stuffTypeName.toLower();
+        if(stuffTypeName == "obj") {
+            stuffTypeList.append(ITEM);
+        } else if(stuffTypeName == "pt") {
+            stuffTypeList.append(CHUNK);
+        } else if(stuffTypeName == "shot") {
+            stuffTypeList.append(SHOT);
+        } else {
+            continue;
+        }
+        stuffIdList.append(stuffId);
+        stuffBitmapList.append(stuffFileInfo.absoluteFilePath());
+    }
 
     // Enumate tile set
     QList<int> tileSetIdList;
@@ -269,7 +348,8 @@ void TAssetsManager::loadAssets()
     }
 
     int assetsLoaded = 0;
-    int totalAssets = faceFileList.size() + tileSetIdList.size() + mapThumbFileList.size();
+    int totalAssets = faceFileList.size() + tileSetIdList.size() + mapThumbFileList.size() + stuffBitmapList.size();
+
     // real load face bitmap
     for(int i=0;i<faceFileList.size();i++) {
         int faceId = faceIdList.at(i);
@@ -330,6 +410,29 @@ void TAssetsManager::loadAssets()
         assetsLoaded++;
         if(assetsLoaded%10 == 0)
             emit onProgress(assetsLoaded, totalAssets);
+    }
+
+    // Load stuff bitmaps
+    for(int i=0;i<stuffIdList.size();i++) {
+        TPixmap *pixmap = new TPixmap(this);
+        pixmap->load(stuffBitmapList.at(i));
+        assetsLoaded++;
+        if(assetsLoaded%10 == 0)
+            emit onProgress(assetsLoaded, totalAssets);
+        if(!pixmap->isValid()) {
+            delete pixmap;
+            continue;
+        }
+
+        Category category = stuffTypeList.at(i);
+        int stuffId = stuffIdList.at(i);
+        if(category == ITEM) {
+            mItemIdList.append(new TItemId(stuffId, pixmap));
+        } else if(category == SHOT) {
+            mShotList.append(new TShotId(stuffId, pixmap));
+        } else if(category == CHUNK) {
+            mChunkList.append(new TChunkId(stuffId, pixmap));
+        }
     }
 
     // Load shot
