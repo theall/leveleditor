@@ -4,6 +4,8 @@
 #include "../gui/component/animationdock/framelistview.h"
 #include "../gui/component/tabwidget/graphicsview.h"
 
+#include "../core/document/model/animationmodel.h"
+
 TAnimationController::TAnimationController(QObject *parent) :
     TAbstractController(parent)
   , mAnimationListView(nullptr)

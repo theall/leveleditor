@@ -2,6 +2,8 @@
 #define TSELECTEDITEMS
 
 #include "selecteditem.h"
+#include "../layeritem/objectitem/objectitem.h"
+
 #include <QMap>
 
 class TSelectedItems : public QGraphicsObject

@@ -12,7 +12,7 @@ class TTileLayerItem : public TLayerItem
     Q_OBJECT
 
 public:
-    explicit TTileLayerItem(TTileLayerModel *model, QGraphicsItem *parent = Q_NULLPTR);
+    explicit TTileLayerItem(TTileModel *model, QGraphicsItem *parent = Q_NULLPTR);
     ~TTileLayerItem();
 
     bool replace(TAnimationItem *animationItem);
@@ -25,7 +25,7 @@ private slots:
 
 private:
     TTileItemList mTileItemList;
-    TTileLayerModel *mTileLayerModel;
+    TTileModel *mTileLayerModel;
     QMap<TTile*, TTileItem*> mTileItemMap;
 
     void create();

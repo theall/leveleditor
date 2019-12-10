@@ -3,8 +3,9 @@
 
 #include <QList>
 #include <QGraphicsObject>
-#include "../layeritem/objectitem/objectitem.h"
 
+class TObjectItem;
+class TResizeItem;
 class TSelectedItem : public QGraphicsObject
 {
     Q_OBJECT
@@ -31,6 +32,7 @@ private:
     int mOffset;
     QRectF mBoundingRect;
     TObjectItem *mObjectItem;
+    TResizeItem *mResizeItem;
 
     void setBoundingRect(const QRectF &rect = QRectF());
 };

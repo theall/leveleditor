@@ -2,12 +2,21 @@
 
 #include <QPen>
 #include <QPainter>
+
 #include <utils/utils.h>
+
+#include "resizeitem.h"
+#include "../layeritem/objectitem/objectitem.h"
+#include "../layeritem/objectitem/rectobjectitem.h"
+
+#define HANDLE_WIDTH 5
+#define MARGIN ((HANDLE_WIDTH-1)/2)
 
 TSelectedItem::TSelectedItem(QGraphicsItem *parent) :
     QGraphicsObject(parent)
   , mOffset(0)
   , mObjectItem(nullptr)
+  , mResizeItem(new TResizeItem(this))
 {
 
 }
@@ -40,6 +49,8 @@ void TSelectedItem::setObjectItem(TObjectItem *objectItem)
                 SLOT(slotOnObjectDestroyed(QObject*)));
         if(!isVisible())
             setVisible(true);
+
+        mResizeItem->setVisible(qgraphicsitem_cast<TRectObjectItem*>(mObjectItem));
     } else {
         setBoundingRect();
         if(isVisible())
@@ -102,8 +113,10 @@ void TSelectedItem::move(const QPointF &offset)
 
 void TSelectedItem::slotObjectBoundingRectChanged(const QRectF &)
 {
-    if(mObjectItem)
-        setBoundingRect(mObjectItem->boundingRect());
+    if(!mObjectItem)
+        return;
+
+    setBoundingRect(mObjectItem->boundingRect());
 }
 
 void TSelectedItem::slotOnObjectDestroyed(QObject *)
@@ -118,4 +131,5 @@ void TSelectedItem::setBoundingRect(const QRectF &rect)
 {
     prepareGeometryChange();
     mBoundingRect = rect;
+    mResizeItem->setRect(rect);
 }

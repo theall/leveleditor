@@ -148,10 +148,13 @@ void TDocument::load(const QString &file)
     {
         try {
             QFile f(file);
-            QDataStream stream(&f);
+            f.open(QIODevice::ReadOnly);
+            QByteArray byteArray = f.readAll();
+            f.close();
+
+            QDataStream stream(byteArray);
             stream.setByteOrder(QDataStream::LittleEndian);
             stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
-            f.open(QIODevice::ReadOnly);
             mSceneModel->readFromStream(stream);
         } catch (...) {
             throw tr("Load map failed!");

@@ -11,11 +11,16 @@
 #include "layeritem/enemyfactorylayeritem.h"
 #include "layeritem/objectitem/animationitem.h"
 #include "uiitem/darkmaskitem.h"
+
 #include "../model/areamodel.h"
 #include "../model/boxmodel.h"
 #include "../model/dareamodel.h"
 #include "../model/platmodel.h"
 #include "../model/wallmodel.h"
+#include "../model/animationmodel.h"
+#include "../model/respawnmodel.h"
+#include "../model/enemyfactorymodel.h"
+#include "../model/triggermodel.h"
 
 #include <QDebug>
 
@@ -40,7 +45,7 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
     TLayerItem *currentLayerItem = nullptr;
     for(TBaseModel *baseModel : mSceneModel->getBaseModelList()) {
         TLayerItem *layerItem = nullptr;
-        if(TTileLayerModel *tileLayerModel = dynamic_cast<TTileLayerModel*>(baseModel)) {
+        if(TTileModel *tileLayerModel = dynamic_cast<TTileModel*>(baseModel)) {
             layerItem = new TTileLayerItem(tileLayerModel, this);
             mTileLayerItemList.append((TTileLayerItem*)layerItem);
         } else if(TAreaModel *areaModel = dynamic_cast<TAreaModel*>(baseModel)) {

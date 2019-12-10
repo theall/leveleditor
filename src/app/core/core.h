@@ -7,6 +7,7 @@
 
 #include "document/document.h"
 #include "model/tilesetmodel.h"
+#include "assets/maps.h"
 
 class TItemModel;
 class TMapsModel;

@@ -9,6 +9,11 @@
 
 #include "../base/finddoc.h"
 #include "../document.h"
+#include "../model/entity/area.h"
+#include "../model/entity/box.h"
+#include "../model/entity/darea.h"
+#include "../model/entity/plat.h"
+#include "../model/entity/wall.h"
 #include "../undocommand/objectmovecommand.h"
 #include "../undocommand/objectaddcommand.h"
 #include "../undocommand/removeselectioncommand.h"
@@ -392,7 +397,7 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         if(mLeftButtonDown) {
             TBaseModel::Type currentModelType = mSceneModel->getCurretnModelType();
             if(currentModelType == TBaseModel::TILE) {
-                TTileLayerModel *tileLayerModel = mSceneModel->getCurrentAsTileLayerModel();
+                TTileModel *tileLayerModel = mSceneModel->getCurrentAsTileLayerModel();
                 TTile *tile = tileLayerModel->createTile(mTileId, mTileStampItem->pos());
                 TObjectList objectList;
                 objectList.append(tile);

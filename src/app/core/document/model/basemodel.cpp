@@ -73,6 +73,16 @@ bool TBaseModel::isTile() const
     return mType == TILE;
 }
 
+void TBaseModel::onObjectInserted(const TObjectList &, const QList<int> &)
+{
+
+}
+
+void TBaseModel::onObjectRemoved(const TObjectList &, const QList<int> &)
+{
+
+}
+
 void TBaseModel::insertObjects(const TObjectList &objectList, const QList<int> &indexList)
 {
     Q_UNUSED(objectList);

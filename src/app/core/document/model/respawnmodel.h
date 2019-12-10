@@ -8,6 +8,8 @@
 #include <QList>
 #include <QPoint>
 
+#include "basemodel.h"
+
 class TRespawnModel : public TBaseModel
 {
     Q_OBJECT

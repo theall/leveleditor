@@ -1,5 +1,17 @@
 #include "sceneModel.h"
-#include "entity/pointobject.h"
+
+#include "areamodel.h"
+#include "animationmodel.h"
+#include "boxmodel.h"
+#include "dareamodel.h"
+#include "eventmodel.h"
+#include "tilelayermodel.h"
+#include "platmodel.h"
+#include "respawnmodel.h"
+#include "triggermodel.h"
+#include "wallmodel.h"
+#include "enemyfactorymodel.h"
+#include "../property/propertyobject.h"
 #include "../base/tr.h"
 
 static const QString P_BACKGROUND_COLOR = T("Background Color");
@@ -23,9 +35,9 @@ TSceneModel::TSceneModel(QObject *parent) :
     TBaseModel(TBaseModel::INVALID, parent)
   , mPropertyObject(new TPropertyObject(this))
   , mPropertySheet(mPropertyObject->propertySheet())
-  , mTileLayerModel1(new TTileLayerModel(this))
-  , mTileLayerModel2(new TTileLayerModel(this))
-  , mTileLayerModel3(new TTileLayerModel(this))
+  , mTileLayerModel1(new TTileModel(this))
+  , mTileLayerModel2(new TTileModel(this))
+  , mTileLayerModel3(new TTileModel(this))
   , mAnimationModel(new TAnimationModel(this))
   , mAreasModel(new TAreaModel(this))
   , mBoxModel(new TBoxModel(this))
@@ -36,9 +48,9 @@ TSceneModel::TSceneModel(QObject *parent) :
   , mTriggersModel(new TTriggerModel(this))
   , mWallsModel(new TWallModel(this))
   , mEnemyFactoryModel(new TEnemyFactoryModel(this))
-  , mTileLayerModel4(new TTileLayerModel(this))
-  , mTileLayerModel5(new TTileLayerModel(this))
-  , mTileLayerModel6(new TTileLayerModel(this))
+  , mTileLayerModel4(new TTileModel(this))
+  , mTileLayerModel5(new TTileModel(this))
+  , mTileLayerModel6(new TTileModel(this))
   , mCurrentIndex(-1)
   , mFlagPointObject1(new TPointObject(this))
   , mFlagPointObject2(new TPointObject(this))
@@ -143,12 +155,12 @@ int TSceneModel::getCurrentIndex() const
     return mCurrentIndex;
 }
 
-TTileLayerModel *TSceneModel::getCurrentAsTileLayerModel() const
+TTileModel *TSceneModel::getCurrentAsTileLayerModel() const
 {
-    TTileLayerModel *tileLayerModel = nullptr;
+    TTileModel *tileLayerModel = nullptr;
     TBaseModel *baseModel = mBaseModelList.at(mCurrentIndex);
     if(baseModel && baseModel->isTile())
-        tileLayerModel = dynamic_cast<TTileLayerModel*>(baseModel);
+        tileLayerModel = dynamic_cast<TTileModel*>(baseModel);
     return tileLayerModel;
 }
 
@@ -169,7 +181,7 @@ TTile *TSceneModel::getTile(int tileset, int number) const
     if(tileset<0 || tileset>=mTileLayerModelList.size())
         return nullptr;
 
-    TTileLayerModel *tileLayerModel = mTileLayerModelList.at(tileset);
+    TTileModel *tileLayerModel = mTileLayerModelList.at(tileset);
     if(!tileLayerModel)
         return nullptr;
     return tileLayerModel->getTile(number);
@@ -215,32 +227,32 @@ TEnemyFactoryModel *TSceneModel::getEnemyFactoryModel() const
     return mEnemyFactoryModel;
 }
 
-TTileLayerModel *TSceneModel::getTileLayerModel6() const
+TTileModel *TSceneModel::getTileLayerModel6() const
 {
     return mTileLayerModel6;
 }
 
-TTileLayerModel *TSceneModel::getTileLayerModel5() const
+TTileModel *TSceneModel::getTileLayerModel5() const
 {
     return mTileLayerModel5;
 }
 
-TTileLayerModel *TSceneModel::getTileLayerModel4() const
+TTileModel *TSceneModel::getTileLayerModel4() const
 {
     return mTileLayerModel4;
 }
 
-TTileLayerModel *TSceneModel::getTileLayerModel3() const
+TTileModel *TSceneModel::getTileLayerModel3() const
 {
     return mTileLayerModel3;
 }
 
-TTileLayerModel *TSceneModel::getTileLayerModel2() const
+TTileModel *TSceneModel::getTileLayerModel2() const
 {
     return mTileLayerModel2;
 }
 
-TTileLayerModel *TSceneModel::getTileLayerModel1() const
+TTileModel *TSceneModel::getTileLayerModel1() const
 {
     return mTileLayerModel1;
 }

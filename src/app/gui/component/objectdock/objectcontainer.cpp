@@ -6,11 +6,6 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
-//#define CREATE_ACTION(action,image,func) \
-//    action = toolbar->addAction(QString());\
-//    action->setIcon(QIcon(image));\
-//    connect(action, SIGNAL(triggered()), this, SLOT(func()))
-
 TObjectcontainer::TObjectcontainer(QWidget *parent) :
     QWidget(parent)
 {

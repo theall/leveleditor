@@ -1,4 +1,6 @@
 #include "animationmodel.h"
+#include "basemodel.h"
+#include "entity/animation.h"
 
 TAnimationModel::TAnimationModel(QObject *parent) :
     TBaseModel(TBaseModel::ANIMATION, parent)
@@ -58,6 +60,31 @@ QVariant TAnimationModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+void TAnimationModel::onObjectInserted(const TObjectList &objectList, const QList<int> &indexList)
+{
+    TFrameModelList frameModelList;
+    TAnimationList aniamtionList = convert<TAnimation*>(objectList);
+    Q_ASSERT(aniamtionList.size()==indexList.size());
+    for(TAnimation *animation : aniamtionList) {
+        TFrameModel *frameModel = new TFrameModel(animation, this);
+        frameModelList.append(frameModel);
+    }
+    QList<int> list = indexList;
+    insertIntoContainer<TFrameModel*>(mFrameModelList, frameModelList, list);
+}
+
+void TAnimationModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &)
+{
+    TFrameModelList frameModelList;
+    TAnimationList aniamtionList = convert<TAnimation*>(objectList);
+    for(TAnimation *animation : aniamtionList) {
+        TFrameModel *frameModel = mAnimationMap[animation];
+        Q_ASSERT(frameModel);
+        frameModelList.append(frameModel);
+    }
+    removeFromContainer(mFrameModelList, frameModelList);
+}
+
 void TAnimationModel::clear()
 {
     mFrameModelList.clear();
@@ -79,3 +106,5 @@ TFrameModel *TAnimationModel::getFrameModel(int index) const
         return nullptr;
     return mFrameModelList.at(index);
 }
+
+IMPL_GENERIC_FUNCTIONS(Animation)

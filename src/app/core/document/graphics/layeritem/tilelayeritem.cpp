@@ -1,14 +1,14 @@
 #include "tilelayeritem.h"
 #include <QGraphicsScene>
 
-TTileLayerItem::TTileLayerItem(TTileLayerModel *model, QGraphicsItem *parent) :
+TTileLayerItem::TTileLayerItem(TTileModel *model, QGraphicsItem *parent) :
     TLayerItem(model, parent)
   , mTileLayerModel(model)
 {
     Q_ASSERT(mTileLayerModel);
     setLayerType(TLayerItem::TILE);
-    connect(mTileLayerModel, SIGNAL(tileInserted(TTileList,QList<int>)), this, SLOT(slotTileInserted(TTileList,QList<int>)));
-    connect(mTileLayerModel, SIGNAL(tileRemoved(TTileList,QList<int>)), this, SLOT(slotTileRemoved(TTileList,QList<int>)));
+    connect(mTileLayerModel, SIGNAL(objectInserted(TTileList,QList<int>)), this, SLOT(slotTileInserted(TTileList,QList<int>)));
+    connect(mTileLayerModel, SIGNAL(objectRemoved(TTileList,QList<int>)), this, SLOT(slotTileRemoved(TTileList,QList<int>)));
 
     create();
 }

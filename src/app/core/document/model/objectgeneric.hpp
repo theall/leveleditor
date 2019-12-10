@@ -14,6 +14,16 @@ QList<T> convert(const TObjectList &objectList)
 }
 
 template<typename T>
+TObjectList convert(const QList<T> &objectList)
+{
+    TObjectList list;
+    for(T object : objectList) {
+        list.append(object);
+    }
+    return list;
+}
+
+template<typename T>
 void insertIntoContainer(QList<T> &container, QList<T> &objectList, QList<int> &indexList)
 {
     QList<T> objectInsertedList;
@@ -107,6 +117,7 @@ void T##Type##Model::insert##Type(const T##Type##List &objectList, const QList<i
     T##Type##List objectInsertedList = objectList;\
     QList<int> insertedIndexList = indexList;\
     insertIntoContainer<T##Type*>(m##Type##List, objectInsertedList, insertedIndexList);\
+    onObjectInserted(convert(objectList), insertedIndexList);\
     emit objectInserted(objectInsertedList, insertedIndexList);\
 }\
 \
@@ -139,8 +150,10 @@ QList<int> T##Type##Model::remove##Type(const QList<int> &indexList)\
     T##Type##List objectList;\
     QList<int> indexRemoved = indexList;\
     objectList = removeFromContainer<T##Type*>(m##Type##List, indexRemoved);\
-    if(!indexRemoved.isEmpty())\
+    if(!indexRemoved.isEmpty()) {\
+        onObjectRemoved(convert(objectList), indexRemoved);\
         emit objectRemoved(objectList, indexRemoved);\
+    }\
     return indexRemoved;\
 }\
 \
@@ -149,8 +162,10 @@ QList<int> T##Type##Model::remove##Type(const T##Type##List &objectList)\
     QList<int> indexRemoved;\
     T##Type##List objectListRemoved = objectList;\
     indexRemoved = removeFromContainer<T##Type*>(m##Type##List, objectListRemoved);\
-    if(!indexRemoved.isEmpty())\
+    if(!indexRemoved.isEmpty()) {\
+        onObjectRemoved(convert(objectList), indexRemoved);\
         emit objectRemoved(objectList, indexRemoved);\
+    }\
     return indexRemoved;\
 }\
 \

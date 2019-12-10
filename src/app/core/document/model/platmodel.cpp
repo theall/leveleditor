@@ -1,4 +1,5 @@
 #include "platmodel.h"
+#include "basemodel.h"
 
 TPlatModel::TPlatModel(QObject *parent) :
     TBaseModel(TBaseModel::PLAT, parent)

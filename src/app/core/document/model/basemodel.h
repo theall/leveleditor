@@ -58,6 +58,11 @@ private:
     bool mLocked;
     Type mType;
 
+protected:
+    // Notify to inherit class
+    virtual void onObjectInserted(const TObjectList &objectList, const QList<int> &indexList);
+    virtual void onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList);
+
 public:
     virtual void insertObjects(const TObjectList &objectList, const QList<int> &indexList);
     virtual QList<int> removeObjects(const TObjectList &objectList);

@@ -2,9 +2,10 @@
 #define TTILELAYERMODEL_H
 
 #include "basemodel.h"
+#include "objectgeneric.hpp"
 #include "entity/tile.h"
 
-class TTileLayerModel : public TBaseModel
+class TTileModel : public TBaseModel
 {
     Q_OBJECT
 
@@ -13,8 +14,8 @@ public:
         Background,
         Foreground
     };
-    TTileLayerModel(QObject *parent = nullptr);
-    ~TTileLayerModel();
+    TTileModel(QObject *parent = nullptr);
+    ~TTileModel();
 
     LayerType layerType() const;
     void setLayerType(const LayerType &layerType);
@@ -22,19 +23,8 @@ public:
     TTileList tileList() const;
     int tileSize() const;
 
-    void insertTile(TTile *tile, int index = -1);
-    void insertTile(const TTileList &tileList, const QList<int> &indexList = QList<int>());
-    int removeTile(int index);
-    int removeTile(TTile *tile);
-    QList<int> removeTile(const QList<int> &indexList);
-    QList<int> removeTile(const TTileList &tileList);
-
     TTile *createTile(TTileId *tileId, const QPointF &pos = QPointF());
     TTile *getTile(int index) const;
-
-signals:
-    void tileInserted(const TTileList &tileList, const QList<int> &indexList);
-    void tileRemoved(const TTileList &tileList, const QList<int> &indexList);
 
 private:
     LayerType mLayerType;
@@ -52,10 +42,11 @@ public:
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
-    // TBaseModel interface
 public:
-    void insertObjects(const TObjectList &objectList, const QList<int> &indexList);
-    QList<int> removeObjects(const TObjectList &objectList);
+    DECL_GENERIC_FUNCTIONS(Tile);
+
+signals:
+    DECL_GENERIC_SIGNALS(Tile);
 };
 
 

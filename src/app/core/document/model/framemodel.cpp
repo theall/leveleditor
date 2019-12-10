@@ -1,10 +1,21 @@
 #include "framemodel.h"
+#include "basemodel.h"
+#include "entity/animation.h"
+
+#define P_NAME "FrameModel"
 
 TFrameModel::TFrameModel(QObject *parent) :
     TBaseModel(TBaseModel::FRAME, parent)
   , mAnimation(nullptr)
 {
-    setName(tr("FrameModel"));
+    setName(P_NAME);
+}
+
+TFrameModel::TFrameModel(TAnimation *animation, QObject *parent) :
+    TBaseModel(TBaseModel::FRAME, parent)
+  , mAnimation(animation)
+{
+    setName(P_NAME);
 }
 
 TFrameModel::~TFrameModel()
@@ -21,6 +32,8 @@ void TFrameModel::readFromStream(QDataStream &stream)
 
     mAnimation = new TAnimation(this);
     mAnimation->readFromStream(stream);
+
+    mFrameList = mAnimation->getFrameList();
 }
 
 void TFrameModel::saveToStream(QDataStream &stream) const
@@ -54,6 +67,20 @@ QVariant TFrameModel::data(const QModelIndex &index, int role) const
         }
     }
     return QVariant();
+}
+
+void TFrameModel::onObjectInserted(const TObjectList &, const QList<int> &)
+{
+    if(mAnimation) {
+        mAnimation->setFrameList(mFrameList);
+    }
+}
+
+void TFrameModel::onObjectRemoved(const TObjectList &, const QList<int> &)
+{
+    if(mAnimation) {
+        mAnimation->setFrameList(mFrameList);
+    }
 }
 
 void TFrameModel::clear()
@@ -90,3 +117,5 @@ TFrame *TFrameModel::getFrame(int index) const
 {
     return mAnimation?mAnimation->getFrame(index):nullptr;
 }
+
+IMPL_GENERIC_FUNCTIONS(Frame)

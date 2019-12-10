@@ -1,23 +1,31 @@
 #ifndef SCENEMODEL_H
 #define SCENEMODEL_H
 
-#include "basemodel.h"
-#include "animationmodel.h"
-#include "areamodel.h"
-#include "boxmodel.h"
-#include "dareamodel.h"
-#include "eventmodel.h"
-#include "tilelayermodel.h"
-#include "platmodel.h"
-#include "respawnmodel.h"
-#include "triggermodel.h"
-#include "wallmodel.h"
-#include "enemyfactorymodel.h"
-#include "../property/propertyobject.h"
-
 #include <QColor>
+#include <QRectF>
 
+#include "basemodel.h"
+
+class TAreaModel;
+class TBoxModel;
+class TDAreaModel;
+class TEventModel;
+class TPlatModel;
+class TRespawnModel;
+class TTriggerModel;
+class TWallModel;
+class TEnemyFactoryModel;
+class TTileModel;
+class TTileModel;
+class TTileModel;
+class TTileModel;
+class TTileModel;
+class TTileModel;
+class TAnimationModel;
 class TPointObject;
+class TPropertySheet;
+class TTile;
+
 class TSceneModel : public TBaseModel
 {
     Q_OBJECT
@@ -35,12 +43,12 @@ public:
     TTriggerModel *getTriggersModel() const;
     TWallModel *getWallsModel() const;
     TEnemyFactoryModel *getEnemyFactoryModel() const;
-    TTileLayerModel *getTileLayerModel1() const;
-    TTileLayerModel *getTileLayerModel2() const;
-    TTileLayerModel *getTileLayerModel3() const;
-    TTileLayerModel *getTileLayerModel4() const;
-    TTileLayerModel *getTileLayerModel5() const;
-    TTileLayerModel *getTileLayerModel6() const;
+    TTileModel *getTileLayerModel1() const;
+    TTileModel *getTileLayerModel2() const;
+    TTileModel *getTileLayerModel3() const;
+    TTileModel *getTileLayerModel4() const;
+    TTileModel *getTileLayerModel5() const;
+    TTileModel *getTileLayerModel6() const;
     TAnimationModel *getAnimationsModel() const;
 
     QColor getBackgroundColor() const;
@@ -54,7 +62,7 @@ public:
     TBaseModel *getCurrentModel() const;
     int getCurrentIndex() const;
 
-    TTileLayerModel *getCurrentAsTileLayerModel() const;
+    TTileModel *getCurrentAsTileLayerModel() const;
     TBaseModel::Type getCurretnModelType() const;
 
     bool isCurrentTileLayerModel() const;
@@ -78,9 +86,9 @@ private:
     TPropertyObject *mPropertyObject;
     TPropertySheet *mPropertySheet;
 
-    TTileLayerModel *mTileLayerModel1;
-    TTileLayerModel *mTileLayerModel2;
-    TTileLayerModel *mTileLayerModel3;
+    TTileModel *mTileLayerModel1;
+    TTileModel *mTileLayerModel2;
+    TTileModel *mTileLayerModel3;
     TAnimationModel *mAnimationModel;
     TAreaModel *mAreasModel;
     TBoxModel *mBoxModel;
@@ -91,11 +99,11 @@ private:
     TTriggerModel *mTriggersModel;
     TWallModel *mWallsModel;
     TEnemyFactoryModel *mEnemyFactoryModel;
-    TTileLayerModel *mTileLayerModel4;
-    TTileLayerModel *mTileLayerModel5;
-    TTileLayerModel *mTileLayerModel6;
+    TTileModel *mTileLayerModel4;
+    TTileModel *mTileLayerModel5;
+    TTileModel *mTileLayerModel6;
     TBaseModelList mBaseModelList;
-    QList<TTileLayerModel*> mTileLayerModelList;
+    QList<TTileModel*> mTileLayerModelList;
     int mCurrentIndex;
     TPointObject *mFlagPointObject1;
     TPointObject *mFlagPointObject2;

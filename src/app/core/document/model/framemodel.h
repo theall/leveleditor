@@ -2,14 +2,17 @@
 #define FRAMEMODEL_H
 
 #include "basemodel.h"
-#include "entity/animation.h"
+#include "entity/frame.h"
+#include "objectgeneric.hpp"
 
+class TAnimation;
 class TFrameModel : public TBaseModel
 {
     Q_OBJECT
 
 public:
     explicit TFrameModel(QObject *parent = nullptr);
+    TFrameModel(TAnimation *animation, QObject *parent = nullptr);
     ~TFrameModel();
 
     void clear();
@@ -21,6 +24,7 @@ public:
     TFrame *getFrame(int index) const;
 
 private:
+    TFrameList mFrameList;
     TAnimation *mAnimation;
 
     // TIO interface
@@ -33,6 +37,17 @@ public:
     int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
+
+public:
+    DECL_GENERIC_FUNCTIONS(Frame);
+
+signals:
+    DECL_GENERIC_SIGNALS(Frame);
+
+    // TBaseModel interface
+protected:
+    virtual void onObjectInserted(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
+    virtual void onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
 };
 
 typedef QList<TFrameModel*> TFrameModelList;
