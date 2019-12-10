@@ -14,6 +14,7 @@ public:
     TAnimationDock(QWidget *parent = nullptr);
     ~TAnimationDock();
 
+    TContainer *getContainer() const;
     TAnimationListView *getAnimationListView() const;
     TFrameListView *getFrameListView() const;
 

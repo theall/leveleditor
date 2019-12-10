@@ -50,7 +50,7 @@ QVariant TBoxModel::data(const QModelIndex &index, int role) const
     {
         if(role==Qt::DisplayRole)
         {
-            return tr("Box %d").arg(row+1);
+            return tr("Box %1").arg(row+1);
         }
     }
     return QVariant();

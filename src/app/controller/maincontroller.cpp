@@ -23,6 +23,7 @@ TMainController::TMainController(QObject *parent) :
   , mMapsDockController(new TMapsDockController(this))
   , mLayersController(new TLayersController(this))
   , mAnimationController(new TAnimationController(this))
+  , mObjectController(new TObjectController(this))
 {
     connect(mTabController, SIGNAL(requestCloseDocument(TDocument*)), this, SLOT(slotRequestCloseDocument(TDocument*)));
     connect(mTabController, SIGNAL(requestSwitchToDocument(TDocument*)), this, SLOT(slotRequestSwitchToDocument(TDocument*)));
@@ -46,6 +47,7 @@ TMainController::TMainController(QObject *parent) :
             SLOT(slotRequestDisplayPropertySheet(TPropertySheet*)));
 
     connect(mAnimationController, SIGNAL(requestAdjustFPS(int)), this, SLOT(slotRequestAdjustFPS(int)));
+    connect(mAnimationController, SIGNAL(requestAddFrames()), this, SLOT(slotRequestAddFrames()));
 
     connect(TAssetsManager::getInstance(), SIGNAL(onProgress(int,int)), this, SLOT(slotOnResourceLoadProgress(int,int)));
 }
@@ -371,6 +373,11 @@ void TMainController::slotRequestAdjustFPS(int fps)
     if(!graphicsScene)
         return;
     graphicsScene->setFps(fps);
+}
+
+void TMainController::slotRequestAddFrames()
+{
+
 }
 
 bool TMainController::confirmAllSaved()

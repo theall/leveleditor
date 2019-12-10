@@ -11,7 +11,8 @@ SOURCES += \
     $$PWD/tilesetcontroller.cpp \
     $$PWD/characterpanelcontroller.cpp \
     $$PWD/mapsdockcontroller.cpp \
-    $$PWD/animationcontroller.cpp
+    $$PWD/animationcontroller.cpp \
+    $$PWD/objectcontroller.cpp
 
 HEADERS  += \
     $$PWD/abstractcontroller.h \
@@ -26,4 +27,5 @@ HEADERS  += \
     $$PWD/tilesetcontroller.h \
     $$PWD/characterpanelcontroller.h \
     $$PWD/mapsdockcontroller.h \
-    $$PWD/animationcontroller.h
+    $$PWD/animationcontroller.h \
+    $$PWD/objectcontroller.h

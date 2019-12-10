@@ -45,7 +45,7 @@ QVariant TWallModel::data(const QModelIndex &index, int role) const
     {
         if(role==Qt::DisplayRole)
         {
-            return tr("Wall %d").arg(row+1);
+            return tr("Wall %1").arg(row+1);
         }
     }
     return QVariant();

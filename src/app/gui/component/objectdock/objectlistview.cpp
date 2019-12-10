@@ -13,3 +13,8 @@ TObjectListView::~TObjectListView()
 
 }
 
+void TObjectListView::setModel(QAbstractItemModel *model)
+{
+    QTableView::setModel(model);
+}
+

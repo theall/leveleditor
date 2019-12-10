@@ -55,7 +55,7 @@ QVariant TRespawnModel::data(const QModelIndex &index, int role) const
     {
         if(role==Qt::DisplayRole)
         {
-            return tr("Respawn Point %d").arg(row+1);
+            return tr("Respawn Point %1").arg(row+1);
         }
     }
     return QVariant();

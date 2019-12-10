@@ -4,6 +4,7 @@
 #include "abstractcontroller.h"
 
 class TAnimationDock;
+class TContainer;
 class TAnimationListView;
 class TFrameListView;
 
@@ -21,16 +22,20 @@ public:
 signals:
     void requestDisplayPropertySheet(TPropertySheet *propertySheet);
     void requestAdjustFPS(int fps);
+    void requestAddFrames();
 
 private slots:
     void slotOnAnimationListViewIndexPressed(int index);
     void slotOnFrameListViewIndexPressed(int index);
+    void slotRequestAddAnimation();
 
 private:
     TAnimationDock *mAnimationDock;
+    TContainer *mContainer;
     TAnimationListView *mAnimationListView;
     TFrameListView *mFrameListView;
 
+    TAnimationModel *getAnimationModel() const;
     void selectAndCenterOn(TObjectItem *objectItem);
 
 private slots:

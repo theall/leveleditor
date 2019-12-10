@@ -109,7 +109,8 @@ SOURCES += \
     $$PWD/document/graphics/layeritem/objectitem/rectobjectitem.cpp \
     $$PWD/document/graphics/layeritem/objectitem/pointobjectitem.cpp \
     $$PWD/model/itemmodel.cpp \
-    $$PWD/document/graphics/uiitem/resizeitem.cpp
+    $$PWD/document/graphics/uiitem/resizeitem.cpp \
+    $$PWD/document/undocommand/addframecommand.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -227,7 +228,7 @@ HEADERS  += \
     $$PWD/document/graphics/layeritem/objectitem/rectobjectitem.h \
     $$PWD/document/graphics/layeritem/objectitem/pointobjectitem.h \
     $$PWD/model/itemmodel.h \
-    $$PWD/document/graphics/uiitem/resizeitem.h
-
+    $$PWD/document/graphics/uiitem/resizeitem.h \
+    $$PWD/document/undocommand/addframecommand.h
 RESOURCES += \
     $$PWD/resource/core.qrc

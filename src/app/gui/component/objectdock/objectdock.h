@@ -5,7 +5,6 @@
 #include <QToolBar>
 
 #include "objectcontainer.h"
-#include "objectlistview.h"
 #include "../basedock.h"
 class TObjectDock:public TBaseDock
 {
@@ -14,12 +13,14 @@ public:
     TObjectDock(QWidget *parent = nullptr);
     ~TObjectDock();
 
-public:
-    void retranslateUi() Q_DECL_OVERRIDE;
-    TObjectListView *getTObjectcontainer() const;
+    TObjectListView *getObjectListView() const;
 
 private:
     TObjectcontainer *mObjectcontainer;
+
+
+public:
+    void retranslateUi() Q_DECL_OVERRIDE;
 };
 
 #endif // TOBJECTDOCK_H

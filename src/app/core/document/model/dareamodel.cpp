@@ -57,7 +57,7 @@ QVariant TDAreaModel::data(const QModelIndex &index, int role) const
     {
         if(role==Qt::DisplayRole)
         {
-            return tr("Danger Area %d").arg(row+1);
+            return tr("Danger Area %1").arg(row+1);
         }
     }
     return QVariant();

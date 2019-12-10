@@ -129,15 +129,16 @@ void TContainer::slotRemoveAnimationTriggered()
 
 void TContainer::slotNewAnimationTriggered()
 {
-
+        emit requestAddAnimation();
 }
 
 void TContainer::slotAddFrameTriggered()
 {
-    QStringList fileList;
-    emit getSelectedImages(fileList);
-    if(fileList.size() > 0)
-        emit requestAddFrames(fileList, -1);
+    emit requestAddFrames();
+//    QStringList fileList;
+//    emit getSelectedImages(fileList);
+//    if(fileList.size() > 0)
+//        emit requestAddFrames(fileList, -1);
 }
 
 void TContainer::slotRemoveFrameTriggered()

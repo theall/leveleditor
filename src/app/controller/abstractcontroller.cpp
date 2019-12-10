@@ -54,4 +54,8 @@ void TAbstractController::stopMyTimer()
         mTimer->stop();
 }
 
+TSceneModel *TAbstractController::getCurrentSceneModel() const
+{
+    return mDocument?mDocument->getSceneModel():nullptr;
+}
 

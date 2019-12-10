@@ -83,10 +83,7 @@ void TLayersController::slotLayerOpacityChanged(const QList<int> &rows, float op
 
 void TLayersController::slotRequestShowLayers(const QList<int> &rows, bool show)
 {
-    if(!mDocument)
-        return;
-
-    TSceneModel *sceneModel = mDocument->getSceneModel();
+    TSceneModel *sceneModel = getCurrentSceneModel();
     if(!sceneModel)
         return;
 
@@ -99,10 +96,7 @@ void TLayersController::slotRequestShowLayers(const QList<int> &rows, bool show)
 
 void TLayersController::slotRequestLockLayers(const QList<int> &rows, bool lock)
 {
-    if(!mDocument)
-        return;
-
-    TSceneModel *sceneModel = mDocument->getSceneModel();
+    TSceneModel *sceneModel = getCurrentSceneModel();
     if(!sceneModel)
         return;
 

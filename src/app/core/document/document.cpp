@@ -256,6 +256,18 @@ void TDocument::setEditMode(const EditMode &editMode)
     emit editModeChanged(mEditMode, oldMode);
 }
 
+void TDocument::cmdAddObject(TObject *object, TBaseModel *baseModel)
+{
+    TObjectList objectList;
+    objectList.append(object);
+    TObjectAddCommand *command = new TObjectAddCommand(
+        TObjectAddCommand::ADD,
+        baseModel,
+        objectList
+    );
+    addUndoCommand(command);
+}
+
 TSceneModel *TDocument::getSceneModel() const
 {
     return mSceneModel;

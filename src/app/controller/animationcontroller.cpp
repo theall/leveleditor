@@ -1,5 +1,6 @@
 #include "animationcontroller.h"
 #include "../gui/component/animationdock/animationdock.h"
+#include "../gui/component/animationdock/container.h"
 #include "../gui/component/animationdock/animationlistview.h"
 #include "../gui/component/animationdock/framelistview.h"
 #include "../gui/component/tabwidget/graphicsview.h"
@@ -8,6 +9,7 @@
 
 TAnimationController::TAnimationController(QObject *parent) :
     TAbstractController(parent)
+  , mContainer(nullptr)
   , mAnimationListView(nullptr)
   , mFrameListView(nullptr)
 {
@@ -26,6 +28,10 @@ bool TAnimationController::joint(TMainWindow *mainWindow, TCore *core)
 
     mAnimationDock = mainWindow->getAnimationDock();
     connect(mAnimationDock, SIGNAL(requestAdjustFPS(int)), this, SIGNAL(requestAdjustFPS(int)));
+
+    mContainer = mainWindow->getAnimationDock()->getContainer();
+    connect(mContainer, SIGNAL(requestAddFrames()), this, SIGNAL(requestAddFrames()));
+    connect(mContainer, SIGNAL(requestAddAnimation()), this, SLOT(slotRequestAddAnimation()));
 
     mAnimationListView = mainWindow->getAnimationDock()->getAnimationListView();
     connect(mAnimationListView, SIGNAL(indexPressed(int)), this, SLOT(slotOnAnimationListViewIndexPressed(int)));
@@ -57,7 +63,7 @@ void TAnimationController::slotOnAnimationListViewIndexPressed(int index)
     if(!mDocument)
         return;
 
-    TAnimationModel *animationModel = static_cast<TAnimationModel*>(mAnimationListView->model());
+    TAnimationModel *animationModel = getAnimationModel();
     if(!animationModel)
         return;
 
@@ -91,6 +97,20 @@ void TAnimationController::slotOnFrameListViewIndexPressed(int index)
     emit requestDisplayPropertySheet(frameModel->getFramePropertySheet(index));
 }
 
+TAnimationModel *TAnimationController::getAnimationModel() const
+{
+    return static_cast<TAnimationModel*>(mAnimationListView->model());
+}
+
+void TAnimationController::slotRequestAddAnimation()
+{
+    TAnimationModel *animationModel = getAnimationModel();
+    if(!animationModel)
+        return;
+
+    TAnimation *animation = new TAnimation(animationModel);
+    mDocument->cmdAddObject(animation, animationModel);
+}
 
 void TAnimationController::selectAndCenterOn(TObjectItem *objectItem)
 {

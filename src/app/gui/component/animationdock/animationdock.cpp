@@ -26,6 +26,11 @@ TFrameListView *TAnimationDock::getFrameListView() const
     return mContainer->getFrameListView();
 }
 
+TContainer *TAnimationDock::getContainer() const
+{
+    return mContainer;
+}
+
 void TAnimationDock::retranslateUi()
 {
     setWindowTitle(tr("Animation"));

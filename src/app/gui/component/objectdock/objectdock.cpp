@@ -18,7 +18,7 @@ void TObjectDock::retranslateUi()
     setWindowTitle(tr("Object"));
 }
 
-TObjectListView *TObjectDock::getTObjectcontainer() const
+TObjectListView *TObjectDock::getObjectListView() const
 {
     return mObjectcontainer->getobjectListView();
 }

@@ -55,7 +55,7 @@ QVariant TEnemyFactoryModel::data(const QModelIndex &index, int role) const
     {
         if(role==Qt::DisplayRole)
         {
-            return tr("Enemy %d").arg(row+1);
+            return tr("Enemy %1").arg(row+1);
         }
     }
     return QVariant();

@@ -55,7 +55,7 @@ QVariant TEventModel::data(const QModelIndex &index, int role) const
     {
         if(role==Qt::DisplayRole)
         {
-            return tr("Event %d").arg(row+1);
+            return tr("Event %1").arg(row+1);
         }
     }
     return QVariant();

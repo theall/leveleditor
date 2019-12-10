@@ -29,6 +29,8 @@ signals:
     void requestCopyFrames(const QList<int> &indexes);
     void requestCloneFrames(const QList<int> &indexes);
     void requestPasteFrames(int pos);
+    void requestAddAnimation();
+    void requestAddFrames();
     void requestPlayAnimation();
     void requestStopPlayAnimation();
     void requestAdjustFPS(int fps);

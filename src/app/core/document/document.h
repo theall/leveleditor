@@ -58,6 +58,8 @@ public:
     EditMode getEditMode() const;
     void setEditMode(const EditMode &editMode);
 
+    void cmdAddObject(TObject *object, TBaseModel *baseModel);
+
 signals:
     void projectFileChanged();
     void dirtyFlagChanged(bool isDirty);

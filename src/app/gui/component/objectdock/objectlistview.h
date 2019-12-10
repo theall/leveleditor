@@ -12,6 +12,8 @@ class TObjectListView : public QTableView
 public:
     TObjectListView(QWidget *parent=nullptr);
     ~TObjectListView();
+
+    void setModel(QAbstractItemModel *model);
 };
 
 #endif // OBJECTLISTVIEW_H

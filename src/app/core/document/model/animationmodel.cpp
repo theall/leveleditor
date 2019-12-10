@@ -68,9 +68,12 @@ void TAnimationModel::onObjectInserted(const TObjectList &objectList, const QLis
     for(TAnimation *animation : aniamtionList) {
         TFrameModel *frameModel = new TFrameModel(animation, this);
         frameModelList.append(frameModel);
+        mAnimationMap[animation] = frameModel;
     }
     QList<int> list = indexList;
+    beginResetModel();
     insertIntoContainer<TFrameModel*>(mFrameModelList, frameModelList, list);
+    endResetModel();
 }
 
 void TAnimationModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &)
@@ -82,7 +85,9 @@ void TAnimationModel::onObjectRemoved(const TObjectList &objectList, const QList
         Q_ASSERT(frameModel);
         frameModelList.append(frameModel);
     }
+    beginResetModel();
     removeFromContainer(mFrameModelList, frameModelList);
+    endResetModel();
 }
 
 void TAnimationModel::clear()

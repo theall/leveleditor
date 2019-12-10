@@ -13,6 +13,7 @@
 #include "mapsdockcontroller.h"
 #include "layerscontroller.h"
 #include "animationcontroller.h"
+#include "objectController.h"
 
 class TMainController : public TAbstractController
 {
@@ -69,6 +70,7 @@ private slots:
     // From TAnimationController
     void slotRequestDisplayPropertySheet(TPropertySheet *propertySheet);
     void slotRequestAdjustFPS(int fps);
+    void slotRequestAddFrames();
 
 private:
     TOptionsController *mOptionsController;
@@ -81,6 +83,7 @@ private:
     TMapsDockController *mMapsDockController;
     TLayersController *mLayersController;
     TAnimationController *mAnimationController;
+    TObjectController *mObjectController;
 
     bool confirmAllSaved();
     void createNewDocument(const QString &moduleName, const TMap::Type &mapType, int mapId);

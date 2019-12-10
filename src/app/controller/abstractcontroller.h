@@ -22,6 +22,8 @@ public:
     void startMyTimer(int mSecs = 50);
     void stopMyTimer();
 
+    TSceneModel *getCurrentSceneModel() const;
+
 protected slots:
     virtual void slotTimerEvent() = 0;
 

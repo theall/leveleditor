@@ -45,7 +45,7 @@ QVariant TPlatModel::data(const QModelIndex &index, int role) const
     {
         if(role==Qt::DisplayRole)
         {
-            return tr("Platform %d").arg(row+1);
+            return tr("Platform %1").arg(row+1);
         }
     }
     return QVariant();
