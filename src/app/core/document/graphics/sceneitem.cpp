@@ -36,7 +36,7 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
   , mPropertylayerItem(new TPropertyLayerItem(sceneModel, this))
 {
     Q_ASSERT(mSceneModel);
-    setFlag(QGraphicsItem::ItemHasNoContents);
+    //setFlag(QGraphicsItem::ItemHasNoContents);
     setAcceptHoverEvents(true);
 
     connect(mSceneModel, SIGNAL(currentIndexChanged(int)), this, SLOT(slotOnSceneModelCurrentIndexChanged(int)));
@@ -75,7 +75,6 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
         }
         if(layerItem) {
             connect(layerItem, SIGNAL(boundingRectChanged(QRectF)), this, SLOT(slotLayerBoundingRectChanged(QRectF)));
-            mBoundingRect = mBoundingRect.united(layerItem->boundingRect());
             internalAdd(baseModel, layerItem);
         } else {
             qDebug() << "Unprocessed model:" << baseModel->name();
@@ -103,6 +102,8 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
         layerItem->setZValue(index++);
     }
     setCurrentLayerItem(currentLayerItem);
+
+    calcBoundingRect();
 }
 
 TSceneItem::~TSceneItem()
@@ -203,7 +204,7 @@ QRectF TSceneItem::boundingRect() const
 
 void TSceneItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    QPen pen(Qt::green, 1, Qt::SolidLine);
+    QPen pen(Qt::gray, 1, Qt::SolidLine);
     painter->setPen(pen);
     painter->drawRect(mBoundingRect);
 }

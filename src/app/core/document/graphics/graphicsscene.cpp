@@ -19,6 +19,8 @@
 #include "../undocommand/removeselectioncommand.h"
 
 #define TOP_Z_VALUE 10000
+#define ADJUST_SIZE 100
+
 TGraphicsScene::TGraphicsScene(QObject *parent) :
     QGraphicsScene(parent)
   , mFps(60)
@@ -41,8 +43,6 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
   , mTileId(nullptr)
   , mEditMode(DEFAULT)
 {
-    setSize(50000, 50000);
-
     mUiItemsGroup->setZValue(TOP_Z_VALUE);
     addItem(mUiItemsGroup);
 
@@ -724,13 +724,8 @@ void TGraphicsScene::slotPropertyItemValueChanged(TPropertyItem *item, const QVa
 
 void TGraphicsScene::slotOnSceneItemBoundingRectChanged(const QRectF &rect)
 {
-    Q_UNUSED(rect);
-//    QRectF currentRect = sceneRect();
-//    if(currentRect.contains(rect))
-//        return;
-
-//    qDebug() << "Set scene rect " << currentRect.united(rect);
-//    setSceneRect(currentRect.united(rect));
+    QRectF r = rect.adjusted(-ADJUST_SIZE, -ADJUST_SIZE, ADJUST_SIZE, ADJUST_SIZE);
+    setSceneRect(r);
 }
 
 void TGraphicsScene::setEditMode(int editMode)
@@ -750,8 +745,7 @@ void TGraphicsScene::showSelectedItemsBorder(bool visible)
 
 void TGraphicsScene::setSceneRect(const QRectF &rect)
 {
-    QRectF flatedRect = rect.adjusted(-100,-100,100,100);
-    QGraphicsScene::setSceneRect(flatedRect);
+    QGraphicsScene::setSceneRect(rect);
 }
 
 QImage TGraphicsScene::toImage(const QSize &size)

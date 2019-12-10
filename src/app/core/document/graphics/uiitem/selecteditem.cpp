@@ -49,8 +49,8 @@ void TSelectedItem::setObjectItem(TObjectItem *objectItem)
                 SLOT(slotOnObjectDestroyed(QObject*)));
         if(!isVisible())
             setVisible(true);
-
-        mResizeItem->setVisible(qgraphicsitem_cast<TRectObjectItem*>(mObjectItem));
+        bool isRectItem = dynamic_cast<TRectObjectItem*>(mObjectItem)!=nullptr;
+        mResizeItem->setVisible(isRectItem);
     } else {
         setBoundingRect();
         if(isVisible())
