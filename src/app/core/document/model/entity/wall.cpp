@@ -17,7 +17,11 @@ TWall::TWall(const QRect &rect, QObject *parent) :
 
 void TWall::saveToStream(QDataStream &stream) const
 {
-    stream << getRect().toRect();
+    QRect rect = getRect().toRect();
+    stream << rect.left();
+    stream << rect.top();
+    stream << rect.width();
+    stream << rect.height();
 }
 
 void TWall::readFromStream(QDataStream &stream)

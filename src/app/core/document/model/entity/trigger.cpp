@@ -28,7 +28,11 @@ TTrigger::TTrigger(QObject *parent) :
 
 void TTrigger::saveToStream(QDataStream &stream) const
 {
-    stream << getRect();
+    QRect rect = getRect().toRect();
+    stream << rect.left();
+    stream << rect.top();
+    stream << rect.width();
+    stream << rect.height();
     stream << mPropertySheet->getValue(PID_TRIGGER_WAY).toInt();
     stream << mPropertySheet->getValue(PID_TRIGGER_ON).toInt();
     stream << mPropertySheet->getValue(PID_TRIGGER_ACTION).toInt();
@@ -48,7 +52,10 @@ void TTrigger::saveToStream(QDataStream &stream) const
 
 void TTrigger::readFromStream(QDataStream &stream)
 {
-    QRect rect;
+    int x;
+    int y;
+    int w;
+    int h;
     int way;
     int on;
     int action;
@@ -64,7 +71,10 @@ void TTrigger::readFromStream(QDataStream &stream)
     QPoint platPos;
     int onStatus;
     int offStatus;
-    stream >> rect;
+    stream >> x;
+    stream >> y;
+    stream >> w;
+    stream >> h;
     stream >> way;
     stream >> on;
     stream >> action;
@@ -80,7 +90,7 @@ void TTrigger::readFromStream(QDataStream &stream)
     stream >> platPos;
     stream >> onStatus;
     stream >> offStatus;
-    setRect(rect);
+    setRect(x, y, w, h);
     mPropertySheet->setValue(PID_TRIGGER_WAY, way);
     mPropertySheet->setValue(PID_TRIGGER_ON, on);
     mPropertySheet->setValue(PID_TRIGGER_ACTION, action);

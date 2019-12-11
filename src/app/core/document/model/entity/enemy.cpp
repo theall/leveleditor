@@ -62,13 +62,15 @@ QRectF TEnemy::getRect() const
 
 void TEnemy::saveToStream(QDataStream &stream) const
 {
+	int team = mPropertySheet->getValue(PID_ENEMY_TEAM).toInt();
     stream << pos().toPoint();
     stream << mPropertySheet->getValue(PID_ENEMY_DIR).toInt();
     stream << mPropertySheet->getValue(PID_ENEMY_LIFE).toInt();
     stream << mPropertySheet->getValue(PID_ENEMY_LIVES).toInt();
+    stream << team;
     stream << mPropertySheet->getValue(PID_ENEMY_DAMAGE).toInt();
     stream << mPropertySheet->getValue(PID_ENEMY_AI_LEVEL).toInt();
-    stream << mPropertySheet->getValue(PID_ENEMY_TEAM).toInt();
+    stream << team;
     stream << mPropertySheet->getValue(PID_ENEMY_CATEGORY).toInt()+1;
     stream << mPropertySheet->getValue(PID_ENEMY_TYPE).toInt();
     stream << mPropertySheet->getValue(PID_ENEMY_DELAY).toInt();
