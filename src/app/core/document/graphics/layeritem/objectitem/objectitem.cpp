@@ -81,8 +81,8 @@ void TObjectItem::slotPropertyItemValueChanged(TPropertyItem *item, const QVaria
         mCurrentPos = newPos;
         mBoundingRect.translate(offset);
         emit boundingRectChanged(mBoundingRect);
-    } else if(pid == PID_OBJECT_SIZE) {
-        mBoundingRect.setSize(item->value().toSizeF());
+    } else if(pid == PID_OBJECT_RECT) {
+        mBoundingRect = item->value().toRectF();
         emit boundingRectChanged(mBoundingRect);
     }
 }

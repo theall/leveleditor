@@ -13,7 +13,7 @@ public:
     virtual QPointF pos() const;
     virtual void setPos(const QPointF &pos);
 
-    virtual void move(const QPointF &offset);
+    virtual void move(const QPointF &offset) Q_DECL_OVERRIDE;
     void setTypeString(const QString &typeString);
 
     TPropertyItem *posPropertyItem() const;

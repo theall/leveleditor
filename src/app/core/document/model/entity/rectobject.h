@@ -1,9 +1,12 @@
 #ifndef TRECTOBJECT_H
 #define TRECTOBJECT_H
 
-#include "pointobject.h"
+#include <QList>
 
-class TRectObject : public TPointObject
+#include "object.h"
+#include "../../base/io.h"
+
+class TRectObject : public TObject, TIO
 {
 public:
     TRectObject(TObject::Type type, QObject *parent = Q_NULLPTR);
@@ -17,8 +20,11 @@ public:
     void setRect(const QRectF &rect);
     void setRect(int x, int y, int w, int h);
 
+    void adjust(const QMarginsF &marings);
+    virtual void move(const QPointF &offset) Q_DECL_OVERRIDE;
+
 private:
-    TPropertyItem *mSizePropertyItem;
+    TPropertyItem *mRectPropertyItem;
 
     void initPropertySheet();
     void internalSetRect(const QRectF &rect);
@@ -28,5 +34,6 @@ public:
     void saveToStream(QDataStream &stream) const;
     void readFromStream(QDataStream &stream);
 };
+typedef QList<TRectObject*> TRectObjectList;
 
 #endif // TRECTOBJECT_H

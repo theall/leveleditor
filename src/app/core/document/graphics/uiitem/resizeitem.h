@@ -1,7 +1,7 @@
 #ifndef TRESIZEITEM_H
 #define TRESIZEITEM_H
 
-#include <QGraphicsItem>
+#include <QGraphicsObject>
 
 enum HandleAnchor
 {
@@ -16,8 +16,10 @@ enum HandleAnchor
     HA_COUNT
 };
 
-class THandleItem : public QGraphicsItem
+class THandleItem : public QGraphicsObject
 {
+    Q_OBJECT
+
 public:
     THandleItem(const HandleAnchor &handleAnchor, QGraphicsItem *parent = nullptr);
 
@@ -25,13 +27,19 @@ public:
 
     void setAnchor(const HandleAnchor &anchor);
 
-    void setPos(float x, float y);
-    void setPos(const QPointF &pos);
+    void setPos(float x, float y, bool emitSignal = true);
+    void setPos(const QPointF &pos, bool emitSignal = true);
+
+    void move(const QPointF &offset, bool emitSignal = true);
+
+signals:
+    void moved(const QPointF &offset);
 
 private:
-    HandleAnchor mAnchor;
-    QRectF mBoudingRect;
     QPointF mPoint;
+    HandleAnchor mAnchor;
+    QRectF mPaintingRect;
+    QRectF mBoundingRect;
 
     // QGraphicsItem interface
 public:
@@ -39,16 +47,31 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
-class TResizeItem : public QGraphicsItem
+class TResizeItem : public QGraphicsObject
 {
+    Q_OBJECT
+
 public:
     TResizeItem(QGraphicsItem *parent = nullptr);
 
     void setRect(const QRectF &rect);
 
+    THandleItem *currentHandleItem() const;
+    void setCurrentHandleItem(THandleItem *currentHandleItem);
+
+    bool startResizing();
+    void endResizing();
+
 private:
     QRectF mBoundingRect;
-    THandleItem* mHandleItems[HA_COUNT];
+    THandleItem *mCurrentHandleItem;
+    THandleItem *mHandleItems[HA_COUNT];
+
+signals:
+    void requestAdjustRect(const QMarginsF &margins);
+
+private slots:
+    void slotHandleMoved(const QPointF &offset);
 
     // QGraphicsItem interface
 public:

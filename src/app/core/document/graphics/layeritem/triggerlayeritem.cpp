@@ -16,13 +16,3 @@ TTriggerLayerItem::~TTriggerLayerItem()
 {
 
 }
-
-QRectF TTriggerLayerItem::calcBoundingRect()
-{
-    QRectF newRect;
-    for(TTriggerItem *triggerItem : mTriggerItemList) {
-        newRect = newRect.united(triggerItem->boundingRect());
-    }
-    setBoundingRect(newRect);
-    return newRect;
-}

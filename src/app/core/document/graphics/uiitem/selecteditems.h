@@ -2,7 +2,11 @@
 #define TSELECTEDITEMS
 
 #include "selecteditem.h"
+
+#include "../../model/entity/rectobject.h"
+
 #include "../layeritem/objectitem/objectitem.h"
+#include "../layeritem/objectitem/tileitem.h"
 
 #include <QMap>
 
@@ -20,7 +24,9 @@ public:
     int removeObjectItem(TObjectItem *objectItem);
     bool containsObjectItem(TObjectItem *objectItem) const;
     TObjectItemList getSelectedObjectItemList() const;
+    TTileItemList getSelectedTileItemList() const;
     TObjectList getSelectedObjectList() const;
+    TRectObjectList getSelectedRectObjectList() const;
 
     void clear();
     bool isEmpty() const;
@@ -32,6 +38,9 @@ public:
      * @return TObject::Type
      */
     TObject::Type getObjectType() const;
+
+    bool startResizing();
+    void endResizing();
 
 protected:
     void timerEvent(QTimerEvent *event) override;

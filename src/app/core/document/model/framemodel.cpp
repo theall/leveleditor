@@ -94,10 +94,9 @@ void TFrameModel::clear()
     mAnimation->clear();
 }
 
-void TFrameModel::insetTile(TTile *tile, TFrameModel *frameModel)
+void TFrameModel::insetTile(TTile *tile, int index)
 {
-    TFrame *frame = new TFrame(tile, frameModel);
-    insertFrame(frame);
+    insertFrame(new TFrame(tile, this), index);
 }
 
 TAnimation *TFrameModel::animation() const

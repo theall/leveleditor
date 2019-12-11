@@ -5,7 +5,9 @@
 #include "../gui/component/animationdock/framelistview.h"
 #include "../gui/component/tabwidget/graphicsview.h"
 
+#include "../core/document/model/entity/tile.h"
 #include "../core/document/model/animationmodel.h"
+#include "../core/document/graphics/layeritem/objectitem/tileitem.h"
 
 TAnimationController::TAnimationController(QObject *parent) :
     TAbstractController(parent)
@@ -116,11 +118,10 @@ void TAnimationController::slotRequestAddFrames()
 {
     TFrameModel *frameModel = static_cast<TFrameModel*>(mFrameListView->model());
     TGraphicsScene *graphicsScene = static_cast<TGraphicsScene*>(mMainWindow->getCurrentGraphicsScene());
-    TObjectItemList objectItemList = graphicsScene->getObjectItemList();
+    TObjectItemList objectItemList = graphicsScene->getSelectedObjectItemList();
     for(TObjectItem *objectItem : objectItemList){
         TTileItem *tileItem = (dynamic_cast<TTileItem*>(objectItem));
-        TTile *tile = tileItem->tile();
-        frameModel->insetTile(tile,frameModel);
+        frameModel->insetTile(tileItem->tile());
     }
 }
 

@@ -110,7 +110,8 @@ SOURCES += \
     $$PWD/document/graphics/layeritem/objectitem/pointobjectitem.cpp \
     $$PWD/model/itemmodel.cpp \
     $$PWD/document/graphics/uiitem/resizeitem.cpp \
-    $$PWD/document/undocommand/addframecommand.cpp
+    $$PWD/document/undocommand/addframecommand.cpp \
+    $$PWD/document/undocommand/rectresizeundocommand.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -229,6 +230,8 @@ HEADERS  += \
     $$PWD/document/graphics/layeritem/objectitem/pointobjectitem.h \
     $$PWD/model/itemmodel.h \
     $$PWD/document/graphics/uiitem/resizeitem.h \
-    $$PWD/document/undocommand/addframecommand.h
+    $$PWD/document/undocommand/addframecommand.h \
+    $$PWD/document/undocommand/rectresizeundocommand.h \
+    $$PWD/document/undocommand/undocommandutils.hpp
 RESOURCES += \
     $$PWD/resource/core.qrc

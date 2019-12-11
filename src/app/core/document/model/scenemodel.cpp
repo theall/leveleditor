@@ -60,11 +60,11 @@ TSceneModel::TSceneModel(QObject *parent) :
     mBaseModelList.append(mTileLayerModel1);
     mBaseModelList.append(mTileLayerModel2);
     mBaseModelList.append(mTileLayerModel3);
-    mBaseModelList.append(mAnimationModel);
+    //mBaseModelList.append(mAnimationModel);
     mBaseModelList.append(mAreasModel);
     mBaseModelList.append(mBoxModel);
     mBaseModelList.append(mDAreasModel);
-    mBaseModelList.append(mEventsModel);
+    //mBaseModelList.append(mEventsModel);
     mBaseModelList.append(mPlatformsModel);
     mBaseModelList.append(mRespawnsModel);
     mBaseModelList.append(mTriggersModel);

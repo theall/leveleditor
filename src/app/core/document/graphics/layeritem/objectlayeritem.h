@@ -13,10 +13,6 @@ public:
 
 protected:
     TObjectItemList mObjectItemList;
-
-    // TLayerItem interface
-public:
-    QRectF calcBoundingRect() Q_DECL_OVERRIDE;
 };
 
 #endif // TOBJECTLAYERITEM_H

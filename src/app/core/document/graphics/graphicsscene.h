@@ -8,17 +8,21 @@
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 
-#include "sceneitem.h"
-#include "uiitem/hovereditem.h"
-#include "uiitem/tilestampitem.h"
-#include "uiitem/selecteditems.h"
-#include "uiitem/objectareaitem.h"
-#include "uiitem/selectionrectangle.h"
-#include "../model/scenemodel.h"
+#include "layeritem/layeritem.h"
 #include "layeritem/objectitem/objectitem.h"
+#include "layeritem/objectitem/rectobjectitem.h"
 
 class TTileId;
 class TDocument;
+class TSceneModel;
+class TSceneItem;
+class THandleItem;
+class THoveredItem;
+class TTileStampItem;
+class TSelectedItems;
+class TObjectAreaItem;
+class TSelectionRectangle;
+
 class TGraphicsScene : public QGraphicsScene
 {
     Q_OBJECT
@@ -46,13 +50,13 @@ public:
     void setFps(int fps);
     void setSceneModel(TSceneModel *sceneModel);
 
+    TObjectItemList getSelectedObjectItemList() const;
     void selectObjectItemList(const TObjectItemList &objectItemList);
     void selectObjectItem(TObjectItem *objectItem);
     void removeSelectedItems();
 
     TObject *getTopMostObject(const QPointF &pos) const;
     TObjectItem *getTopMostObjectItem(const QPointF &pos) const;
-    TObjectItemList getObjectItemList() const;
     TObjectItemList getObjectItemList(const QRectF &rect) const;
     TObjectItemList getObjectItemList(const QRectF &rect, TObject::Type objectType) const;
     TObjectItemList getObjectItemList(const QRectF &rect, TObjectItem *objectItem) const;
@@ -107,6 +111,7 @@ private:
     THoveredItem *mHoveredItem;
     TTileStampItem *mTileStampItem;
     TSelectedItems *mSelectedItems;
+    THandleItem *mResizeHandle;
     TObjectAreaItem *mObjectAreaItem;
     TSelectionRectangle *mSelectionRectangle;
     TObjectItem *mLastSelectedObjectItem;
@@ -117,8 +122,8 @@ private:
     void step();
     void setSelectedObjectItem(TObjectItem *objectItem);
 
-    void pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset, int commandId);
-    void pushObjectAddCommand(const TObjectList &objectList, const QPointF &offset, int commandId);
+    void pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset);
+    void pushRectResizingCommand(const TRectObjectList &rectObjectList, const QMarginsF &margins);
 
     QList<QGraphicsItem*> itemsOfCurrentLayerItem(
             const QPointF &pos,

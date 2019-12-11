@@ -60,18 +60,12 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
             layerItem = new TWallLayerItem(wallModel, this);
         } else if(TRespawnModel *respawModel = dynamic_cast<TRespawnModel*>(baseModel)){
             layerItem = new TRespownLayerItem(respawModel, this);
-        } else if(TAnimationModel *animationModel = dynamic_cast<TAnimationModel*>(baseModel)) {
-            for(TFrameModel *frameModel : animationModel->frameModelList()) {
-                TAnimation *animation = frameModel->animation();
-                if(!animation || !animation->getTile())
-                    continue;
-                TAnimationItem *item = new TAnimationItem(frameModel->animation(), nullptr);
-                animationItemList.append(item);
-            }
         } else if(TEnemyFactoryModel *enemyFactoryModel = dynamic_cast<TEnemyFactoryModel*>(baseModel)) {
             layerItem = new TEnemyFactoryLayerItem(enemyFactoryModel, this);
         } else if(TTriggerModel *triggerModel = dynamic_cast<TTriggerModel*>(baseModel)) {
             layerItem = new TTriggerLayerItem(triggerModel, this);
+        } else if(baseModel == sceneModel) {
+            layerItem = mPropertylayerItem;
         }
         if(layerItem) {
             connect(layerItem, SIGNAL(boundingRectChanged(QRectF)), this, SLOT(slotLayerBoundingRectChanged(QRectF)));
@@ -85,7 +79,15 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
         }
     }
 
-    internalAdd(sceneModel, mPropertylayerItem);
+    // Process animation model
+    TAnimationModel *animationModel = sceneModel->getAnimationsModel();
+    for(TFrameModel *frameModel : animationModel->frameModelList()) {
+        TAnimation *animation = frameModel->animation();
+        if(!animation || !animation->getTile())
+            continue;
+        TAnimationItem *item = new TAnimationItem(frameModel->animation(), nullptr);
+        animationItemList.append(item);
+    }
 
     // Replace animation item into tilelayeritem
     for(TAnimationItem *animationItem : animationItemList) {

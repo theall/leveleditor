@@ -1,9 +1,10 @@
 #include "objectmovecommand.h"
+#include "undocommandutils.hpp"
 #include "../base/tr.h"
 
 const QString g_commandText = T("Move %1");
 
-TObjectUndoCommand::TObjectUndoCommand(
+TObjectMoveUndoCommand::TObjectMoveUndoCommand(
         const TObjectList &objectList,
         const QPointF &offset,
         int commandSequenceId,
@@ -13,59 +14,49 @@ TObjectUndoCommand::TObjectUndoCommand(
   , mOffset(offset)
   , mObjectList(objectList)
 {
-    QString context = "";
-    TObject::Type lastObjectType = TObject::INVALID;
-    for(TObject *object : objectList) {
-        if(object->type() != lastObjectType)
-        {
-            lastObjectType = object->type();
-            context += object->typeString() + " ";
-            if(context.length() > 10)
-                context += "...";
-        }
-    }
+    QString context = getContextString(objectList);
     setText(g_commandText.arg(context));
 }
 
-TObjectUndoCommand::~TObjectUndoCommand()
+TObjectMoveUndoCommand::~TObjectMoveUndoCommand()
 {
 
 }
 
-QPointF TObjectUndoCommand::offset() const
+QPointF TObjectMoveUndoCommand::offset() const
 {
     return mOffset;
 }
 
-TObjectList TObjectUndoCommand::objectList() const
+TObjectList TObjectMoveUndoCommand::objectList() const
 {
     return mObjectList;
 }
 
-void TObjectUndoCommand::undo()
+void TObjectMoveUndoCommand::undo()
 {
     for(TObject *object : mObjectList) {
         object->move(-mOffset);
     }
 }
 
-void TObjectUndoCommand::redo()
+void TObjectMoveUndoCommand::redo()
 {
     for(TObject *object : mObjectList) {
         object->move(mOffset);
     }
 }
 
-bool TObjectUndoCommand::mergeWith(const QUndoCommand *other)
+bool TObjectMoveUndoCommand::mergeWith(const QUndoCommand *other)
 {
-    const TObjectUndoCommand *command = static_cast<const TObjectUndoCommand*>(other);
+    const TObjectMoveUndoCommand *command = static_cast<const TObjectMoveUndoCommand*>(other);
     bool canMerge = command && (mObjectList==command->objectList());
     if(canMerge)
         mOffset += command->offset();
     return canMerge;
 }
 
-int TObjectUndoCommand::id() const
+int TObjectMoveUndoCommand::id() const
 {
     return mId;
 }

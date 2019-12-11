@@ -9,14 +9,25 @@
 
 #include "../base/finddoc.h"
 #include "../document.h"
+#include "../model/scenemodel.h"
 #include "../model/entity/area.h"
 #include "../model/entity/box.h"
 #include "../model/entity/darea.h"
 #include "../model/entity/plat.h"
 #include "../model/entity/wall.h"
-#include "../undocommand/objectmovecommand.h"
+
 #include "../undocommand/objectaddcommand.h"
+#include "../undocommand/objectmovecommand.h"
 #include "../undocommand/removeselectioncommand.h"
+#include "../undocommand/rectresizeundocommand.h"
+
+#include "sceneitem.h"
+#include "uiitem/resizeitem.h"
+#include "uiitem/hovereditem.h"
+#include "uiitem/tilestampitem.h"
+#include "uiitem/selecteditems.h"
+#include "uiitem/objectareaitem.h"
+#include "uiitem/selectionrectangle.h"
 
 #define TOP_Z_VALUE 10000
 #define ADJUST_SIZE 100
@@ -43,8 +54,6 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
   , mTileId(nullptr)
   , mEditMode(DEFAULT)
 {
-    setSize(50000, 50000);
-
     mUiItemsGroup->setZValue(TOP_Z_VALUE);
     addItem(mUiItemsGroup);
 
@@ -174,6 +183,11 @@ void TGraphicsScene::setSceneModel(TSceneModel *sceneModel)
     }
 }
 
+TObjectItemList TGraphicsScene::getSelectedObjectItemList() const
+{
+    return mSelectedItems->getSelectedObjectItemList();
+}
+
 void TGraphicsScene::selectObjectItemList(const TObjectItemList &objectItemList)
 {
     mSelectedItems->setObjectItemList(objectItemList);
@@ -284,12 +298,21 @@ void TGraphicsScene::updateUiItems()
     mObjectAreaItem->setVisible(false);
 }
 
-void TGraphicsScene::pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset, int commandId)
+void TGraphicsScene::pushObjectMoveCommand(const TObjectList &objectList, const QPointF &offset)
 {
-    TObjectUndoCommand *command = new TObjectUndoCommand(
+    TObjectMoveUndoCommand *command = new TObjectMoveUndoCommand(
                 objectList,
                 offset,
-                commandId);
+                mCommandId);
+    mDocument->addUndoCommand(command);
+}
+
+void TGraphicsScene::pushRectResizingCommand(const TRectObjectList &rectObjectList, const QMarginsF &margins)
+{
+    TRectResizeUndoCommand *command = new TRectResizeUndoCommand(
+                rectObjectList,
+                margins,
+                mCommandId);
     mDocument->addUndoCommand(command);
 }
 
@@ -351,12 +374,24 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsScene::mousePressEvent(event);
     Qt::MouseButton button = event->button();
     mLeftButtonDown = (button==Qt::LeftButton);
-    if(mLeftButtonDown)
-        mLeftButtonDownPos = event->scenePos();
+    if(!mLeftButtonDown)
+        return;
+
+    QPointF mousePos = event->scenePos();
+    mLeftButtonDownPos = mousePos;
+    mCommandId = qAbs(((int)mLeftButtonDownPos.x())<<16) + qAbs(mLeftButtonDownPos.y());
 
     if(mEditMode == DEFAULT) {
+        THandleItem *handleItem = dynamic_cast<THandleItem*>(itemAt(mousePos, QTransform()));
+        // Check resize handle
+        if(handleItem) {
+            mAction = Resizing;
+            mResizeHandle = handleItem;
+            return;
+        }
+
         TObjectItem *autonomyObjectitem = nullptr;
-        TObjectItem *objectItem = getTopMostObjectItem(event->scenePos());
+        TObjectItem *objectItem = getTopMostObjectItem(mousePos);
         if(mLastSelectedObjectItem && mLastSelectedObjectItem->needGrabMouse()) {
             autonomyObjectitem = mLastSelectedObjectItem;
         }
@@ -372,17 +407,13 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 return;
         }
 
-        if(button == Qt::RightButton)
-        {
-
-        } else if(button == Qt::LeftButton) {
-            mCommandId = qAbs(((int)mLeftButtonDownPos.x())<<16) + qAbs(mLeftButtonDownPos.y());
+        if(mLeftButtonDown) {
             Qt::KeyboardModifiers modifers = event->modifiers();
             if(modifers & Qt::ShiftModifier) {
-                TObjectItem *objectItem = getTopMostObjectItem(mLeftButtonDownPos);
+                TObjectItem *objectItem = getTopMostObjectItem(mousePos);
                 if(mLastSelectedObjectItem && mLastSelectedObjectItem->isCongener(objectItem)) {
-                    qreal leftButtonDownX = mLeftButtonDownPos.x();
-                    qreal leftButtonDownY = mLeftButtonDownPos.y();
+                    qreal leftButtonDownX = mousePos.x();
+                    qreal leftButtonDownY = mousePos.y();
                     QRectF lastObjectItemRect = mLastSelectedObjectItem->boundingRect();
                     QPointF centerPos = lastObjectItemRect.center();
                     qreal left = qMin(leftButtonDownX, centerPos.x());
@@ -410,7 +441,7 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 );
                 mDocument->addUndoCommand(command);
             } else {
-                mObjectAreaItem->setRectangle(QRectF(mLeftButtonDownPos, QSizeF()));
+                mObjectAreaItem->setRectangle(QRectF(mousePos, QSizeF()));
                 mObjectAreaItem->setVisible(true);
             }
         }
@@ -446,6 +477,7 @@ void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 mHoveredItem->setObjectItem(objectItem);
             mAction = NoAction;
         } else {
+            // Check whether needing moving or selecting
             if(mAction == NoAction) {
                 if(objectItem) {
                     QPointF lastScenePos = event->lastScenePos();
@@ -461,6 +493,8 @@ void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                     mSelectionRectangle->setVisible(true);
                 }
             }
+
+            // Run once after action set
             if(mAction == Moving) {
                 mHoveredItem->setObjectItem(nullptr);
                 // Move selected object item
@@ -470,6 +504,8 @@ void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 }
             } else if(mAction == Selecting) {
                 mSelectionRectangle->setRectangle(QRectF(mLeftButtonDownPos, mMouseMovingPos));
+            } else if(mAction == Resizing) {
+                mResizeHandle->move(mMouseMovingPos - event->lastScenePos());
             }
         }
         updateCursor();
@@ -533,13 +569,6 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                     mSelectedItems->setObjectItem(nullptr);
                     setSelectedObjectItem(nullptr);
                 }
-            } else if(mAction == Moving) {
-                mAction = NoAction;
-                TObjectList objectList = mSelectedItems->getSelectedObjectList();
-                QPointF offset = event->scenePos() - mLeftButtonDownPos;
-                if(!objectList.isEmpty() && !offset.isNull()) {
-                    pushObjectMoveCommand(objectList, offset, mCommandId);
-                }
             } else if(mAction == Selecting) {
                 mAction = NoAction;
 
@@ -554,6 +583,23 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 mSelectionRectangle->setVisible(false);
                 if(!mSelectedItems->isVisible())
                     mSelectedItems->setVisible(true);
+            } else if(mAction == Moving) {
+                mAction = NoAction;
+                QPointF offset = event->scenePos() - mLeftButtonDownPos;
+                if(!offset.isNull()) {
+                    TObjectList objectList = mSelectedItems->getSelectedObjectList();
+                    if(!objectList.isEmpty())
+                        pushObjectMoveCommand(objectList, offset);
+                }
+
+            } else if(mAction == Resizing) {
+                mAction = NoAction;
+                QPointF offset = event->scenePos() - mLeftButtonDownPos;
+                if(!offset.isNull()) {
+                    //TRectObjectList rectObjectList = mSelectedItems->getSelectedRectObjectList();
+                    //if(!rectObjectList.isEmpty())
+                    //    pushRectResizingCommand(rectObjectList, offset);
+                }
             }
 
             update();
@@ -637,7 +683,7 @@ void TGraphicsScene::keyPressEvent(QKeyEvent *event)
                 } else if(key == Qt::Key_Down) {
                     offset.setY(1);
                 }
-                pushObjectMoveCommand(objectList, offset, mCommandId);
+                pushObjectMoveCommand(objectList, offset);
             }
         } else if(key==Qt::Key_Delete) {
             removeSelectedItems();
@@ -728,11 +774,6 @@ void TGraphicsScene::slotOnSceneItemBoundingRectChanged(const QRectF &rect)
 {
     QRectF r = rect.adjusted(-ADJUST_SIZE, -ADJUST_SIZE, ADJUST_SIZE, ADJUST_SIZE);
     setSceneRect(r);
-}
-
-TObjectItemList TGraphicsScene::getObjectItemList() const
-{
-    return mSelectedItems->getSelectedObjectItemList();
 }
 
 void TGraphicsScene::setEditMode(int editMode)

@@ -1,16 +1,16 @@
 #include "rectobject.h"
 #include "../../base/tr.h"
 
-static const QString P_SIZE = T("Size");
+static const QString P_RECT = T("Rect");
 
 TRectObject::TRectObject(TObject::Type type, QObject *parent) :
-    TPointObject(type, parent)
+    TObject(type, parent)
 {
     initPropertySheet();
 }
 
 TRectObject::TRectObject(const QRect &rect, TObject::Type type, QObject *parent) :
-    TPointObject(type, parent)
+    TObject(type, parent)
 {
     initPropertySheet();
     setRect(rect);
@@ -23,23 +23,24 @@ TRectObject::~TRectObject()
 
 QSize TRectObject::size() const
 {
-    return mSizePropertyItem->value().toSize();
+    return getRect().size().toSize();
 }
 
 void TRectObject::setSize(const QSize &size)
 {
-    mSizePropertyItem->setValue(size);
+    QRectF rect = getRect();
+    rect.setSize(size);
+    mRectPropertyItem->setValue(rect);
 }
 
 QRectF TRectObject::getRect() const
 {
-    return QRectF(pos(), size());
+    return mRectPropertyItem->value().toRectF();
 }
 
 void TRectObject::setRect(const QRectF &rect)
 {
-    setPos(rect.topLeft());
-    setSize(rect.size().toSize());
+    mRectPropertyItem->setValue(rect);
 }
 
 void TRectObject::setRect(int x, int y, int w, int h)
@@ -47,9 +48,29 @@ void TRectObject::setRect(int x, int y, int w, int h)
     setRect(QRectF(x,y,w,h));
 }
 
+void TRectObject::adjust(const QMarginsF &margins)
+{
+    if(margins.isNull())
+        return;
+
+    QRectF currentRect = getRect();
+    currentRect += margins;
+    setRect(currentRect);
+}
+
+void TRectObject::move(const QPointF &offset)
+{
+    if(offset.isNull())
+        return;
+
+    QRectF currentRect = getRect();
+    currentRect.translate(offset);
+    mRectPropertyItem->setValue(currentRect);
+}
+
 void TRectObject::initPropertySheet()
 {
-    mSizePropertyItem = mPropertySheet->addProperty(PT_SIZE, P_SIZE, PID_OBJECT_SIZE);
+    mRectPropertyItem = mPropertySheet->addProperty(PT_RECTF, P_RECT, PID_OBJECT_RECT);
 }
 
 void TRectObject::saveToStream(QDataStream &) const

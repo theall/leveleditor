@@ -6,7 +6,7 @@
 TSelectedItems::TSelectedItems(QGraphicsItem *parent) :
     QGraphicsObject(parent)
 {
-    mUpdateTimer = startTimer(100);
+    mUpdateTimer = startTimer(500);
 }
 
 TSelectedItems::~TSelectedItems()
@@ -100,9 +100,27 @@ TObjectItemList TSelectedItems::getSelectedObjectItemList() const
     return mObjectItemMap.keys();
 }
 
+TTileItemList TSelectedItems::getSelectedTileItemList() const
+{
+    TTileItemList tileItemList;
+    for(TObjectItem *objectItem : mObjectItemMap.keys()) {
+        tileItemList.append((TTileItem*)objectItem);
+    }
+    return tileItemList;
+}
+
 TObjectList TSelectedItems::getSelectedObjectList() const
 {
     return mObjectMap.keys();
+}
+
+TRectObjectList TSelectedItems::getSelectedRectObjectList() const
+{
+    TRectObjectList objectList;
+    for(TObject *object : mObjectMap.keys()) {
+        objectList.append((TRectObject*)object);
+    }
+    return objectList;
 }
 
 void TSelectedItems::clear()
@@ -137,6 +155,16 @@ TObject::Type TSelectedItems::getObjectType() const
             return TObject::INVALID;
     }
     return t;
+}
+
+bool TSelectedItems::startResizing()
+{
+    return false;
+}
+
+void TSelectedItems::endResizing()
+{
+
 }
 
 void TSelectedItems::updateBoundingRect()

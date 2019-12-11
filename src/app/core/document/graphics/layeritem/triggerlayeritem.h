@@ -13,10 +13,6 @@ public:
 
 private:
     TTriggerItemList mTriggerItemList;
-
-    // TLayerItem interface
-public:
-    QRectF calcBoundingRect() Q_DECL_OVERRIDE;
 };
 
 #endif // TTRIGGERLAYERITEM_H

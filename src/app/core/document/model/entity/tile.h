@@ -5,6 +5,7 @@
 #include <QPainter>
 
 #include "rectobject.h"
+#include "pointobject.h"
 
 class TTileId;
 class TPixmap;

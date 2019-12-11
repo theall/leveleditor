@@ -24,7 +24,11 @@ public:
 
     void move(const QPointF &offset);
 
+    bool startResizing();
+    void endResizing();
+
 private slots:
+    void slotRequestAdjustRect(const QMarginsF &margins);
     void slotObjectBoundingRectChanged(const QRectF &rect);
     void slotOnObjectDestroyed(QObject *object);
 

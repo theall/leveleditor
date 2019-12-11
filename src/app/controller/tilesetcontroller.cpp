@@ -1,5 +1,7 @@
 #include "tilesetcontroller.h"
+
 #include "../core/core.h"
+#include "../core/document/model/entity/tile.h"
 #include "../gui/component/tilesetdock/tilesetdock.h"
 
 TTilesetController::TTilesetController(QObject *parent) :

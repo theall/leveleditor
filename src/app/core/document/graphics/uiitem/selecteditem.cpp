@@ -18,7 +18,7 @@ TSelectedItem::TSelectedItem(QGraphicsItem *parent) :
   , mObjectItem(nullptr)
   , mResizeItem(new TResizeItem(this))
 {
-
+    connect(mResizeItem, SIGNAL(requestAdjustRect(QMarginsF)), this, SLOT(slotRequestAdjustRect(QMarginsF)));
 }
 
 TSelectedItem::~TSelectedItem()
@@ -111,6 +111,24 @@ void TSelectedItem::move(const QPointF &offset)
     }
 }
 
+bool TSelectedItem::startResizing()
+{
+    return mResizeItem->startResizing();
+}
+
+void TSelectedItem::endResizing()
+{
+    mResizeItem->endResizing();
+}
+
+void TSelectedItem::slotRequestAdjustRect(const QMarginsF &margins)
+{
+    if(!mObjectItem)
+        return;
+
+    setBoundingRect(mBoundingRect + margins);
+}
+
 void TSelectedItem::slotObjectBoundingRectChanged(const QRectF &)
 {
     if(!mObjectItem)
@@ -129,7 +147,6 @@ void TSelectedItem::slotOnObjectDestroyed(QObject *)
 
 void TSelectedItem::setBoundingRect(const QRectF &rect)
 {
-    prepareGeometryChange();
     mBoundingRect = rect;
     mResizeItem->setRect(rect);
 }

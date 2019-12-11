@@ -1,19 +1,19 @@
-#ifndef TOBJECTUNDOCOMMAND_H
-#define TOBJECTUNDOCOMMAND_H
+#ifndef TOBJECTMOVEUNDOCOMMAND_H
+#define TOBJECTMOVEUNDOCOMMAND_H
 
 #include <QPointF>
 #include <QUndoCommand>
 #include "../model/entity/object.h"
 
-class TObjectUndoCommand : public QUndoCommand
+class TObjectMoveUndoCommand : public QUndoCommand
 {
 public:
-    TObjectUndoCommand(
+    TObjectMoveUndoCommand(
            const TObjectList &objectList,
            const QPointF &offset = QPointF(),
            int commandSequenceId = -1,
            QUndoCommand *parent = Q_NULLPTR);
-    ~TObjectUndoCommand();
+    ~TObjectMoveUndoCommand();
 
     QPointF offset() const;
     TObjectList objectList() const;
@@ -31,4 +31,4 @@ public:
     int id() const;
 };
 
-#endif // TOBJECTUNDOCOMMAND_H
+#endif // TOBJECTMOVEUNDOCOMMAND_H
