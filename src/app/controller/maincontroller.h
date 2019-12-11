@@ -70,7 +70,7 @@ private slots:
     // From TAnimationController
     void slotRequestDisplayPropertySheet(TPropertySheet *propertySheet);
     void slotRequestAdjustFPS(int fps);
-    void slotRequestAddFrames();
+    void slotRequestAddFrames(int row);
 
 private:
     TOptionsController *mOptionsController;

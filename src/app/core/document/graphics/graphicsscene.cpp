@@ -43,6 +43,8 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
   , mTileId(nullptr)
   , mEditMode(DEFAULT)
 {
+    setSize(50000, 50000);
+
     mUiItemsGroup->setZValue(TOP_Z_VALUE);
     addItem(mUiItemsGroup);
 
@@ -726,6 +728,11 @@ void TGraphicsScene::slotOnSceneItemBoundingRectChanged(const QRectF &rect)
 {
     QRectF r = rect.adjusted(-ADJUST_SIZE, -ADJUST_SIZE, ADJUST_SIZE, ADJUST_SIZE);
     setSceneRect(r);
+}
+
+TObjectItemList TGraphicsScene::getObjectItemList() const
+{
+    return mSelectedItems->getSelectedObjectItemList();
 }
 
 void TGraphicsScene::setEditMode(int editMode)

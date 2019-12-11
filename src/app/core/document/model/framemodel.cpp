@@ -74,6 +74,9 @@ void TFrameModel::onObjectInserted(const TObjectList &, const QList<int> &)
     if(mAnimation) {
         mAnimation->setFrameList(mFrameList);
     }
+    beginResetModel();
+    endResetModel();
+    //emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 void TFrameModel::onObjectRemoved(const TObjectList &, const QList<int> &)
@@ -81,11 +84,20 @@ void TFrameModel::onObjectRemoved(const TObjectList &, const QList<int> &)
     if(mAnimation) {
         mAnimation->setFrameList(mFrameList);
     }
+    beginResetModel();
+    endResetModel();
+    //emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 void TFrameModel::clear()
 {
     mAnimation->clear();
+}
+
+void TFrameModel::insetTile(TTile *tile, TFrameModel *frameModel)
+{
+    TFrame *frame = new TFrame(tile, frameModel);
+    insertFrame(frame);
 }
 
 TAnimation *TFrameModel::animation() const

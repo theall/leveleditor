@@ -52,6 +52,7 @@ public:
 
     TObject *getTopMostObject(const QPointF &pos) const;
     TObjectItem *getTopMostObjectItem(const QPointF &pos) const;
+    TObjectItemList getObjectItemList() const;
     TObjectItemList getObjectItemList(const QRectF &rect) const;
     TObjectItemList getObjectItemList(const QRectF &rect, TObject::Type objectType) const;
     TObjectItemList getObjectItemList(const QRectF &rect, TObjectItem *objectItem) const;

@@ -15,6 +15,17 @@ TFrame::TFrame(QObject *parent) :
     initPropertySheet();
 }
 
+TFrame::TFrame(TTile *tile, QObject *parent) :
+    TObject(TObject::FRAME, parent)
+  , mTile(tile)
+  , mTileLayer(-1)
+  , mTileNumber(-1)
+{
+    Q_ASSERT(tile);
+
+    initPropertySheet();
+}
+
 TFrame::~TFrame()
 {
 

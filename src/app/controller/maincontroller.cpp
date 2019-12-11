@@ -47,7 +47,6 @@ TMainController::TMainController(QObject *parent) :
             SLOT(slotRequestDisplayPropertySheet(TPropertySheet*)));
 
     connect(mAnimationController, SIGNAL(requestAdjustFPS(int)), this, SLOT(slotRequestAdjustFPS(int)));
-    connect(mAnimationController, SIGNAL(requestAddFrames()), this, SLOT(slotRequestAddFrames()));
 
     connect(TAssetsManager::getInstance(), SIGNAL(onProgress(int,int)), this, SLOT(slotOnResourceLoadProgress(int,int)));
 }
@@ -375,7 +374,7 @@ void TMainController::slotRequestAdjustFPS(int fps)
     graphicsScene->setFps(fps);
 }
 
-void TMainController::slotRequestAddFrames()
+void TMainController::slotRequestAddFrames(int row)
 {
 
 }

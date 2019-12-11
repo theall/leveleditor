@@ -111,5 +111,4 @@ TFrameModel *TAnimationModel::getFrameModel(int index) const
         return nullptr;
     return mFrameModelList.at(index);
 }
-
 IMPL_GENERIC_FUNCTIONS(Animation)

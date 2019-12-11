@@ -22,12 +22,12 @@ public:
 signals:
     void requestDisplayPropertySheet(TPropertySheet *propertySheet);
     void requestAdjustFPS(int fps);
-    void requestAddFrames();
 
 private slots:
     void slotOnAnimationListViewIndexPressed(int index);
     void slotOnFrameListViewIndexPressed(int index);
     void slotRequestAddAnimation();
+    void slotRequestAddFrames();
 
 private:
     TAnimationDock *mAnimationDock;

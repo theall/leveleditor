@@ -75,12 +75,12 @@ bool TBaseModel::isTile() const
 
 void TBaseModel::onObjectInserted(const TObjectList &, const QList<int> &)
 {
-
+    emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 void TBaseModel::onObjectRemoved(const TObjectList &, const QList<int> &)
 {
-
+    emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 void TBaseModel::insertObjects(const TObjectList &objectList, const QList<int> &indexList)

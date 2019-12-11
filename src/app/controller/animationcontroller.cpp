@@ -30,7 +30,7 @@ bool TAnimationController::joint(TMainWindow *mainWindow, TCore *core)
     connect(mAnimationDock, SIGNAL(requestAdjustFPS(int)), this, SIGNAL(requestAdjustFPS(int)));
 
     mContainer = mainWindow->getAnimationDock()->getContainer();
-    connect(mContainer, SIGNAL(requestAddFrames()), this, SIGNAL(requestAddFrames()));
+    connect(mContainer, SIGNAL(requestAddFrames()), this, SLOT(slotRequestAddFrames()));
     connect(mContainer, SIGNAL(requestAddAnimation()), this, SLOT(slotRequestAddAnimation()));
 
     mAnimationListView = mainWindow->getAnimationDock()->getAnimationListView();
@@ -110,6 +110,18 @@ void TAnimationController::slotRequestAddAnimation()
 
     TAnimation *animation = new TAnimation(animationModel);
     mDocument->cmdAddObject(animation, animationModel);
+}
+
+void TAnimationController::slotRequestAddFrames()
+{
+    TFrameModel *frameModel = static_cast<TFrameModel*>(mFrameListView->model());
+    TGraphicsScene *graphicsScene = static_cast<TGraphicsScene*>(mMainWindow->getCurrentGraphicsScene());
+    TObjectItemList objectItemList = graphicsScene->getObjectItemList();
+    for(TObjectItem *objectItem : objectItemList){
+        TTileItem *tileItem = (dynamic_cast<TTileItem*>(objectItem));
+        TTile *tile = tileItem->tile();
+        frameModel->insetTile(tile,frameModel);
+    }
 }
 
 void TAnimationController::selectAndCenterOn(TObjectItem *objectItem)

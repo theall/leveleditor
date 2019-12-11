@@ -13,6 +13,7 @@ class TFrame : public TObject, TIO
 
 public:
     explicit TFrame(QObject *parent = nullptr);
+    TFrame(TTile *tile, QObject *parent = nullptr);
     ~TFrame();
 
     int getTileLayer() const;

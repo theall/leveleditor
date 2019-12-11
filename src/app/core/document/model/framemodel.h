@@ -16,6 +16,7 @@ public:
     ~TFrameModel();
 
     void clear();
+    void insetTile(TTile *tile, TFrameModel *frameModel);
     TAnimation *animation() const;
     void setAnimation(TAnimation *animation);
     QIcon getIcon() const;
