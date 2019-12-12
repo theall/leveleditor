@@ -61,7 +61,7 @@
      <x>0</x>
      <y>0</y>
      <width>1062</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -80,6 +80,7 @@
     <addaction name="menuRecentFiles"/>
     <addaction name="separator"/>
     <addaction name="actionSettings"/>
+    <addaction name="actionOpenDebugDialog"/>
     <addaction name="separator"/>
     <addaction name="actionSaveMap"/>
     <addaction name="actionSaveAllMaps"/>
@@ -186,7 +187,7 @@
    <addaction name="actionSelectMode"/>
    <addaction name="actionInsertMode"/>
   </widget>
-  <widget class="QToolBar" name="toolBar">
+  <widget class="QToolBar" name="AnimationToolBar">
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
@@ -931,6 +932,11 @@
    </property>
    <property name="text">
     <string>Run</string>
+   </property>
+  </action>
+  <action name="actionOpenDebugDialog">
+   <property name="text">
+    <string>Open Debug Dialog</string>
    </property>
   </action>
  </widget>

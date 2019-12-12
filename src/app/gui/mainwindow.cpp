@@ -7,6 +7,7 @@
 #include "dialogs/loadingdialog.h"
 #include "dialogs/newmapdialog.h"
 #include "dialogs/exceptiondialog.h"
+#include "dialogs/debugdialog.h"
 
 #include "component/centralwidget.h"
 #include "component/undodock/undodock.h"
@@ -52,6 +53,10 @@ TMainWindow::TMainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     mLoadingDialog->setWindowIcon(windowIcon());
+
+#ifdef QT_NO_DEBUG
+    ui->actionOpenDebugDialog->setVisible(false);
+#endif
 
     // Initialize menu
     //设置快捷键
@@ -109,9 +114,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
     ui->menuEdit->insertSeparator(ui->actionSettings);
     ui->MainToolBar->addSeparator();
     // Add the 'Views and Toolbars' submenu.This needs to happen after all
-    //添加“视图和工具栏”子菜单。这毕竟需要发生
     // the dock widgets and toolbars have been added to the main window
-    //停靠小部件和工具栏已添加到主窗口
     mViewsAndToolbarsMenu = new QAction(tr("Views and Toolbars"), this);
     ui->menuView->insertAction(ui->actionShowBorder, mViewsAndToolbarsMenu);
     ui->menuView->insertSeparator(ui->actionShowBorder);
@@ -156,7 +159,7 @@ TMainWindow::~TMainWindow()
 
     delete ui;
 }
-//启用/关闭
+
 void TMainWindow::enableUndoAction(bool enabled)
 {
     ui->actionUndo->setEnabled(enabled);
@@ -673,4 +676,10 @@ void TMainWindow::showExceptionDialog(const QString &msg, const QString &trace)
     TExceptionDialog dlg(this);
     dlg.setInformation(msg, trace);
     dlg.exec();
+}
+
+void TMainWindow::on_actionOpenDebugDialog_triggered()
+{
+    TDebugDialog debugDialog(this);
+    debugDialog.exec();
 }

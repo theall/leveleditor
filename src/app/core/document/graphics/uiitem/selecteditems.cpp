@@ -6,7 +6,7 @@
 TSelectedItems::TSelectedItems(QGraphicsItem *parent) :
     QGraphicsObject(parent)
 {
-    mUpdateTimer = startTimer(500);
+    mUpdateTimer = startTimer(100);
 }
 
 TSelectedItems::~TSelectedItems()

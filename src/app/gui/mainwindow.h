@@ -132,6 +132,7 @@ private slots:
     void on_actionAlwaysOnTop_triggered(bool arg1);
     void on_actionCloseGame_triggered();
     void on_actionMoveState_triggered();
+    void on_actionOpenDebugDialog_triggered();
 
 private:
     Ui::MainWindow *ui;

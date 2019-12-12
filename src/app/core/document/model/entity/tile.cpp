@@ -178,15 +178,15 @@ void TTile::saveToStream(QDataStream &stream) const
     stream << mTileId->id();
     stream << mTileId->tilesetId();
 
-    QRectF endRect(0,0,0,0);
+    QRect endRect(0,0,1,1);// Not(0,0,0,0)
     if(mHasMoveModel) {
-        endRect = mDoor->getRect();
+        endRect = mDoor->getRect().toRect();
     }
     stream << endRect.left();// xEnd1
     stream << endRect.right();// xEnd2
 
-    QPointF rand1 = mPropertySheet->getValue(PID_TILE_RAND_1).toPoint();
-    QPointF rand2 = mPropertySheet->getValue(PID_TILE_RAND_2).toPoint();
+    QPoint rand1 = mPropertySheet->getValue(PID_TILE_RAND_1).toPoint();
+    QPoint rand2 = mPropertySheet->getValue(PID_TILE_RAND_2).toPoint();
     stream << rand1.x();
     stream << rand2.x();
 

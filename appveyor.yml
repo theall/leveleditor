@@ -52,6 +52,8 @@ deploy:
     secure: D/3LJCvnQzb2LT6rtq7KCPZcyW4fCmh9S0zJw4jsxGLRLSPRMaIdmd2iw/Yri+vT
   artifact: /leveleditor.*\.(exe|7z|zip)/
   draft: false
+  on:
+    appveyor_repo_tag: true
 notifications:
 - provider: Email
   to:

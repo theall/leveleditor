@@ -19,6 +19,7 @@ TTilesetView::TTilesetView(QWidget *parent) :
     horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     horizontalHeader()->setVisible(false);
     verticalHeader()->setVisible(false);
+    verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     setSortingEnabled(false);
     setShowGrid(false);

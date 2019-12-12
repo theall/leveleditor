@@ -26,6 +26,9 @@
 
 #define ZINDEX_TOP 1000
 
+#define SCENE_MIN_WIDTH 480
+#define SCENE_MIN_HEIGHT 320
+
 TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
     QGraphicsObject(parent)
   , mIsHovered(false)
@@ -181,13 +184,13 @@ void TSceneItem::setCurrentLayerItem(TLayerItem *currentLayerItem)
 
 void TSceneItem::calcBoundingRect()
 {
-    QRectF tempRect;
+    QRectF newRect(0, 0, SCENE_MIN_WIDTH, SCENE_MIN_HEIGHT);
     for(TLayerItem *layerItem : mLayerItemList) {
         if(!layerItem)
             continue;
-        tempRect = tempRect.united(layerItem->calcBoundingRect());
+        newRect = newRect.united(layerItem->calcBoundingRect());
     }
-    mBoundingRect = tempRect;
+    mBoundingRect = newRect;
 }
 
 void TSceneItem::internalAdd(TBaseModel *baseModel, TLayerItem *layerItem)

@@ -1,8 +1,13 @@
 #include "document.h"
-#include "../shared/filesystemwatcher.h"
-#include "../assets/assetsmanager.h"
 #include "base/tr.h"
 #include "undocommand/objectaddcommand.h"
+
+#include "../shared/filesystemwatcher.h"
+#include "../assets/assetsmanager.h"
+
+#ifndef QT_NO_DEBUG
+#include <utils/debug.h>
+#endif
 
 #include <QUuid>
 
@@ -73,6 +78,11 @@ bool TDocument::save(const QString &fileName)
         // Generate data stream first to avoid truncate map file while exception occoured
         QByteArray byteArray;
         QDataStream stream(&byteArray, QIODevice::WriteOnly);
+#ifndef QT_NO_DEBUG
+        THookBuffer hookBuffer(&byteArray);
+        hookBuffer.open(QIODevice::WriteOnly);
+        stream.setDevice(&hookBuffer);
+#endif
         stream.setByteOrder(QDataStream::LittleEndian);
         stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
         mSceneModel->saveToStream(stream);
@@ -153,6 +163,11 @@ void TDocument::load(const QString &file)
             f.close();
 
             QDataStream stream(byteArray);
+#ifndef QT_NO_DEBUG
+            THookBuffer hookBuffer(&byteArray);
+            hookBuffer.open(QIODevice::ReadOnly);
+            stream.setDevice(&hookBuffer);
+#endif
             stream.setByteOrder(QDataStream::LittleEndian);
             stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
             mSceneModel->readFromStream(stream);

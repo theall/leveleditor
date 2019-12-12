@@ -32,7 +32,8 @@ void TRespawnModel::saveToStream(QDataStream &stream) const
     stream << respawnSize;
 
     for(int i=0;i<respawnSize;i++) {
-        stream << mRespawnList.at(i);
+        TRespawn *respawn = mRespawnList.at(i);
+        respawn->saveToStream(stream);
     }
 }
 

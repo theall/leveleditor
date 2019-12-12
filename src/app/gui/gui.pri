@@ -73,7 +73,8 @@ SOURCES += \
     $$PWD/component/objectdock/objectdock.cpp \
     $$PWD/component/objectdock/objectcontainer.cpp \
     $$PWD/component/animationdock/framelistview.cpp \
-    $$PWD/component/objectdock/objectlistview.cpp
+    $$PWD/component/objectdock/objectlistview.cpp \
+    $$PWD/dialogs/debugdialog.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -137,7 +138,8 @@ HEADERS += \
     $$PWD/component/animationdock/framelistview.h \
     $$PWD/component/objectdock/objectdock.h \
     $$PWD/component/objectdock/objectcontainer.h \
-    $$PWD/component/objectdock/objectlistview.h
+    $$PWD/component/objectdock/objectlistview.h \
+    $$PWD/dialogs/debugdialog.h
 
 FORMS += \
     $$PWD/mainwindow.ui \
@@ -147,6 +149,7 @@ FORMS += \
     $$PWD/dialogs/loadingdialog.ui \
     $$PWD/dialogs/selectrootdialog.ui \
     $$PWD/dialogs/newmapdialog.ui \
-    $$PWD/dialogs/exceptiondialog.ui
+    $$PWD/dialogs/exceptiondialog.ui \
+    $$PWD/dialogs/debugdialog.ui
 
 RESOURCES += $$PWD/resource/editor.qrc

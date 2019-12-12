@@ -2,9 +2,6 @@
 #include "objectitem/objectitem.h"
 #include "../../model/basemodel.h"
 
-#define SCENE_WIDTH 1920
-#define SCENE_HEIGHT 1080
-
 TLayerItem::TLayerItem(TBaseModel *baseModel, QGraphicsItem *parent) :
     QGraphicsObject(parent)
   , mBaseModel(baseModel)
@@ -70,9 +67,12 @@ TObjectItemList TLayerItem::getObjectItemList() const
 
 QRectF TLayerItem::calcBoundingRect()
 {
-    QRectF newRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
+    QRectF newRect(0, 0, 1, 1);
     for(QGraphicsItem *item : childItems()) {
-        newRect = newRect.united(item->boundingRect());
+        QRectF itemRect = item->boundingRect();
+        if(!itemRect.isValid())
+            continue;
+        newRect = newRect.united(itemRect);
     }
     setBoundingRect(newRect);
     return newRect;
