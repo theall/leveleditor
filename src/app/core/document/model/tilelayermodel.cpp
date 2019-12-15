@@ -97,10 +97,7 @@ QVariant TTileModel::data(const QModelIndex &index, int role) const
     if(row>=0 && row<mTileList.size())
     {
         if(role == Qt::DisplayRole) {
-            return tr("tile%1").arg(row);
-        } else if(role == Qt::DecorationRole) {
-            TTile *tile = mTileList.at(row);
-            return tile->pixmap();
+            return tr("tile%1").arg(row+1);
         }
     }
 

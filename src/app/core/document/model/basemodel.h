@@ -66,6 +66,7 @@ protected:
 public:
     virtual void insertObjects(const TObjectList &objectList, const QList<int> &indexList);
     virtual QList<int> removeObjects(const TObjectList &objectList);
+    virtual QList<int> moveObjects(const TObjectList &objectList, const QList<int> &indexList);
 
     // QAbstractItemModel interface
 public:

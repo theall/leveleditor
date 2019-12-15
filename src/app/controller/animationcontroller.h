@@ -24,6 +24,11 @@ signals:
     void requestAdjustFPS(int fps);
 
 private slots:
+    void slotRequestRemoveFrames(QList<int> indexes);
+    void slotRequestFrameIndexShiftLeft(QList<int> indexes);
+    void slotRequestFrameIndexShiftRight(QList<int> indexes);
+    void slotRequestAnimationIndexShiftUp(int index);
+    void slotRequestAnimationIndexShiftDown(int index);
     void slotOnAnimationListViewIndexPressed(int index);
     void slotOnFrameListViewIndexPressed(int index);
     void slotRequestAddAnimation();

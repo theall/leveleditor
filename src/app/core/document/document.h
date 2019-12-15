@@ -9,6 +9,7 @@
 #include "model/scenemodel.h"
 #include "graphics/graphicsscene.h"
 #include "undocommand/propertyundocommand.h"
+#include "undocommand/objectaddcommand.h"
 #include "../assets/tileid.h"
 
 enum EditMode {
@@ -59,6 +60,7 @@ public:
     void setEditMode(const EditMode &editMode);
 
     void cmdAddObject(TObject *object, TBaseModel *baseModel);
+    void cmdRemoveObject(TObject *object, TBaseModel *baseModel);
 
 signals:
     void projectFileChanged();
@@ -91,6 +93,7 @@ private:
     void load(const QString &file);
     void initPropertySheet();
     void connetSignalsToSlots();
+    void internalAddRemoveObjectCommand(TObjectAddCommand::Command stamp, TObject *object, TBaseModel *baseModel);
 };
 
 #endif // DOCUMENT_H

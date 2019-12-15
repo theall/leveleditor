@@ -28,6 +28,10 @@ signals:
     void requestRemoveFrames(const QList<int> &indexes);
     void requestCopyFrames(const QList<int> &indexes);
     void requestCloneFrames(const QList<int> &indexes);
+    void requestFrameIndexShiftLeft(const QList<int> &indexes);
+    void requestFrameIndexShiftRight(const QList<int> &indexes);
+    void requestAnimationIndexShiftUp(int index);
+    void requestAnimationIndexShiftDown(int index);
     void requestPasteFrames(int pos);
     void requestAddAnimation();
     void requestAddFrames();

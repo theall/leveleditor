@@ -110,12 +110,10 @@ SOURCES += \
     $$PWD/document/graphics/layeritem/objectitem/pointobjectitem.cpp \
     $$PWD/model/itemmodel.cpp \
     $$PWD/document/graphics/uiitem/resizeitem.cpp \
-    $$PWD/document/undocommand/addframecommand.cpp \
     $$PWD/document/undocommand/rectresizeundocommand.cpp \
     $$PWD/assets/triggerid.cpp \    
     $$PWD/model/shotmodel.cpp \
     $$PWD/model/chunkmodel.cpp
-
 HEADERS  += \
     $$PWD/core.h \
     $$PWD/assets/cachedpixmap.h \
@@ -233,12 +231,10 @@ HEADERS  += \
     $$PWD/document/graphics/layeritem/objectitem/pointobjectitem.h \
     $$PWD/model/itemmodel.h \
     $$PWD/document/graphics/uiitem/resizeitem.h \
-    $$PWD/document/undocommand/addframecommand.h \
     $$PWD/document/undocommand/rectresizeundocommand.h \
     $$PWD/document/undocommand/undocommandutils.hpp \
     $$PWD/assets/triggerid.h \
     $$PWD/model/shotmodel.h \
     $$PWD/model/chunkmodel.h
-    
 RESOURCES += \
     $$PWD/resource/core.qrc

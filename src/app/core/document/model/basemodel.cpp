@@ -95,6 +95,11 @@ QList<int> TBaseModel::removeObjects(const TObjectList &objectList)
     return QList<int>();
 }
 
+QList<int> TBaseModel::moveObjects(const TObjectList &objectList, const QList<int> &indexList)
+{
+
+}
+
 int TBaseModel::columnCount(const QModelIndex &) const
 {
     return 3;

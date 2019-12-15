@@ -27,13 +27,13 @@ TContainer::TContainer(QWidget *parent) :
     CREATE_ACTION(mBtnNewAnimation,":/toolbar/images/new.png",slotNewAnimationTriggered);//文件  空
     CREATE_ACTION(mBtnCopyAnimation,":/toolbar/images/copy.png",slotCopyAnimationTriggered);//多个文件 空
     CREATE_ACTION(mBtnRemoveAnimation,":/animationdock/images/remove.png",slotRemoveAnimationTriggered);//减
-    CREATE_ACTION(mBtnPlay,":/animationdock/images/play.png",slotPlayTriggered);//播放 发送信号
-    CREATE_ACTION(mBtnStop,":/animationdock/images/stop_play.png",slotStopTriggered);//暂停 发送信号
+    CREATE_ACTION(mBtnMoveUp,":/framelistview/images/up.png",slotMoveUpTriggered);//上
+    CREATE_ACTION(mBtnMoveDown,":/framelistview/images/down.png",slotMoveDownTriggered);//下
     toolbar->addSeparator();//添加分隔符
     CREATE_ACTION(mBtnAddFrame,":/framelistview/images/newimage.png",slotAddFrameTriggered);//图片
     CREATE_ACTION(mBtnRemoveFrame,":/framelistview/images/removeimage.png",slotRemoveFrameTriggered);//X
-    CREATE_ACTION(mBtnMoveUp,":/framelistview/images/up.png",slotMoveUpTriggered);//上
-    CREATE_ACTION(mBtnMoveDown,":/framelistview/images/down.png",slotMoveDownTriggered);//下
+    CREATE_ACTION(mBtnPlay,":/animationdock/images/play.png",slotPlayTriggered);//播放 发送信号
+    CREATE_ACTION(mBtnStop,":/animationdock/images/stop_play.png",slotStopTriggered);//暂停 发送信号
     CREATE_ACTION(mBtnMoveLeft,":/framelistview/images/left.png",slotMoveLeftTriggered);//左
     CREATE_ACTION(mBtnMoveRight,":/framelistview/images/right.png",slotMoveRightTriggered);//右
     horizontalLayout->addWidget(toolbar);
@@ -162,22 +162,22 @@ void TContainer::slotPasteFramesTriggered()
 
 void TContainer::slotMoveUpTriggered()
 {
-
+    emit requestAnimationIndexShiftUp(mAnimationListView->currentRow());
 }
 
 void TContainer::slotMoveDownTriggered()
 {
-
+    requestAnimationIndexShiftDown(mAnimationListView->currentRow());
 }
 
 void TContainer::slotMoveLeftTriggered()
 {
-
+    emit requestFrameIndexShiftLeft(mAnimationView->getSelectedIndexes());
 }
 
 void TContainer::slotMoveRightTriggered()
 {
-
+    emit requestFrameIndexShiftRight(mAnimationView->getSelectedIndexes());
 }
 
 TFrameListView *TContainer::getFrameListView() const

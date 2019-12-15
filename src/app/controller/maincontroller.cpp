@@ -337,7 +337,8 @@ void TMainController::slotOnLayerSelected(int index)
     mTilesetController->setTilesetEnabled(enableTileset);
 
     // set model into object dock
-
+    if(layerItem)
+        mObjectController->setObjectModel(layerItem->baseModel());
 }
 
 void TMainController::slotOnDirtyFlagChanged(bool isDirty)

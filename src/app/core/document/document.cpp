@@ -273,10 +273,20 @@ void TDocument::setEditMode(const EditMode &editMode)
 
 void TDocument::cmdAddObject(TObject *object, TBaseModel *baseModel)
 {
+    internalAddRemoveObjectCommand(TObjectAddCommand::ADD, object, baseModel);
+}
+
+void TDocument::cmdRemoveObject(TObject *object, TBaseModel *baseModel)
+{
+    internalAddRemoveObjectCommand(TObjectAddCommand::REMOVE, object, baseModel);
+}
+
+void TDocument::internalAddRemoveObjectCommand(TObjectAddCommand::Command id, TObject *object, TBaseModel *baseModel)
+{
     TObjectList objectList;
     objectList.append(object);
     TObjectAddCommand *command = new TObjectAddCommand(
-        TObjectAddCommand::ADD,
+        id,
         baseModel,
         objectList
     );

@@ -12,6 +12,7 @@ public:
     enum Command {
         ADD,
         REMOVE,
+        MOVE,
         COUNT
     };
 
@@ -21,6 +22,7 @@ public:
            const TObjectList &objectList,
            const QList<int> &indexList = QList<int>(),
            QUndoCommand *parent = Q_NULLPTR);
+
     ~TObjectAddCommand();
 
     Command command() const;
