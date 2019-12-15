@@ -18,8 +18,17 @@ const char *g_propertyAttrMap[PA_COUNT] = {
     "textVisible"// PA_TEXT_VISIBLE
 };
 
-TPropertyItem::TPropertyItem(
-        int type,
+TPropertyItem::TPropertyItem(PropertyType type, const QString &name, QObject *parent) :
+    QObject(parent)
+  , mType(type)
+  , mName(name)
+  , mPropertyId(PID_INVALID)
+  , mDocument(nullptr)
+{
+
+}
+
+TPropertyItem::TPropertyItem(PropertyType type,
         const QString &name,
         PropertyID undoCommand,
         QObject *parent) :
@@ -179,5 +188,25 @@ void TPropertyItem::addSubPropertyItem(TPropertyItem *propertyItem)
     QList<TPropertyItem *> propertyItemList;
     propertyItemList.append(propertyItem);
     addSubPropertyItems(propertyItemList);
+}
+
+QString TPropertyItem::toolTip() const
+{
+    return mToolTip;
+}
+
+void TPropertyItem::setToolTip(const QString &toolTip)
+{
+    mToolTip = toolTip;
+}
+
+QString TPropertyItem::statusTip() const
+{
+    return mStatusTip;
+}
+
+void TPropertyItem::setStatusTip(const QString &statusTip)
+{
+    mStatusTip = statusTip;
 }
 

@@ -5,6 +5,7 @@
 
 #include "rectobject.h"
 
+class TTriggerId;
 class TTrigger : public TRectObject
 {
     Q_OBJECT
@@ -12,10 +13,16 @@ class TTrigger : public TRectObject
 public:
     TTrigger(QObject *parent = nullptr);
 
+    TTriggerId *triggerId() const;
+    void setTriggerId(TTriggerId *triggerId);
+
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
 
+    QPointF getImageOffset() const;
+
 private:
+    TTriggerId *mTriggerId;
     void initPropertySheet();
 
     // TObject interface

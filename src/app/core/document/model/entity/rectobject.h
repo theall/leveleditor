@@ -20,6 +20,9 @@ public:
     void setRect(const QRectF &rect);
     void setRect(int x, int y, int w, int h);
 
+    QPointF getPos() const;
+    void setPos(const QPointF &pos);
+
     void adjust(const QMarginsF &marings);
     virtual void move(const QPointF &offset) Q_DECL_OVERRIDE;
 

@@ -32,6 +32,14 @@
 #define TOP_Z_VALUE 10000
 #define ADJUST_SIZE 100
 
+inline float squareOfRect(const QRectF &rect) {
+    return rect.width() * rect.height();
+}
+
+bool objectRectCompare(TObjectItem *i1, TObjectItem *i2) {
+    return squareOfRect(i1->boundingRect()) < squareOfRect(i2->boundingRect());
+}
+
 TGraphicsScene::TGraphicsScene(QObject *parent) :
     QGraphicsScene(parent)
   , mFps(60)
@@ -857,15 +865,23 @@ TObject *TGraphicsScene::getTopMostObject(const QPointF &pos) const
 TObjectItem *TGraphicsScene::getTopMostObjectItem(const QPointF &pos) const
 {
     QList<QGraphicsItem*> itemList = itemsOfCurrentLayerItem(pos, Qt::IntersectsItemBoundingRect);
+    TObjectItemList objectItemList;
     for (QGraphicsItem *item : itemList) {
         if (!item->isEnabled())
             continue;
 
         TObjectItem *objectItem = qgraphicsitem_cast<TObjectItem*>(item);
-        if (objectItem)
-            return objectItem;
+        if (objectItem) {
+            objectItemList.append(objectItem);
+        }
     }
-    return nullptr;
+
+    if(objectItemList.isEmpty())
+        return nullptr;
+
+    // Find minimized rect
+    qSort(objectItemList.begin(), objectItemList.end(), objectRectCompare);
+    return objectItemList.first();
 }
 
 TObjectItemList TGraphicsScene::getObjectItemList(const QRectF &rect) const

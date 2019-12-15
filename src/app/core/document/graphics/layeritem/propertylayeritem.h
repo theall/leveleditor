@@ -21,6 +21,10 @@ private:
 
 private slots:
     void slotlPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);
+
+    // TLayerItem interface
+public:
+    QRectF calcBoundingRect();
 };
 
 #endif // TPROPERTYLAYERITEM_H

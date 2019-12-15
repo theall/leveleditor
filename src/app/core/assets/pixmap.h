@@ -2,6 +2,8 @@
 #define DOCUMENT_PIXMAP_H
 
 #include <QObject>
+#include <QSize>
+#include <QList>
 #include <QPixmap>
 
 class TPixmap : public QObject

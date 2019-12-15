@@ -48,6 +48,18 @@ void TRectObject::setRect(int x, int y, int w, int h)
     setRect(QRectF(x,y,w,h));
 }
 
+QPointF TRectObject::getPos() const
+{
+    return mRectPropertyItem->value().toRectF().topLeft();
+}
+
+void TRectObject::setPos(const QPointF &pos)
+{
+    QRectF currentRect = mRectPropertyItem->value().toRectF();
+    currentRect.moveTo(pos);
+    mRectPropertyItem->setValue(currentRect);
+}
+
 void TRectObject::adjust(const QMarginsF &margins)
 {
     if(margins.isNull())

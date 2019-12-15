@@ -48,3 +48,11 @@ void TPropertyLayerItem::slotlPropertyItemValueChanged(TPropertyItem *item, cons
         mCameraItem->setBoundingRect(item->value().toRect());
     }
 }
+
+QRectF TPropertyLayerItem::calcBoundingRect()
+{
+    QRectF rect(0, 0, 1, 1);
+    rect = rect.united(mFlagItem1->boundingRect());
+    rect = rect.united(mFlagItem2->boundingRect());
+    return rect;
+}

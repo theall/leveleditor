@@ -58,7 +58,11 @@ class TPropertyItem : public QObject
 
 public:
     TPropertyItem(
-            int type,
+            PropertyType type,
+            const QString &name,
+            QObject *parent=nullptr);
+    TPropertyItem(
+            PropertyType type,
             const QString &name,
             PropertyID propertyId,
             QObject *parent=nullptr);
@@ -98,6 +102,12 @@ public:
     void addSubPropertyItems(const QList<TPropertyItem *> &subPropertyItems);
     void addSubPropertyItem(TPropertyItem *propertyItem);
 
+    QString toolTip() const;
+    void setToolTip(const QString &toolTip);
+
+    QString statusTip() const;
+    void setStatusTip(const QString &statusTip);
+
 signals:
     void valueChanged(const QVariant &oldValue, const QVariant &newValue);
     void attributeChanged(const QString &name, const QVariant &value);
@@ -106,6 +116,8 @@ private:
     int mType;
     QString mName;
     QVariant mValue;
+    QString mToolTip;
+    QString mStatusTip;
     QMap<QString, QVariant> mAttributes;
 
     PropertyID mPropertyId;

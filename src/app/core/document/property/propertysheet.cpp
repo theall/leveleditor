@@ -17,7 +17,7 @@ TPropertyItems TPropertySheet::propertyList() const
 }
 
 TPropertyItem *TPropertySheet::addProperty(
-        int type,
+        PropertyType type,
         const QString &name,
         PropertyID undoCommand,
         const QVariant &value,
@@ -26,6 +26,16 @@ TPropertyItem *TPropertySheet::addProperty(
 {
     TPropertyItem *item = new TPropertyItem(type, name, undoCommand, this);
     item->setValue(value);
+    addProperty(item, parent, beforeProperty);
+    return item;
+}
+
+TPropertyItem *TPropertySheet::addGroupProperty(
+        const QString &name,
+        TPropertyItem *parent,
+        TPropertyItem *beforeProperty)
+{
+    TPropertyItem *item = new TPropertyItem(PT_GROUP, name, this);
     addProperty(item, parent, beforeProperty);
     return item;
 }

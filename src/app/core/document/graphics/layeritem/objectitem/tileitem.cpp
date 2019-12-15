@@ -11,7 +11,7 @@ TTileItem::TTileItem(TTile *tile, QGraphicsItem *parent) :
   , mTileDoorTrackItem(nullptr)
 {
     Q_ASSERT(mTile);
-    mCurrentPos = mTile->pos();
+
     if(mTile->hasMoveModel()) {
         mDoorItem = new TDoorItem(this);
         mTileDoorTrackItem = new TTrackItem(this, mDoorItem);

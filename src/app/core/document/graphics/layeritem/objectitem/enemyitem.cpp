@@ -8,7 +8,6 @@ TEnemyItem::TEnemyItem(TEnemy *enemy, QGraphicsItem *parent) :
 {
     Q_ASSERT(mEnemy);
 
-    setCurrentPos(mEnemy->pos());
     setBoundingRect(mEnemy->getRect());
     setBorderColor(Qt::yellow);
 }

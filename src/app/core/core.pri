@@ -111,7 +111,8 @@ SOURCES += \
     $$PWD/model/itemmodel.cpp \
     $$PWD/document/graphics/uiitem/resizeitem.cpp \
     $$PWD/document/undocommand/addframecommand.cpp \
-    $$PWD/document/undocommand/rectresizeundocommand.cpp
+    $$PWD/document/undocommand/rectresizeundocommand.cpp \
+    $$PWD/assets/triggerid.cpp
 
 HEADERS  += \
     $$PWD/core.h \
@@ -232,6 +233,7 @@ HEADERS  += \
     $$PWD/document/graphics/uiitem/resizeitem.h \
     $$PWD/document/undocommand/addframecommand.h \
     $$PWD/document/undocommand/rectresizeundocommand.h \
-    $$PWD/document/undocommand/undocommandutils.hpp
+    $$PWD/document/undocommand/undocommandutils.hpp \
+    $$PWD/assets/triggerid.h
 RESOURCES += \
     $$PWD/resource/core.qrc

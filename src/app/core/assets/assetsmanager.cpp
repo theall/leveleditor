@@ -6,6 +6,8 @@
 #include <QStringList>
 #include <utils/utils.h>
 
+#include "triggerid.h"
+
 #define GFX_PATH "gfx"
 #define MAPS_PATH "maps"
 #define TILES_NAME  "tiles"
@@ -26,14 +28,75 @@ int getThumbId(const QString &mapName) {
     return id;
 }
 
+/**
+ * @brief Extract stuff type name from file name, for example, "obje1_a1.bmp", return "obj"
+ * @param fileName
+ * @return QString Object type
+ */
+QString extractStuffTypeFromFileName(const QString &fileName) {
+    // Find index of first digit
+    int index = fileName.indexOf(QRegExp("[\\d\\._]"));
+    if(index == -1)
+        // Invalid file?
+        return QString();
+
+    return fileName.left(index);
+}
+
+/**
+ * @brief Extract sub id from file name, such as "obj12_3.bmp", return 3
+ * @param fileName file name
+ * @return int
+ */
+int extractSubIdFromFileName(const QString &fileName) {
+    if(fileName.endsWith('_'))
+        return -1;
+
+    QStringList splitFileNames = fileName.split("_");
+    if(splitFileNames.size() != 2) // invalid file name
+        return -1;
+
+    QString idName = splitFileNames.at(1);
+    if(idName.at(0) == 'a')
+        idName = idName.right(idName.length()-1);
+    bool ok = false;
+    int id = idName.toInt(&ok);
+    if(!ok)
+        return -1;
+    return id;
+}
+
+/**
+ * @brief Extract id from filename, such as "obj12_3.bmp", return 2
+ * @param fileName file name
+ * @return int
+ */
+int extractIdFromFileName(const QString &fileName) {
+    QRegExp rx("[a-zA-Z]+(\\d+)");
+    int index = rx.indexIn(fileName);
+    if(index == -1)
+        return -1;
+
+    int matchedLength = rx.captureCount();
+    if(matchedLength < 1)
+        return -1;
+
+    QString idName = rx.cap(1);
+    bool ok = false;
+    int id = idName.toInt(&ok);
+    if(!ok)
+        return -1;
+    return id;
+}
+
 bool tileSetIdCompare(TTileset *tileSet1, TTileset *tileSet2)
 {
     return tileSet1->id() < tileSet2->id();
 }
 
-bool faceIdCompare(TFaceId *face1, TFaceId *face2)
+bool pixmapIdCompare(TPixmapId *id1, TPixmapId *id2)
 {
-    return face1->id() < face2->id();
+    return id1->id() < id2->id();
 }
 
 IMPL_SINGLE_INSTANCE(TAssetsManager)
@@ -153,6 +216,27 @@ TPixmapId *TAssetsManager::getPixmapId(Category category, int id) const
                 break;
             }
         }
+    } else if(category == SHOT) {
+        for(TShotId *itemId : mShotList) {
+            if(itemId->id() == id) {
+                pixmapId = itemId;
+                break;
+            }
+        }
+    } else if(category == CHUNK) {
+        for(TChunkId *itemId : mChunkList) {
+            if(itemId->id() == id) {
+                pixmapId = itemId;
+                break;
+            }
+        }
+    } else if(category == TRIGGER) {
+        for(TTriggerId *itemId : mTriggerIdList) {
+            if(itemId->id() == id) {
+                pixmapId = itemId;
+                break;
+            }
+        }
     }
     return pixmapId;
 }
@@ -172,12 +256,27 @@ TChunkList TAssetsManager::getChunkList() const
     return mChunkList;
 }
 
+TTriggerIdList TAssetsManager::getTriggerIdList() const
+{
+    return mTriggerIdList;
+}
+
+TTriggerId *TAssetsManager::getTriggerId(int id) const
+{
+    for(TTriggerId *triggerId : mTriggerIdList) {
+        if(triggerId->id() == id)
+            return triggerId;
+    }
+    return nullptr;
+}
+
 void TAssetsManager::clear()
 {
     FREE_CONTAINER(mFaceList);
     FREE_CONTAINER(mItemIdList);
     FREE_CONTAINER(mShotList);
     FREE_CONTAINER(mChunkList);
+    FREE_CONTAINER(mTriggerIdList);
     FREE_CONTAINER(mTilesetList);
 }
 
@@ -216,6 +315,7 @@ void TAssetsManager::loadAssets()
 
     // Stuff list
     QList<int> stuffIdList;
+    QList<int> stuffSubIdList;
     QList<Category> stuffTypeList;
     QStringList stuffBitmapList;
     QDir stuffDir = mGfxDir.absoluteFilePath("stuff");
@@ -224,44 +324,35 @@ void TAssetsManager::loadAssets()
     for (int i = 0; i < stuffFileInfoList.size(); ++i) {
         QFileInfo stuffFileInfo = stuffFileInfoList.at(i);
         QString stuffFileName = stuffFileInfo.baseName();// "obj1_a1.bmp"
-        QStringList stuffNameList = stuffFileName.split("_");
-        if(stuffNameList.size() != 2) // invalid file name
+        // Igore file name end with "_.bmp", example, "obj10_1_.bmp"
+        if(stuffFileName.endsWith('_'))
             continue;
 
-        QString stuffSuffixName = stuffNameList.at(1);
-        stuffSuffixName = stuffSuffixName.toLower();
-        if(stuffSuffixName!="1" && stuffSuffixName!="a1")
-            // Only load first picture of object
+        QString stuffTypeName = extractStuffTypeFromFileName(stuffFileName).toLower();
+        if(stuffTypeName.isEmpty())
             continue;
 
-        bool ok = false;
-        // Extract type name "obj1" from file name "obj1_a1.bmp"
-        QString stuffPrefixName = stuffNameList.at(0);
-
-        // Find index of first digit
-        int index = stuffPrefixName.indexOf(QRegExp("\\d"));
-        if(index == -1)
-            // Invalid file?
+        int parentId = extractIdFromFileName(stuffFileName);
+        if(parentId == -1)
             continue;
 
-        QString stuffIdName = stuffPrefixName.right(stuffPrefixName.size() - index);
-        int stuffId = stuffIdName.toInt(&ok);
-        if(!ok)
-            // Not found id
-            continue;
-
-        QString stuffTypeName = stuffPrefixName.left(index);
-        stuffTypeName = stuffTypeName.toLower();
         if(stuffTypeName == "obj") {
+            // "obj1_a1.bmp"
             stuffTypeList.append(ITEM);
         } else if(stuffTypeName == "pt") {
             stuffTypeList.append(CHUNK);
         } else if(stuffTypeName == "shot") {
+            // "shot38.bmp"
             stuffTypeList.append(SHOT);
+        } else if(stuffTypeName == "trig") {
+            stuffTypeList.append(TRIGGER);
         } else {
             continue;
         }
-        stuffIdList.append(stuffId);
+
+        int subId = extractSubIdFromFileName(stuffFileName);
+        stuffIdList.append(parentId);
+        stuffSubIdList.append(subId);
         stuffBitmapList.append(stuffFileInfo.absoluteFilePath());
     }
 
@@ -321,6 +412,7 @@ void TAssetsManager::loadAssets()
             QString ext = fileInfo.suffix().toLower();
             if(ext!="dat" || !fileName.at(fileName.size()-1).isNumber())
                 continue;
+
             TMap *map = nullptr;
             TMapBundle *mapBundle = nullptr;
             if(fileName.startsWith("amap")) {
@@ -364,8 +456,6 @@ void TAssetsManager::loadAssets()
         if(assetsLoaded%10 == 0)
             emit onProgress(assetsLoaded, totalAssets);
     }
-    // Sort
-    qSort(mFaceList.begin(), mFaceList.end(), faceIdCompare);
 
     // Real load tile bitmap
     for(int i=0;i<tileSetIdList.size();i++) {
@@ -396,11 +486,6 @@ void TAssetsManager::loadAssets()
 
         TTileId *tile = new TTileId(tileId, pixmap);
         targetTileset->add(tile);
-        // Sorting
-        foreach (TTileset *tileSet, mTilesetList) {
-            tileSet->sort();
-        }
-        qSort(mTilesetList.begin(), mTilesetList.end(), tileSetIdCompare);
     }
 
     // Load map thumbnails
@@ -426,13 +511,49 @@ void TAssetsManager::loadAssets()
 
         Category category = stuffTypeList.at(i);
         int stuffId = stuffIdList.at(i);
+        int stuffSubId = stuffSubIdList.at(i);
         if(category == ITEM) {
             mItemIdList.append(new TItemId(stuffId, pixmap));
         } else if(category == SHOT) {
             mShotList.append(new TShotId(stuffId, pixmap));
         } else if(category == CHUNK) {
-            mChunkList.append(new TChunkId(stuffId, pixmap));
+            TChunkId *chunkId = findChunkIdById(stuffId);
+            if(chunkId == nullptr) {
+                chunkId = new TChunkId(stuffId, pixmap);
+                mChunkList.append(chunkId);
+            } else {
+                chunkId->add(stuffSubId, pixmap);
+            }
+        } else if(category == TRIGGER) {
+            TTriggerId *triggerId = findTriggerIdById(stuffId);
+            if(triggerId == nullptr) {
+                triggerId = new TTriggerId(stuffId, nullptr, nullptr);
+                mTriggerIdList.append(triggerId);
+            }
+            if(stuffSubId == 1)
+                triggerId->setOnPixmap(pixmap);
+            else
+                triggerId->setOffPixmap(pixmap);
         }
+    }
+
+    // Sort
+    qSort(mFaceList.begin(), mFaceList.end(), pixmapIdCompare);
+    qSort(mShotList.begin(), mShotList.end(), pixmapIdCompare);
+    qSort(mTriggerIdList.begin(), mTriggerIdList.end(), pixmapIdCompare);
+    qSort(mShotList.begin(), mShotList.end(), pixmapIdCompare);
+    qSort(mItemIdList.begin(), mItemIdList.end(), pixmapIdCompare);
+    qSort(mChunkList.begin(), mChunkList.end(), pixmapIdCompare);
+    qSort(mTilesetList.begin(), mTilesetList.end(), tileSetIdCompare);
+
+    // Sort tile list in tileset
+    foreach (TTileset *tileSet, mTilesetList) {
+        tileSet->sort();
+    }
+
+    // Sort chunk list in chunkid
+    for(TChunkId *chunkId : mChunkList) {
+        chunkId->sort();
     }
 
     // Load shot
@@ -443,6 +564,30 @@ void TAssetsManager::loadAssets()
 bool TAssetsManager::isValidPath() const
 {
     return !mPath.isEmpty()&&mDir.exists()&&mGfxDir.exists()&&mMapsDir.exists();
+}
+
+TTriggerId *TAssetsManager::findTriggerIdById(int id) const
+{
+    TTriggerId *targetTriggerId = nullptr;
+    for(TTriggerId *triggerId : mTriggerIdList) {
+        if(triggerId->id() == id) {
+            targetTriggerId = triggerId;
+            break;
+        }
+    }
+    return targetTriggerId;
+}
+
+TChunkId *TAssetsManager::findChunkIdById(int id) const
+{
+    TChunkId *targetChunkId = nullptr;
+    for(TChunkId *chunkId : mChunkList) {
+        if(chunkId->id() == id) {
+            targetChunkId = chunkId;
+            break;
+        }
+    }
+    return targetChunkId;
 }
 
 void TAssetsManager::run()

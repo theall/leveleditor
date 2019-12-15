@@ -4,4 +4,5 @@ TPointObjectItem::TPointObjectItem(TPointObject *pointRect, QGraphicsItem *paren
     TObjectItem(pointRect, parent)
 {
     setAnchor(TObjectItem::BOTTOM_CENTER);
+    setCurrentPos(pointRect->pos());
 }

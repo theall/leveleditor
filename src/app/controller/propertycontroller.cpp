@@ -244,7 +244,8 @@ QtVariantProperty *TPropertyController::createProperty(TPropertyItem *propertyIt
     } else {
         p->setValue(propertyItem->value());
     }
-
+    p->setToolTip(propertyItem->toolTip());
+    p->setStatusTip(propertyItem->statusTip());
     mItemPropertyMap[propertyItem] = p;
     mPropertyItemMap[p] = propertyItem;
 

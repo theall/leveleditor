@@ -1,18 +1,21 @@
 #include "trigger.h"
+#include "../../../assets/triggerid.h"
+#include "../../../assets/assetsmanager.h"
 #include "../../base/tr.h"
 
 #include <QRect>
 #include <QPoint>
 
-static const QString P_WAY = T("Way");
+static const QString P_TYPE = T("Type");
 static const QString P_ON = T("On");
 static const QString P_ACTION = T("Action");
 static const QString P_PASS_BY = T("Pass By");
 static const QString P_OBJECT_HIT = T("Object Hit");
 static const QString P_EVENT = T("Event");
 static const QString P_DRAW = T("Draw");
-static const QString P_IMAGE_NO = T("Image NO");
-static const QString P_IMAGE_POS = T("Image Pos");
+static const QString P_IMAGE = T("Image");
+static const QString P_IMAGE_NO = T("Number");
+static const QString P_IMAGE_POS = T("Pos");
 static const QString P_AFFECT = T("Affect");
 static const QString P_SOUND = T("Sound");
 static const QString P_FOLLOW = T("Follow");
@@ -33,7 +36,7 @@ void TTrigger::saveToStream(QDataStream &stream) const
     stream << rect.top();
     stream << rect.width();
     stream << rect.height();
-    stream << mPropertySheet->getValue(PID_TRIGGER_WAY).toInt();
+    stream << mPropertySheet->getValue(PID_TRIGGER_TYPE).toInt()+1;
     stream << mPropertySheet->getValue(PID_TRIGGER_ON).toInt();
     stream << mPropertySheet->getValue(PID_TRIGGER_ACTION).toInt();
     stream << mPropertySheet->getValue(PID_TRIGGER_PASS_BY).toInt();
@@ -56,7 +59,7 @@ void TTrigger::readFromStream(QDataStream &stream)
     int y;
     int w;
     int h;
-    int way;
+    int type;
     int on;
     int action;
     int passBy;
@@ -75,7 +78,7 @@ void TTrigger::readFromStream(QDataStream &stream)
     stream >> y;
     stream >> w;
     stream >> h;
-    stream >> way;
+    stream >> type;
     stream >> on;
     stream >> action;
     stream >> passBy;
@@ -90,8 +93,11 @@ void TTrigger::readFromStream(QDataStream &stream)
     stream >> platPos;
     stream >> onStatus;
     stream >> offStatus;
+
+    mTriggerId = TAssetsManager::getInstance()->getTriggerId(imageN);
+
     setRect(x, y, w, h);
-    mPropertySheet->setValue(PID_TRIGGER_WAY, way);
+    mPropertySheet->setValue(PID_TRIGGER_TYPE, type-1);
     mPropertySheet->setValue(PID_TRIGGER_ON, on);
     mPropertySheet->setValue(PID_TRIGGER_ACTION, action);
     mPropertySheet->setValue(PID_TRIGGER_PASS_BY, passBy);
@@ -108,23 +114,66 @@ void TTrigger::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(PID_TRIGGER_OFF_STATUS, offStatus);
 }
 
+QPointF TTrigger::getImageOffset() const
+{
+    return mPropertySheet->getValue(PID_TRIGGER_IMAGE_POS).toPointF();
+}
+
+TTriggerId *TTrigger::triggerId() const
+{
+    return mTriggerId;
+}
+
+void TTrigger::setTriggerId(TTriggerId *triggerId)
+{
+    mTriggerId = triggerId;
+}
+
 void TTrigger::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_INT, P_WAY, PID_TRIGGER_WAY);
-    mPropertySheet->addProperty(PT_INT, P_ON, PID_TRIGGER_ON);
-    mPropertySheet->addProperty(PT_INT, P_ACTION, PID_TRIGGER_ACTION);
-    mPropertySheet->addProperty(PT_INT, P_PASS_BY, PID_TRIGGER_PASS_BY);
-    mPropertySheet->addProperty(PT_INT, P_OBJECT_HIT, PID_TRIGGER_OBJECT_HIT);
+    TPropertyItem *propertyItem = mPropertySheet->addProperty(PT_ENUM, P_TYPE, PID_TRIGGER_TYPE);
+    QStringList typeString;
+    typeString << tr("Once");
+    typeString << tr("On/off");
+    typeString << tr("Action");
+    typeString << tr("Next music");
+    typeString << tr("Next map 1");
+    typeString << tr("Next map 2");
+    typeString << tr("Next map 3");
+    typeString << tr("Next map 4");
+    typeString << tr("Next map 5");
+    typeString << tr("Change fight mode");
+    typeString << tr("Screen lock");
+    typeString << tr("No air special");
+    typeString << tr("No double jump");
+    typeString << tr("Secret area discovery");
+    propertyItem->addAttribute(PA_ENUM_NAMES, typeString);
+
+    mPropertySheet->addProperty(PT_BOOL, P_ON, PID_TRIGGER_ON);
+    propertyItem = mPropertySheet->addProperty(PT_BOOL, P_ACTION, PID_TRIGGER_ACTION);
+    propertyItem->setToolTip(tr("Trigger while player press up on this area."));
+
+    propertyItem = mPropertySheet->addProperty(PT_BOOL, P_PASS_BY, PID_TRIGGER_PASS_BY);
+    propertyItem->setToolTip(tr("Trigger while player is on this area."));
+
+    propertyItem = mPropertySheet->addProperty(PT_BOOL, P_OBJECT_HIT, PID_TRIGGER_OBJECT_HIT);
+    propertyItem->setToolTip(tr("Trigger while item hits this area."));
+
     mPropertySheet->addProperty(PT_INT, P_EVENT, PID_TRIGGER_EVENT);
-    mPropertySheet->addProperty(PT_INT, P_DRAW, PID_TRIGGER_DRAW);
-    mPropertySheet->addProperty(PT_INT, P_IMAGE_NO, PID_TRIGGER_IMAGE_NO);
-    mPropertySheet->addProperty(PT_POINT, P_IMAGE_POS, PID_TRIGGER_IMAGE_POS);
-    mPropertySheet->addProperty(PT_INT, P_AFFECT, PID_TRIGGER_AFFECT);
-    mPropertySheet->addProperty(PT_INT, P_SOUND, PID_TRIGGER_SOUND);
+    mPropertySheet->addProperty(PT_BOOL, P_DRAW, PID_TRIGGER_DRAW);
+
+    propertyItem = mPropertySheet->addGroupProperty(P_IMAGE);
+    mPropertySheet->addProperty(PT_INT, P_IMAGE_NO, PID_TRIGGER_IMAGE_NO, QVariant(), propertyItem);
+    mPropertySheet->addProperty(PT_POINT, P_IMAGE_POS, PID_TRIGGER_IMAGE_POS, QVariant(),propertyItem);
+
+    propertyItem = mPropertySheet->addProperty(PT_BOOL, P_AFFECT, PID_TRIGGER_AFFECT);
+    propertyItem->setToolTip(tr("true: affect alive players, false: affect all players."));
+
+    mPropertySheet->addProperty(PT_SOUND_ITEM, P_SOUND, PID_TRIGGER_SOUND);
     mPropertySheet->addProperty(PT_INT, P_FOLLOW, PID_TRIGGER_FOLLOW);
     mPropertySheet->addProperty(PT_POINT, P_PLATFORM_POS, PID_TRIGGER_PLATFORM_POS);
-    mPropertySheet->addProperty(PT_INT, P_ON_STATUS, PID_TRIGGER_ON_STATUS);
-    mPropertySheet->addProperty(PT_INT, P_OFF_STATUS, PID_TRIGGER_OFF_STATUS);
+    mPropertySheet->addProperty(PT_BOOL, P_ON_STATUS, PID_TRIGGER_ON_STATUS);
+    mPropertySheet->addProperty(PT_BOOL, P_OFF_STATUS, PID_TRIGGER_OFF_STATUS);
 }
 
 QString TTrigger::typeString() const

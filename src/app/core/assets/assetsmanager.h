@@ -15,11 +15,15 @@
 #include "shotid.h"
 #include "chunkid.h"
 
+class TTriggerId;
+typedef QList<TTriggerId*> TTriggerIdList;
+
 enum Category {
     PLAYER = 0,
     ITEM,
     SHOT,
-    CHUNK
+    CHUNK,
+    TRIGGER
 };
 
 class TCachedSound;
@@ -54,10 +58,10 @@ public:
     TPixmapId *getPixmapId(Category category, int id) const;
 
     TItemIdList getItemIdList() const;
-
     TShotList getShotList() const;
-
     TChunkList getChunkList() const;
+    TTriggerIdList getTriggerIdList() const;
+    TTriggerId *getTriggerId(int id) const;
 
 signals:
     // Notify external object
@@ -75,6 +79,7 @@ private:
     TItemIdList mItemIdList;
     TShotList mShotList;
     TChunkList mChunkList;
+    TTriggerIdList mTriggerIdList;
 
     TCachedPixmap *mCachedPixmaps;
     TCachedSound *mCachedSounds;
@@ -84,6 +89,9 @@ private:
     void clear();
     void loadAssets();
     bool isValidPath() const;
+    TTriggerId *findTriggerIdById(int id) const;
+    TChunkId *findChunkIdById(int id) const;
+    void mergeTriggerIds();
 
     // QThread interface
 protected:

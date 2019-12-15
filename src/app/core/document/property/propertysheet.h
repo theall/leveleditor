@@ -12,13 +12,23 @@ public:
     ~TPropertySheet();
 
     TPropertyItems propertyList() const;
-    void addProperty(TPropertyItem *propertyItem, TPropertyItem *parent = nullptr, TPropertyItem *beforeProperty = nullptr);
-    void addProperty(const TPropertyItems &propertyItemList, TPropertyItem *parent = nullptr, TPropertyItem *beforeProperty = nullptr);
+    void addProperty(
+            TPropertyItem *propertyItem,
+            TPropertyItem *parent = nullptr,
+            TPropertyItem *beforeProperty = nullptr);
+    void addProperty(
+            const TPropertyItems &propertyItemList,
+            TPropertyItem *parent = nullptr,
+            TPropertyItem *beforeProperty = nullptr);
     TPropertyItem *addProperty(
-            int type,
+            PropertyType type,
             const QString &name,
             PropertyID undoCommand,
             const QVariant &value=QVariant(),
+            TPropertyItem *parent = nullptr,
+            TPropertyItem *beforeProperty = nullptr);
+    TPropertyItem *addGroupProperty(
+            const QString &name,
             TPropertyItem *parent = nullptr,
             TPropertyItem *beforeProperty = nullptr);
 
