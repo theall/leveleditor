@@ -3,10 +3,13 @@
 
 #include "pixmapid.h"
 
+#include <QList>
+
 class TShotId : public TPixmapId
 {
 public:
     TShotId(int id, TPixmap *pixmap);
+    ~TShotId();
 };
 typedef QList<TShotId*> TShotList;
 

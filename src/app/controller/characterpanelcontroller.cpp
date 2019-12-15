@@ -2,6 +2,8 @@
 #include "../core/core.h"
 #include "../core/model/charactermodel.h"
 #include "../core/model/itemmodel.h"
+#include "../core/model/shotmodel.h"
+#include "../core/model/chunkmodel.h"
 
 #include "../gui/component/characterdock/characterview.h"
 #include "../gui/component/characterdock/characterdock.h"
@@ -46,8 +48,8 @@ void TCharacterPanelController::slotOnCoreReady()
 {
     mCharacterDock->setPixmapSet(PA_CHARACTER, toPixmapList<TFaceId*>(mCore->characterModel()->faceList()));
     mCharacterDock->setPixmapSet(PA_ITEM, toPixmapList<TItemId*>(mCore->getItemModel()->itemIdList()));
-    mCharacterDock->setPixmapSet(PA_SHOT, toPixmapList<TFaceId*>(mCore->characterModel()->faceList()));
-    mCharacterDock->setPixmapSet(PA_CHUNK, toPixmapList<TFaceId*>(mCore->characterModel()->faceList()));
+    mCharacterDock->setPixmapSet(PA_SHOT, toPixmapList<TShotId*>(mCore->shotModel()->shotIdList()));
+    mCharacterDock->setPixmapSet(PA_CHUNK, toPixmapList<TChunkId*>(mCore->chunkModel()->chunIdList()));
 }
 
 void TCharacterPanelController::slotTimerEvent()

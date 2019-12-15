@@ -12,6 +12,8 @@
 class TItemModel;
 class TMapsModel;
 class TCharacterModel;
+class TChunkModel;
+class TShotModel;
 
 class TCore : public QObject
 {
@@ -43,6 +45,10 @@ public:
 
     TCharacterModel *characterModel() const;
 
+    TChunkModel *chunkModel() const;
+
+    TShotModel *shotModel() const;
+
     TMapsModel *mapsModel() const;
 
     TTilesetModelManager *tilesetModelManager() const;
@@ -62,6 +68,8 @@ private:
     TCharacterModel *mCharacterModel;
     TItemModel *mItemModel;
     TTilesetModelManager *mTilesetModelManager;
+    TChunkModel *mChunkModel;
+    TShotModel *mShotModel;
     QList<TDocument*> mDocuments;
 
     void addDocument(TDocument *document);

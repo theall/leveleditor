@@ -5,3 +5,8 @@ TShotId::TShotId(int id, TPixmap *pixmap) :
 {
 
 }
+
+TShotId::~TShotId()
+{
+
+}

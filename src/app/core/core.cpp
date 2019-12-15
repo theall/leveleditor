@@ -6,6 +6,8 @@
 #include "model/mapmodel.h"
 #include "model/charactermodel.h"
 #include "model/itemmodel.h"
+#include "model/chunkmodel.h"
+#include "model/shotmodel.h"
 
 TCore::TCore(QObject *parent) :
     QObject(parent)
@@ -14,6 +16,8 @@ TCore::TCore(QObject *parent) :
   , mCharacterModel(new TCharacterModel(this))
   , mItemModel(new TItemModel(this))
   , mTilesetModelManager(new TTilesetModelManager(this))
+  , mChunkModel(new TChunkModel(this))
+  , mShotModel(new TShotModel(this))
 {
     TPreferences::instance();
 
@@ -174,6 +178,8 @@ void TCore::slotOnResourceLoadCompleted()
     mCharacterModel->setFaceList(assetsManager->getFaceList());
     mItemModel->setItemList(assetsManager->getItemIdList());
     mMapsModel->setModuleList(assetsManager->getModuleList());
+    mChunkModel->setChunIdList(assetsManager->getChunkList());
+    mShotModel->setShotIdList(assetsManager->getShotList());
 
     emit ready();
 }
@@ -196,6 +202,16 @@ TMapsModel *TCore::mapsModel() const
 TCharacterModel *TCore::characterModel() const
 {
     return mCharacterModel;
+}
+
+TChunkModel *TCore::chunkModel() const
+{
+    return mChunkModel;
+}
+
+TShotModel *TCore::shotModel() const
+{
+    return mShotModel;
 }
 
 TTilesetModelList TCore::tilesetModelList() const
