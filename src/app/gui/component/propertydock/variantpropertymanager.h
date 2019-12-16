@@ -16,11 +16,9 @@ class TVariantPropertyManager : public QtVariantPropertyManager
 public:
     explicit TVariantPropertyManager(QObject *parent = nullptr);
 
-    QVariant context(const QtProperty *property) const;
     QVariant value(const QtProperty *property) const override;
     QString valueText(const QtProperty *property) const override;
     QIcon valueIcon(const QtProperty *property) const override;
-    void setValue(QtProperty *property, const QVariant &val, const QVariant &context);
 
     int valueType(int propertyType) const override;
     bool isPropertyTypeSupported(int propertyType) const override;
@@ -30,14 +28,12 @@ public:
     QVariant attributeValue(const QtProperty *property,
                             const QString &attribute) const override;
 
-    static int enumTypeId();
-    static int flagTypeId();
-    static int groupTypeId();
     static int stringExTypeId();
     static int pixmapTypeId();
     static int soundSetTypeId();
     static int soundItemTypeId();
     static int soundItemSourceTypeId();
+    static int dirTypeId();
 
 public slots:
     void setValue(QtProperty *property, const QVariant &val) override;
@@ -50,15 +46,11 @@ protected:
     void uninitializeProperty(QtProperty *property) override;
 
 private:
-    struct Data {
-        QVariant text;
-        QVariant context;
-    };
-    QMap<const QtProperty *, Data> mValues;
-    QMap<const QtProperty *, QStringList> mSuggestions;
+    bool isCustomizedPropertyType(int propertyType) const;
+    bool isCustomizedProperty(const QtProperty *property) const;
 
-    const QString mSuggestionsAttribute;
-    QIcon mImageMissingIcon;
+private slots:
+    void slotValueChanged(QtProperty *property, int value);
 };
 
 #endif // VARIANTPROPERTYMANAGER_H

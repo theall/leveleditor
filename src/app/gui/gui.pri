@@ -74,7 +74,10 @@ SOURCES += \
     $$PWD/component/objectdock/objectcontainer.cpp \
     $$PWD/component/animationdock/framelistview.cpp \
     $$PWD/component/objectdock/objectlistview.cpp \
-    $$PWD/dialogs/debugdialog.cpp
+    $$PWD/dialogs/debugdialog.cpp \
+    $$PWD/component/propertydock/widget/diredit.cpp \
+    $$PWD/component/propertydock/propertymanager/dirpropertymanager.cpp \
+    $$PWD/component/propertydock/editorfactory/direditorfactory.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -139,7 +142,10 @@ HEADERS += \
     $$PWD/component/objectdock/objectdock.h \
     $$PWD/component/objectdock/objectcontainer.h \
     $$PWD/component/objectdock/objectlistview.h \
-    $$PWD/dialogs/debugdialog.h
+    $$PWD/dialogs/debugdialog.h \
+    $$PWD/component/propertydock/widget/diredit.h \
+    $$PWD/component/propertydock/propertymanager/dirpropertymanager.h \
+    $$PWD/component/propertydock/editorfactory/direditorfactory.h
 
 FORMS += \
     $$PWD/mainwindow.ui \

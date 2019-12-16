@@ -30,6 +30,12 @@ TPropertyLayerItem::TPropertyLayerItem(TSceneModel *sceneModel, QGraphicsItem *p
     mFlagItem1->setColor(Qt::green);
     mFlagItem2->setColor(Qt::red);
 
+    if(sceneModel->isAdvMap()) {
+        // Adv map has no flags
+        mFlagItem1->setVisible(false);
+        mFlagItem2->setVisible(false);
+    }
+
     calcBoundingRect();
 }
 

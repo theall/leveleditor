@@ -67,7 +67,7 @@ public:
     void setValue(const QVariant &value);
     void setAttribute(const QString &attribute, const QVariant &value);
 protected:
-    QtVariantProperty(QtVariantPropertyManager *manager);
+    explicit QtVariantProperty(QtVariantPropertyManager *manager);
 private:
     friend class QtVariantPropertyManager;
     QtVariantPropertyPrivate *d_ptr;
@@ -96,10 +96,16 @@ public:
     virtual QVariant value(const QtProperty *property) const;
     virtual QVariant attributeValue(const QtProperty *property, const QString &attribute) const;
 
+    void registerManager(int type, QtAbstractPropertyManager *manager);
+    QtVariantProperty *internalToProperty(QtProperty *property) const;
+    static QtProperty *getInternalProperty(const QtProperty *property);
+    static QtAbstractPropertyManager *getBindPropertyManager(const QtProperty *property);
+
     static int enumTypeId();
     static int flagTypeId();
     static int groupTypeId();
     static int iconMapTypeId();
+
 public Q_SLOTS:
     virtual void setValue(QtProperty *property, const QVariant &val);
     virtual void setAttribute(QtProperty *property,
@@ -159,7 +165,6 @@ private:
     Q_DECLARE_PRIVATE(QtVariantPropertyManager)
     Q_DISABLE_COPY(QtVariantPropertyManager)
 };
-
 class QtVariantEditorFactoryPrivate;
 
 class QT_QTPROPERTYBROWSER_EXPORT QtVariantEditorFactory : public QtAbstractEditorFactory<QtVariantPropertyManager>
@@ -168,6 +173,9 @@ class QT_QTPROPERTYBROWSER_EXPORT QtVariantEditorFactory : public QtAbstractEdit
 public:
     QtVariantEditorFactory(QObject *parent = 0);
     ~QtVariantEditorFactory();
+
+    void registerFactory(int type, QtAbstractEditorFactoryBase *factory);
+
 protected:
     void connectPropertyManager(QtVariantPropertyManager *manager);
     QWidget *createEditor(QtVariantPropertyManager *manager, QtProperty *property,

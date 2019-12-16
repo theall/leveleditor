@@ -154,7 +154,7 @@ void TEnemy::readFromStream(QDataStream &stream)
 
 void TEnemy::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_INT, P_DIR, PID_ENEMY_DIR)->addDirectionAttribute();
+    mPropertySheet->addProperty(PT_DIR, P_DIR, PID_ENEMY_DIR);
     mPropertySheet->addProperty(PT_INT, P_LIFE, PID_ENEMY_LIFE)->setRange(100);
     mPropertySheet->addProperty(PT_INT, P_LIVES, PID_ENEMY_LIVES)->setRange(99);
     mPropertySheet->addProperty(PT_INT, P_DAMAGE, PID_ENEMY_DAMAGE);

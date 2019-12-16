@@ -53,7 +53,7 @@ void TDArea::readFromStream(QDataStream &stream)
 
 void TDArea::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_INT, P_FLEE_DIR, PID_DAREA_FLEE_DIR);
+    mPropertySheet->addProperty(PT_DIR, P_FLEE_DIR, PID_DAREA_FLEE_DIR);
     mPropertySheet->addProperty(PT_INT, P_TYPE, PID_DAREA_TYPE);
     mPropertySheet->addProperty(PT_INT, P_TARGET, PID_DAREA_TARGET);
     mPropertySheet->addProperty(PT_INT, P_MOVE_BY, PID_DAREA_MOVE_BY);

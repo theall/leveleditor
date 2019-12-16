@@ -1,49 +1,68 @@
 #include "variantpropertymanager.h"
+#include "propertymanager/dirpropertymanager.h"
 
 #include <QFileInfo>
 
-class TFilePathPropertyType {};
-class TStringExPropertyType {};
-class TPixmapPropertyType {};
-class TSoundSetPropertyType {};
-class TSoundItemPropertyType {};
-class TSoundItemSourcePropertyType {};
-Q_DECLARE_METATYPE(TPixmapPropertyType)
-Q_DECLARE_METATYPE(TSoundSetPropertyType)
-Q_DECLARE_METATYPE(TSoundItemPropertyType)
-Q_DECLARE_METATYPE(TSoundItemSourcePropertyType)
-Q_DECLARE_METATYPE(TFilePathPropertyType)
-Q_DECLARE_METATYPE(TStringExPropertyType)
+#define DECL_NEW_METATYPE(NAME) \
+class T##NAME##PropertyType {};\
+Q_DECLARE_METATYPE(T##NAME##PropertyType)
 
-TVariantPropertyManager::TVariantPropertyManager(QObject *parent)
-    : QtVariantPropertyManager(parent)
-    , mSuggestionsAttribute(QStringLiteral("suggestions"))
-    , mImageMissingIcon(QStringLiteral(":/other/images/image-missing.png"))
-{
-    mImageMissingIcon.addPixmap(QPixmap(QStringLiteral("://images/32x32/image-missing.png")));
-}
+#define GET_METATYPE(NAME) \
+qMetaTypeId<T##NAME##PropertyType>()
 
-QVariant TVariantPropertyManager::context(const QtProperty *property) const
+DECL_NEW_METATYPE(StringEx)
+DECL_NEW_METATYPE(Pixmap)
+DECL_NEW_METATYPE(SoundSet)
+DECL_NEW_METATYPE(SoundItem)
+DECL_NEW_METATYPE(SoundItemSource)
+DECL_NEW_METATYPE(Dir)
+
+struct CustomType {
+    int type;
+    QVariant::Type valueType;
+};
+
+static const CustomType g_custom_type_list[] = {
+    {GET_METATYPE(StringEx), QVariant::String},
+    {GET_METATYPE(Pixmap), QVariant::Pixmap},
+    {GET_METATYPE(SoundSet), QVariant::String},
+    {GET_METATYPE(SoundItem), QVariant::String},
+    {GET_METATYPE(SoundItemSource), QVariant::String},
+    {GET_METATYPE(Dir), QVariant::Int},
+    {0, QVariant::Invalid}
+};
+typedef QMap<int, int> CustomTypeMap;
+Q_GLOBAL_STATIC(CustomTypeMap, customTypeMap)
+
+TVariantPropertyManager::TVariantPropertyManager(QObject *parent) :
+    QtVariantPropertyManager(parent)
 {
-    if (mValues.contains(property))
-        return mValues[property].context;
-    return QVariant();
+    TDirPropertyManager *dirPropertyManager = new TDirPropertyManager(this);
+    registerManager(GET_METATYPE(Dir), dirPropertyManager);
+
+    connect(dirPropertyManager, SIGNAL(valueChanged(QtProperty *, int)),
+                this, SLOT(slotValueChanged(QtProperty *, int)));
+
+    for(int i=0;;i++) {
+        CustomType customType = g_custom_type_list[i];
+        if(customType.valueType == QVariant::Invalid)
+            break;
+        customTypeMap()->insert(customType.type, customType.valueType);
+    }
 }
 
 QVariant TVariantPropertyManager::value(const QtProperty *property) const
 {
-    if (mValues.contains(property))
-        return mValues[property].text;
+    QtAbstractPropertyManager *manager = property->propertyManager();
+    if(TDirPropertyManager *dirManager = qobject_cast<TDirPropertyManager *>(manager))
+        return dirManager->value(property);
+
     return QtVariantPropertyManager::value(property);
 }
 
 bool TVariantPropertyManager::isPropertyTypeSupported(int propertyType) const
 {
-    if(propertyType == stringExTypeId()
-        || propertyType == pixmapTypeId()
-        || propertyType == soundSetTypeId()
-        || propertyType == soundItemTypeId()
-        || propertyType == soundItemSourceTypeId())
+    if(customTypeMap()->contains(propertyType))
         return true;
 
     return QtVariantPropertyManager::isPropertyTypeSupported(propertyType);
@@ -51,13 +70,8 @@ bool TVariantPropertyManager::isPropertyTypeSupported(int propertyType) const
 
 int TVariantPropertyManager::valueType(int propertyType) const
 {
-    if (propertyType == stringExTypeId()
-        || propertyType == soundSetTypeId()
-        || propertyType == soundItemTypeId()
-        || propertyType == soundItemSourceTypeId())
-        return QVariant::String;
-    else if(propertyType == pixmapTypeId())
-        return QVariant::Pixmap;
+    if(customTypeMap()->contains(propertyType))
+        return customTypeMap()->value(propertyType);
 
     return QtVariantPropertyManager::valueType(propertyType);
 }
@@ -76,30 +90,7 @@ int TVariantPropertyManager::attributeType(int propertyType,
 QVariant TVariantPropertyManager::attributeValue(const QtProperty *property,
                                                 const QString &attribute) const
 {
-    if(mValues.contains(property)) {
-        if (attribute == QLatin1String("filter"))
-            return mValues[property].context;
-        return QVariant();
-    }
-    if (attribute == mSuggestionsAttribute && mSuggestions.contains(property))
-        return mSuggestions[property];
-
     return QtVariantPropertyManager::attributeValue(property, attribute);
-}
-
-int TVariantPropertyManager::enumTypeId()
-{
-    return QtVariantPropertyManager::enumTypeId();
-}
-
-int TVariantPropertyManager::flagTypeId()
-{
-    return QtVariantPropertyManager::flagTypeId();
-}
-
-int TVariantPropertyManager::groupTypeId()
-{
-    return QtVariantPropertyManager::groupTypeId();
 }
 
 int TVariantPropertyManager::stringExTypeId()
@@ -127,107 +118,64 @@ int TVariantPropertyManager::soundItemSourceTypeId()
     return qMetaTypeId<TSoundItemSourcePropertyType>();
 }
 
+int TVariantPropertyManager::dirTypeId()
+{
+    return qMetaTypeId<TDirPropertyType>();
+}
+
 QString TVariantPropertyManager::valueText(const QtProperty *property) const
 {
-    if (mValues.contains(property)) {
-        return mValues[property].text.toString();
-    }
-
     return QtVariantPropertyManager::valueText(property);
 }
 
 QIcon TVariantPropertyManager::valueIcon(const QtProperty *property) const
 {
-    if (mValues.contains(property)) {
-        QVariant context = mValues[property].context;
-        int typeId = propertyType(property);
-        if(typeId == pixmapTypeId()) {
-            QPixmap p = context.value<QPixmap>();
-            if(p.isNull())
-                return QIcon::fromTheme(QLatin1String("image-missing"), mImageMissingIcon);
-            else
-                return QIcon(p);
-        }
-    }
-
     return QtVariantPropertyManager::valueIcon(property);
-}
-
-void TVariantPropertyManager::setValue(QtProperty *property, const QVariant &val, const QVariant &context)
-{
-    if (mValues.contains(property)) {
-        Data d = mValues[property];
-        if (d.text==val && d.context==context)
-            return;
-        d.text = val;
-        d.context = context;
-        mValues[property] = d;
-        emit propertyChanged(property);
-        emit valueChanged(property, val);
-    }
 }
 
 void TVariantPropertyManager::setValue(QtProperty *property, const QVariant &val)
 {
-    if (mValues.contains(property)) {
-        Data d = mValues[property];
-        if (d.text==val)
+    if(isCustomizedProperty(property)) {
+        QtProperty *internProp = getInternalProperty(property);
+        if(!internProp)
             return;
-        d.text = val;
-        mValues[property] = d;
-        emit propertyChanged(property);
-        emit valueChanged(property, val);
+
+        if (TDirPropertyManager *dirManager = qobject_cast<TDirPropertyManager *>(internProp->propertyManager())) {
+            dirManager->setValue(internProp, val.value<int>());
+        }
+    } else {
+        QtVariantPropertyManager::setValue(property, val);
     }
-    QtVariantPropertyManager::setValue(property, val);
 }
 
 void TVariantPropertyManager::setAttribute(QtProperty *property,
                                           const QString &attribute,
                                           const QVariant &val)
 {
-    if (mValues.contains(property)) {
-        if (attribute == QLatin1String("filter")) {
-            if (val.type() != QVariant::String && !val.canConvert(QVariant::String))
-                return;
-            QString str = val.toString();
-            Data d = mValues[property];
-            if (d.context == str)
-                return;
-            d.context = str;
-            mValues[property] = d;
-            emit attributeChanged(property, attribute, str);
-        }
-        return;
-    }
-
-    if (attribute == mSuggestionsAttribute && mSuggestions.contains(property))
-        mSuggestions[property] = val.toStringList();
-
     QtVariantPropertyManager::setAttribute(property, attribute, val);
 }
 
 void TVariantPropertyManager::initializeProperty(QtProperty *property)
 {
-    const int type = propertyType(property);
-    if (type == stringExTypeId())
-        mValues[property] = Data();
-    else if (type == pixmapTypeId())
-        mValues[property] = Data();
-    else if(type == soundSetTypeId())
-        mValues[property] = Data();
-    else if(type == soundItemTypeId())
-        mValues[property] = Data();
-    else if(type == soundItemSourceTypeId())
-        mValues[property] = Data();
-    else if (type == QVariant::String)
-        mSuggestions[property] = QStringList();
-
     QtVariantPropertyManager::initializeProperty(property);
 }
 
 void TVariantPropertyManager::uninitializeProperty(QtProperty *property)
 {
-    mValues.remove(property);
-    mSuggestions.remove(property);
     QtVariantPropertyManager::uninitializeProperty(property);
+}
+
+bool TVariantPropertyManager::isCustomizedPropertyType(int propertyType) const
+{
+    return customTypeMap()->contains(propertyType);
+}
+
+bool TVariantPropertyManager::isCustomizedProperty(const QtProperty *property) const
+{
+    return isCustomizedPropertyType(propertyType(property));
+}
+
+void TVariantPropertyManager::slotValueChanged(QtProperty *property, int value)
+{
+    emit valueChanged(internalToProperty(property), QVariant(value));
 }

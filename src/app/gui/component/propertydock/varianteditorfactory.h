@@ -3,11 +3,7 @@
 
 #include "qtpropertybrowser/include/QtVariantEditorFactory"
 
-class QMediaContent;
-class TPixmapEdit;
-class TSoundSetEdit;
-class TSoundItemEdit;
-class TSoundItemSourceEdit;
+class TVariantEditorFactoryPrivate;
 
 /**
  * Extension of the QtVariantEditorFactory that adds support for pixmap and sound edit,
@@ -20,17 +16,8 @@ class TVariantEditorFactory : public QtVariantEditorFactory
     Q_OBJECT
 
 public:
-    explicit TVariantEditorFactory(QObject *parent = nullptr)
-        : QtVariantEditorFactory(parent)
-    {}
-
+    explicit TVariantEditorFactory(QObject *parent = nullptr);
     ~TVariantEditorFactory();
-
-signals:
-    void getSelectedImage(QString &text, QPixmap &pixmap);
-    void getSelectedSound(QString &text, QMediaContent* &pixmap);
-    void requestAddSoundItem();
-    void requestRemoveSoundItemProperty(void*);
 
 protected:
     void connectPropertyManager(QtVariantPropertyManager *manager) override;
@@ -39,22 +26,10 @@ protected:
                           QWidget *parent) override;
     void disconnectPropertyManager(QtVariantPropertyManager *manager) override;
 
-private slots:
-    void slotPropertyChanged(QtProperty *property, const QVariant &value);
-    void slotPropertyAttributeChanged(QtProperty *property,
-                                      const QString &attribute,
-                                      const QVariant &value);
-
-    void slotPixmapEditChanged(const QString &text, const QPixmap &pixmap);
-    void slotSoundSourceChanged(const QString &newFile, const QMediaContent *newMediaContent);
-    void slotEditorDestroyed(QObject *object);
-
 private:
-    QMap<TPixmapEdit*, QtProperty*> mPixmapEditPropertyMap;
-    QMap<TSoundSetEdit*, QtProperty*> mSoundSetEditPropertyMap;
-    QMap<QtProperty*, TSoundSetEdit*> mPropertySoundSetEditMap;
-    QMap<TSoundItemEdit*, QtProperty*> mSoundItemEditPropertyMap;
-    QMap<TSoundItemSourceEdit*, QtProperty*> mSoundItemSourceEditPropertyMap;
+    TVariantEditorFactoryPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(TVariantEditorFactory)
+    Q_DISABLE_COPY(TVariantEditorFactory)
 };
 
 #endif // VARIANTEDITORFACTORY_H

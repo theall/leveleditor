@@ -134,7 +134,7 @@ void TPlat::initPropertySheet()
     mPropertySheet->addProperty(PT_INT, P_BREAK, PID_PLAT_BREAK);
     mPropertySheet->addProperty(PT_INT, P_CHUNK, PID_PLAT_CHUNK);
     mPropertySheet->addProperty(PT_INT, P_SOUND, PID_PLAT_SOUND);
-    mPropertySheet->addProperty(PT_INT, P_BREAKABLE, PID_PLAT_BREAKABLE);
+    mPropertySheet->addProperty(PT_BOOL, P_BREAKABLE, PID_PLAT_BREAKABLE);
     mPropertySheet->addProperty(PT_INT, P_EVENT_NUMBER_2, PID_PLAT_EVENT_NUMBER_2);
 }
 

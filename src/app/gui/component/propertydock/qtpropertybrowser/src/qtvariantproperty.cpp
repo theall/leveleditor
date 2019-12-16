@@ -1580,6 +1580,30 @@ QVariant QtVariantPropertyManager::attributeValue(const QtProperty *property, co
     return QVariant();
 }
 
+void QtVariantPropertyManager::registerManager(int type, QtAbstractPropertyManager *manager)
+{
+    d_ptr->m_typeToPropertyManager[type] = manager;
+}
+
+QtVariantProperty *QtVariantPropertyManager::internalToProperty(QtProperty *property) const
+{
+    return d_ptr->m_internalToProperty.value(property, 0);
+}
+
+QtProperty *QtVariantPropertyManager::getInternalProperty(const QtProperty *property)
+{
+    return propertyToWrappedProperty()->value(property, 0);
+}
+
+QtAbstractPropertyManager *QtVariantPropertyManager::getBindPropertyManager(const QtProperty *property)
+{
+    QtProperty *internProp = propertyToWrappedProperty()->value(property, 0);
+    if (internProp == 0)
+        return nullptr;
+
+    return internProp->propertyManager();
+}
+
 /*!
     Returns a list of the given \a propertyType 's attributes.
 
@@ -1644,7 +1668,6 @@ void QtVariantPropertyManager::setValue(QtProperty *property, const QVariant &va
     QtProperty *internProp = propertyToWrappedProperty()->value(property, 0);
     if (internProp == 0)
         return;
-
 
     QtAbstractPropertyManager *manager = internProp->propertyManager();
     if (QtIntPropertyManager *intManager = qobject_cast<QtIntPropertyManager *>(manager)) {
@@ -2079,6 +2102,12 @@ QtVariantEditorFactory::QtVariantEditorFactory(QObject *parent)
 QtVariantEditorFactory::~QtVariantEditorFactory()
 {
     delete d_ptr;
+}
+
+void QtVariantEditorFactory::registerFactory(int type, QtAbstractEditorFactoryBase *factory)
+{
+    d_ptr->m_factoryToType[factory] = type;
+    d_ptr->m_typeToFactory[type] = factory;
 }
 
 /*!

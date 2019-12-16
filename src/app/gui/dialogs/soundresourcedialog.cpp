@@ -57,7 +57,7 @@ TSoundResourceDialog::TSoundResourceDialog(QWidget *parent) :
   , mCurrentPlayingMedia(nullptr)
 {
     ui->setupUi(this);
-
+    ui->btnImport->setEnabled(false);
     ui->twSound->horizontalHeader()->setVisible(false);
     ui->twSound->horizontalHeader()->setStretchLastSection(true);
     ui->twSound->verticalHeader()->setVisible(false);

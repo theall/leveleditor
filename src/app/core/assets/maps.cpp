@@ -180,7 +180,7 @@ TDocument *TMap::createDocument()
 {
     if(mDocument)
         delete mDocument;
-    mDocument = new TDocument(this);
+    mDocument = new TDocument(mType, this);
     if(!mFileFullPath.isEmpty())
         mDocument->setFileName(mFileFullPath);
 
@@ -196,7 +196,7 @@ void TMap::setDocument(TDocument *document)
 TDocument *TMap::open()
 {
     if(!mDocument) {
-        mDocument = new TDocument(mFileFullPath);
+        mDocument = new TDocument(mType, mFileFullPath);
     }
     return mDocument;
 }

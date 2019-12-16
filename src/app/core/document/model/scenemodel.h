@@ -5,6 +5,7 @@
 #include <QRectF>
 
 #include "basemodel.h"
+#include "../../assets/maps.h"
 
 class TAreaModel;
 class TBoxModel;
@@ -31,7 +32,7 @@ class TSceneModel : public TBaseModel
     Q_OBJECT
 
 public:
-    explicit TSceneModel(QObject *parent = nullptr);
+    TSceneModel(const TMap::Type &mapType, QObject *parent = nullptr);
     ~TSceneModel();
 
     TAreaModel *getAreasModel() const;
@@ -75,12 +76,15 @@ public:
 
     TPointObject *getFlagPointObject1() const;
     TPointObject *getFlagPointObject2() const;
+    TMap::Type getMapType() const;
+    bool isAdvMap() const;
 
 signals:
     void currentIndexChanged(int index);
 
 private:
     int mNextMap[5];
+    TMap::Type mMapType;
 
     // As TSceneModel can not extra extend TPropertyObject, this variable is crated to expose property sheet.
     TPropertyObject *mPropertyObject;

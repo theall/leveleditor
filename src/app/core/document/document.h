@@ -11,6 +11,7 @@
 #include "undocommand/propertyundocommand.h"
 #include "undocommand/objectaddcommand.h"
 #include "../assets/tileid.h"
+#include "../assets/maps.h"
 
 enum EditMode {
     DEFAULT,
@@ -25,8 +26,8 @@ class TDocument : public TPropertyObject
     Q_OBJECT
 
 public:
-    TDocument(QObject *parent=nullptr);
-    TDocument(const QString &file, QObject *parent=nullptr);
+    TDocument(const TMap::Type &mapType, QObject *parent=nullptr);
+    TDocument(const TMap::Type &mapType, const QString &file, QObject *parent=nullptr);
     ~TDocument();
 
     QUndoStack *undoStack() const;

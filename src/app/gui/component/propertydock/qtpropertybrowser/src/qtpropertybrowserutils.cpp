@@ -185,6 +185,16 @@ QIcon QtPropertyBrowserUtils::brushValueIcon(const QBrush &b)
 QString QtPropertyBrowserUtils::colorValueText(const QColor &c)
 {
     if (c.isValid()) {
+        return QCoreApplication::translate("QtPropertyBrowserUtils", "[%1, %2, %3]")
+               .arg(c.red()).arg(c.green()).arg(c.blue());
+    } else {
+        return QCoreApplication::translate("QtPropertyBrowserUtils", "Not set");
+    }
+}
+
+QString QtPropertyBrowserUtils::colorValueTextWithAlpha(const QColor &c)
+{
+    if (c.isValid()) {
         return QCoreApplication::translate("QtPropertyBrowserUtils", "[%1, %2, %3] (%4)")
                .arg(c.red()).arg(c.green()).arg(c.blue()).arg(c.alpha());
     } else {

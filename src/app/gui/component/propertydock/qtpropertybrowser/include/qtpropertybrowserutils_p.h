@@ -94,7 +94,8 @@ public:
     static QPixmap brushValuePixmap(const QBrush &b);
     static QIcon brushValueIcon(const QBrush &b);
     static QString colorValueText(const QColor &c);
-    static QPixmap fontValuePixmap(const QFont &f);
+    static QString colorValueTextWithAlpha(const QColor &c);
+    static QPixmap fontValuePixmap(const QFont &f, int size = 16);
     static QIcon fontValueIcon(const QFont &f);
     static QString fontValueText(const QFont &f);
 };
@@ -156,6 +157,8 @@ private:
     QKeySequence m_keySequence;
     QLineEdit *m_lineEdit;
 };
+
+QString removeRedundantTrialingZeros(const QString &text);
 
 #if QT_VERSION >= 0x040400
 QT_END_NAMESPACE

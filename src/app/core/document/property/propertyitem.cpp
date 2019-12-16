@@ -120,15 +120,6 @@ void TPropertyItem::addAttribute(const PropertyAttribute &attribute, const QVari
     addAttribute(g_propertyAttrMap[attribute], value);
 }
 
-void TPropertyItem::addDirectionAttribute()
-{
-    QStringList dirs;
-    dirs.append(tr("None"));
-    dirs.append(tr("Left"));
-    dirs.append(tr("Right"));
-    addAttribute(PA_ENUM_NAMES, dirs);
-}
-
 void TPropertyItem::setReadOnly(bool readOnly)
 {
     addAttribute(g_propertyAttrMap[PA_READ_ONLY], readOnly);

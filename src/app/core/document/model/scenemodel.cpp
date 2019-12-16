@@ -31,8 +31,9 @@ static const QString P_MUSIC2 = T("Music 2");
 #define COLUMN_INDEX_VISIBILITY 1
 #define COLUMN_INDEX_LOCK 2
 
-TSceneModel::TSceneModel(QObject *parent) :
+TSceneModel::TSceneModel(const TMap::Type &mapType, QObject *parent) :
     TBaseModel(TBaseModel::INVALID, parent)
+  , mMapType(mapType)
   , mPropertyObject(new TPropertyObject(this))
   , mPropertySheet(mPropertyObject->propertySheet())
   , mTileLayerModel1(new TTileModel(this))
@@ -212,6 +213,16 @@ TPointObject *TSceneModel::getFlagPointObject2() const
     return mFlagPointObject2;
 }
 
+TMap::Type TSceneModel::getMapType() const
+{
+    return mMapType;
+}
+
+bool TSceneModel::isAdvMap() const
+{
+    return mMapType == TMap::ADV;
+}
+
 TPointObject *TSceneModel::getFlagPointObject1() const
 {
     return mFlagPointObject1;
@@ -302,22 +313,26 @@ void TSceneModel::initPropertySheet()
     TPropertyItem *propertyItem = mPropertySheet->addProperty(PT_COLOR, P_BACKGROUND_COLOR, PID_SCENE_BACKGROUND_COLOR);
     propertyItem->setValue(QColor(Qt::blue));
 
-    propertyItem = mFlagPointObject1->posPropertyItem();
-    propertyItem->setName(P_FLAG1);
-    mPropertySheet->addProperty(propertyItem);
-
-    propertyItem = mFlagPointObject2->posPropertyItem();
-    propertyItem->setName(P_FLAG2);
-    mPropertySheet->addProperty(propertyItem);
-
     mPropertySheet->addProperty(PT_BOOL, P_SCROLLABLE, PID_SCENE_SCROLLABLE);
     mPropertySheet->addProperty(PT_POINTF, P_START_POINT, PID_SCENE_START_POINT);
-    TPropertyItem *fightModeItem = mPropertySheet->addProperty(PT_ENUM, P_FIGHT_MODE, PID_SCENE_FIGHT_MODE);
-    QStringList fightModeNames;
-    fightModeNames.append("Death Match");
-    fightModeNames.append("Hit Target");
-    fightModeNames.append("Catch Flag");
-    fightModeItem->addAttribute(PA_ENUM_NAMES, fightModeNames);
+
+    if(mMapType != TMap::ADV) {
+        TPropertyItem *fightModeItem = mPropertySheet->addProperty(PT_ENUM, P_FIGHT_MODE, PID_SCENE_FIGHT_MODE);
+        QStringList fightModeNames;
+        fightModeNames.append("Death Match");
+        fightModeNames.append("Hit Target");
+        fightModeNames.append("Catch Flag");
+        fightModeItem->addAttribute(PA_ENUM_NAMES, fightModeNames);
+
+        propertyItem = mFlagPointObject1->posPropertyItem();
+        propertyItem->setName(P_FLAG1);
+        mPropertySheet->addProperty(propertyItem);
+
+        propertyItem = mFlagPointObject2->posPropertyItem();
+        propertyItem->setName(P_FLAG2);
+        mPropertySheet->addProperty(propertyItem);
+    }
+
     mPropertySheet->addProperty(PT_INT, P_NUMBER, PID_SCENE_NUMBER);
     mPropertySheet->addProperty(PT_BOOL, P_SCREEN_LOCK, PID_SCENE_SCREEN_LOCK);
     mPropertySheet->addProperty(PT_RECT, P_CAMERA, PID_SCENE_CAMERA);

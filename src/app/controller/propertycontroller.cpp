@@ -30,7 +30,8 @@ const int g_propertyTypeMap[PT_COUNT] = {
     TVariantPropertyManager::pixmapTypeId(),//PT_PIXMAP
     TVariantPropertyManager::soundSetTypeId(),//PT_SOUND_SET
     TVariantPropertyManager::soundItemTypeId(),//PT_SOUND_ITEM
-    TVariantPropertyManager::soundItemSourceTypeId()//PT_SOUND_ITEM_SOURCE
+    TVariantPropertyManager::soundItemSourceTypeId(),//PT_SOUND_ITEM_SOURCE
+    TVariantPropertyManager::dirTypeId()
 };
 
 TPropertyController::TPropertyController(QObject *parent) :
@@ -79,15 +80,6 @@ void TPropertyController::setPropertyBrowser(TPropertyBrowser *propertyBrowser)
             SIGNAL(currentItemChanged(QtBrowserItem*)),
             this,
             SLOT(slotCurrentItemChanged(QtBrowserItem*)));
-    TVariantEditorFactory *editorFactory = mPropertyBrowser->editorFactory();
-    connect(editorFactory,
-            SIGNAL(getSelectedImage(QString&,QPixmap&)),
-            this,
-            SLOT(slotGetSelectedImage(QString&,QPixmap&)));
-    connect(editorFactory,
-            SIGNAL(getSelectedSound(QString&,QMediaContent*&)),
-            this,
-            SLOT(slotGetSelectedSound(QString&,QMediaContent*&)));
 }
 
 TPropertySheet *TPropertyController::propertySheet() const
@@ -154,7 +146,7 @@ void TPropertyController::setPropertySheet(TPropertySheet *propertySheet)
         if(property) {
             mPropertyBrowser->addProperty(property);
         } else {
-            throw tr("Null property created from property item name:").arg(propertyItem->name());
+            throw tr("Null property created from property item name:%1").arg(propertyItem->name());
         }
     }
     if(currentPropertyItem)
@@ -228,7 +220,7 @@ QtVariantProperty *TPropertyController::createProperty(TPropertyItem *propertyIt
         TPixmap *pixmap = nullptr;
         if(pixmap)
         {
-            mPropertyManager->setValue(p, fileName, pixmap->thumbnail());
+            //mPropertyManager->setValue(p, fileName, pixmap->thumbnail());
         } else {
             p->setValue(fileName);
         }
@@ -237,7 +229,7 @@ QtVariantProperty *TPropertyController::createProperty(TPropertyItem *propertyIt
         TSound *sound = nullptr;
         if(sound)
         {
-            mPropertyManager->setValue(p, fileName, QVariant::fromValue((void*)sound->mediaContent()));
+            //mPropertyManager->setValue(p, fileName, QVariant::fromValue((void*)sound->mediaContent()));
         } else {
             p->setValue(fileName);
         }

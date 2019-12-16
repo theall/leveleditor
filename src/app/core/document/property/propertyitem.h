@@ -31,6 +31,7 @@ enum PropertyType
     PT_SOUND_SET,
     PT_SOUND_ITEM,
     PT_SOUND_ITEM_SOURCE,
+    PT_DIR,
     PT_COUNT
 };
 
@@ -84,7 +85,6 @@ public:
 
     void addAttribute(const QString &name, const QVariant &value);
     void addAttribute(const PropertyAttribute &attribute, const QVariant &value);
-    void addDirectionAttribute();
 
     void setReadOnly(bool readOnly = true);
 

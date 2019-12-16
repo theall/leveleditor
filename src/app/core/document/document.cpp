@@ -13,12 +13,12 @@
 
 static const QString P_NAME = T("Name");
 
-TDocument::TDocument(QObject *parent) :
+TDocument::TDocument(const TMap::Type &mapType, QObject *parent) :
     TPropertyObject(parent)
   , mIsDirty(true)
   , mUndoStack(new QUndoStack(this))
   , mFileWatcher(new TFileSystemWatcher(this))
-  , mSceneModel(new TSceneModel(this))
+  , mSceneModel(new TSceneModel(mapType, this))
   , mGraphicsScene(new TGraphicsScene(this))
   , mEditMode(DEFAULT)
 {
@@ -28,12 +28,12 @@ TDocument::TDocument(QObject *parent) :
     mGraphicsScene->setSceneModel(mSceneModel);
 }
 
-TDocument::TDocument(const QString &file, QObject *parent) :
+TDocument::TDocument(const TMap::Type &mapType, const QString &file, QObject *parent) :
     TPropertyObject(parent)
   , mIsDirty(false)
   , mUndoStack(new QUndoStack(this))
   , mFileWatcher(new TFileSystemWatcher(this))
-  , mSceneModel(new TSceneModel(this))
+  , mSceneModel(new TSceneModel(mapType, this))
   , mGraphicsScene(new TGraphicsScene(this))
   , mEditMode(DEFAULT)
 {

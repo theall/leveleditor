@@ -1,6 +1,6 @@
 include(../common.pri)
 greaterThan(QT_MAJOR_VERSION, 4): QT *= widgets
-INCLUDEPATH += $$PWD
+INCLUDEPATH += $$PWD/../include
 DEPENDPATH += $$PWD
 
 qtpropertybrowser-uselib:!qtpropertybrowser-buildlib {
@@ -14,14 +14,14 @@ qtpropertybrowser-uselib:!qtpropertybrowser-buildlib {
             $$PWD/qtbuttonpropertybrowser.cpp \
             $$PWD/qtgroupboxpropertybrowser.cpp \
             $$PWD/qtpropertybrowserutils.cpp
-    HEADERS += $$PWD/qtpropertybrowser.h \
-            $$PWD/qtpropertymanager.h \
-            $$PWD/qteditorfactory.h \
-            $$PWD/qtvariantproperty.h \
-            $$PWD/qttreepropertybrowser.h \
-            $$PWD/qtbuttonpropertybrowser.h \
-            $$PWD/qtgroupboxpropertybrowser.h \
-            $$PWD/qtpropertybrowserutils_p.h
+    HEADERS += $$PWD/../include/qtpropertybrowser.h \
+            $$PWD/../include/qtpropertymanager.h \
+            $$PWD/../include/qteditorfactory.h \
+            $$PWD/../include/qtvariantproperty.h \
+            $$PWD/../include/qttreepropertybrowser.h \
+            $$PWD/../include/qtbuttonpropertybrowser.h \
+            $$PWD/../include/qtgroupboxpropertybrowser.h \
+            $$PWD/../include/qtpropertybrowserutils_p.h
     RESOURCES += $$PWD/qtpropertybrowser.qrc
 }
 
