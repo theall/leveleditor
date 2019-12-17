@@ -151,5 +151,5 @@ QString TDirPropertyManager::valueString(int value) const
         return tr("Left");
     else if(value == 4)
         return tr("Right");
-    return tr("Invalid");
+    return tr("None");
 }

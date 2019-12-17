@@ -60,8 +60,8 @@ void TArea::initPropertySheet()
 {
     mPropertySheet->addProperty(PT_DIR, P_FLEE_DIR, PID_AREA_FLEE_DIR);
     mPropertySheet->addProperty(PT_BOOL, P_DANGER_AREA, PID_AREA_DANGER_AREA);
-    mPropertySheet->addProperty(PT_INT, P_EDGES, PID_AREA_EDGES);
-    mPropertySheet->addProperty(PT_ENUM, P_MOVE_BY, PID_AREA_MOVE_BY);
+    mPropertySheet->addProperty(PT_INT, P_EDGES, PID_AREA_EDGES)->setReadOnly();
+    mPropertySheet->addProperty(PT_INT, P_MOVE_BY, PID_AREA_MOVE_BY);
 }
 
 QString TArea::typeString() const
