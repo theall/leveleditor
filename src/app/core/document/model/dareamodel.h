@@ -4,8 +4,9 @@
 #include "basemodel.h"
 #include "entity/darea.h"
 #include "objectgeneric.hpp"
+#include "genericmodel.h"
 
-class TDAreaModel : public TBaseModel
+class TDAreaModel : public TGenericModel<TDArea>
 {
     Q_OBJECT
 
@@ -18,6 +19,10 @@ public:
 
     void clear();
 
+signals:
+    void objectInserted(const TDAreaList &objectList, const QList<int> &indexList);
+    void objectRemoved(const TDAreaList &objectList, const QList<int> &indexList);
+
     // TIO interface
 public:
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
@@ -29,14 +34,9 @@ public:
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
-private:
-    TDAreaList mDAreaList;
-
-public:
-    DECL_GENERIC_FUNCTIONS(DArea);
-
-signals:
-    DECL_GENERIC_SIGNALS(DArea);
+protected:
+    virtual void onObjectInserted(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
+    virtual void onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
 };
 
 #endif // TDAREASMODEL_H

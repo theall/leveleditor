@@ -4,8 +4,9 @@
 #include "basemodel.h"
 #include "entity/plat.h"
 #include "objectgeneric.hpp"
+#include "genericmodel.h"
 
-class TPlatModel : public TBaseModel
+class TPlatModel : public TGenericModel<TPlat>
 {
     Q_OBJECT
 
@@ -21,6 +22,8 @@ public:
 signals:
     void platInserted(const TPlatList &platList, const QList<int> &indexList);
     void platRemoved(const TPlatList &platList, const QList<int> &indexList);
+    void objectInserted(const TPlatList &objectList, const QList<int> &indexList);
+    void objectRemoved(const TPlatList &objectList, const QList<int> &indexList);
 
     // TIO interface
 public:
@@ -33,14 +36,9 @@ public:
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
-private:
-    TPlatList mPlatList;
-
-public:
-    DECL_GENERIC_FUNCTIONS(Plat);
-
-signals:
-    DECL_GENERIC_SIGNALS(Plat);
+protected:
+    virtual void onObjectInserted(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
+    virtual void onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
 };
 
 #endif // TPLATFORMSMODEL_H

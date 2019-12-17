@@ -4,9 +4,10 @@
 #include "basemodel.h"
 #include "entity/frame.h"
 #include "objectgeneric.hpp"
+#include "genericmodel.h"
 
 class TAnimation;
-class TFrameModel : public TBaseModel
+class TFrameModel : public TGenericModel<TFrame>
 {
     Q_OBJECT
 
@@ -24,8 +25,11 @@ public:
     TPropertySheet *getFramePropertySheet(int index) const;
     TFrame *getFrame(int index) const;
 
+signals:
+    void objectInserted(const TFrameList &objectList, const QList<int> &indexList);
+    void objectRemoved(const TFrameList &objectList, const QList<int> &indexList);
+
 private:
-    TFrameList mFrameList;
     TAnimation *mAnimation;
 
     // TIO interface
@@ -38,12 +42,6 @@ public:
     int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
-
-public:
-    DECL_GENERIC_FUNCTIONS(Frame);
-
-signals:
-    DECL_GENERIC_SIGNALS(Frame);
 
     // TBaseModel interface
 protected:

@@ -4,14 +4,14 @@
 #include <utils/macro.h>
 
 TTileModel::TTileModel(QObject *parent) :
-    TBaseModel(TBaseModel::TILE, parent)
+    TGenericModel<TTile>(TBaseModel::ANIMATION, parent)
 {
 
 }
 
 TTileModel::~TTileModel()
 {
-    FREE_CONTAINER(mTileList);
+    FREE_CONTAINER(mObjectList);
 }
 
 TTileModel::LayerType TTileModel::layerType() const
@@ -26,46 +26,46 @@ void TTileModel::setLayerType(const LayerType &layerType)
 
 void TTileModel::saveToStream(QDataStream &stream) const
 {
-    stream << mTileList.size();
+    stream << mObjectList.size();
 
-    for(TTile *tile : mTileList) {
+    for(TTile *tile : mObjectList) {
         tile->saveToStream(stream);
     }
 }
 
 int TTileModel::rowCount(const QModelIndex &) const
 {
-    return mTileList.size();
+    return mObjectList.size();
 }
 
 void TTileModel::readFromStream(QDataStream &stream)
 {
     int tileAmount = 0;
-    FREE_CONTAINER(mTileList);
+    FREE_CONTAINER(mObjectList);
     stream >> tileAmount;
     for(int i=0;i<tileAmount;i++) {
         TTile *tile = new TTile(this);
         tile->readFromStream(stream);
-        mTileList.append(tile);
+        mObjectList.append(tile);
     }
 
     // Process tile target
-    for(TTile *tile : mTileList) {
+    for(TTile *tile : mObjectList) {
         int tileTarget = tile->targetNumber();
-        if(tileTarget>=0 && tileTarget<mTileList.size()) {
-            tile->setTarget(mTileList.at(tileTarget));
+        if(tileTarget>=0 && tileTarget<mObjectList.size()) {
+            tile->setTarget(mObjectList.at(tileTarget));
         }
     }
 }
 
 TTileList TTileModel::tileList() const
 {
-    return mTileList;
+    return mObjectList;
 }
 
 int TTileModel::tileSize() const
 {
-    return mTileList.size();
+    return mObjectList.size();
 }
 
 TTile *TTileModel::createTile(TTileId *tileId, const QPointF &pos)
@@ -78,10 +78,10 @@ TTile *TTileModel::createTile(TTileId *tileId, const QPointF &pos)
 
 TTile *TTileModel::getTile(int index) const
 {
-    if(index<0 || index>=mTileList.size())
+    if(index<0 || index>=mObjectList.size())
         return nullptr;
 
-    return mTileList.at(index);
+    return mObjectList.at(index);
 }
 
 int TTileModel::columnCount(const QModelIndex &parent) const
@@ -94,7 +94,7 @@ int TTileModel::columnCount(const QModelIndex &parent) const
 QVariant TTileModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
-    if(row>=0 && row<mTileList.size())
+    if(row>=0 && row<mObjectList.size())
     {
         if(role == Qt::DisplayRole) {
             return tr("tile%1").arg(row+1);
@@ -104,4 +104,12 @@ QVariant TTileModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-IMPL_GENERIC_FUNCTIONS(Tile)
+void TTileModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)
+{
+    emit objectInserted(mObjectList, indexList);
+}
+
+void TTileModel::onObjectRemoved(const TObjectList &, const QList<int> &indexList)
+{
+    emit objectRemoved(mObjectList, indexList);
+}

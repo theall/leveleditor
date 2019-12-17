@@ -2,7 +2,7 @@
 #include "basemodel.h"
 
 TPlatModel::TPlatModel(QObject *parent) :
-    TBaseModel(TBaseModel::PLAT, parent)
+    TGenericModel<TPlat>(TBaseModel::ANIMATION, parent)
 {
     setName(tr("Platform"));
 }
@@ -11,26 +11,26 @@ void TPlatModel::readFromStream(QDataStream &stream)
 {
     int platAmount;
     stream >> platAmount;
-    mPlatList.clear();
+    mObjectList.clear();
     for(int i=0;i<platAmount;i++) {
         TPlat *plat = new TPlat(this);
         plat->readFromStream(stream);
-        mPlatList.append(plat);
+        mObjectList.append(plat);
     }
 }
 
 void TPlatModel::saveToStream(QDataStream &stream) const
 {
-    stream << mPlatList.size();
+    stream << mObjectList.size();
 
-    for(TPlat *plat : mPlatList) {
+    for(TPlat *plat : mObjectList) {
         plat->saveToStream(stream);
     }
 }
 
 int TPlatModel::rowCount(const QModelIndex &) const
 {
-    return mPlatList.size();
+    return mObjectList.size();
 }
 
 int TPlatModel::columnCount(const QModelIndex &) const
@@ -41,7 +41,7 @@ int TPlatModel::columnCount(const QModelIndex &) const
 QVariant TPlatModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
-    if(row>=0 && row<mPlatList.size())
+    if(row>=0 && row<mObjectList.size())
     {
         if(role==Qt::DisplayRole)
         {
@@ -53,14 +53,14 @@ QVariant TPlatModel::data(const QModelIndex &index, int role) const
 
 TPlatList TPlatModel::platList() const
 {
-    return mPlatList;
+    return mObjectList;
 }
 
 QStringList TPlatModel::getPlatNames() const
 {
     QStringList platNames;
     int i = 1;
-    for(TPlat *plat : mPlatList) {
+    for(TPlat *plat : mObjectList) {
         if(!plat)
             continue;
 
@@ -71,7 +71,7 @@ QStringList TPlatModel::getPlatNames() const
 
 void TPlatModel::clear()
 {
-    mPlatList.clear();
+    mObjectList.clear();
 }
 
 TPlat *TPlatModel::createPlat()
@@ -79,4 +79,12 @@ TPlat *TPlatModel::createPlat()
     return new TPlat(this);
 }
 
-IMPL_GENERIC_FUNCTIONS(Plat)
+void TPlatModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)
+{
+    emit objectInserted(mObjectList, indexList);
+}
+
+void TPlatModel::onObjectRemoved(const TObjectList &, const QList<int> &indexList)
+{
+    emit objectRemoved(mObjectList, indexList);
+}

@@ -117,7 +117,6 @@ void T##Type##Model::insert##Type(const T##Type##List &objectList, const QList<i
     T##Type##List objectInsertedList = objectList;\
     QList<int> insertedIndexList = indexList;\
     insertIntoContainer<T##Type*>(m##Type##List, objectInsertedList, insertedIndexList);\
-    onObjectInserted(convert(objectList), insertedIndexList);\
     emit objectInserted(objectInsertedList, insertedIndexList);\
 }\
 \
@@ -151,7 +150,6 @@ QList<int> T##Type##Model::remove##Type(const QList<int> &indexList)\
     QList<int> indexRemoved = indexList;\
     objectList = removeFromContainer<T##Type*>(m##Type##List, indexRemoved);\
     if(!indexRemoved.isEmpty()) {\
-        onObjectRemoved(convert(objectList), indexRemoved);\
         emit objectRemoved(objectList, indexRemoved);\
     }\
     return indexRemoved;\
@@ -163,21 +161,8 @@ QList<int> T##Type##Model::remove##Type(const T##Type##List &objectList)\
     T##Type##List objectListRemoved = objectList;\
     indexRemoved = removeFromContainer<T##Type*>(m##Type##List, objectListRemoved);\
     if(!indexRemoved.isEmpty()) {\
-        onObjectRemoved(convert(objectList), indexRemoved);\
         emit objectRemoved(objectList, indexRemoved);\
     }\
     return indexRemoved;\
-}\
-\
-void T##Type##Model::insertObjects(const TObjectList &objectList, const QList<int> &indexList)\
-{\
-    T##Type##List _objectList = convert<T##Type*>(objectList);\
-    insert##Type(_objectList, indexList);\
-}\
-\
-QList<int> T##Type##Model::removeObjects(const TObjectList &objectList)\
-{\
-    T##Type##List _objectList = convert<T##Type*>(objectList);\
-    return remove##Type(_objectList);\
 }
 #endif // GENERIC_H

@@ -4,8 +4,9 @@
 #include "basemodel.h"
 #include "entity/enemyfactory.h"
 #include "objectgeneric.hpp"
+#include "genericmodel.h"
 
-class TEnemyFactoryModel : public TBaseModel
+class TEnemyFactoryModel : public TGenericModel<TEnemyFactory>
 {
     Q_OBJECT
 
@@ -18,6 +19,10 @@ public:
     TEnemyFactoryList enemyFactoryList() const;
     void setEnemyFactoryList(const TEnemyFactoryList &enemyFactoryList);
 
+signals:
+    void objectInserted(const TEnemyFactoryList &objectList, const QList<int> &indexList);
+    void objectRemoved(const TEnemyFactoryList &objectList, const QList<int> &indexList);
+
     // TIO interface
 public:
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
@@ -29,13 +34,9 @@ public:
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
-private:
-    TEnemyFactoryList mEnemyFactoryList;
+protected:
+    virtual void onObjectInserted(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
+    virtual void onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
 
-public:
-    DECL_GENERIC_FUNCTIONS(EnemyFactory);
-
-signals:
-    DECL_GENERIC_SIGNALS(EnemyFactory);
 };
 #endif // TENEMYFACTORYMODEL_H

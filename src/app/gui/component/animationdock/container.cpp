@@ -162,22 +162,22 @@ void TContainer::slotPasteFramesTriggered()
 
 void TContainer::slotMoveUpTriggered()
 {
-    emit requestAnimationIndexShiftUp(mAnimationListView->currentRow());
+    emit requestMoveIndexs(mAnimationListView->getSelectedIndexes(), Dir::Up);
 }
 
 void TContainer::slotMoveDownTriggered()
 {
-    requestAnimationIndexShiftDown(mAnimationListView->currentRow());
+    emit requestMoveIndexs(mAnimationListView->getSelectedIndexes(), Dir::Down);
 }
 
 void TContainer::slotMoveLeftTriggered()
 {
-    emit requestFrameIndexShiftLeft(mAnimationView->getSelectedIndexes());
+    emit requestMoveIndexs(mAnimationView->getSelectedIndexes(), Dir::Left);
 }
 
 void TContainer::slotMoveRightTriggered()
 {
-    emit requestFrameIndexShiftRight(mAnimationView->getSelectedIndexes());
+    emit requestMoveIndexs(mAnimationView->getSelectedIndexes(), Dir::Right);
 }
 
 TFrameListView *TContainer::getFrameListView() const

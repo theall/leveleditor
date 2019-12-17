@@ -4,8 +4,9 @@
 #include "basemodel.h"
 #include "entity/trigger.h"
 #include "objectgeneric.hpp"
+#include "genericmodel.h"
 
-class TTriggerModel : public TBaseModel
+class TTriggerModel : public TGenericModel<TTrigger>
 {
     Q_OBJECT
 
@@ -18,8 +19,9 @@ public:
 
     void clear();
 
-private:
-    TTriggerList mTriggerList;
+signals:
+    void objectInserted(const TTriggerList &objectList, const QList<int> &indexList);
+    void objectRemoved(const TTriggerList &objectList, const QList<int> &indexList);
 
     // TIO interface
 public:
@@ -32,11 +34,10 @@ public:
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
-public:
-    DECL_GENERIC_FUNCTIONS(Trigger);
+protected:
+    virtual void onObjectInserted(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
+    virtual void onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
 
-signals:
-    DECL_GENERIC_SIGNALS(Trigger);
 };
 
 #endif // TTRIGGERSMODEL_H

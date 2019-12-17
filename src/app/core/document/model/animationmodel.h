@@ -4,9 +4,9 @@
 #include "framemodel.h"
 #include "entity/animation.h"
 #include "objectgeneric.hpp"
+#include "genericmodel.h"
 
-class TBaseModel;
-class TAnimationModel : public TBaseModel
+class TAnimationModel : public TGenericModel<TAnimation>
 {
     Q_OBJECT
 
@@ -19,8 +19,11 @@ public:
     void setFrameModelList(const TFrameModelList &frameModelList);
     TFrameModel *getFrameModel(int index) const;
 
+signals:
+    void objectInserted(const TAnimationList &objectList, const QList<int> &indexList);
+    void objectRemoved(const TAnimationList &objectList, const QList<int> &indexList);
+
 private:
-    TAnimationList mAnimationList;
     TFrameModelList mFrameModelList;
     QMap<TAnimation*, TFrameModel*> mAnimationMap;
 
@@ -35,13 +38,7 @@ public:
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
-public:
-    DECL_GENERIC_FUNCTIONS(Animation);
-
-signals:
-    DECL_GENERIC_SIGNALS(Animation);
-
-    // TBaseModel interface
+    // TGenericModel interface
 protected:
     virtual void onObjectInserted(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
     virtual void onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;

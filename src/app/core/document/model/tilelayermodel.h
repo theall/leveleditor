@@ -4,8 +4,9 @@
 #include "basemodel.h"
 #include "objectgeneric.hpp"
 #include "entity/tile.h"
+#include "genericmodel.h"
 
-class TTileModel : public TBaseModel
+class TTileModel : public TGenericModel<TTile>
 {
     Q_OBJECT
 
@@ -26,10 +27,13 @@ public:
     TTile *createTile(TTileId *tileId, const QPointF &pos = QPointF());
     TTile *getTile(int index) const;
 
+signals:
+    void objectInserted(const TTileList &objectList, const QList<int> &indexList);
+    void objectRemoved(const TTileList &objectList, const QList<int> &indexList);
+
 private:
     LayerType mLayerType;
     TDocument *mDocument;
-    TTileList mTileList;
 
     // IO interface
 public:
@@ -42,11 +46,10 @@ public:
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
-public:
-    DECL_GENERIC_FUNCTIONS(Tile);
+protected:
+    virtual void onObjectInserted(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
+    virtual void onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
 
-signals:
-    DECL_GENERIC_SIGNALS(Tile);
 };
 
 

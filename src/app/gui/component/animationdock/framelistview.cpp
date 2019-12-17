@@ -70,7 +70,7 @@ QList<int> TFrameListView::getSelectedIndexes()
 
 int TFrameListView::getCurrentIndex()
 {
-    return getIndex(currentIndex());;
+    return getIndex(currentIndex());
 }
 
 void TFrameListView::selectIndex(int index)

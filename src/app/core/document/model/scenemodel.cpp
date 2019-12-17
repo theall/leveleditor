@@ -534,6 +534,11 @@ void TSceneModel::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(PID_SCENE_FLAG2, mFlagPointObject2->pos(), false);
 }
 
+int TSceneModel::columnCount(const QModelIndex &parent) const
+{
+    return 3;
+}
+
 int TSceneModel::rowCount(const QModelIndex &) const
 {
     return mBaseModelList.size();

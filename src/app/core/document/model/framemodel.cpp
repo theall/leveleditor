@@ -5,14 +5,14 @@
 #define P_NAME "FrameModel"
 
 TFrameModel::TFrameModel(QObject *parent) :
-    TBaseModel(TBaseModel::FRAME, parent)
+    TGenericModel<TFrame>(TBaseModel::ANIMATION, parent)
   , mAnimation(nullptr)
 {
     setName(P_NAME);
 }
 
 TFrameModel::TFrameModel(TAnimation *animation, QObject *parent) :
-    TBaseModel(TBaseModel::FRAME, parent)
+    TGenericModel<TFrame>(TBaseModel::ANIMATION, parent)
   , mAnimation(animation)
 {
     setName(P_NAME);
@@ -33,7 +33,7 @@ void TFrameModel::readFromStream(QDataStream &stream)
     mAnimation = new TAnimation(this);
     mAnimation->readFromStream(stream);
 
-    mFrameList = mAnimation->getFrameList();
+    mObjectList = mAnimation->getFrameList();
 }
 
 void TFrameModel::saveToStream(QDataStream &stream) const
@@ -72,21 +72,21 @@ QVariant TFrameModel::data(const QModelIndex &index, int role) const
 void TFrameModel::onObjectInserted(const TObjectList &, const QList<int> &)
 {
     if(mAnimation) {
-        mAnimation->setFrameList(mFrameList);
+        mAnimation->setFrameList(mObjectList);
     }
     beginResetModel();
     endResetModel();
-    //emit dataChanged(QModelIndex(), QModelIndex());
+    emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 void TFrameModel::onObjectRemoved(const TObjectList &, const QList<int> &)
 {
     if(mAnimation) {
-        mAnimation->setFrameList(mFrameList);
+        mAnimation->setFrameList(mObjectList);
     }
     beginResetModel();
     endResetModel();
-    //emit dataChanged(QModelIndex(), QModelIndex());
+    emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 void TFrameModel::clear()
@@ -96,7 +96,7 @@ void TFrameModel::clear()
 
 void TFrameModel::insetTile(TTile *tile, int index)
 {
-    insertFrame(new TFrame(tile, this), index);
+    insertObject(new TFrame(tile, this), index);
 }
 
 TAnimation *TFrameModel::animation() const
@@ -128,5 +128,3 @@ TFrame *TFrameModel::getFrame(int index) const
 {
     return mAnimation?mAnimation->getFrame(index):nullptr;
 }
-
-IMPL_GENERIC_FUNCTIONS(Frame)

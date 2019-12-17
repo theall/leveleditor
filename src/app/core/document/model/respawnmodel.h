@@ -4,13 +4,12 @@
 #include "basemodel.h"
 #include "entity/respawn.h"
 #include "objectgeneric.hpp"
+#include "genericmodel.h"
 
 #include <QList>
 #include <QPoint>
 
-#include "basemodel.h"
-
-class TRespawnModel : public TBaseModel
+class TRespawnModel : public TGenericModel<TRespawn>
 {
     Q_OBJECT
 
@@ -20,6 +19,9 @@ public:
     void clear();
     TRespawnList respawnList() const;
 
+signals:
+    void objectInserted(const TRespawnList &objectList, const QList<int> &indexList);
+    void objectRemoved(const TRespawnList &objectList, const QList<int> &indexList);
     // TIO interface
 public:
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
@@ -31,14 +33,9 @@ public:
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
-private:
-    TRespawnList mRespawnList;
-
-public:
-    DECL_GENERIC_FUNCTIONS(Respawn);
-
-signals:
-    DECL_GENERIC_SIGNALS(Respawn);
+protected:
+    virtual void onObjectInserted(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
+    virtual void onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
 };
 
 #endif // TRESPAWNSMODEL_H

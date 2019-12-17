@@ -1,14 +1,14 @@
 #include "respawnmodel.h"
 
 TRespawnModel::TRespawnModel(QObject *parent) :
-    TBaseModel(TBaseModel::RESPAWN, parent)
+    TGenericModel<TRespawn>(TBaseModel::ANIMATION, parent)
 {
     setName(tr("Respawn"));
 }
 
 void TRespawnModel::clear()
 {
-    mRespawnList.clear();
+    mObjectList.clear();
 }
 
 void TRespawnModel::readFromStream(QDataStream &stream)
@@ -18,21 +18,21 @@ void TRespawnModel::readFromStream(QDataStream &stream)
     if(respawnPointAmount > 0xffff)
         throw tr("Invalid map format!");
 
-    mRespawnList.clear();
+    mObjectList.clear();
     for(int i=0;i<respawnPointAmount;i++) {
         TRespawn *respawn = new TRespawn(this);
         respawn->readFromStream(stream);
-        mRespawnList.append(respawn);
+        mObjectList.append(respawn);
     }
 }
 
 void TRespawnModel::saveToStream(QDataStream &stream) const
 {
-    int respawnSize = mRespawnList.size();
+    int respawnSize = mObjectList.size();
     stream << respawnSize;
 
     for(int i=0;i<respawnSize;i++) {
-        TRespawn *respawn = mRespawnList.at(i);
+        TRespawn *respawn = mObjectList.at(i);
         respawn->saveToStream(stream);
     }
 }
@@ -40,7 +40,7 @@ void TRespawnModel::saveToStream(QDataStream &stream) const
 int TRespawnModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return mRespawnList.size();
+    return mObjectList.size();
 }
 
 int TRespawnModel::columnCount(const QModelIndex &parent) const
@@ -52,7 +52,7 @@ int TRespawnModel::columnCount(const QModelIndex &parent) const
 QVariant TRespawnModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
-    if(row>=0 && row<mRespawnList.size())
+    if(row>=0 && row<mObjectList.size())
     {
         if(role==Qt::DisplayRole)
         {
@@ -64,7 +64,15 @@ QVariant TRespawnModel::data(const QModelIndex &index, int role) const
 
 TRespawnList TRespawnModel::respawnList() const
 {
-    return mRespawnList;
+    return mObjectList;
 }
 
-IMPL_GENERIC_FUNCTIONS(Respawn)
+void TRespawnModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)
+{
+    emit objectInserted(mObjectList, indexList);
+}
+
+void TRespawnModel::onObjectRemoved(const TObjectList &, const QList<int> &indexList)
+{
+    emit objectRemoved(mObjectList, indexList);
+}

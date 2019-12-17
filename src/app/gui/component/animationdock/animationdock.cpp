@@ -5,9 +5,6 @@ TAnimationDock::TAnimationDock(QWidget *parent) :
   , mContainer(new TContainer(this))
 {
     setWidget(mContainer);
-
-    connect(mContainer, SIGNAL(requestAdjustFPS(int)), this, SIGNAL(requestAdjustFPS(int)));
-
     retranslateUi();
 }
 

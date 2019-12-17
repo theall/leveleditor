@@ -16,7 +16,7 @@ public:
     TObjectListView *getObjectListView() const;
 
 private:
-    TObjectcontainer *mObjectcontainer;
+    TObjectContainer *mObjectcontainer;
 
 
 public:

@@ -156,6 +156,8 @@ void TLayerView::setModel(QAbstractItemModel *model)
     if(!model)
         return;
 
+    Q_ASSERT(model->columnCount()>=3);
+
     QHeaderView *h = header();
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::ExtendedSelection);

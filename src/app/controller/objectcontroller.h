@@ -6,7 +6,7 @@
 #include "../core/document/model/scenemodel.h"
 
 class TObjectDock;
-class TObjectcontainer;
+class TObjectContainer;
 class TObjectListView;
 
 class TObjectController : public TAbstractController
@@ -21,6 +21,14 @@ public:
     void setCurrentDocument(TDocument *document) Q_DECL_OVERRIDE;
 
     void setObjectModel(TBaseModel *baseModel);
+
+signals:
+    void indexPressed(int index);
+
+private slots:
+
+    // From graphics scene
+    void slotOnSelectedObjectChanged(TObject *prev, TObject *current);
 
 protected slots:
     void slotTimerEvent();

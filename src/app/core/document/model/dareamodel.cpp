@@ -1,7 +1,7 @@
 #include "dareamodel.h"
 
 TDAreaModel::TDAreaModel(QObject *parent) :
-    TBaseModel(TBaseModel::DAREA, parent)
+    TGenericModel<TDArea>(TBaseModel::ANIMATION, parent)
 {
     setName(tr("Danger Area"));
 }
@@ -20,20 +20,20 @@ void TDAreaModel::readFromStream(QDataStream &stream)
 {
     int areaAmount = 0;
     stream >> areaAmount;
-    mDAreaList.clear();
+    mObjectList.clear();
 
     for(int i=0;i<areaAmount;i++) {
         TDArea *area = new TDArea(this);
         area->readFromStream(stream);
-        mDAreaList.append(area);
+        mObjectList.append(area);
     }
 }
 
 void TDAreaModel::saveToStream(QDataStream &stream) const
 {
-    stream << mDAreaList.size();
+    stream << mObjectList.size();
 
-    for(TDArea *area : mDAreaList) {
+    for(TDArea *area : mObjectList) {
         area->saveToStream(stream);
     }
 }
@@ -41,7 +41,7 @@ void TDAreaModel::saveToStream(QDataStream &stream) const
 int TDAreaModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return mDAreaList.size();
+    return mObjectList.size();
 }
 
 int TDAreaModel::columnCount(const QModelIndex &parent) const
@@ -53,7 +53,7 @@ int TDAreaModel::columnCount(const QModelIndex &parent) const
 QVariant TDAreaModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
-    if(row>=0 && row<mDAreaList.size())
+    if(row>=0 && row<mObjectList.size())
     {
         if(role==Qt::DisplayRole)
         {
@@ -63,14 +63,22 @@ QVariant TDAreaModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+void TDAreaModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)
+{
+    emit objectInserted(mObjectList, indexList);
+}
+
+void TDAreaModel::onObjectRemoved(const TObjectList &, const QList<int> &indexList)
+{
+    emit objectRemoved(mObjectList, indexList);
+}
+
 TDAreaList TDAreaModel::dAreaList() const
 {
-    return mDAreaList;
+    return mObjectList;
 }
 
 void TDAreaModel::setDAreaList(const TDAreaList &dAreaList)
 {
-    mDAreaList = dAreaList;
+    mObjectList = dAreaList;
 }
-
-IMPL_GENERIC_FUNCTIONS(DArea)

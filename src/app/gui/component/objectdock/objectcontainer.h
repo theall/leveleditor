@@ -7,13 +7,13 @@
 
 #include "objectlistview.h"
 
-class TObjectcontainer : public QWidget
+class TObjectContainer : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit TObjectcontainer(QWidget *parent = 0);
-    ~TObjectcontainer();
+    explicit TObjectContainer(QWidget *parent = 0);
+    ~TObjectContainer();
 
     TObjectListView *getobjectListView() const;
 

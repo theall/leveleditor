@@ -2,7 +2,7 @@
 
 TObjectDock::TObjectDock(QWidget *parent) :
     TBaseDock(QLatin1String("Object"), parent)
-  , mObjectcontainer(new TObjectcontainer(this))
+  , mObjectcontainer(new TObjectContainer(this))
 {
     setWidget(mObjectcontainer);
     retranslateUi();

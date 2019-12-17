@@ -3,7 +3,7 @@
 #include "entity/animation.h"
 
 TAnimationModel::TAnimationModel(QObject *parent) :
-    TBaseModel(TBaseModel::ANIMATION, parent)
+    TGenericModel<TAnimation>(TBaseModel::ANIMATION, parent)
 {
     setName(tr("AnimationModel"));
 }
@@ -63,9 +63,9 @@ QVariant TAnimationModel::data(const QModelIndex &index, int role) const
 void TAnimationModel::onObjectInserted(const TObjectList &objectList, const QList<int> &indexList)
 {
     TFrameModelList frameModelList;
-    TAnimationList aniamtionList = convert<TAnimation*>(objectList);
-    Q_ASSERT(aniamtionList.size()==indexList.size());
-    for(TAnimation *animation : aniamtionList) {
+    TAnimationList animationList = convert(objectList);
+    Q_ASSERT(animationList.size()==indexList.size());
+    for(TAnimation *animation : animationList) {
         TFrameModel *frameModel = new TFrameModel(animation, this);
         frameModelList.append(frameModel);
         mAnimationMap[animation] = frameModel;
@@ -74,21 +74,37 @@ void TAnimationModel::onObjectInserted(const TObjectList &objectList, const QLis
     beginResetModel();
     insertIntoContainer<TFrameModel*>(mFrameModelList, frameModelList, list);
     endResetModel();
+    emit objectInserted(mObjectList, indexList);
 }
 
-void TAnimationModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &)
+void TAnimationModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList)
 {
     TFrameModelList frameModelList;
-    TAnimationList aniamtionList = convert<TAnimation*>(objectList);
+    TAnimationList aniamtionList = convert(objectList);
     for(TAnimation *animation : aniamtionList) {
         TFrameModel *frameModel = mAnimationMap[animation];
         Q_ASSERT(frameModel);
         frameModelList.append(frameModel);
     }
     beginResetModel();
-    removeFromContainer(mFrameModelList, frameModelList);
+    QList<int> indexsList = removeFromContainer(mFrameModelList, frameModelList);
     endResetModel();
+    emit objectRemoved(mObjectList, indexList);
 }
+
+//void TAnimationModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &)
+//{
+//    TFrameModelList frameModelList;
+//    TAnimationList aniamtionList = convert<TAnimation*>(objectList);
+//    for(TAnimation *animation : aniamtionList) {
+//        TFrameModel *frameModel = mAnimationMap[animation];
+//        Q_ASSERT(frameModel);
+//        frameModelList.append(frameModel);
+//    }
+//    beginResetModel();
+//    removeFromContainer(mFrameModelList, frameModelList);
+//    endResetModel();
+//}
 
 void TAnimationModel::clear()
 {
@@ -111,4 +127,3 @@ TFrameModel *TAnimationModel::getFrameModel(int index) const
         return nullptr;
     return mFrameModelList.at(index);
 }
-IMPL_GENERIC_FUNCTIONS(Animation)

@@ -47,6 +47,10 @@ TMainController::TMainController(QObject *parent) :
             SLOT(slotRequestDisplayPropertySheet(TPropertySheet*)));
 
     connect(mAnimationController, SIGNAL(requestAdjustFPS(int)), this, SLOT(slotRequestAdjustFPS(int)));
+    connect(mAnimationController, SIGNAL(requestPlayAnimation()), this, SLOT(slotRequestPlayAnimation()));
+    connect(mAnimationController, SIGNAL(requestStopPlayAnimation()), this, SLOT(slotRequestStopPlayAnimation()));
+
+    connect(mObjectController, SIGNAL(indexPressed(int)), this, SLOT(slotObjectIndexPressed(int)));
 
     connect(TAssetsManager::getInstance(), SIGNAL(onProgress(int,int)), this, SLOT(slotOnResourceLoadProgress(int,int)));
 }
@@ -270,7 +274,6 @@ void TMainController::slotRequestSwitchToDocument(TDocument *document)
     }
     mMainWindow->enableSaveAction(document&&document->isDirty());
     mMainWindow->enableRunAction(document!=nullptr);
-    mMainWindow->enableMoveStateAction(document&&document->graphicsScene()->stop());
 }
 
 void TMainController::slotDocumentDirtyFlagChanged(TDocument *document, bool isDirty)
@@ -375,7 +378,29 @@ void TMainController::slotRequestAdjustFPS(int fps)
     graphicsScene->setFps(fps);
 }
 
-void TMainController::slotRequestAddFrames(int row)
+void TMainController::slotRequestPlayAnimation()
+{
+    if(!mDocument)
+        return;
+
+    TGraphicsScene *graphicsScene = mDocument->graphicsScene();
+    if(!graphicsScene)
+        return;
+    graphicsScene->play();
+}
+
+void TMainController::slotRequestStopPlayAnimation()
+{
+    if(!mDocument)
+        return;
+
+    TGraphicsScene *graphicsScene = mDocument->graphicsScene();
+    if(!graphicsScene)
+        return;
+    graphicsScene->suspend();
+}
+
+void TMainController::slotObjectIndexPressed(int index)
 {
 
 }

@@ -4,8 +4,9 @@
 #include "basemodel.h"
 #include "entity/area.h"
 #include "objectgeneric.hpp"
+#include "genericmodel.h"
 
-class TAreaModel : public TBaseModel
+class TAreaModel : public TGenericModel<TArea>
 {
     Q_OBJECT
 
@@ -21,8 +22,9 @@ public:
 
     void setPlatNameList(const QStringList &platNames);
 
-private:
-    TAreaList mAreaList;
+signals:
+    void objectInserted(const TAreaList &objectList, const QList<int> &indexList);
+    void objectRemoved(const TAreaList &objectList, const QList<int> &indexList);
 
 public:
     // QAbstractItemModel interface
@@ -34,11 +36,9 @@ public:
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
 
-public:
-    DECL_GENERIC_FUNCTIONS(Area);
-
-signals:
-    DECL_GENERIC_SIGNALS(Area);
+protected:
+    virtual void onObjectInserted(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
+    virtual void onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
 };
 
 #endif // TAREASMODEL_H

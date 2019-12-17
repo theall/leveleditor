@@ -113,7 +113,8 @@ SOURCES += \
     $$PWD/document/undocommand/rectresizeundocommand.cpp \
     $$PWD/assets/triggerid.cpp \    
     $$PWD/model/shotmodel.cpp \
-    $$PWD/model/chunkmodel.cpp
+    $$PWD/model/chunkmodel.cpp \
+    $$PWD/document/model/genericmodel.cpp
 HEADERS  += \
     $$PWD/core.h \
     $$PWD/assets/cachedpixmap.h \
@@ -235,6 +236,7 @@ HEADERS  += \
     $$PWD/document/undocommand/undocommandutils.hpp \
     $$PWD/assets/triggerid.h \
     $$PWD/model/shotmodel.h \
-    $$PWD/model/chunkmodel.h
+    $$PWD/model/chunkmodel.h \
+    $$PWD/document/model/genericmodel.h
 RESOURCES += \
     $$PWD/resource/core.qrc

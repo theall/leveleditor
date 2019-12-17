@@ -28,17 +28,16 @@ bool TAnimationController::joint(TMainWindow *mainWindow, TCore *core)
     Q_ASSERT(mainWindow);
     Q_ASSERT(core);
 
-    mAnimationDock = mainWindow->getAnimationDock();
-    connect(mAnimationDock, SIGNAL(requestAdjustFPS(int)), this, SIGNAL(requestAdjustFPS(int)));
 
     mContainer = mainWindow->getAnimationDock()->getContainer();
     connect(mContainer, SIGNAL(requestAddFrames()), this, SLOT(slotRequestAddFrames()));
     connect(mContainer, SIGNAL(requestAddAnimation()), this, SLOT(slotRequestAddAnimation()));
     connect(mContainer, SIGNAL(requestRemoveFrames(QList<int>)), this, SLOT(slotRequestRemoveFrames(QList<int>)));
-    connect(mContainer, SIGNAL(requestFrameIndexShiftLeft(QList<int>)), this, SLOT(slotRequestFrameIndexShiftLeft(QList<int>)));
-    connect(mContainer, SIGNAL(requestFrameIndexShiftRight(QList<int>)), this, SLOT(slotRequestFrameIndexShiftRight(QList<int>)));
-    connect(mContainer, SIGNAL(requestAnimationIndexShiftUp(int)), this, SLOT(slotRequestAnimationIndexShiftUp(int)));
-    connect(mContainer, SIGNAL(requestAnimationIndexShiftDown(int)), this, SLOT(slotRequestAnimationIndexShiftDown(int)));
+    connect(mContainer, SIGNAL(requestMoveIndexs(QList<int>, Dir)), this, SLOT(slotRequestMoveIndex(QList<int>, Dir)));
+
+    connect(mContainer, SIGNAL(requestAdjustFPS(int)), this, SIGNAL(requestAdjustFPS(int)));
+    connect(mContainer, SIGNAL(requestPlayAnimation()), this, SIGNAL(requestPlayAnimation()));
+    connect(mContainer, SIGNAL(requestStopPlayAnimation()), this, SIGNAL(requestStopPlayAnimation()));
 
     mAnimationListView = mainWindow->getAnimationDock()->getAnimationListView();
     connect(mAnimationListView, SIGNAL(indexPressed(int)), this, SLOT(slotOnAnimationListViewIndexPressed(int)));
@@ -132,38 +131,27 @@ void TAnimationController::slotRequestAddFrames()
     }
 }
 
-void TAnimationController::slotRequestRemoveFrames(QList<int> indexes)
+void TAnimationController::slotRequestRemoveFrames(const QList<int> &indexList)
 {
 
     TFrameModel *frameModel = static_cast<TFrameModel*>(mFrameListView->model());
-    for(int i : indexes){
+    for(int i : indexList){
         TFrame *frame = frameModel->getFrame(i);
         mDocument->cmdRemoveObject(frame, frameModel);
     }
 }
 
-void TAnimationController::slotRequestAnimationIndexShiftUp(int index)
+void TAnimationController::slotRequestMoveIndex(const QList<int> &indexList, const Dir &dir)
 {
-    TFrameModel *frameModel = static_cast<TFrameModel*>(mFrameListView->model());
-    TAnimation *animation = frameModel->animation();
-    TAnimationModel *animationModel = getAnimationModel();
-}
+    if(dir == Dir::Up) {
 
-void TAnimationController::slotRequestAnimationIndexShiftDown(int index)
-{
-    TFrameModel *frameModel = static_cast<TFrameModel*>(mFrameListView->model());
-    TAnimation *animation = frameModel->animation();
-    TAnimationModel *animationModel = getAnimationModel();
-}
+    } else if(dir == Dir::Down) {
 
-void TAnimationController::slotRequestFrameIndexShiftLeft(QList<int> indexes)
-{
+    } else if(dir == Dir::Left) {
 
-}
+    } else if(dir == Dir::Right) {
 
-void TAnimationController::slotRequestFrameIndexShiftRight(QList<int> indexes)
-{
-
+    }
 }
 
 void TAnimationController::selectAndCenterOn(TObjectItem *objectItem)

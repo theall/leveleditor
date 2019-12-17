@@ -4,8 +4,9 @@
 #include "basemodel.h"
 #include "entity/wall.h"
 #include "objectgeneric.hpp"
+#include "genericmodel.h"
 
-class TWallModel : public TBaseModel
+class TWallModel : public TGenericModel<TWall>
 {
     Q_OBJECT
 
@@ -14,6 +15,10 @@ public:
 
     void clear();
     TWallList wallList() const;
+
+signals:
+    void objectInserted(const TWallList &objectList, const QList<int> &indexList);
+    void objectRemoved(const TWallList &objectList, const QList<int> &indexList);
 
     // TIO interface
 public:
@@ -26,14 +31,9 @@ public:
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
-private:
-    TWallList mWallList;
-
-public:
-    DECL_GENERIC_FUNCTIONS(Wall);
-
-signals:
-    DECL_GENERIC_SIGNALS(Wall);
+protected:
+    virtual void onObjectInserted(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
+    virtual void onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList) Q_DECL_OVERRIDE;
 };
 
 #endif // TWALLSMODEL_H

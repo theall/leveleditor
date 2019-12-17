@@ -70,7 +70,11 @@ private slots:
     // From TAnimationController
     void slotRequestDisplayPropertySheet(TPropertySheet *propertySheet);
     void slotRequestAdjustFPS(int fps);
-    void slotRequestAddFrames(int row);
+    void slotRequestPlayAnimation();
+    void slotRequestStopPlayAnimation();
+
+    //From TObjectController
+    void slotObjectIndexPressed(int index);
 
 private:
     TOptionsController *mOptionsController;

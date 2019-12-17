@@ -1,7 +1,7 @@
 #include "enemyfactorymodel.h"
 
 TEnemyFactoryModel::TEnemyFactoryModel(QObject *parent) :
-    TBaseModel(TBaseModel::INVALID, parent)
+    TGenericModel<TEnemyFactory>(TBaseModel::ANIMATION, parent)
 {
     setName(tr("Factory"));
 }
@@ -20,27 +20,27 @@ void TEnemyFactoryModel::readFromStream(QDataStream &stream)
 {
     int enemyAmount = 0;
     stream >> enemyAmount;
-    mEnemyFactoryList.clear();
+    mObjectList.clear();
 
     for(int i=0;i<enemyAmount;i++) {
         TEnemyFactory *enemyFactory = new TEnemyFactory(this);
         enemyFactory->readFromStream(stream);
-        mEnemyFactoryList.append(enemyFactory);
+        mObjectList.append(enemyFactory);
     }
 }
 
 void TEnemyFactoryModel::saveToStream(QDataStream &stream) const
 {
-    stream << mEnemyFactoryList.size();
+    stream << mObjectList.size();
 
-    for(TEnemyFactory *enemyFactory : mEnemyFactoryList) {
+    for(TEnemyFactory *enemyFactory : mObjectList) {
         enemyFactory->saveToStream(stream);
     }
 }
 
 int TEnemyFactoryModel::rowCount(const QModelIndex &) const
 {
-    return mEnemyFactoryList.size();
+    return mObjectList.size();
 }
 
 int TEnemyFactoryModel::columnCount(const QModelIndex &) const
@@ -51,7 +51,7 @@ int TEnemyFactoryModel::columnCount(const QModelIndex &) const
 QVariant TEnemyFactoryModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
-    if(row>=0 && row<mEnemyFactoryList.size())
+    if(row>=0 && row<mObjectList.size())
     {
         if(role==Qt::DisplayRole)
         {
@@ -63,12 +63,20 @@ QVariant TEnemyFactoryModel::data(const QModelIndex &index, int role) const
 
 TEnemyFactoryList TEnemyFactoryModel::enemyFactoryList() const
 {
-    return mEnemyFactoryList;
+    return mObjectList;
 }
 
 void TEnemyFactoryModel::setEnemyFactoryList(const TEnemyFactoryList &enemyFactoryList)
 {
-    mEnemyFactoryList = enemyFactoryList;
+    mObjectList = enemyFactoryList;
 }
 
-IMPL_GENERIC_FUNCTIONS(EnemyFactory)
+void TEnemyFactoryModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)
+{
+    emit objectInserted(mObjectList, indexList);
+}
+
+void TEnemyFactoryModel::onObjectRemoved(const TObjectList &, const QList<int> &indexList)
+{
+    emit objectRemoved(mObjectList, indexList);
+}

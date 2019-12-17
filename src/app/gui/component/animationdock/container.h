@@ -7,6 +7,13 @@
 #include "animationlistview.h"
 #include "framelistview.h"
 
+enum Dir{
+    Up,
+    Down,
+    Left,
+    Right
+};
+
 class TContainer : public QWidget
 {
     Q_OBJECT
@@ -28,10 +35,7 @@ signals:
     void requestRemoveFrames(const QList<int> &indexes);
     void requestCopyFrames(const QList<int> &indexes);
     void requestCloneFrames(const QList<int> &indexes);
-    void requestFrameIndexShiftLeft(const QList<int> &indexes);
-    void requestFrameIndexShiftRight(const QList<int> &indexes);
-    void requestAnimationIndexShiftUp(int index);
-    void requestAnimationIndexShiftDown(int index);
+    void requestMoveIndexs(const QList<int> &indexs, const Dir);
     void requestPasteFrames(int pos);
     void requestAddAnimation();
     void requestAddFrames();

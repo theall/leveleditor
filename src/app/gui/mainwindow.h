@@ -46,7 +46,6 @@ public:
     void enableCloseAction(bool enabled = true);
     void enableCloseAllAction(bool enabled = true);
     void enableRunAction(bool enabled = true);
-    void enableMoveStateAction(bool enabled = true);
 
     void checkSelectAction();
     void checkInsertAction();
@@ -131,7 +130,6 @@ private slots:
     void on_actionShowBorder_triggered(bool arg1);
     void on_actionAlwaysOnTop_triggered(bool arg1);
     void on_actionCloseGame_triggered();
-    void on_actionMoveState_triggered();
     void on_actionOpenDebugDialog_triggered();
 
 private:
