@@ -18,8 +18,7 @@ const char g_scenemodel_data1[] = {
     '\x42', '\x54', '\x8C', '\x6C', '\x3D', '\xD3', '\x6E', '\x9C',
     '\x57', '\x22', '\xDF', '\x88', '\xBA', '\xC6', '\xCF', '\x6D',
     '\x00', '\x00', '\x00', '\x00', '\x3D', '\x6D', '\x35', '\x66',
-    '\x42', '\x54', '\x8C', '\x6C', '\x3D', '\xD3', '\x6E', '\x9C',
-    '\x57', '\x22', '\xDF', '\x88', '\xBA', '\xC6', '\xCF', '\x6D',
+    '\x42', '\x54', '\x8C', '\x6C',
 };
 TestSceneModel::TestSceneModel(QObject *parent) :
     QObject(parent)
