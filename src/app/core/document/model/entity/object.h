@@ -45,12 +45,11 @@ public:
 
 protected:
     TDocument *mDocument;
+    virtual void initPropertySheet();
 
 private:
     Type mType;
     bool mVisible;
-
-    void initPropertySheet();
 };
 typedef QList<TObject*> TObjectList;
 

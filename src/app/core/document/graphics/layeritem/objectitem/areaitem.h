@@ -16,10 +16,15 @@ public:
 
 private:
     TArea *mArea;
+    QRectF getIndicatorRect(const QRectF &rect);
 
     // TObjectItem interface
 public:
     void propertyValueChanged(PropertyID pid) Q_DECL_OVERRIDE;
+
+    // QGraphicsItem interface
+public:
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 typedef QList<TAreaItem*> TAreaItemList;
 

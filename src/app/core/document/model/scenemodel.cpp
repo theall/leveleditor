@@ -11,6 +11,7 @@
 #include "triggermodel.h"
 #include "wallmodel.h"
 #include "enemyfactorymodel.h"
+
 #include "../property/propertyobject.h"
 #include "../base/tr.h"
 
@@ -341,6 +342,15 @@ void TSceneModel::initPropertySheet()
     mPropertySheet->addProperty(PT_SOUND_ITEM, P_MUSIC2, PID_SCENE_MUSIC2);
 }
 
+void TSceneModel::bindPlat(TAreaPlat *areaPlat)
+{
+    int platIndex = areaPlat->platIndex();
+    TPlat *plat = mPlatformsModel->getPlat(platIndex);
+    if(!plat)
+        platIndex = -1;
+    areaPlat->setPlat(plat, platIndex);
+}
+
 void TSceneModel::saveToStream(QDataStream &stream) const
 {
     mAreasModel->saveToStream(stream);
@@ -418,6 +428,15 @@ void TSceneModel::readFromStream(QDataStream &stream)
     mAreasModel->readFromStream(stream);
     mDAreasModel->readFromStream(stream);
     mPlatformsModel->readFromStream(stream);
+
+    // Set binding plat into area
+    for(TArea *area : mAreasModel->areaList()) {
+        bindPlat(area);
+    }
+    for(TDArea *dArea : mDAreasModel->dAreaList()) {
+        bindPlat(dArea);
+    }
+
     mBoxModel->readFromStream(stream);
     mWallsModel->readFromStream(stream);
 
@@ -534,7 +553,7 @@ void TSceneModel::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(PID_SCENE_FLAG2, mFlagPointObject2->pos(), false);
 }
 
-int TSceneModel::columnCount(const QModelIndex &parent) const
+int TSceneModel::columnCount(const QModelIndex &) const
 {
     return 3;
 }

@@ -73,27 +73,27 @@ bool TBaseModel::isTile() const
     return mType == TILE;
 }
 
-void TBaseModel::insertObjects(const TObjectList &objectList, const QList<int> &indexList)
+void TBaseModel::insertObjects(const TObjectList &, const QList<int> &)
 {
 
 }
 
-QList<int> TBaseModel::removeObjects(const TObjectList &objectList)
-{
-
-}
-
-QList<int> TBaseModel::moveObjects(const TObjectList &objectList, const QList<int> &indexList)
+QList<int> TBaseModel::removeObjects(const TObjectList &)
 {
     return QList<int>();
 }
 
-void TBaseModel::onObjectInserted(const TObjectList &objectList, const QList<int> &indexList)
+QList<int> TBaseModel::moveObjects(const TObjectList &, const QList<int> &)
+{
+    return QList<int>();
+}
+
+void TBaseModel::onObjectInserted(const TObjectList &, const QList<int> &)
 {
 
 }
 
-void TBaseModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList)
+void TBaseModel::onObjectRemoved(const TObjectList & , const QList<int> &)
 {
 
 }
@@ -108,17 +108,17 @@ void TBaseModel::onObjectRemoved(const TObjectList &objectList, const QList<int>
 //    emit dataChanged(QModelIndex(), QModelIndex());
 //}
 
-int TBaseModel::columnCount(const QModelIndex &parent) const
+int TBaseModel::columnCount(const QModelIndex &) const
 {
     return 0;
 }
 
-int TBaseModel::rowCount(const QModelIndex &parent) const
+int TBaseModel::rowCount(const QModelIndex &) const
 {
     return 0;
 }
 
-QVariant TBaseModel::data(const QModelIndex &index, int role) const
+QVariant TBaseModel::data(const QModelIndex &, int) const
 {
     return QVariant();
 }

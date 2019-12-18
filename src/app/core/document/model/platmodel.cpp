@@ -69,6 +69,11 @@ QStringList TPlatModel::getPlatNames() const
     return platNames;
 }
 
+TPlat *TPlatModel::getPlat(int index) const
+{
+    return getObject(index);
+}
+
 void TPlatModel::clear()
 {
     mObjectList.clear();

@@ -40,12 +40,16 @@ public:
 
     virtual void step();
 
+    void promote(qreal zIndex);
+    void restore();
+
 signals:
     void boundingRectChanged(const QRectF &rect);
 
 private:
     bool mLocked;
     LayerType mLayerType;
+    int mSavedZIndex;
 
 private slots:
     void slotLayerVisibilityChanged(bool visible);

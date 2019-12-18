@@ -19,6 +19,8 @@ public:
     TPlat *createPlat();
     QStringList getPlatNames() const;
 
+    TPlat *getPlat(int index) const;
+
 signals:
     void platInserted(const TPlatList &platList, const QList<int> &indexList);
     void platRemoved(const TPlatList &platList, const QList<int> &indexList);

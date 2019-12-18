@@ -26,6 +26,7 @@ class TAnimationModel;
 class TPointObject;
 class TPropertySheet;
 class TTile;
+class TAreaPlat;
 
 class TSceneModel : public TBaseModel
 {
@@ -86,7 +87,7 @@ private:
     int mNextMap[5];
     TMap::Type mMapType;
 
-    // As TSceneModel can not extra extend TPropertyObject, this variable is crated to expose property sheet.
+    // As TSceneModel can not extra extend TPropertyObject, this variable is created to expose property sheet.
     TPropertyObject *mPropertyObject;
     TPropertySheet *mPropertySheet;
 
@@ -113,6 +114,7 @@ private:
     TPointObject *mFlagPointObject2;
 
     void initPropertySheet();
+    void bindPlat(TAreaPlat *areaPlat);
 
     // TIO interface
 public:

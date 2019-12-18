@@ -4,20 +4,36 @@
 #include <QRect>
 
 static const QString P_FLEE_DIR = T("Flee Direction");
-static const QString P_TYPE = T("Type");
+static const QString P_ESCAPE_TYPE = T("Escape Type");
 static const QString P_TARGET = T("Target");
-static const QString P_MOVE_BY = T("Move By");
+static const QString TP_AI_ESCAPE = T("This flag is for ai to escape danger area.\n"
+                                    "True\t perform up-special action.\n"
+                                    "False\t perform jump action, the target value speciy jump mode");
+static const QString TP_AI_TARGET = T("This value is only take effect under the escape flag is true.\n"
+                                      "While this value is 5, ai will definitely perform jump action.\n"
+                                      "If not 5, it will perform jump action as long as the y-coordinate\n"
+                                      "distance between ai and locked player larger than target value.");
 
 TDArea::TDArea(QObject *parent) :
-    TRectObject(TObject::DAREA, parent)
+    TAreaPlat(TObject::DAREA, parent)
+  , mEscapePropertyItem(nullptr)
+  , mTargetPropertyItem(nullptr)
 {
     initPropertySheet();
 }
 
 TDArea::TDArea(const QRect &rect, QObject *parent) :
-    TRectObject(rect, TObject::DAREA, parent)
+    TAreaPlat(rect, TObject::DAREA, parent)
+  , mEscapePropertyItem(nullptr)
+  , mTargetPropertyItem(nullptr)
 {
     initPropertySheet();
+}
+
+void TDArea::slotAiEscapeModePropertyChanged(const QVariant &, const QVariant &newValue)
+{
+    bool forceUp = newValue.toBool();
+    mTargetPropertyItem->setReadOnly(forceUp);
 }
 
 void TDArea::saveToStream(QDataStream &stream) const
@@ -30,12 +46,12 @@ void TDArea::saveToStream(QDataStream &stream) const
     stream << mPropertySheet->getValue(PID_DAREA_FLEE_DIR).toInt();
     stream << mPropertySheet->getValue(PID_DAREA_TYPE).toInt();
     stream << mPropertySheet->getValue(PID_DAREA_TARGET).toInt();
-    stream << mPropertySheet->getValue(PID_DAREA_MOVE_BY).toInt();
+    TAreaPlat::saveToStream(stream);
 }
 
 void TDArea::readFromStream(QDataStream &stream)
 {
-    int x,y,w,h,fleeDir,type,target,moveBy;
+    int x,y,w,h,fleeDir,type,target;
     stream >> x;
     stream >> y;
     stream >> w;
@@ -43,20 +59,22 @@ void TDArea::readFromStream(QDataStream &stream)
     stream >> fleeDir;
     stream >> type;
     stream >> target;
-    stream >> moveBy;
+    TAreaPlat::readFromStream(stream);
+
     setRect(x, y, w, h);
     mPropertySheet->setValue(PID_DAREA_FLEE_DIR, fleeDir);
     mPropertySheet->setValue(PID_DAREA_TYPE, type);
     mPropertySheet->setValue(PID_DAREA_TARGET, target);
-    mPropertySheet->setValue(PID_DAREA_MOVE_BY, moveBy);
 }
 
 void TDArea::initPropertySheet()
 {
     mPropertySheet->addProperty(PT_DIR, P_FLEE_DIR, PID_DAREA_FLEE_DIR);
-    mPropertySheet->addProperty(PT_INT, P_TYPE, PID_DAREA_TYPE);
-    mPropertySheet->addProperty(PT_INT, P_TARGET, PID_DAREA_TARGET);
-    mPropertySheet->addProperty(PT_INT, P_MOVE_BY, PID_DAREA_MOVE_BY);
+    mEscapePropertyItem = mPropertySheet->addProperty(PT_BOOL, P_ESCAPE_TYPE, PID_DAREA_TYPE);
+    mEscapePropertyItem->setToolTip(TP_AI_ESCAPE);
+    mTargetPropertyItem = mPropertySheet->addProperty(PT_INT, P_TARGET, PID_DAREA_TARGET, QVariant(), mEscapePropertyItem);
+    mTargetPropertyItem->setToolTip(TP_AI_TARGET);
+    connect(mEscapePropertyItem, SIGNAL(valueChanged(QVariant,QVariant)), this, SLOT(slotAiEscapeModePropertyChanged(QVariant,QVariant)));
 }
 
 QString TDArea::typeString() const

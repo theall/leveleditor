@@ -92,6 +92,17 @@ void TLayerItem::step()
 
 }
 
+void TLayerItem::promote(qreal zIndex)
+{
+    mSavedZIndex = zValue();
+    setZValue(zIndex);
+}
+
+void TLayerItem::restore()
+{
+    setZValue(mSavedZIndex);
+}
+
 void TLayerItem::slotLayerVisibilityChanged(bool visible)
 {
     setVisible(visible);

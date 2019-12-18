@@ -15,6 +15,13 @@ public:
 
     };
 
+    T *getObject(int index) const {
+        if(index<0 || index>= mObjectList.size())
+            return nullptr;
+
+        return mObjectList.at(index);
+    }
+
 protected:
     QList<T*> mObjectList;
 

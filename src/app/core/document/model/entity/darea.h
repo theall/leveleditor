@@ -3,9 +3,9 @@
 
 #include <QList>
 
-#include "rectobject.h"
+#include "areaplat.h"
 
-class TDArea : public TRectObject
+class TDArea : public TAreaPlat
 {
     Q_OBJECT
 
@@ -13,7 +13,13 @@ public:
     explicit TDArea(QObject *parent = nullptr);
     TDArea(const QRect &rect, QObject *parent = Q_NULLPTR);
 
+private slots:
+    void slotAiEscapeModePropertyChanged(const QVariant &oldValue, const QVariant &newValue);
+
 private:
+    TPropertyItem *mEscapePropertyItem;
+    TPropertyItem *mTargetPropertyItem;
+
     void initPropertySheet();
 
     // TObject interface

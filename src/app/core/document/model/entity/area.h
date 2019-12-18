@@ -3,9 +3,9 @@
 
 #include <QList>
 
-#include "rectobject.h"
+#include "areaplat.h"
 
-class TArea : public TRectObject
+class TArea : public TAreaPlat
 {
     Q_OBJECT
 
@@ -15,8 +15,11 @@ public:
 
     void setPlatNameList(const QStringList &platNames);
 
-private:
-    void initPropertySheet();
+protected:
+    virtual void initPropertySheet() override;
+
+private slots:
+    void slotBindPlatChanged(TPlat *newPlat, int newIndex, TPlat *oldPlat, int oldIndex);
 
     // TObject interface
 public:
