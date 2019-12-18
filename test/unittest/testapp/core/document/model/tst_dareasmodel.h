@@ -10,7 +10,11 @@ class TestDAreasModel : public QObject
 public:
     explicit TestDAreasModel(QObject *parent = 0);
 
+private:
+    void readWriteTest(const char *buf, int size);
+
 private Q_SLOTS:
+    void testReadWrite1();
     
 };
 
