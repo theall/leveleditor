@@ -1,38 +1,83 @@
 
 #include "tst_scenemodel.h"
 #include "testapp/core/document/model/streamiotest.h"
-#include <QtTest>
 #include <core/document/model/scenemodel.h>
+#include "tst_scenemodel.h"
+#include <core/document/document.h>
+#include <utils/preferences.h>
+#include <macro_for_test.h>
+#include <QFile>
+#include <QtTest>
+#include "entity/tst_animation.h"
+#include "entity/tst_area.h"
+#include "entity/tst_box.h"
+#include "entity/tst_darea.h"
+#include "entity/tst_door.h"
+#include "entity/tst_enemy.h"
+#include "entity/tst_enemyfactory.h"
+#include "entity/tst_frame.h"
+#include "entity/tst_object.h"
+#include "entity/tst_plat.h"
+#include "entity/tst_point.h"
+#include "entity/tst_pointf.h"
+#include "entity/tst_rect.h"
+#include "entity/tst_respawn.h"
+#include "entity/tst_startpoint.h"
+#include "entity/tst_tile.h"
+#include "entity/tst_tilemovemodel.h"
+#include "entity/tst_trigger.h"
+#include "entity/tst_wall.h"
 
-const char g_scenemodel_data1[] = {
-    '\x42', '\x54', '\x8C', '\x6C', '\x3D', '\xD3', '\x6E', '\x9C',
-    '\x42', '\x54', '\x8C', '\x6C', '\x3D', '\xD3', '\x6E', '\x9C',
-    '\x57', '\x22', '\xDF', '\x88', '\xBA', '\xC6', '\xCF', '\x6D',
-    '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00',
-    '\x3D', '\x6D', '\x35', '\x66', '\x00', '\x00', '\x00', '\x00',
-    '\x42', '\x54', '\x8C', '\x6C', '\x3D', '\xD3', '\x6E', '\x9C',
-    '\x42', '\x54', '\x8C', '\x6C', '\x3D', '\xD3', '\x6E', '\x9C',
-    '\x57', '\x22', '\xDF', '\x88', '\xBA', '\xC6', '\xCF', '\x6D',
-    '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00',
-    '\x3D', '\x6D', '\x35', '\x66', '\xF8', '\x0F', '\x30', '\xB9',
-    '\x42', '\x54', '\x8C', '\x6C', '\x3D', '\xD3', '\x6E', '\x9C',
-    '\x57', '\x22', '\xDF', '\x88', '\xBA', '\xC6', '\xCF', '\x6D',
-    '\x00', '\x00', '\x00', '\x00', '\x3D', '\x6D', '\x35', '\x66',
-    '\x42', '\x54', '\x8C', '\x6C',
-};
 TestSceneModel::TestSceneModel(QObject *parent) :
     QObject(parent)
 {
-
+    RUN_CLASS(TestAnimation);
+    RUN_CLASS(TestArea);
+    RUN_CLASS(TestBox);
+    RUN_CLASS(TestDArea);
+    RUN_CLASS(TestDoor);
+    RUN_CLASS(TestEnemy);
+    RUN_CLASS(TestEnemyFactory);
+    RUN_CLASS(TestFrame);
+    RUN_CLASS(TestObject);
+    RUN_CLASS(TestPlat);
+    RUN_CLASS(TestPoint);
+    RUN_CLASS(TestPointF);
+    RUN_CLASS(TestRect);
+    RUN_CLASS(TestRespawn);
+    RUN_CLASS(TestStartPoint);
+    RUN_CLASS(TestTile);
+    RUN_CLASS(TestTileMoveModel);
+    RUN_CLASS(TestTrigger);
+    RUN_CLASS(TestWall);
 }
 
-void TestSceneModel::readWriteTest(const char *buf, int size)
+void TestSceneModel::testReadSave()
 {
-    READ_WRITE_OBJECT_TEST(TSceneModel, buf, size);
-}
+    TDocument document;
+    TSceneModel model(&document);
 
-void TestSceneModel::testReadWrite1()
-{
-    readWriteTest(g_scenemodel_data1, sizeof(g_scenemodel_data1));
-}
+    QString gameRoot = TPreferences::instance()->gameRoot();
+    QVERIFY(!gameRoot.isEmpty());
 
+    QString testMapName = gameRoot + "/Maps/Original/amap1.dat";
+
+    QFile f(testMapName);
+    QVERIFY(f.exists());
+
+    QByteArray inData = f.readAll();
+    f.close();
+
+    QDataStream inStream(&inData, QIODevice::ReadOnly);
+    inStream.setByteOrder(QDataStream::LittleEndian);
+    inStream.setFloatingPointPrecision(QDataStream::SinglePrecision);
+    model.readFromStream(inStream);
+
+    QByteArray outData;
+    QDataStream outStream(&outData, QIODevice::WriteOnly);
+    outStream.setByteOrder(QDataStream::LittleEndian);
+    outStream.setFloatingPointPrecision(QDataStream::SinglePrecision);
+    model.saveToStream(outStream);
+
+    QCOMPARE(inData, outData);
+}

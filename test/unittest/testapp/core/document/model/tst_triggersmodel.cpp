@@ -1,9 +1,8 @@
 #include "tst_triggersmodel.h"
-
 #include "testapp/core/document/model/streamiotest.h"
 #include <QtTest>
 #include <core/document/model/triggermodel.h>
-const char g_triggermodel_data1[] = {
+const char g_triggersmodel_data1[] = {
     '\x42', '\x54', '\x8C', '\x6C'
 };
 
@@ -20,5 +19,5 @@ void TestTriggersModel::readWriteTest(const char *buf, int size)
 
 void TestTriggersModel::testReadWrite1()
 {
-    readWriteTest( g_triggermodel_data1, sizeof( g_triggermodel_data1));
+    readWriteTest( g_triggersmodel_data1, sizeof( g_triggersmodel_data1));
 }

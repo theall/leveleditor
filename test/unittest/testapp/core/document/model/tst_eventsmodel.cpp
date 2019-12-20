@@ -2,7 +2,7 @@
 #include "testapp/core/document/model/streamiotest.h"
 #include <QtTest>
 #include <core/document/model/eventmodel.h>
-const char g_eventmodel_data1[] = {
+const char g_eventsmodel_data1[] = {
     '\x42', '\x54', '\x8C', '\x6C'
 };
 
@@ -22,6 +22,6 @@ void TestEventsModel::readWriteTest(const char *buf, int size)
 
 void TestEventsModel::testReadWrite1()
 {
-    readWriteTest( g_eventmodel_data1, sizeof( g_eventmodel_data1));
+    readWriteTest( g_eventsmodel_data1, sizeof( g_eventsmodel_data1));
 }
 

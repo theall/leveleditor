@@ -1,12 +1,12 @@
 #include "tst_platformsmodel.h"
-
 #include "testapp/core/document/model/streamiotest.h"
 #include <QtTest>
 #include <core/document/model/eventmodel.h>
+
 const char g_eventmodel_data1[] = {
     '\x42', '\x54', '\x8C', '\x6C'
-};
 
+};
 
 
 TestPlatformsModel::TestPlatformsModel(QObject *parent) :
@@ -14,7 +14,6 @@ TestPlatformsModel::TestPlatformsModel(QObject *parent) :
 {
 
 }
-
 
 void TestPlatformsModel::readWriteTest(const char *buf, int size)
 {
