@@ -2,7 +2,7 @@
 #include "basemodel.h"
 
 TPlatModel::TPlatModel(QObject *parent) :
-    TGenericModel<TPlat>(TBaseModel::ANIMATION, parent)
+    TGenericModel<TPlat>(TBaseModel::PLAT, parent)
 {
     setName(tr("Platform"));
 }
@@ -28,9 +28,12 @@ void TPlatModel::saveToStream(QDataStream &stream) const
     }
 }
 
-int TPlatModel::rowCount(const QModelIndex &) const
+int TPlatModel::rowCount(const QModelIndex &parent) const
 {
-    return mObjectList.size();
+    if(!parent.isValid()) {
+       return mObjectList.size();
+    }
+    return 0;
 }
 
 int TPlatModel::columnCount(const QModelIndex &) const

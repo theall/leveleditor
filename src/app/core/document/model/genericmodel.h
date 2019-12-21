@@ -38,6 +38,12 @@ public:
         return QList<int>();
     };
 
+    int currentIndex(TObject *object)
+    {
+        T *Object = dynamic_cast<T*>(object);
+        return mObjectList.indexOf(Object);
+    }
+
 protected:
     QList<T*> convert(const TObjectList &objectList)
     {

@@ -129,7 +129,7 @@ void TDoor::setType(const Type &type)
     mType = type;
 }
 
-void TDoor::setPos(const QPointF &pos)
+void TDoor::setPos(const QPointF &)
 {
     //TObject::setPos(pos);
 }

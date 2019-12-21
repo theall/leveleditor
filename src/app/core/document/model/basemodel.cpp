@@ -1,7 +1,7 @@
 #include "basemodel.h"
 
 TBaseModel::TBaseModel(TBaseModel::Type type, QObject *parent) :
-    QAbstractTableModel(parent)
+    QAbstractItemModel(parent)
   , mVisible(true)
   , mLocked(false)
   , mType(type)
@@ -93,7 +93,7 @@ void TBaseModel::onObjectInserted(const TObjectList &, const QList<int> &)
 
 }
 
-void TBaseModel::onObjectRemoved(const TObjectList & , const QList<int> &)
+void TBaseModel::onObjectRemoved(const TObjectList &, const QList<int> &)
 {
 
 }
@@ -110,15 +110,27 @@ void TBaseModel::onObjectRemoved(const TObjectList & , const QList<int> &)
 
 int TBaseModel::columnCount(const QModelIndex &) const
 {
+    Q_ASSERT(false);
     return 0;
 }
 
 int TBaseModel::rowCount(const QModelIndex &) const
 {
+    Q_ASSERT(false);
     return 0;
 }
 
-QVariant TBaseModel::data(const QModelIndex &, int) const
+QVariant TBaseModel::data(const QModelIndex &, int ) const
 {
     return QVariant();
+}
+
+QModelIndex TBaseModel::index(int row, int column, const QModelIndex &) const
+{
+    return createIndex(row, column, nullptr);
+}
+
+QModelIndex TBaseModel::parent(const QModelIndex &) const
+{
+    return QModelIndex();
 }

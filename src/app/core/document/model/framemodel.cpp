@@ -5,7 +5,7 @@
 #define P_NAME "FrameModel"
 
 TFrameModel::TFrameModel(QObject *parent) :
-    TGenericModel<TFrame>(TBaseModel::ANIMATION, parent)
+    TGenericModel<TFrame>(TBaseModel::FRAME, parent)
   , mAnimation(nullptr)
 {
     setName(P_NAME);

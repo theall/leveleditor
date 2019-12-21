@@ -1,7 +1,7 @@
 #include "dareamodel.h"
 
 TDAreaModel::TDAreaModel(QObject *parent) :
-    TGenericModel<TDArea>(TBaseModel::ANIMATION, parent)
+    TGenericModel<TDArea>(TBaseModel::DAREA, parent)
 {
     setName(tr("Danger Area"));
 }
@@ -40,8 +40,10 @@ void TDAreaModel::saveToStream(QDataStream &stream) const
 
 int TDAreaModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent);
-    return mObjectList.size();
+    if(!parent.isValid()) {
+       return mObjectList.size();
+    }
+    return 0;
 }
 
 int TDAreaModel::columnCount(const QModelIndex &parent) const

@@ -1,7 +1,7 @@
 #include "enemyfactorymodel.h"
 
 TEnemyFactoryModel::TEnemyFactoryModel(QObject *parent) :
-    TGenericModel<TEnemyFactory>(TBaseModel::ANIMATION, parent)
+    TGenericModel<TEnemyFactory>(TBaseModel::ENEMYFACTORY, parent)
 {
     setName(tr("Factory"));
 }
@@ -38,9 +38,12 @@ void TEnemyFactoryModel::saveToStream(QDataStream &stream) const
     }
 }
 
-int TEnemyFactoryModel::rowCount(const QModelIndex &) const
+int TEnemyFactoryModel::rowCount(const QModelIndex &parent) const
 {
-    return mObjectList.size();
+    if(!parent.isValid()) {
+        return mObjectList.size();
+     }else
+         return 0;
 }
 
 int TEnemyFactoryModel::columnCount(const QModelIndex &) const

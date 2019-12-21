@@ -1,7 +1,7 @@
 #include "areamodel.h"
 
 TAreaModel::TAreaModel(QObject *parent) :
-    TGenericModel<TArea>(TBaseModel::ANIMATION, parent)
+    TGenericModel<TArea>(TBaseModel::AREA, parent)
 {
     setName(tr("Area"));
 }
@@ -49,8 +49,11 @@ void TAreaModel::onObjectRemoved(const TObjectList &, const QList<int> &indexLis
 
 int TAreaModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent);
-    return mObjectList.size();
+    if(!parent.isValid()) {
+       return mObjectList.size();
+    }
+    return 0;
+
 }
 
 int TAreaModel::columnCount(const QModelIndex &parent) const

@@ -4,7 +4,7 @@
 #include <utils/macro.h>
 
 TTileModel::TTileModel(QObject *parent) :
-    TGenericModel<TTile>(TBaseModel::ANIMATION, parent)
+    TGenericModel<TTile>(TBaseModel::TILE, parent)
 {
 
 }
@@ -33,9 +33,12 @@ void TTileModel::saveToStream(QDataStream &stream) const
     }
 }
 
-int TTileModel::rowCount(const QModelIndex &) const
+int TTileModel::rowCount(const QModelIndex &parent) const
 {
-    return mObjectList.size();
+    if(!parent.isValid()) {
+        return mObjectList.size();
+    }
+    return 0;
 }
 
 void TTileModel::readFromStream(QDataStream &stream)

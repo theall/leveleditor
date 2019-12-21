@@ -262,6 +262,7 @@ void TMainController::slotRequestSwitchToDocument(TDocument *document)
     mLayersController->setCurrentDocument(document);
     mTilesetController->setCurrentDocument(document);
     mAnimationController->setCurrentDocument(document);
+    mObjectController->setCurrentDocument(document);
 
     if(mDocument) {
         mDocument->disconnect(this);

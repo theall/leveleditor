@@ -1,7 +1,7 @@
 #include "wallmodel.h"
 
 TWallModel::TWallModel(QObject *parent) :
-    TGenericModel<TWall>(TBaseModel::ANIMATION, parent)
+    TGenericModel<TWall>(TBaseModel::WALL, parent)
 {
     setName(tr("Wall"));
 }
@@ -28,8 +28,10 @@ void TWallModel::saveToStream(QDataStream &stream) const
 
 int TWallModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent);
-    return mObjectList.size();
+    if(!parent.isValid()) {
+        return mObjectList.size();
+    }
+    return 0;
 }
 
 int TWallModel::columnCount(const QModelIndex &parent) const

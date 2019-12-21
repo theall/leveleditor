@@ -133,12 +133,13 @@ void TAnimationController::slotRequestAddFrames()
 
 void TAnimationController::slotRequestRemoveFrames(const QList<int> &indexList)
 {
-
     TFrameModel *frameModel = static_cast<TFrameModel*>(mFrameListView->model());
+    TFrameList frameList;
     for(int i : indexList){
         TFrame *frame = frameModel->getFrame(i);
-        mDocument->cmdRemoveObject(frame, frameModel);
+        frameList.append(frame);
     }
+    //mDocument->cmdRemoveObject(frameList, frameModel);
 }
 
 void TAnimationController::slotRequestMoveIndex(const QList<int> &indexList, const Dir &dir)

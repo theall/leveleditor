@@ -1,7 +1,7 @@
 #include "boxmodel.h"
 
 TBoxModel::TBoxModel(QObject *parent) :
-    TGenericModel<TBox>(TBaseModel::ANIMATION, parent)
+    TGenericModel<TBox>(TBaseModel::BOX, parent)
 {
     setName(tr("Box"));
 }
@@ -33,8 +33,10 @@ void TBoxModel::saveToStream(QDataStream &stream) const
 
 int TBoxModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent);
-    return mObjectList.size();
+    if(!parent.isValid()) {
+       return mObjectList.size();
+    }
+    return 0;
 }
 
 int TBoxModel::columnCount(const QModelIndex &parent) const

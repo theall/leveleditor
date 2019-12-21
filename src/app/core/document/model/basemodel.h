@@ -3,12 +3,13 @@
 
 #include <QList>
 #include <QIcon>
-#include <QAbstractTableModel>
+#include <QModelIndex>
+#include <QAbstractItemModel>
 
 #include "../base/io.h"
 #include "entity/object.h"
 
-class TBaseModel : public QAbstractTableModel, TIO
+class TBaseModel : public QAbstractItemModel, TIO
 {
     Q_OBJECT
 
@@ -21,6 +22,7 @@ public:
         WALL,
         BOX,
         EVENT,
+        ENEMYFACTORY,
         TRIGGER,
         RESPAWN,
         ANIMATION,
@@ -71,6 +73,8 @@ public:
     int columnCount(const QModelIndex &parent) const;
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
+    QModelIndex index(int row, int column, const QModelIndex &parent) const;
+    QModelIndex parent(const QModelIndex &child) const;
 };
 typedef QList<TBaseModel*> TBaseModelList;
 #endif // TBASEMODEL_H

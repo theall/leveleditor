@@ -8,10 +8,13 @@ static const QString P_RESPAWN = T("Respawn Point");
 
 TRespawn::TRespawn(QObject *parent) :
     TObject(TObject::POINT, parent)
-  , mStartPointObject(new TPointObject(parent))
-  , mRespownPointObject(new TPointObject(parent))
+  , mStartPointObject(new TPointObject(this))
+  , mRespownPointObject(new TPointObject(this))
 {
     initPropertySheet();
+
+    mStartPointObject->setTypeString("StartPoint");
+    mRespownPointObject->setTypeString("RespownPoint");
 }
 
 void TRespawn::saveToStream(QDataStream &stream) const

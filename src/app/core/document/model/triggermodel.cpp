@@ -1,7 +1,7 @@
 #include "triggermodel.h"
 
 TTriggerModel::TTriggerModel(QObject *parent) :
-    TGenericModel<TTrigger>(TBaseModel::ANIMATION, parent)
+    TGenericModel<TTrigger>(TBaseModel::TRIGGER, parent)
 {
     setName(tr("TriggerModel"));
 }
@@ -48,19 +48,30 @@ void TTriggerModel::saveToStream(QDataStream &stream) const
     }
 }
 
-int TTriggerModel::rowCount(const QModelIndex &) const
+int TTriggerModel::rowCount(const QModelIndex &parent) const
 {
-    return mObjectList.size();
+    if(!parent.isValid()) {
+        return mObjectList.size();
+    }
+    return 0;
 }
 
-int TTriggerModel::columnCount(const QModelIndex &parent) const
+int TTriggerModel::columnCount(const QModelIndex &) const
 {
-    return TBaseModel::columnCount(parent);
+    return 1;
 }
 
 QVariant TTriggerModel::data(const QModelIndex &index, int role) const
 {
-    return TBaseModel::data(index, role);
+    int row = index.row();
+    if(row>=0 && row<mObjectList.size())
+    {
+        if(role==Qt::DisplayRole)
+        {
+            return tr("Trigger %1").arg(row+1);
+        }
+    }
+    return QVariant();
 }
 
 void TTriggerModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)

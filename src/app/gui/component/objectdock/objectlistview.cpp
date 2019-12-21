@@ -1,25 +1,23 @@
 #include "objectlistview.h"
 
-#include <QTableView>
+#include <QTreeView>
 #include <QHeaderView>
 #include <QResizeEvent>
+#include <QVBoxLayout>
+#include <QScrollBar>
+#include <QItemSelectionModel>
 
 TObjectListView::TObjectListView(QWidget *parent):
-    QTableView(parent)
+    QTreeView(parent)
 {
-    setObjectName(QStringLiteral("AnimationListView"));
+    setObjectName(QStringLiteral("ObjectListView"));
     setFrameShape(QFrame::Panel);
     setFrameShadow(QFrame::Sunken);
     setSelectionBehavior(QAbstractItemView::SelectItems);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-    horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    horizontalHeader()->setVisible(false);
-    verticalHeader()->setVisible(false);
-    verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    header()->hide();
     setLayoutDirection(Qt::LeftToRight);
-
-    setShowGrid(false);
 }
 
 TObjectListView::~TObjectListView()
@@ -45,11 +43,19 @@ int TObjectListView::getCurrentIndex()
     return getIndex(currentIndex());
 }
 
-void TObjectListView::selectIndex(int index)
+void TObjectListView::selectRow(int row)
 {
-    QTableView::selectColumn(index);
-
-    emit indexSelected(index);
+    QAbstractItemModel *m = model();
+    if(m)
+    {
+        QItemSelectionModel *itemSelectionModel = selectionModel();
+        QModelIndex headModelIndex = m->index(row,0);
+        QModelIndex tailModelIndex = m->index(row, m->columnCount()-1);
+        QItemSelection itemSelection(headModelIndex, tailModelIndex);
+        itemSelectionModel->select(itemSelection, QItemSelectionModel::ClearAndSelect);
+        verticalScrollBar()->setSliderPosition(row);
+        emit indexSelected(row);
+    }
 }
 
 void TObjectListView::selectItems(QList<int> posList, bool locate)
@@ -91,7 +97,8 @@ void TObjectListView::setCheckMimeType(const QString &checkMimeType)
 
 void TObjectListView::setModel(QAbstractItemModel *model)
 {
-    QTableView::setModel(model);
+    QTreeView::setModel(model);
+    expandAll();
 }
 
 int TObjectListView::getIndex(const QModelIndex &index)
@@ -102,41 +109,6 @@ int TObjectListView::getIndex(const QModelIndex &index)
 
     int columnSize = m->columnCount();
     return columnSize*index.row()+index.column();
-}
-
-void TObjectListView::dragMoveEvent(QDragMoveEvent *event)
-{
-    if(event->source()==this) {
-        QModelIndex i = indexAt(event->pos());
-        QRect rt;
-        if(i.isValid()) {
-            rt = visualRect(i);
-            rt.setLeft(rt.left()-1);
-        } else {
-            QAbstractItemModel *m = model();
-            i = m->index(m->rowCount()-1, m->columnCount()-1);
-            rt = visualRect(i);
-            rt.setLeft(rt.right()+1);
-        }
-        rt.setTop(0);
-        rt.setWidth(1);
-        if(rt != mHighlightRect)
-        {
-            mHighlightRect = rt;
-            viewport()->update();
-        }
-        event->accept();
-    } else {
-        event->ignore();
-    }
-}
-
-void TObjectListView::mousePressEvent(QMouseEvent *event)
-{
-    QModelIndex index = indexAt(event->pos());
-    emit indexPressed(getIndex(index));
-    QTableView::mousePressEvent(event);
-
 }
 
 
