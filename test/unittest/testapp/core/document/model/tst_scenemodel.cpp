@@ -52,10 +52,23 @@ TestSceneModel::TestSceneModel(QObject *parent) :
     RUN_CLASS(TestWall);
 }
 
+void TestSceneModel::testType()
+{
+    TDocument document1(TMap::ADV);
+    QVERIFY(document1.getSceneModel()->type()==TBaseModel::INVALID);
+    QVERIFY(document1.getSceneModel()->getMapType()==TMap::ADV);
+
+    TDocument document2(TMap::VS);
+    QVERIFY(document2.getSceneModel()->getMapType()==TMap::VS);
+
+    TDocument document3(TMap::CTF);
+    QVERIFY(document3.getSceneModel()->getMapType()==TMap::CTF);
+}
+
 void TestSceneModel::testReadSave()
 {
-    TDocument document;
-    TSceneModel model(&document);
+    TDocument document(TMap::ADV);
+    TSceneModel model(TMap::ADV, &document);
 
     QString gameRoot = TPreferences::instance()->gameRoot();
     QVERIFY(!gameRoot.isEmpty());

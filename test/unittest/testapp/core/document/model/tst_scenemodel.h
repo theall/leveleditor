@@ -11,6 +11,7 @@ public:
     explicit TestSceneModel(QObject *parent = 0);
 
 private Q_SLOTS:
+    void testType();
     void testReadSave();
 };
 

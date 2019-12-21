@@ -5,7 +5,7 @@ TCategory::TCategory()
 
 }
 
-TPixmapId *TCategory::getPixmapId(Category set, int id)
+TPixmapId *TCategory::getPixmapId(Category, int)
 {
     return 0;
 }
