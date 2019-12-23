@@ -116,7 +116,9 @@ SOURCES += \
     $$PWD/model/chunkmodel.cpp \
     $$PWD/document/model/genericmodel.cpp \
     $$PWD/document/model/entity/areaplat.cpp \
-    $$PWD/document/graphics/layeritem/objectitem/jointitem.cpp
+    $$PWD/document/graphics/layeritem/objectitem/jointitem.cpp \
+    $$PWD/document/graphics/base/stamp.cpp
+    
 HEADERS  += \
     $$PWD/core.h \
     $$PWD/assets/cachedpixmap.h \
@@ -241,6 +243,8 @@ HEADERS  += \
     $$PWD/model/chunkmodel.h \
     $$PWD/document/model/genericmodel.h \
     $$PWD/document/model/entity/areaplat.h \
-    $$PWD/document/graphics/layeritem/objectitem/jointitem.h
+    $$PWD/document/graphics/layeritem/objectitem/jointitem.h \
+    $$PWD/document/graphics/base/stamp.h
+    
 RESOURCES += \
     $$PWD/resource/core.qrc

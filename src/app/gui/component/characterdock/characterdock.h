@@ -29,8 +29,8 @@ public:
     TCharacterView *itemView() const;
     TCharacterView *shotView() const;
     TCharacterView *chunkView() const;
+    void setPixmapSet(const PanelType &panelType, const QList<QPixmap> &pixmapSet ,const QList<int> &idList);
 
-    void setPixmapSet(const PanelType &panelType, const QList<QPixmap> &pixmapSet);
 
 private slots:
     void slotActionToggled();

@@ -5,6 +5,7 @@
 #include "../gui/dialogs/newmapdialog.h"
 #include "../gui/component/tabwidget/tabwidget.h"
 #include "../core/assets/assetsmanager.h"
+#include "../core/model/charactermodel.h"
 #include "../core/document/graphics/layeritem/objectitem/tileitem.h"
 
 #include <QProcess>
@@ -524,8 +525,14 @@ void TMainController::slotOnActionInsertPushed()
     if(!mDocument)
         return;
 
-    TTileId *tileId = mCore->tilesetModelManager()->getCurrentTileId();
-    mDocument->setTileStamp(tileId);
+    TBaseModel::Type currentModelType = mDocument->getSceneModel()->getCurretnModelType();
+    if(currentModelType == TBaseModel::TILE) {
+        TTileId *tileId = mCore->tilesetModelManager()->getCurrentTileId();
+        mDocument->setTileStamp(tileId);
+    } else if(currentModelType == TBaseModel::ENEMY_FACTORY) {
+        TFaceId *faceId = mCore->characterModel()->getCurrentFaceId();
+        mDocument->setFaceStamp(faceId);
+    }
     mDocument->setEditMode(INSERT);
 }
 

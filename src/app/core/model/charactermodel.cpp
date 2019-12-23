@@ -16,9 +16,26 @@ TFaceList TCharacterModel::faceList() const
     return mFaceList;
 }
 
+TFaceId *TCharacterModel::getCurrentFaceId() const
+{
+    if(mCurrentIndex<0 || mCurrentIndex>=mFaceList.size())
+        return nullptr;
+    return mFaceList.at(mCurrentIndex);
+}
+
 void TCharacterModel::setFaceList(const TFaceList &faceList)
 {
     mFaceList = faceList;
+}
+
+int TCharacterModel::getCurrentIndex() const
+{
+    return mCurrentIndex;
+}
+
+void TCharacterModel::setCurrentIndex(int currentIndex)
+{
+    mCurrentIndex = currentIndex;
 }
 
 int TCharacterModel::rowCount(const QModelIndex &) const

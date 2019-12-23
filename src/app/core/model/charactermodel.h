@@ -11,10 +11,15 @@ public:
     ~TCharacterModel();
 
     TFaceList faceList() const;
+    TFaceId *getCurrentFaceId() const;
     void setFaceList(const TFaceList &faceList);
+
+    int getCurrentIndex() const;
+    void setCurrentIndex(int currentIndex);
 
 private:
     TFaceList mFaceList;
+    int mCurrentIndex;
 
     // QAbstractItemModel interface
 public:

@@ -62,12 +62,9 @@ void TCharacterDock::slotActionToggled()
     mStackedWidget->setCurrentIndex(action->data().toInt());
 }
 
-TCharacterView *TCharacterDock::chunkView() const
-{
-    return mChunkView;
-}
 
-void TCharacterDock::setPixmapSet(const PanelType &panelType, const QList<QPixmap> &pixmapSet)
+
+void TCharacterDock::setPixmapSet(const PanelType &panelType, const QList<QPixmap> &pixmapSet, const QList<int> &idList)
 {
     TCharacterView *characterView = nullptr;
     switch (panelType) {
@@ -87,8 +84,13 @@ void TCharacterDock::setPixmapSet(const PanelType &panelType, const QList<QPixma
         break;
     }
     if(characterView) {
-        characterView->setPixmapSet(pixmapSet);
+        characterView->setPixmapSet(pixmapSet, idList);
     }
+}
+
+TCharacterView *TCharacterDock::chunkView() const
+{
+    return mChunkView;
 }
 
 TCharacterView *TCharacterDock::shotView() const

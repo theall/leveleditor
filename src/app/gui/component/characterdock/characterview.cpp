@@ -3,6 +3,10 @@
 #include <QResizeEvent>
 #include <QGridLayout>
 
+#include <QMouseEvent>
+#include <QHeaderView>
+#include <QContextMenuEvent>
+
 #ifdef GUI_STAND_ALONE
 #include <QDebug>
 #include <QPainter>
@@ -16,18 +20,21 @@ TCharacterView::TCharacterView(QWidget *parent) :
     QListWidget(parent)
   , mIconSize(ICON_LARGE)
   , mLastPushedButton(nullptr)
+  , mContextMenu(new QMenu(this))
 {
     setFlow(LeftToRight);//设置排列为从左向右排列
-    setFrameShadow(QFrame::Plain);//为框架添加阴影
+    setFrameShadow(QFrame::Plain);//为框架添加阴影QFrame::Plain
     setFrameShape(QFrame::NoFrame);//设置框架边线为什么都不做
+
+    retranslateUi();
 }
 
 TCharacterView::~TCharacterView()
 {
-    mButtonList.clear();
+    clear();
 }
 
-int TCharacterView::add(const QPixmap &face)
+int TCharacterView::add(const QPixmap &face, int id)
 {
     QPushButton *button = new QPushButton(this);
     button->setCheckable(true);
@@ -44,19 +51,23 @@ int TCharacterView::add(const QPixmap &face)
     return mButtonList.size();
 }
 
-void TCharacterView::setPixmapSet(const QList<QPixmap> &pixmapSet)
+void TCharacterView::setPixmapSet(const QList<QPixmap> &pixmapSet, const QList<int> &idList)
 {
     clear();
 
-    for(QPixmap pixmap : pixmapSet) {
-        add(pixmap);
+    if(!idList.isEmpty())
+        Q_ASSERT(pixmapSet.size()==idList.size());
+
+    for(int i=0;i<pixmapSet.size();i++) {
+        add(pixmapSet.at(i), idList.at(i));
     }
 }
 
 void TCharacterView::clear()
 {
     QListWidget::clear();
-    mButtonList.clear();;
+    mButtonList.clear();
+    mButtonValueMap.clear();
 }
 
 void TCharacterView::slotOnFaceButtonToggled(bool toggled)
@@ -77,5 +88,15 @@ void TCharacterView::resizeEvent(QResizeEvent *)
 {
     setWrapping(false);
     setWrapping(true);
+}
+
+void TCharacterView::contextMenuEvent(QContextMenuEvent *event)
+{
+    mContextMenu->popup(event->globalPos());
+}
+
+void TCharacterView::retranslateUi()
+{
+
 }
 

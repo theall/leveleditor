@@ -22,6 +22,7 @@
 #include "../undocommand/rectresizeundocommand.h"
 
 #include "sceneitem.h"
+#include "base/stamp.h"
 #include "uiitem/resizeitem.h"
 #include "uiitem/hovereditem.h"
 #include "uiitem/tilestampitem.h"
@@ -59,7 +60,7 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
   , mSelectionRectangle(new TSelectionRectangle(mUiItemsGroup))
   , mLastSelectedObjectItem(nullptr)
   , mDocument(nullptr)
-  , mTileId(nullptr)
+  , mStamp(new TStamp)
   , mEditMode(DEFAULT)
 {
     mUiItemsGroup->setZValue(TOP_Z_VALUE);
@@ -295,7 +296,8 @@ void TGraphicsScene::updateUiItems()
     bool isInsertMode = mEditMode==INSERT;
     TBaseModel::Type modelType = mSceneModel->getCurretnModelType();
     bool isInsertTileMode = isInsertMode && modelType==TBaseModel::TILE;
-    bool tileStampNeedShow = mUnderMouse && isInsertTileMode;
+    bool isInsertEnemyMode = isInsertMode && modelType==TBaseModel::ENEMY_FACTORY;
+    bool tileStampNeedShow = mUnderMouse && (isInsertTileMode|isInsertEnemyMode);
     if(tileStampNeedShow)
         mTileStampItem->setCenterPos(mMouseMovingPos);
     mTileStampItem->setVisible(tileStampNeedShow);
@@ -439,7 +441,7 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             TBaseModel::Type currentModelType = mSceneModel->getCurretnModelType();
             if(currentModelType == TBaseModel::TILE) {
                 TTileModel *tileLayerModel = mSceneModel->getCurrentAsTileLayerModel();
-                TTile *tile = tileLayerModel->createTile(mTileId, mTileStampItem->pos());
+                TTile *tile = tileLayerModel->createTile(mStamp->getTileId(), mTileStampItem->pos());
                 TObjectList objectList;
                 objectList.append(tile);
                 TObjectAddCommand *command = new TObjectAddCommand(
@@ -448,6 +450,8 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                     objectList
                 );
                 mDocument->addUndoCommand(command);
+            } else if(currentModelType == TBaseModel::ENEMY_FACTORY) {
+
             } else {
                 mObjectAreaItem->setRectangle(QRectF(mousePos, QSizeF()));
                 mObjectAreaItem->setVisible(true);
@@ -520,7 +524,8 @@ void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         update();
     } else if(mEditMode == INSERT) {
         TBaseModel::Type currentModelType = mSceneModel->getCurretnModelType();
-        if(currentModelType == TBaseModel::TILE) {
+        if(currentModelType==TBaseModel::TILE
+                || currentModelType==TBaseModel::ENEMY_FACTORY) {
             mTileStampItem->setCenterPos(mMouseMovingPos);
         } else {
             mObjectAreaItem->setRectangle(QRectF(mLeftButtonDownPos, mMouseMovingPos));
@@ -840,18 +845,10 @@ TLayerItemList TGraphicsScene::getLayerItemList() const
     return mSceneItem->getLayerItemList();
 }
 
-void TGraphicsScene::setCurrentTileId(TTileId *tileId)
+void TGraphicsScene::setCurrentStamp(TPixmapId *pixmapId)
 {
-    if(tileId == mTileId)
-        return;
-
-    mTileId = tileId;
-
-    if(mTileId) {
-        mTileStampItem->setPixmap(mTileId->pixmap()->pixmap());
-    } else {
-        mTileStampItem->setPixmap(QPixmap());
-    }
+    mStamp->setPixmapId(pixmapId);
+    mTileStampItem->setPixmap(mStamp->pixmap());
 }
 
 TObject *TGraphicsScene::getTopMostObject(const QPointF &pos) const

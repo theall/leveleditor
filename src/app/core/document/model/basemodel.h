@@ -22,7 +22,7 @@ public:
         WALL,
         BOX,
         EVENT,
-        ENEMYFACTORY,
+        ENEMY_FACTORY,
         TRIGGER,
         RESPAWN,
         ANIMATION,

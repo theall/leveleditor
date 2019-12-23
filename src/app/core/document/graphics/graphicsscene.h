@@ -12,7 +12,8 @@
 #include "layeritem/objectitem/objectitem.h"
 #include "layeritem/objectitem/rectobjectitem.h"
 
-class TTileId;
+class TStamp;
+class TPixmapId;
 class TDocument;
 class TSceneModel;
 class TSceneItem;
@@ -65,7 +66,7 @@ public:
     TLayerItem *getLayerItem(int index) const;
     TLayerItemList getLayerItemList() const;
 
-    void setCurrentTileId(TTileId *tileId);
+    void setCurrentStamp(TPixmapId *pixmapId);
 
     void setEditMode(int editMode);
     void showSelectedItemsBorder(bool visible = true);
@@ -116,7 +117,7 @@ private:
     TSelectionRectangle *mSelectionRectangle;
     TObjectItem *mLastSelectedObjectItem;
     TDocument *mDocument;
-    TTileId *mTileId;
+    TStamp *mStamp;
     int mEditMode;
 
     void step();

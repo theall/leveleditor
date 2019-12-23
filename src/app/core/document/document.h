@@ -10,7 +10,6 @@
 #include "graphics/graphicsscene.h"
 #include "undocommand/propertyundocommand.h"
 #include "undocommand/objectaddcommand.h"
-#include "../assets/tileid.h"
 #include "../assets/maps.h"
 
 enum EditMode {
@@ -18,6 +17,9 @@ enum EditMode {
     INSERT
 };
 
+class TFaceId;
+class TTileId;
+class TPixmap;
 class TPropertyObject;
 class TFileSystemWatcher;
 
@@ -55,7 +57,8 @@ public:
     TGraphicsScene *graphicsScene() const;
     TSceneModel *getSceneModel() const;
 
-    void setTileStamp(TTileId *tileStamp);
+    void setTileStamp(TTileId *tileid);
+    void setFaceStamp(TFaceId *faceId);
 
     EditMode getEditMode() const;
     void setEditMode(const EditMode &editMode);

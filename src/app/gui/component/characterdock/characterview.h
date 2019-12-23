@@ -2,9 +2,12 @@
 #define TCHARACTERVIEW_H
 
 #include <QWidget>
+#include <QMenu>
 #include <QListWidget>
 #include <QPushButton>
 #include <QSpacerItem>
+#include <QAction>
+#include <QTableView>
 
 class TCharacterView : public QListWidget
 {
@@ -14,8 +17,8 @@ public:
     explicit TCharacterView(QWidget *parent = 0);
     ~TCharacterView();
 
-    int add(const QPixmap &face);
-    void setPixmapSet(const QList<QPixmap> &pixmapSet);
+    int add(const QPixmap &face, int id);
+    void setPixmapSet(const QList<QPixmap> &pixmapSet, const QList<int> &idList);
 
 signals:
     void characterToggled(int index, bool toggled);
@@ -24,15 +27,19 @@ private:
     int mIconSize;
     QPushButton *mLastPushedButton;
     QList<QPushButton*> mButtonList;
+    QMap<QPushButton*, int> mButtonValueMap;
+    QList<void*> mChiaractersets;
+    QMenu *mContextMenu;
 
+    void retranslateUi();
     void clear();
 
 private slots:
     void slotOnFaceButtonToggled(bool);
 
-    // QWidget interface
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
 };
 
 #endif // TCHARACTERVIEW_H

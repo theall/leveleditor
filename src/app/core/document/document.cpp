@@ -4,6 +4,8 @@
 
 #include "../shared/filesystemwatcher.h"
 #include "../assets/assetsmanager.h"
+#include "../assets/tileid.h"
+#include "../assets/faceid.h"
 
 #ifndef QT_NO_DEBUG
 #include <utils/debug.h>
@@ -246,12 +248,14 @@ void TDocument::slotUndoStackIndexChanged(int)
 
 }
 
-void TDocument::setTileStamp(TTileId *tileStamp)
+void TDocument::setTileStamp(TTileId *tileId)
 {
-    if(!tileStamp)
-        return;
+    mGraphicsScene->setCurrentStamp(tileId);
+}
 
-    mGraphicsScene->setCurrentTileId(tileStamp);
+void TDocument::setFaceStamp(TFaceId *faceId)
+{
+    mGraphicsScene->setCurrentStamp(faceId);
 }
 
 EditMode TDocument::getEditMode() const
