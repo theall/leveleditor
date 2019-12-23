@@ -3,7 +3,7 @@
 #include <QPen>
 #include <QPainter>
 
-#define DIAMETER 11
+#define DIAMETER 10
 #define TRUNK_WIDTH 4
 #define LIMB_WIDTH 2
 #define HEIGHT (DIAMETER*2.5)
@@ -15,7 +15,7 @@ TPlayerItem::TPlayerItem(TPointObject *pointObject, QGraphicsItem *parent) :
 {
     Q_ASSERT(pointObject);
 
-    setBoundingRect(QRectF(-WIDTH/2,-HEIGHT,WIDTH,HEIGHT));
+    setBoundingRect(QRectF(-WIDTH/2, -HEIGHT, WIDTH, HEIGHT));
     move(pointObject->pos());
 }
 
@@ -44,12 +44,12 @@ void TPlayerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     Q_UNUSED(option);
     Q_UNUSED(widget);
 
-    qreal headInitialX = mBoundingRect.left() + (mBoundingRect.width() - DIAMETER) / 2;
-    qreal headInitialY = mBoundingRect.top();
+    qreal headInitialX = mBoundingRect.left() + (mBoundingRect.width() - DIAMETER -(WIDTH - DIAMETER) / 2);
+    qreal headInitialY = mBoundingRect.top() + 1;
 
-    const qreal trunkInitialX = headInitialX + (DIAMETER - TRUNK_WIDTH) / 2;
-    const qreal trunkInitialY = headInitialY + DIAMETER;
-    const QPointF trunkInitialPos = QPointF(trunkInitialX , trunkInitialY);
+    const qreal trunkInitialX = headInitialX + WIDTH/2 - TRUNK_WIDTH/2 - 0.5;
+    const qreal trunkInitialY = mBoundingRect.top() - TRUNK_WIDTH/4 + DIAMETER;
+    const QPointF trunkInitialPos = QPointF(trunkInitialX, trunkInitialY);
 
     const qreal trunkEndX = trunkInitialX;
     const qreal trunkEndY = trunkInitialY + DIAMETER;
@@ -57,27 +57,27 @@ void TPlayerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
     const qreal handInitialX = trunkInitialX;
     const qreal handInitialY = trunkInitialY + (trunkEndY - trunkInitialY - LIMB_WIDTH)/2;
-    const QPointF handInitialPos = QPointF(handInitialX , handInitialY);
+    const QPointF handInitialPos = QPointF(handInitialX, handInitialY);
 
-    const qreal leftHandEndX = handInitialX - DIAMETER/2;
+    const qreal leftHandEndX = handInitialX - DIAMETER/2 - TRUNK_WIDTH / 2 + 0.5 ;
     const qreal leftHandEndY = handInitialY + DIAMETER/2;
-    const QPointF leftHandEndPos = QPointF(leftHandEndX , leftHandEndY);
+    const QPointF leftHandEndPos = QPointF(leftHandEndX, leftHandEndY);
 
-    const qreal rightHandEndX = handInitialX + DIAMETER/2;
+    const qreal rightHandEndX = handInitialX + DIAMETER/2 + TRUNK_WIDTH/4 + 0.5;
     const qreal rightHandEndY = leftHandEndY;
-    const QPointF rightHandEndPos = QPointF(rightHandEndX , rightHandEndY);
+    const QPointF rightHandEndPos = QPointF(rightHandEndX, rightHandEndY);
 
     const qreal legInitialX = trunkEndX;
     const qreal legInitialY = trunkEndY;
-    const QPointF legInitialPos = QPointF(legInitialX , legInitialY);
+    const QPointF legInitialPos = QPointF(legInitialX, legInitialY);
 
     const qreal rightLegEndX = legInitialX - DIAMETER/2;
     const qreal rightLegEndY = legInitialY + DIAMETER/2;
-    QPointF rightLegEndPos = QPointF(rightLegEndX , rightLegEndY);
+    QPointF rightLegEndPos = QPointF(rightLegEndX, rightLegEndY);
 
     const qreal leftLegEndX = legInitialX + DIAMETER/2;
     const qreal leftLegEndY = rightLegEndY;
-    QPointF leftLegEndPos = QPointF(leftLegEndX , leftLegEndY);
+    QPointF leftLegEndPos = QPointF(leftLegEndX, leftLegEndY);
 
     const QBrush fillBrush(mColor);
     QPen ellipsePen(mColor, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
@@ -87,12 +87,12 @@ void TPlayerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
     QPen linePen(mColor, TRUNK_WIDTH, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
     painter->setPen(linePen);
-    painter->drawLine(trunkInitialPos , trunkEndPos);
+    painter->drawLine(trunkInitialPos, trunkEndPos);
 
     QPen linePen1(mColor, LIMB_WIDTH, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-    painter->setPen(linePen);
-    painter->drawLine(handInitialPos , rightHandEndPos);
-    painter->drawLine(handInitialPos , leftHandEndPos);
+    painter->setPen(linePen1);
+    painter->drawLine(handInitialPos, rightHandEndPos);
+    painter->drawLine(handInitialPos, leftHandEndPos);
 
     painter->drawLine(legInitialPos, rightLegEndPos);
     painter->drawLine(legInitialPos, leftLegEndPos);
