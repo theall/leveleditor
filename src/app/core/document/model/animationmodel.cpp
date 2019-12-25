@@ -74,7 +74,7 @@ void TAnimationModel::onObjectInserted(const TObjectList &objectList, const QLis
     beginResetModel();
     insertIntoContainer<TFrameModel*>(mFrameModelList, frameModelList, list);
     endResetModel();
-    emit objectInserted(mObjectList, indexList);
+    emit objectInserted(convert(objectList), indexList);
 }
 
 void TAnimationModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList)
@@ -89,7 +89,18 @@ void TAnimationModel::onObjectRemoved(const TObjectList &objectList, const QList
     beginResetModel();
     QList<int> indexsList = removeFromContainer(mFrameModelList, frameModelList);
     endResetModel();
-    emit objectRemoved(mObjectList, indexList);
+    emit objectRemoved(convert(objectList), indexList);
+}
+
+QList<int> TAnimationModel::removeFromContainer(TFrameModelList &container, TFrameModelList &objectList)
+{
+    QList<int> indexRemoved;
+    for(TFrameModel *object : objectList) {
+        int index = container.indexOf(object);
+        container.removeAt(index);
+        indexRemoved.append(index);
+    }
+    return indexRemoved;
 }
 
 //void TAnimationModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &)

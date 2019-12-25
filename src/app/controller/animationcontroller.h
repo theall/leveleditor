@@ -33,6 +33,8 @@ private slots:
     void slotRequestAddAnimation();
     void slotRequestAddFrames();
 
+    void slotOnSelectedObjectChanged(TObject *prev, TObject *current);
+
 private:
     TAnimationDock *mAnimationDock;
     TContainer *mContainer;

@@ -63,12 +63,12 @@ void TWallModel::clear()
     mObjectList.clear();
 }
 
-void TWallModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)
+void TWallModel::onObjectInserted(const TObjectList &objectList, const QList<int> &indexList)
 {
-    emit objectInserted(mObjectList, indexList);
+    emit objectInserted(convert(objectList), indexList);
 }
 
-void TWallModel::onObjectRemoved(const TObjectList &, const QList<int> &indexList)
+void TWallModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList)
 {
-    emit objectRemoved(mObjectList, indexList);
+    emit objectRemoved(convert(objectList), indexList);
 }

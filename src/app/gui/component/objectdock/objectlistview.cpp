@@ -43,15 +43,14 @@ int TObjectListView::getCurrentIndex()
     return getIndex(currentIndex());
 }
 
-void TObjectListView::selectRow(int row)
+void TObjectListView::selectRow(int row, QModelIndex &parent)
 {
     QAbstractItemModel *m = model();
     if(m)
     {
         QItemSelectionModel *itemSelectionModel = selectionModel();
-        QModelIndex headModelIndex = m->index(row,0);
-        QModelIndex tailModelIndex = m->index(row, m->columnCount()-1);
-        QItemSelection itemSelection(headModelIndex, tailModelIndex);
+        QModelIndex headModelIndex = m->index(row, 0, parent);
+        QItemSelection itemSelection(headModelIndex, headModelIndex);
         itemSelectionModel->select(itemSelection, QItemSelectionModel::ClearAndSelect);
         verticalScrollBar()->setSliderPosition(row);
         emit indexSelected(row);
@@ -111,4 +110,10 @@ int TObjectListView::getIndex(const QModelIndex &index)
     return columnSize*index.row()+index.column();
 }
 
+void TObjectListView::mousePressEvent(QMouseEvent *event)
+{
+    QTreeView::mousePressEvent(event);
+    QModelIndex row = indexAt(event->pos());
+    emit indexPressed(row);
+}
 

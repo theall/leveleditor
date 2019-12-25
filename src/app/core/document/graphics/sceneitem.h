@@ -31,6 +31,7 @@ signals:
 private slots:
     void slotOnSceneModelCurrentIndexChanged(int index);
     void slotLayerBoundingRectChanged(const QRectF &rect);
+    void slotAnimationInserted(const TAnimationList &animationList, const QList<int> &indexList);
     void slotSceneModelPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);
 
 private:

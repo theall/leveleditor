@@ -566,11 +566,14 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                             // The mouse pos is not equal to mLeftButtonDownPos after selected items moved
                             if(!mSelectedItems->containsObjectItem(objectItem)) {
                                 mSelectedItems->addObjectItem(objectItem);
+                                setSelectedObjectItem(objectItem);
                             } else {
                                 mSelectedItems->removeObjectItem(objectItem);
+                                TObjectItem *lastSelectedObjectItem = mLastSelectedObjectItem;
+                                mLastSelectedObjectItem = nullptr;
+                                setSelectedObjectItem(lastSelectedObjectItem);
                             }
                         }
-                        setSelectedObjectItem(objectItem);
                     } else if(modifers&Qt::ShiftModifier) {
                         if(!mLastSelectedObjectItem)
                             setSelectedObjectItem(objectItem);

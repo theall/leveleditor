@@ -74,12 +74,12 @@ QVariant TTriggerModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-void TTriggerModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)
+void TTriggerModel::onObjectInserted(const TObjectList &objectList, const QList<int> &indexList)
 {
-    emit objectInserted(mObjectList, indexList);
+    emit objectInserted(convert(objectList), indexList);
 }
 
-void TTriggerModel::onObjectRemoved(const TObjectList &, const QList<int> &indexList)
+void TTriggerModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList)
 {
-    emit objectRemoved(mObjectList, indexList);
+    emit objectRemoved(convert(objectList), indexList);
 }

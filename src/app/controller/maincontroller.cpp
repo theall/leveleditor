@@ -51,8 +51,6 @@ TMainController::TMainController(QObject *parent) :
     connect(mAnimationController, SIGNAL(requestPlayAnimation()), this, SLOT(slotRequestPlayAnimation()));
     connect(mAnimationController, SIGNAL(requestStopPlayAnimation()), this, SLOT(slotRequestStopPlayAnimation()));
 
-    connect(mObjectController, SIGNAL(indexPressed(int)), this, SLOT(slotObjectIndexPressed(int)));
-
     connect(TAssetsManager::getInstance(), SIGNAL(onProgress(int,int)), this, SLOT(slotOnResourceLoadProgress(int,int)));
 }
 
@@ -400,11 +398,6 @@ void TMainController::slotRequestStopPlayAnimation()
     if(!graphicsScene)
         return;
     graphicsScene->suspend();
-}
-
-void TMainController::slotObjectIndexPressed(int index)
-{
-
 }
 
 bool TMainController::confirmAllSaved()

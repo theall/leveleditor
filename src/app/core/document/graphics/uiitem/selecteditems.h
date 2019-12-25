@@ -21,7 +21,13 @@ public:
 
     int addObjectItem(TObjectItem *objectItem);
     int addObjectItems(const TObjectItemList &objectItemList);
-    int removeObjectItem(TObjectItem *objectItem);
+
+    /**
+     * @brief Remove object item
+     * @param objectItem
+     * @return Last selected object item
+     */
+    TObjectItem *removeObjectItem(TObjectItem *objectItem);
     bool containsObjectItem(TObjectItem *objectItem) const;
     TObjectItemList getSelectedObjectItemList() const;
     TTileItemList getSelectedTileItemList() const;
@@ -49,6 +55,7 @@ private:
     // Marching ants effect
     int mUpdateTimer;
     QRectF mBoundingRect;
+    TObjectItemList mObjectItemList;
     QMap<TObjectItem*, TSelectedItem*> mObjectItemMap;
     QMap<TObject*, TSelectedItem*> mObjectMap;
 

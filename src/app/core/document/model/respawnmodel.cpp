@@ -108,12 +108,17 @@ TRespawnList TRespawnModel::respawnList() const
     return mObjectList;
 }
 
-void TRespawnModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)
+int TRespawnModel::indexOf(TRespawn *respawn) const
 {
-    emit objectInserted(mObjectList, indexList);
+    return mObjectList.indexOf(respawn);
 }
 
-void TRespawnModel::onObjectRemoved(const TObjectList &, const QList<int> &indexList)
+void TRespawnModel::onObjectInserted(const TObjectList &objectList, const QList<int> &indexList)
 {
-    emit objectRemoved(mObjectList, indexList);
+    emit objectInserted(convert(objectList), indexList);
+}
+
+void TRespawnModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList)
+{
+    emit objectRemoved(convert(objectList), indexList);
 }

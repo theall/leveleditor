@@ -26,6 +26,7 @@ public:
     TFrameListView *getFrameListView() const;
 
     void setFPS(int fps);
+    void setNewButtonAnimation(bool state);
 
 signals:
     // Controller

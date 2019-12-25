@@ -23,6 +23,7 @@ void TSelectedItems::setObjectItemList(const TObjectItemList &objectItemList)
     for(TSelectedItem *selectedItem : mObjectItemMap.values()) {
         delete selectedItem;
     }
+    mObjectItemList.clear();
     mObjectItemMap.clear();
     mObjectMap.clear();
 
@@ -32,6 +33,7 @@ void TSelectedItems::setObjectItemList(const TObjectItemList &objectItemList)
 
         TSelectedItem *selectedItem = new TSelectedItem(this);
         selectedItem->setObjectItem(objectItem);
+        mObjectItemList.append(objectItem);
         mObjectItemMap.insert(objectItem, selectedItem);
         mObjectMap.insert(objectItem->object(), selectedItem);
     }
@@ -52,6 +54,7 @@ int TSelectedItems::addObjectItem(TObjectItem *objectItem)
 
     TSelectedItem *selectedItem = new TSelectedItem(this);
     selectedItem->setObjectItem(objectItem);
+    mObjectItemList.append(objectItem);
     mObjectItemMap.insert(objectItem, selectedItem);
     mObjectMap.insert(objectItem->object(), selectedItem);
     updateBoundingRect();
@@ -67,6 +70,7 @@ int TSelectedItems::addObjectItems(const TObjectItemList &objectItemList)
 
         TSelectedItem *selectedItem = new TSelectedItem(this);
         selectedItem->setObjectItem(objectItem);
+        mObjectItemList.append(objectItem);
         mObjectItemMap.insert(objectItem, selectedItem);
         mObjectMap.insert(objectItem->object(), selectedItem);
         itemsAdded++;
@@ -77,17 +81,21 @@ int TSelectedItems::addObjectItems(const TObjectItemList &objectItemList)
     return itemsAdded;
 }
 
-int TSelectedItems::removeObjectItem(TObjectItem *objectItem)
+TObjectItem *TSelectedItems::removeObjectItem(TObjectItem *objectItem)
 {
     TSelectedItem *selectedItem = mObjectItemMap.value(objectItem);
     if(!selectedItem)
-        return -1;
+        return nullptr;
 
+    mObjectItemList.removeOne(objectItem);
     mObjectMap.remove(objectItem->object());
     mObjectItemMap.remove(objectItem);
     delete selectedItem;
     updateBoundingRect();
-    return 0;
+
+    if(mObjectItemList.isEmpty())
+        return nullptr;
+    return mObjectItemList.last();
 }
 
 bool TSelectedItems::containsObjectItem(TObjectItem *objectItem) const
@@ -97,7 +105,7 @@ bool TSelectedItems::containsObjectItem(TObjectItem *objectItem) const
 
 TObjectItemList TSelectedItems::getSelectedObjectItemList() const
 {
-    return mObjectItemMap.keys();
+    return mObjectItemList;
 }
 
 TTileItemList TSelectedItems::getSelectedTileItemList() const

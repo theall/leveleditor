@@ -50,8 +50,7 @@ TObjectAddCommand::Command TObjectAddCommand::command() const
 
 void TObjectAddCommand::undo()
 {
-    if(mCommand == ADD)
-    {
+    if(mCommand == ADD) {
         mIndexList = mBaseModel->removeObjects(mObjectList);
     } else if(mCommand == REMOVE) {
         mBaseModel->insertObjects(mObjectList, mIndexList);
@@ -62,8 +61,7 @@ void TObjectAddCommand::undo()
 
 void TObjectAddCommand::redo()
 {
-    if(mCommand == ADD)
-    {
+    if(mCommand == ADD) {
         mBaseModel->insertObjects(mObjectList, mIndexList);
     } else if(mCommand == REMOVE) {
         mIndexList = mBaseModel->removeObjects(mObjectList);

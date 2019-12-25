@@ -25,6 +25,8 @@ public:
     QPixmap getIcon() const;
     TTile *getTile() const;
     void setTile(TTile *tile);
+    void setTileLayer(int tileLayer);
+    void setTileNumber(int tileNumber);
     QPixmap getFramePixmap(int index) const;
     void clear();
     TFrame *getFrame(int index) const;
@@ -38,6 +40,7 @@ private:
     TTile *mTile;
     int mTileLayer;
     int mTileNumber;
+    int mFrameSequences;
     TFrameList mFrameList;
     void initPropertySheet();
 

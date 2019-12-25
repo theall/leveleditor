@@ -66,8 +66,7 @@ QString secToTimeStr(long seconds, bool padZero)
 QString absoluteFilePath(QString fileName)
 {
     QFileInfo fi(fileName);
-    if(fi.isRelative())
-    {
+    if(fi.isRelative()) {
         QDir dir(qApp->applicationDirPath());
         fileName = dir.absoluteFilePath(fileName);
     }
@@ -87,8 +86,7 @@ bool exploreFile(QString fileName)
 
 void cpy2wchar(wchar_t *dest, const QString &source)
 {
-    if(dest)
-    {
+    if(dest) {
         std::wstring sourceW = source.toStdWString();
         wcscpy(dest, sourceW.c_str());
     }

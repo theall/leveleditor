@@ -12,6 +12,7 @@
 #include "layeritem/objectitem/animationitem.h"
 #include "uiitem/darkmaskitem.h"
 
+#include "../model/animationmodel.h"
 #include "../model/areamodel.h"
 #include "../model/boxmodel.h"
 #include "../model/dareamodel.h"
@@ -84,6 +85,7 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
 
     // Process animation model
     TAnimationModel *animationModel = sceneModel->getAnimationsModel();
+    connect(animationModel, SIGNAL(objectInserted(TAnimationList, QList<int>)),this, SLOT(slotAnimationInserted(TAnimationList, QList<int>)));
     for(TFrameModel *frameModel : animationModel->frameModelList()) {
         TAnimation *animation = frameModel->animation();
         if(!animation || !animation->getTile())
@@ -165,6 +167,19 @@ void TSceneItem::slotLayerBoundingRectChanged(const QRectF &rect)
 
     mBoundingRect = mBoundingRect.united(rect);
     emit boundingRectChanged(mBoundingRect);
+}
+
+void TSceneItem::slotAnimationInserted(const TAnimationList &animationList, const QList<int> &indexList)
+{
+    for(int index=indexList.size()-1; index>=0; index--){
+        TAnimation *animation = animationList.at(indexList.at(index));
+        if(!animation || !animation->getTile())
+            return;
+        TAnimationItem *animationItem = new TAnimationItem(animation, nullptr);
+        for(TTileLayerItem *tileLayerItem : mTileLayerItemList) {
+           tileLayerItem->replace(animationItem);
+        }
+    }
 }
 
 void TSceneItem::slotSceneModelPropertyItemValueChanged(TPropertyItem *, const QVariant &)

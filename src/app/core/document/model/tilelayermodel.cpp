@@ -107,12 +107,12 @@ QVariant TTileModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-void TTileModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)
+void TTileModel::onObjectInserted(const TObjectList &objectList, const QList<int> &indexList)
 {
-    emit objectInserted(mObjectList, indexList);
+    emit objectInserted(convert(objectList), indexList);
 }
 
-void TTileModel::onObjectRemoved(const TObjectList &, const QList<int> &indexList)
+void TTileModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList)
 {
-    emit objectRemoved(mObjectList, indexList);
+    emit objectRemoved(convert(objectList), indexList);
 }

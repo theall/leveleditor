@@ -73,9 +73,6 @@ private slots:
     void slotRequestPlayAnimation();
     void slotRequestStopPlayAnimation();
 
-    //From TObjectController
-    void slotObjectIndexPressed(int index);
-
 private:
     TOptionsController *mOptionsController;
     TTabController *mTabController;

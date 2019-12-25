@@ -65,14 +65,14 @@ QVariant TDAreaModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-void TDAreaModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)
+void TDAreaModel::onObjectInserted(const TObjectList &objectList, const QList<int> &indexList)
 {
-    emit objectInserted(mObjectList, indexList);
+    emit objectInserted(convert(objectList), indexList);
 }
 
-void TDAreaModel::onObjectRemoved(const TObjectList &, const QList<int> &indexList)
+void TDAreaModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList)
 {
-    emit objectRemoved(mObjectList, indexList);
+    emit objectRemoved(convert(objectList), indexList);
 }
 
 TDAreaList TDAreaModel::dAreaList() const

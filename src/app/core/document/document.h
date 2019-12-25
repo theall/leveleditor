@@ -63,10 +63,10 @@ public:
     EditMode getEditMode() const;
     void setEditMode(const EditMode &editMode);
 
-    void cmdAddObject(const TObject *object, TBaseModel *baseModel);
-    void cmdAddObject(const TObjectList &objectList, TBaseModel *baseModel);
-    void cmdRemoveObject(const TObject *object, TBaseModel *baseModel);
-    void cmdRemoveObject(const TObjectList &objectList, TBaseModel *baseModel);
+    void cmdAddObject(TObject *object, TBaseModel *baseModel);
+    void cmdAddObject(TObjectList &objectList, TBaseModel *baseModel);
+    void cmdRemoveObject(TObject *object, TBaseModel *baseModel);
+    void cmdRemoveObject(TObjectList &objectList, TBaseModel *baseModel);
 
 signals:
     void projectFileChanged();

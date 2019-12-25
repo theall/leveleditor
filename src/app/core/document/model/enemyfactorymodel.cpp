@@ -74,12 +74,12 @@ void TEnemyFactoryModel::setEnemyFactoryList(const TEnemyFactoryList &enemyFacto
     mObjectList = enemyFactoryList;
 }
 
-void TEnemyFactoryModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)
+void TEnemyFactoryModel::onObjectInserted(const TObjectList &objectList, const QList<int> &indexList)
 {
-    emit objectInserted(mObjectList, indexList);
+    emit objectInserted(convert(objectList), indexList);
 }
 
-void TEnemyFactoryModel::onObjectRemoved(const TObjectList &, const QList<int> &indexList)
+void TEnemyFactoryModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList)
 {
-    emit objectRemoved(mObjectList, indexList);
+    emit objectRemoved(convert(objectList), indexList);
 }

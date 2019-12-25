@@ -558,9 +558,12 @@ int TSceneModel::columnCount(const QModelIndex &) const
     return 3;
 }
 
-int TSceneModel::rowCount(const QModelIndex &) const
+int TSceneModel::rowCount(const QModelIndex &parent) const
 {
-    return mBaseModelList.size();
+    if(!parent.isValid()) {
+        return mBaseModelList.size();
+    }
+    return 0;
 }
 
 QVariant TSceneModel::data(const QModelIndex &index, int role) const

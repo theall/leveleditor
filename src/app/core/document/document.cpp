@@ -275,32 +275,32 @@ void TDocument::setEditMode(const EditMode &editMode)
     emit editModeChanged(mEditMode, oldMode);
 }
 
-void TDocument::cmdAddObject(const TObject *object, TBaseModel *baseModel)
+void TDocument::cmdAddObject(TObject *object, TBaseModel *baseModel)
 {
     if(!object || !baseModel){
         return;
     }
     TObjectList objectList;
-    objectList.append(objectList);
+    objectList.append(object);
     internalAddRemoveObjectCommand(TObjectAddCommand::ADD, baseModel, objectList);
 }
 
-void TDocument::cmdAddObject(const TObjectList &objectList, TBaseModel *baseModel)
+void TDocument::cmdAddObject(TObjectList &objectList, TBaseModel *baseModel)
 {
     internalAddRemoveObjectCommand(TObjectAddCommand::ADD, baseModel, objectList);
 }
 
-void TDocument::cmdRemoveObject(const TObject *object, TBaseModel *baseModel)
+void TDocument::cmdRemoveObject(TObject *object, TBaseModel *baseModel)
 {
     if(!object || !baseModel){
         return;
     }
     TObjectList objectList;
-    objectList.append(objectList);
+    objectList.append(object);
     internalAddRemoveObjectCommand(TObjectAddCommand::REMOVE, baseModel, objectList);
 }
 
-void TDocument::cmdRemoveObject(const TObjectList &objectList, TBaseModel *baseModel)
+void TDocument::cmdRemoveObject(TObjectList &objectList, TBaseModel *baseModel)
 {
     internalAddRemoveObjectCommand(TObjectAddCommand::REMOVE, baseModel, objectList);
 }

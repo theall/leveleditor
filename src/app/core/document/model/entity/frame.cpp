@@ -66,8 +66,8 @@ int TFrame::getTileLayer() const
 
 void TFrame::saveToStream(QDataStream &stream) const
 {
-    stream << mPropertySheet->getValue(PID_FRAME_TILE_LAYER).toInt();
-    stream << mPropertySheet->getValue(PID_FRAME_TILE_NUMBER).toInt()+1;
+    stream << mTileLayer;
+    stream << mTileNumber+1;
     stream << mPropertySheet->getValue(PID_FRAME_DURATION).toInt();
 }
 

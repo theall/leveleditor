@@ -37,14 +37,14 @@ void TAreaModel::saveToStream(QDataStream &stream) const
     }
 }
 
-void TAreaModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)
+void TAreaModel::onObjectInserted(const TObjectList &objectList, const QList<int> &indexList)
 {
-    emit objectInserted(mObjectList, indexList);
+    emit objectInserted(convert(objectList), indexList);
 }
 
-void TAreaModel::onObjectRemoved(const TObjectList &, const QList<int> &indexList)
+void TAreaModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList)
 {
-    emit objectRemoved(mObjectList, indexList);
+    emit objectRemoved(convert(objectList), indexList);
 }
 
 int TAreaModel::rowCount(const QModelIndex &parent) const

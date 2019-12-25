@@ -32,6 +32,8 @@ public:
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
 
+    QList<int> removeFromContainer(TFrameModelList &container, TFrameModelList &objectList);
+
     // QAbstractItemModel interface
 public:
     int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;

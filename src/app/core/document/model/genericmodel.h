@@ -22,10 +22,6 @@ public:
         return mObjectList.at(index);
     }
 
-protected:
-    QList<T*> mObjectList;
-
-public:
     virtual void insertObjects(const QList<T*> &objectList, const QList<int> &indexList) {
         insertObject(objectList, indexList);
     };
@@ -44,7 +40,35 @@ public:
         return mObjectList.indexOf(Object);
     }
 
+    QList<int> removeFromContainer(QList<T*> &container, QList<T*> &objectList)
+    {
+        QList<int> indexRemoved;
+        for(T *object : objectList) {
+            int index = container.indexOf(object);
+            container.removeAt(index);
+            indexRemoved.append(index);
+        }
+        return indexRemoved;
+    }
+
+    QList<T> removeFromContainer(QList<T*> &container, QList<int> &indexList)
+    {
+        QList<T> objectList;
+        QList<int> indexRemoved;
+        for(int i=0;i<indexList.size();i++) {
+            int index = indexList.at(i);
+            T object = container.at(index);
+            container.removeAt(index);
+            objectList.append(object);
+            indexRemoved.append(index);
+        }
+        indexList = indexRemoved;
+        return objectList;
+    }
+
 protected:
+    QList<T*> mObjectList;
+
     QList<T*> convert(const TObjectList &objectList)
     {
         QList<T*> list;
@@ -110,7 +134,6 @@ private:
             objectInsertedList.append(object);
             insertedIndexList.append(index);
         }
-        //objectList = objectInsertedList;
         indexList = insertedIndexList;
     }
 
@@ -137,32 +160,6 @@ private:
         return index;
     }
 
-//    QList<T> removeFromContainer(QList<T*> &container, QList<int> &indexList)
-//    {
-//        QList<T> objectList;
-//        QList<int> indexRemoved;
-//        for(int i=0;i<indexList.size();i++) {
-//            int index = indexList.at(i);
-//            T object = container.at(index);
-//            container.removeAt(index);
-//            objectList.append(object);
-//            indexRemoved.append(index);
-//        }
-//        indexList = indexRemoved;
-//        return objectList;
-//    }
-
-//    QList<int> removeFromContainer(QList<T*> &container, QList<T*> &objectList)
-//    {
-//        QList<int> indexRemoved;
-//        for(T *object : objectList) {
-//            int index = container.indexOf(object);
-//            container.removeAt(index);
-//            indexRemoved.append(index);
-//        }
-//        return indexRemoved;
-//    }
-
     QList<int> removeObject(const QList<int> &indexList)
     {
         QList<T*> objectList;
@@ -187,10 +184,10 @@ private:
 
     // TIO interface
 public:
-    void saveToStream(QDataStream &) const
-    {
+    void saveToStream(QDataStream &) const {
 
     }
+
     void readFromStream(QDataStream &) {
 
     }
@@ -200,6 +197,7 @@ public:
     void insertObjects(const TObjectList &objectList, const QList<int> &indexList) {
         insertObjects(convert(objectList), indexList);
     }
+
     QList<int> removeObjects(const TObjectList &objectList) {
         return removeObjects(convert(objectList));
     }

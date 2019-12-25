@@ -38,6 +38,8 @@ TContainer::TContainer(QWidget *parent) :
     CREATE_ACTION(mBtnMoveRight,":/framelistview/images/right.png",slotMoveRightTriggered);//右
     horizontalLayout->addWidget(toolbar);
 
+    mBtnNewAnimation->setDisabled(true);
+
     mSbFps = new QSpinBox(this);//用于整数的输入和显示
     mSbFps->setMinimumSize(QSize(40, 24));//图片最小
     mSbFps->setMaximumSize(QSize(40, 24));//图片最大
@@ -178,6 +180,11 @@ void TContainer::slotMoveLeftTriggered()
 void TContainer::slotMoveRightTriggered()
 {
     emit requestMoveIndexs(mAnimationView->getSelectedIndexes(), Dir::Right);
+}
+
+void TContainer::setNewButtonAnimation(bool state)
+{
+    mBtnNewAnimation->setDisabled(state);
 }
 
 TFrameListView *TContainer::getFrameListView() const

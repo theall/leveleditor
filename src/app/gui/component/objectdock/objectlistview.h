@@ -17,7 +17,7 @@ public:
 
     QList<int> getSelectedIndexes();
     int getCurrentIndex();
-    void selectRow(int row);
+    void selectRow(int row, QModelIndex &parent);
     void selectItems(QList<int> posList, bool locate = true);
     QString getCheckMimeType() const;
     void setCheckMimeType(const QString &checkMimeType);
@@ -25,7 +25,7 @@ public:
 
 signals:
     void indexSelected(int index);
-    void indexPressed(int index);
+    void indexPressed(const QModelIndex &index);
 
 private:
     QString mCheckMimeType;
@@ -33,6 +33,8 @@ private:
 
     inline int getIndex(const QModelIndex &index);
 
+protected:
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 //protected:
 //    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 //    void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;

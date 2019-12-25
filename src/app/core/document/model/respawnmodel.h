@@ -18,6 +18,7 @@ public:
 
     void clear();
     TRespawnList respawnList() const;
+    int indexOf(TRespawn *respawn) const;
 
 signals:
     void objectInserted(const TRespawnList &objectList, const QList<int> &indexList);

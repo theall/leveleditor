@@ -58,14 +58,14 @@ QVariant TBoxModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-void TBoxModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)
+void TBoxModel::onObjectInserted(const TObjectList &objectList, const QList<int> &indexList)
 {
-    emit objectInserted(mObjectList, indexList);
+    emit objectInserted(convert(objectList), indexList);
 }
 
-void TBoxModel::onObjectRemoved(const TObjectList &, const QList<int> &indexList)
+void TBoxModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList)
 {
-    emit objectRemoved(mObjectList, indexList);
+    emit objectRemoved(convert(objectList), indexList);
 }
 
 TBoxList TBoxModel::boxList() const

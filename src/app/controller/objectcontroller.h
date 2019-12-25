@@ -22,13 +22,13 @@ public:
 
     void setObjectModel(TBaseModel *baseModel);
 
-signals:
-    void indexPressed(int index);
-
 private slots:
 
     // From graphics scene
     void slotOnSelectedObjectChanged(TObject *prev, TObject *current);
+
+    //From TObjectListView
+    void slotObjectIndexPressed(const QModelIndex &index);
 
 protected slots:
     void slotTimerEvent();
@@ -36,6 +36,10 @@ protected slots:
 private:
     TSceneModel *mSceneModel;
     TObjectListView *mObjectListView;
+
+private:
+    void selectAndCenterOn(TObject *object);
+
 };
 
 #endif // TOBJECTCONTROLLER_H
