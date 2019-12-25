@@ -277,7 +277,7 @@ void TDocument::setEditMode(const EditMode &editMode)
 
 void TDocument::cmdAddObject(TObject *object, TBaseModel *baseModel)
 {
-    if(!object || !baseModel){
+    if(!object || !baseModel) {
         return;
     }
     TObjectList objectList;
@@ -292,7 +292,7 @@ void TDocument::cmdAddObject(TObjectList &objectList, TBaseModel *baseModel)
 
 void TDocument::cmdRemoveObject(TObject *object, TBaseModel *baseModel)
 {
-    if(!object || !baseModel){
+    if(!object || !baseModel) {
         return;
     }
     TObjectList objectList;

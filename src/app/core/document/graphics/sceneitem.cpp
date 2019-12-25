@@ -62,7 +62,7 @@ TSceneItem::TSceneItem(TSceneModel *sceneModel, QGraphicsItem *parent) :
             layerItem = new TPlatLayerItem(platModel, this);
         } else if(TWallModel *wallModel = dynamic_cast<TWallModel*>(baseModel)) {
             layerItem = new TWallLayerItem(wallModel, this);
-        } else if(TRespawnModel *respawModel = dynamic_cast<TRespawnModel*>(baseModel)){
+        } else if(TRespawnModel *respawModel = dynamic_cast<TRespawnModel*>(baseModel)) {
             layerItem = new TRespownLayerItem(respawModel, this);
         } else if(TEnemyFactoryModel *enemyFactoryModel = dynamic_cast<TEnemyFactoryModel*>(baseModel)) {
             layerItem = new TEnemyFactoryLayerItem(enemyFactoryModel, this);
@@ -171,7 +171,7 @@ void TSceneItem::slotLayerBoundingRectChanged(const QRectF &rect)
 
 void TSceneItem::slotAnimationInserted(const TAnimationList &animationList, const QList<int> &indexList)
 {
-    for(int index=indexList.size()-1; index>=0; index--){
+    for(int index=indexList.size()-1; index>=0; index--) {
         TAnimation *animation = animationList.at(indexList.at(index));
         if(!animation || !animation->getTile())
             return;

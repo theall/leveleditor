@@ -79,7 +79,7 @@ void TCharacterPanelController::setItem()
     TItemIdList itemList = mCore->getItemModel()->itemIdList();
     QList<int> itemidList;
     QList<QPixmap> itempixmapList;
-    for(TItemId *itemId : itemList){
+    for(TItemId *itemId : itemList) {
         itempixmapList.append(itemId->primitive());
         itemidList.append(itemId->id());
     }
@@ -92,7 +92,7 @@ void TCharacterPanelController::setShot()
     TShotList shotList = mCore->shotModel()->shotIdList();
     QList<int> shotidList;
     QList<QPixmap> shotpixmapList;
-    for(TShotId *shotId : shotList){
+    for(TShotId *shotId : shotList) {
         shotpixmapList.append(shotId->primitive());
         shotidList.append(shotId->id());
     }
@@ -105,7 +105,7 @@ void TCharacterPanelController::setChunk()
     TChunkList chunkList = mCore->chunkModel()->chunIdList();
     QList<int> chunkid;
     QList<QPixmap> chunkpixmapList;
-    for(TChunkId *chunkId : chunkList){
+    for(TChunkId *chunkId : chunkList) {
         chunkpixmapList.append(chunkId->primitive());
         chunkid.append(chunkId->id());
     }

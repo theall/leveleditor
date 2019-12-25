@@ -122,7 +122,7 @@ void TAnimationController::slotRequestAddAnimation()
     TGraphicsScene *graphicsScene = static_cast<TGraphicsScene*>(mMainWindow->getCurrentGraphicsScene());
     TObjectItemList objectItemList = graphicsScene->getSelectedObjectItemList();
     TTileItemList tileItemList;
-    for(TObjectItem *objectItem : objectItemList){
+    for(TObjectItem *objectItem : objectItemList) {
         TTileItem *tileItem = dynamic_cast<TTileItem*>(objectItem);
         tileItemList.append(tileItem);
     }
@@ -133,8 +133,8 @@ void TAnimationController::slotRequestAddAnimation()
     TBaseModel *baseModel = sceneModel->getCurrentModel();
     TObjectList objectList;
 
-    if(TTileModel *tileModel = dynamic_cast<TTileModel*>(baseModel)){
-        for(TTileItem *tileItem : tileItemList){
+    if(TTileModel *tileModel = dynamic_cast<TTileModel*>(baseModel)) {
+        for(TTileItem *tileItem : tileItemList) {
             TTile *tile = tileItem->tile();
             TAnimation *animation = new TAnimation(animationModel);
             objectList.append(animation);
@@ -154,12 +154,12 @@ void TAnimationController::slotRequestAddFrames()
 {
     TSceneModel *sceneModel = mDocument->getSceneModel();
     TBaseModel *baseModel = sceneModel->getCurrentModel();
-    if(TTileModel *tileModel = dynamic_cast<TTileModel*>(baseModel)){
+    if(TTileModel *tileModel = dynamic_cast<TTileModel*>(baseModel)) {
         TFrameModel *frameModel = static_cast<TFrameModel*>(mFrameListView->model());
         TGraphicsScene *graphicsScene = static_cast<TGraphicsScene*>(mMainWindow->getCurrentGraphicsScene());
         TObjectItemList objectItemList = graphicsScene->getSelectedObjectItemList();
         TObjectList objectList;
-        for(TObjectItem *objectItem : objectItemList){
+        for(TObjectItem *objectItem : objectItemList) {
             TTileItem *tileItem = (dynamic_cast<TTileItem*>(objectItem));
             TTile *tile = tileItem->tile();
             TFrame *frame = new TFrame(tile, frameModel);
@@ -173,11 +173,11 @@ void TAnimationController::slotOnSelectedObjectChanged(TObject *, TObject *)
 {
     TSceneModel *sceneModel = mDocument->getSceneModel();
     TBaseModel *baseModel = sceneModel->getCurrentModel();
-    if(TTileModel *tileModel = dynamic_cast<TTileModel*>(baseModel)){
+    if(TTileModel *tileModel = dynamic_cast<TTileModel*>(baseModel)) {
         TGraphicsScene *graphicsScene = static_cast<TGraphicsScene*>(mMainWindow->getCurrentGraphicsScene());
-        for(TObjectItem *objectItem : graphicsScene->getSelectedObjectItemList()){
+        for(TObjectItem *objectItem : graphicsScene->getSelectedObjectItemList()) {
             TAnimationItem *aniamtionItem = dynamic_cast<TAnimationItem*>(objectItem);
-            if(aniamtionItem){
+            if(aniamtionItem) {
                 mContainer->setNewButtonAnimation(true);
                 return;
             }
@@ -190,7 +190,7 @@ void TAnimationController::slotRequestRemoveFrames(const QList<int> &indexList)
 {
     TFrameModel *frameModel = static_cast<TFrameModel*>(mFrameListView->model());
     TObjectList objectList;
-    for(int index : indexList){
+    for(int index : indexList) {
         TFrame *frame = frameModel->getFrame(index);
         objectList.append(frame);
     }

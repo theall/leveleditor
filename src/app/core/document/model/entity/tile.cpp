@@ -93,14 +93,14 @@ void TDoor::move(qreal offset, const Edge &edge)
         if(edge&Left) {
             dx1 = offset;
         }
-        if(edge&Right){
+        if(edge&Right) {
             dx2 = offset;
         }
     } else if(mDir == Vertical) {
         if(edge&Left) {
             dy1 = offset;
         }
-        if(edge&Right){
+        if(edge&Right) {
             dy2 = offset;
         }
     }

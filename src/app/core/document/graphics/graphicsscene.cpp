@@ -106,7 +106,7 @@ void TGraphicsScene::setBackgroundColor(const QColor &color)
 
 bool TGraphicsScene::play()
 {
-    if(mTimerId != -1){
+    if(mTimerId != -1) {
         killTimer(mTimerId);
         return true;
     }
