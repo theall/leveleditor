@@ -6,7 +6,7 @@ TBoxLayerItem::TBoxLayerItem(TBoxModel *boxesModel, QGraphicsItem *parent) :
 {
     Q_ASSERT(boxesModel);
 
-    CONNECT_GENERIC_SLOTS(boxesModel,Box);
+    CONNECT_GENERIC_SLOTS(boxesModel,Box );
 
     for(TBox *box : boxesModel->boxList()) {
         internalAdd(box);

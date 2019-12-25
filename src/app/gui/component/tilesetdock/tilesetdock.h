@@ -3,6 +3,7 @@
 
 #include "../basedock.h"
 #include "tilesettab.h"
+
 class TTilesetDock : public TBaseDock
 {
     Q_OBJECT

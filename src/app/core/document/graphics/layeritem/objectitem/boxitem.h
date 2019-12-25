@@ -20,6 +20,10 @@ private:
     // TObjectItem interface
 public:
     void propertyValueChanged(PropertyID pid) Q_DECL_OVERRIDE;
+
+    // QGraphicsItem interface
+public:
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 typedef QList<TBoxItem*> TBoxItemList;
 

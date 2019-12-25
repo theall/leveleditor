@@ -13,6 +13,8 @@ TPlatLayerItem::TPlatLayerItem(TPlatModel *platformsModel, QGraphicsItem *parent
     }
 
     calcBoundingRect();
+
+    //setFlag(ItemDoesntPropagateOpacityToChildren);
 }
 
 TPlatLayerItem::~TPlatLayerItem()

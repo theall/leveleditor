@@ -50,6 +50,11 @@ TBox::TBox(const QRect &rect, QObject *parent) :
     initPropertySheet();
 }
 
+QList<QPoint> TBox::pointList() const
+{
+    return mPointList;
+}
+
 void TBox::saveToStream(QDataStream &stream) const
 {
     QRectF rect = getRect();
@@ -179,7 +184,7 @@ void TBox::initPropertySheet()
     mPropertySheet->addProperty(PT_POINTF, P_HIT_SPEED, PID_BOX_HIT_SPEED, QVariant(), groupItem);
     mPropertySheet->addProperty(PT_INT, P_DAMAGE, PID_BOX_DAMAGE, QVariant(), groupItem);
     mPropertySheet->addProperty(PT_INT, P_HIT_SOUND, PID_BOX_HIT_SOUND, QVariant(), groupItem);
-    mPropertySheet->addProperty(PT_INT, P_BREAK, PID_BOX_BREAK)->setToolTip(TP_BREAK);
+    mPropertySheet->addProperty(PT_BOOL, P_BREAK, PID_BOX_BREAK)->setToolTip(TP_BREAK);
     mPropertySheet->addProperty(PT_INT, P_SOUND, PID_BOX_SOUND, QVariant());
     mPropertySheet->addProperty(PT_INT, P_USE_TRIGGER, PID_BOX_USE_TRIGGER);
     mPropertySheet->addProperty(PT_INT, P_EVENTN, PID_BOX_EVENTN);

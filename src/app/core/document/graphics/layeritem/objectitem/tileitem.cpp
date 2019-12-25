@@ -16,6 +16,7 @@ TTileItem::TTileItem(TTile *tile, QGraphicsItem *parent) :
         mDoorItem = new TDoorItem(this);
         mTileDoorTrackItem = new TTrackItem(this, mDoorItem);
     }
+
     setBoundingRect(mTile->getRect());
 }
 

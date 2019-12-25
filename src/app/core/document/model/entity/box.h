@@ -13,6 +13,8 @@ public:
     explicit TBox(QObject *parent = nullptr);
     TBox(const QRect &rect, QObject *parent = Q_NULLPTR);
 
+    QList<QPoint> pointList() const;
+
 private:
     int mCurrentPoint;
     int mFinalPoint;
