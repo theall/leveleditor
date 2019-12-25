@@ -6,68 +6,101 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>432</width>
-    <height>373</height>
+    <width>526</width>
+    <height>430</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>About</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
-   <property name="sizeConstraint">
-    <enum>QLayout::SetDefaultConstraint</enum>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="logoLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+     <property name="spacing">
+      <number>5</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
+     <property name="leftMargin">
+      <number>5</number>
+     </property>
+     <property name="rightMargin">
+      <number>5</number>
+     </property>
      <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
+      <widget class="QLabel" name="label">
+       <property name="maximumSize">
         <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QLabel" name="logo">
-       <property name="minimumSize">
-        <size>
-         <width>400</width>
-         <height>200</height>
+         <width>164</width>
+         <height>178</height>
         </size>
        </property>
        <property name="text">
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>:/other/logo.png</pixmap>
+        <pixmap resource="../resource/editor.qrc">:/aboutdialog/images/logo.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
        </property>
+       <property name="wordWrap">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+      <widget class="QLabel" name="label_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-       <property name="sizeHint" stdset="0">
+       <property name="minimumSize">
         <size>
-         <width>0</width>
-         <height>20</height>
+         <width>240</width>
+         <height>0</height>
         </size>
        </property>
-      </spacer>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; font-weight:600;&quot;&gt;Leveleditor For MultiHero&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Based on Qt 5.6.3 (MINGW 2014, 32 bit)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Copyright 2016-2019 Solomen Group. All rights reserved&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;THE PROGR AM IS PROVIDED AS IS with NO WARRANTY OF ANY KINIINCLIDING THE WARRANTY OF DESIGN, MERCHANTABILITY ANDFITNESSOR A PARTICULAR FURPOSE&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="scaledContents">
+        <bool>false</bool>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+       <property name="openExternalLinks">
+        <bool>false</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
    <item>
     <widget class="QTextBrowser" name="textBrowser">
+     <property name="html">
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'sans serif,tahoma,verdana,helvetica'; font-size:14pt; font-weight:600; color:#000000;&quot;&gt;Development Team&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'sans serif,tahoma,verdana,helvetica'; font-size:10pt; color:#000000;&quot;&gt;Theall&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'sans serif,tahoma,verdana,helvetica'; font-size:10pt; color:#000000;&quot;&gt;ZhangJunxue&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'sans serif,tahoma,verdana,helvetica'; font-size:10pt; color:#000000;&quot;&gt;HuXin&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'sans serif,tahoma,verdana,helvetica'; font-size:10pt; color:#000000;&quot;&gt;YanHongzhou&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'sans serif,tahoma,verdana,helvetica'; font-size:8pt; font-weight:600; color:#000000;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'sans serif,tahoma,verdana,helvetica'; font-size:xx-large; font-weight:600; color:#000000;&quot;&gt;Credits&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="openExternalLinks">
       <bool>true</bool>
      </property>
@@ -115,7 +148,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resource/editor.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>btnOk</sender>

@@ -34,7 +34,9 @@
     <qresource prefix="/menu">
         <file>images/harmer.png</file>
     </qresource>
-    <qresource prefix="/window"/>
+    <qresource prefix="/aboutdialog">
+        <file>images/logo.png</file>
+    </qresource>
     <qresource prefix="/tools">
         <file>images/unselect.png</file>
         <file>images/check.png</file>

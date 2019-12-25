@@ -10,10 +10,10 @@ TAboutDialog::TAboutDialog(QWidget* parent) :
 {
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-    setMaximumSize(432, 460);
 
     retranslateUi();
 }
+
 
 TAboutDialog::~TAboutDialog()
 {
@@ -27,15 +27,15 @@ void TAboutDialog::on_btnOk_clicked()
 
 void TAboutDialog::on_btnDonate_clicked()
 {
-    QDesktopServices::openUrl(QUrl("https://www.2dcombat.org/", QUrl::TolerantMode));
+    QDesktopServices::openUrl(QUrl("http://github.com/theall/leveleditor/", QUrl::TolerantMode));
 }
 
 void TAboutDialog::retranslateUi()
 {
-    QString html = tr(
-            "<p align=\"center\"><font size=\"+2\"><b>2D Combat Character Editor</b></font><br><i>Version %1</i></p><br>"
-            "<p align=\"center\">Copyright 2015-%2 Bilge Theall</p><br>"
-            "<p align=\"center\"><a href=\"http://www.2dcombat.org/\">http://www.2dcombat.org/</a></p>")
-            .arg(QApplication::applicationVersion()).arg(QDate::currentDate().year());
-    ui->textBrowser->setHtml(html);
+//    QString html = tr(
+//            "<p align=\"center\"><h1>Team</h1><br>"
+//            "Theall<br>ZhangJunxue<br>HuXin<br>YanHongzhou<br><br>"
+//            "<h1>Credits</h1><br></p>"
+//            );
+//    ui->textBrowser->setHtml(html);
 }
