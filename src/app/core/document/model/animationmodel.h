@@ -19,6 +19,8 @@ public:
     void setFrameModelList(const TFrameModelList &frameModelList);
     TFrameModel *getFrameModel(int index) const;
 
+    TAnimation *createAnimation();
+
 signals:
     void objectInserted(const TAnimationList &objectList, const QList<int> &indexList);
     void objectRemoved(const TAnimationList &objectList, const QList<int> &indexList);

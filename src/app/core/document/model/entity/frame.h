@@ -20,9 +20,12 @@ public:
     int getTileNumber() const;
 
     TTile *getTile() const;
-    void setTile(TTile *tile);
     QPixmap getPixmap() const;
     int getDuration() const;
+    void setTile(TTile *tile);
+    void setDuration(int duration);
+    void setTileLayer(int tileLayer);
+    void setTileNumber(int tileNumber);
 
 private:
     TTile *mTile;

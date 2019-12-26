@@ -47,6 +47,11 @@ void TTileLayerItem::step()
     }
 }
 
+TAnimationItem *TTileLayerItem::createAnimationItem(TAnimation *animation)
+{
+    return new TAnimationItem(animation, this);
+}
+
 void TTileLayerItem::slotTileInserted(const TTileList &tileList, const QList<int> &)
 {
     TTileItemList tileItemList;

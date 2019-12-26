@@ -32,10 +32,11 @@ TContainer::TContainer(QWidget *parent) :
     toolbar->addSeparator();//添加分隔符
     CREATE_ACTION(mBtnAddFrame,":/framelistview/images/newimage.png",slotAddFrameTriggered);//图片
     CREATE_ACTION(mBtnRemoveFrame,":/framelistview/images/removeimage.png",slotRemoveFrameTriggered);//X
-    CREATE_ACTION(mBtnPlay,":/animationdock/images/play.png",slotPlayTriggered);//播放 发送信号
-    CREATE_ACTION(mBtnStop,":/animationdock/images/stop_play.png",slotStopTriggered);//暂停 发送信号
     CREATE_ACTION(mBtnMoveLeft,":/framelistview/images/left.png",slotMoveLeftTriggered);//左
     CREATE_ACTION(mBtnMoveRight,":/framelistview/images/right.png",slotMoveRightTriggered);//右
+    toolbar->addSeparator();//添加分隔符
+    CREATE_ACTION(mBtnPlay,":/animationdock/images/play.png",slotPlayTriggered);//播放 发送信号
+    CREATE_ACTION(mBtnStop,":/animationdock/images/stop_play.png",slotStopTriggered);//暂停 发送信号
     horizontalLayout->addWidget(toolbar);
 
     mBtnNewAnimation->setDisabled(true);
@@ -105,7 +106,7 @@ void TContainer::slotPlayTriggered()
 
 void TContainer::slotCopyAnimationTriggered()
 {
-
+    emit requestCopyAnimation();
 }
 
 void TContainer::slotStopTriggered()
@@ -182,9 +183,14 @@ void TContainer::slotMoveRightTriggered()
     emit requestMoveIndexs(mAnimationView->getSelectedIndexes(), Dir::Right);
 }
 
-void TContainer::setNewButtonAnimation(bool state)
+void TContainer::enableNewAnimationButton(bool state)
 {
     mBtnNewAnimation->setDisabled(state);
+}
+
+int TContainer::needCopyObjectIndex()
+{
+    return 0;
 }
 
 TFrameListView *TContainer::getFrameListView() const

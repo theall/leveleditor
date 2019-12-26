@@ -57,6 +57,7 @@ public:
     TPropertySheet *propertySheet() const;
     TBaseModelList getBaseModelList() const;
     TBaseModel *getBaseModel(int index) const;
+    int getBaseModelIndex(TBaseModel *baseModel) const;
 
     int currentIndex() const;
     void setCurrentIndex(int index);

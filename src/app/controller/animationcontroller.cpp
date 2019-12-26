@@ -6,6 +6,7 @@
 #include "../gui/component/tabwidget/graphicsview.h"
 
 #include "../core/document/model/entity/tile.h"
+#include "../core/document/model/entity/frame.h"
 #include "../core/document/model/animationmodel.h"
 #include "../core/document/model/tilelayermodel.h"
 #include "../core/document/graphics/graphicsscene.h"
@@ -35,6 +36,7 @@ bool TAnimationController::joint(TMainWindow *mainWindow, TCore *core)
     mContainer = mainWindow->getAnimationDock()->getContainer();
     connect(mContainer, SIGNAL(requestAddFrames()), this, SLOT(slotRequestAddFrames()));
     connect(mContainer, SIGNAL(requestAddAnimation()), this, SLOT(slotRequestAddAnimation()));
+    connect(mContainer, SIGNAL(requestCopyAnimation()), this, SLOT(slotRequestCopyAnimation()));
     connect(mContainer, SIGNAL(requestRemoveFrames(QList<int>)), this, SLOT(slotRequestRemoveFrames(QList<int>)));
     connect(mContainer, SIGNAL(requestMoveIndexs(QList<int>, Dir)), this, SLOT(slotRequestMoveIndex(QList<int>, Dir)));
 
@@ -67,6 +69,15 @@ void TAnimationController::setCurrentDocument(TDocument *document)
     }
     TGraphicsScene *graphicsScene = document->graphicsScene();
     connect(graphicsScene, SIGNAL(selectedObjectChanged(TObject*, TObject*)), this, SLOT(slotOnSelectedObjectChanged(TObject*, TObject*)));
+}
+
+TFrame *TAnimationController::createFrame(TTile *tile, TTileModel *tileModel, int tileIndex, int layerIndex, int Douration)
+{
+    TFrame *frame = new TFrame(tile, tileModel);
+    frame->setDuration(Douration);
+    frame->setTileNumber(tileIndex);
+    frame->setTileLayer(layerIndex);
+    return frame;
 }
 
 void TAnimationController::slotOnAnimationListViewIndexPressed(int index)
@@ -124,49 +135,76 @@ void TAnimationController::slotRequestAddAnimation()
     TTileItemList tileItemList;
     for(TObjectItem *objectItem : objectItemList) {
         TTileItem *tileItem = dynamic_cast<TTileItem*>(objectItem);
+        if(!tileItem)
+            continue;
         tileItemList.append(tileItem);
     }
-    if(!tileItemList.size())
+    if(tileItemList.isEmpty())
         return;
 
     TSceneModel *sceneModel = mDocument->getSceneModel();
     TBaseModel *baseModel = sceneModel->getCurrentModel();
-    TObjectList objectList;
-
+    TFrameList frameList;
+    TAnimation *animation = animationModel->createAnimation();
     if(TTileModel *tileModel = dynamic_cast<TTileModel*>(baseModel)) {
+        int baseModelIndex = sceneModel->getBaseModelIndex(baseModel);
         for(TTileItem *tileItem : tileItemList) {
             TTile *tile = tileItem->tile();
-            TAnimation *animation = new TAnimation(animationModel);
-            objectList.append(animation);
-            TTileList tileList = tileModel->tileList();
-            TBaseModelList baseModelList = sceneModel->getBaseModelList();
-            animation->setTile(tile);
-            animation->setTileLayer(baseModelList.indexOf(baseModel));
-            animation->setTileNumber(tileList.indexOf(tile));
-            mContainer->setNewButtonAnimation(true);
+            TFrame *frame = animation->createFrame(tile);
+            frame->setTileLayer(baseModelIndex);
+            frame->setTileNumber(tileModel->getTileIndex(tile));
+            frameList.append(frame);
         }
-        mDocument->cmdAddObject(objectList, animationModel);
+        animation->setFrameList(frameList);
+        TTile *firstTile = frameList.first()->getTile();
+        animation->setTile(firstTile);
+        animation->setTileLayer(baseModelIndex);
+        animation->setTileNumber(tileModel->getTileIndex(firstTile));
+        mDocument->cmdAddObject(animation, animationModel);
     }
     return;
 }
 
+void TAnimationController::slotRequestCopyAnimation()
+{
+    TAnimationModel *animationModel = getAnimationModel();
+    if(!animationModel)
+        return;
+    TFrameModel *frameModel = static_cast<TFrameModel*>(mFrameListView->model());
+    TAnimation *animation = frameModel->animation();
+    mDocument->cmdAddObject(animation, animationModel);
+}
+
 void TAnimationController::slotRequestAddFrames()
 {
+    TFrameModel *frameModel = static_cast<TFrameModel*>(mFrameListView->model());
+    if(!frameModel)
+        return;
+
+    TGraphicsScene *graphicsScene = static_cast<TGraphicsScene*>(mMainWindow->getCurrentGraphicsScene());
+    TObjectItemList objectItemList = graphicsScene->getSelectedObjectItemList();
+
+    if(!(objectItemList.size()))
+        return;
+
     TSceneModel *sceneModel = mDocument->getSceneModel();
     TBaseModel *baseModel = sceneModel->getCurrentModel();
     if(TTileModel *tileModel = dynamic_cast<TTileModel*>(baseModel)) {
-        TFrameModel *frameModel = static_cast<TFrameModel*>(mFrameListView->model());
-        TGraphicsScene *graphicsScene = static_cast<TGraphicsScene*>(mMainWindow->getCurrentGraphicsScene());
-        TObjectItemList objectItemList = graphicsScene->getSelectedObjectItemList();
+        TBaseModelList baseModelList = sceneModel->getBaseModelList();
         TObjectList objectList;
+
         for(TObjectItem *objectItem : objectItemList) {
             TTileItem *tileItem = (dynamic_cast<TTileItem*>(objectItem));
             TTile *tile = tileItem->tile();
             TFrame *frame = new TFrame(tile, frameModel);
             objectList.append(frame);
+            frame->setDuration(1);
+            frame->setTileNumber(tileModel->getTileIndex(tile));
+            frame->setTileLayer(baseModelList.indexOf(baseModel));
         }
         mDocument->cmdAddObject(objectList, frameModel);
     }
+    return;
 }
 
 void TAnimationController::slotOnSelectedObjectChanged(TObject *, TObject *)
@@ -178,11 +216,11 @@ void TAnimationController::slotOnSelectedObjectChanged(TObject *, TObject *)
         for(TObjectItem *objectItem : graphicsScene->getSelectedObjectItemList()) {
             TAnimationItem *aniamtionItem = dynamic_cast<TAnimationItem*>(objectItem);
             if(aniamtionItem) {
-                mContainer->setNewButtonAnimation(true);
+                mContainer->enableNewAnimationButton(true);
                 return;
             }
         }
-        mContainer->setNewButtonAnimation(false);
+        mContainer->enableNewAnimationButton(false);
     }
 }
 

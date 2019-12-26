@@ -1,7 +1,9 @@
 #include "objectcontroller.h"
 
 #include "../gui/component/objectdock/objectdock.h"
+#include "../gui/component/objectdock/objectcontainer.h"
 #include "../gui/component/objectdock/objectlistview.h"
+#include "../gui/component/objectdock/subcontrolobjectlistview.h"
 #include "../gui/component/tabwidget/graphicsview.h"
 
 #include "core/document/model/basemodel.h"
@@ -35,7 +37,7 @@ bool TObjectController::joint(TMainWindow *mainWindow, TCore *core)
 
     mObjectListView = mainWindow->getObjectDock()->getObjectListView();
     connect(mObjectListView, SIGNAL(indexPressed(const QModelIndex)), this, SLOT(slotObjectIndexPressed(const QModelIndex)));
-
+    mSubcontrolObjectListView = mainWindow->getObjectDock()->getSubcontrolObjectListView();
     return TAbstractController::joint(mainWindow, core);
 }
 
@@ -50,7 +52,7 @@ void TObjectController::setCurrentDocument(TDocument *document)
     connect(graphicsScene, SIGNAL(selectedObjectChanged(TObject*,TObject*)), this, SLOT(slotOnSelectedObjectChanged(TObject*,TObject*)));
 }
 
-void TObjectController::setObjectModel(TBaseModel *baseModel)
+void TObjectController::setObjectListViewModel(TBaseModel *baseModel)
 {
     TBaseModel *basemodel = mSceneModel->getCurrentModel();
     if(TSceneModel *sceneModel = dynamic_cast<TSceneModel*>(basemodel)) {
@@ -58,6 +60,10 @@ void TObjectController::setObjectModel(TBaseModel *baseModel)
         return ;
     }
     mObjectListView->setModel(baseModel);
+}
+
+void TObjectController::setSubcontrolObjectListViewModel(TBaseModel *baseModel){
+
 }
 
 void TObjectController::slotOnSelectedObjectChanged(TObject *, TObject *current)

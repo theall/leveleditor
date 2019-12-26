@@ -71,6 +71,11 @@ int TTileModel::tileSize() const
     return mObjectList.size();
 }
 
+int TTileModel::getTileIndex(TTile *tile)
+{
+    return mObjectList.indexOf(tile);
+}
+
 TTile *TTileModel::createTile(TTileId *tileId, const QPointF &pos)
 {
     TTile *tile = new TTile(this);

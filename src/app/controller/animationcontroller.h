@@ -4,6 +4,7 @@
 #include "abstractcontroller.h"
 #include "gui/component/animationdock/container.h"
 
+class TFrame;
 class TAnimationDock;
 class TAnimationListView;
 class TFrameListView;
@@ -19,6 +20,8 @@ public:
     bool joint(TMainWindow *mainWindow, TCore *core) Q_DECL_OVERRIDE;
     void setCurrentDocument(TDocument *document) Q_DECL_OVERRIDE;
 
+private:
+    TFrame *createFrame(TTile *tile,TTileModel *tileModel, int tileIndex, int layerIndex, int Douration=1);
 signals:
     void requestDisplayPropertySheet(TPropertySheet *propertySheet);
     void requestAdjustFPS(int fps);
@@ -31,6 +34,7 @@ private slots:
     void slotOnAnimationListViewIndexPressed(int index);
     void slotOnFrameListViewIndexPressed(int index);
     void slotRequestAddAnimation();
+    void slotRequestCopyAnimation();
     void slotRequestAddFrames();
 
     void slotOnSelectedObjectChanged(TObject *prev, TObject *current);

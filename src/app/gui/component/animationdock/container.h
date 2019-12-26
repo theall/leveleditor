@@ -26,7 +26,8 @@ public:
     TFrameListView *getFrameListView() const;
 
     void setFPS(int fps);
-    void setNewButtonAnimation(bool state);
+    void enableNewAnimationButton(bool state);
+    int needCopyObjectIndex();
 
 signals:
     // Controller
@@ -39,6 +40,7 @@ signals:
     void requestMoveIndexs(const QList<int> &indexs, const Dir);
     void requestPasteFrames(int pos);
     void requestAddAnimation();
+    void requestCopyAnimation();
     void requestAddFrames();
     void requestPlayAnimation();
     void requestStopPlayAnimation();

@@ -25,6 +25,9 @@ public:
     TPropertySheet *getFramePropertySheet(int index) const;
     TFrame *getFrame(int index) const;
 
+    TFrame *createFrame() const;
+    TFrame *createFrame(TTile *tile) const;
+
 signals:
     void objectInserted(const TFrameList &objectList, const QList<int> &indexList);
     void objectRemoved(const TFrameList &objectList, const QList<int> &indexList);

@@ -138,3 +138,8 @@ TFrameModel *TAnimationModel::getFrameModel(int index) const
         return nullptr;
     return mFrameModelList.at(index);
 }
+
+TAnimation *TAnimationModel::createAnimation()
+{
+    return new TAnimation(this);
+}

@@ -3,11 +3,11 @@
 
 #include <QMenu>
 #include <QAction>
-#include <QTreeView>
+#include <QTableView>
 
 class TModsTree;
 
-class TObjectListView : public QTreeView
+class TObjectListView : public QTableView
 {
      Q_OBJECT
 

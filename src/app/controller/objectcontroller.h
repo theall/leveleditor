@@ -8,6 +8,7 @@
 class TObjectDock;
 class TObjectContainer;
 class TObjectListView;
+class TSubcontrolObjectListView;
 
 class TObjectController : public TAbstractController
 {
@@ -20,7 +21,8 @@ public:
     bool joint(TMainWindow *mainWindow, TCore *core) Q_DECL_OVERRIDE;
     void setCurrentDocument(TDocument *document) Q_DECL_OVERRIDE;
 
-    void setObjectModel(TBaseModel *baseModel);
+    void setObjectListViewModel(TBaseModel *baseModel);
+    void setSubcontrolObjectListViewModel(TBaseModel *baseModel);
 
 private slots:
 
@@ -36,6 +38,7 @@ protected slots:
 private:
     TSceneModel *mSceneModel;
     TObjectListView *mObjectListView;
+    TSubcontrolObjectListView *mSubcontrolObjectListView;
 
 private:
     void selectAndCenterOn(TObject *object);

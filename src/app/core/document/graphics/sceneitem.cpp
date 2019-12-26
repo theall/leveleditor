@@ -171,14 +171,17 @@ void TSceneItem::slotLayerBoundingRectChanged(const QRectF &rect)
 
 void TSceneItem::slotAnimationInserted(const TAnimationList &animationList, const QList<int> &indexList)
 {
+    TTileLayerItem *tileLayerItem = dynamic_cast<TTileLayerItem*>(mCurrentLayerItem);
+    if(!tileLayerItem)
+        return;
+
     for(int index=indexList.size()-1; index>=0; index--) {
-        TAnimation *animation = animationList.at(indexList.at(index));
+        TAnimation *animation = animationList.at(index);
         if(!animation || !animation->getTile())
             return;
-        TAnimationItem *animationItem = new TAnimationItem(animation, nullptr);
-        for(TTileLayerItem *tileLayerItem : mTileLayerItemList) {
-           tileLayerItem->replace(animationItem);
-        }
+
+        TAnimationItem *animationItem = tileLayerItem->createAnimationItem(animation);
+        animationItem->move(QPointF(-100, 100));
     }
 }
 

@@ -18,6 +18,8 @@ public:
     bool replace(TAnimationItem *animationItem);
     void step();
 
+    TAnimationItem *createAnimationItem(TAnimation *animation);
+
 private slots:
     void slotTileInserted(const TTileList &tileList, const QList<int> &indexList);
     void slotTileRemoved(const TTileList &tileList, const QList<int> &indexList);

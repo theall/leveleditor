@@ -30,7 +30,7 @@ void TFrameModel::readFromStream(QDataStream &stream)
         mAnimation = nullptr;
     }
 
-    mAnimation = new TAnimation(this);
+    mAnimation = new TAnimation(QObject::parent());
     mAnimation->readFromStream(stream);
 
     mObjectList = mAnimation->getFrameList();
@@ -96,7 +96,7 @@ void TFrameModel::clear()
 
 void TFrameModel::insetTile(TTile *tile, int index)
 {
-    insertObject(new TFrame(tile, this), index);
+    insertObject(mAnimation->createFrame(tile), index);
 }
 
 TAnimation *TFrameModel::animation() const
@@ -127,4 +127,14 @@ TPropertySheet *TFrameModel::getFramePropertySheet(int index) const
 TFrame *TFrameModel::getFrame(int index) const
 {
     return mAnimation?mAnimation->getFrame(index):nullptr;
+}
+
+TFrame *TFrameModel::createFrame() const
+{
+
+}
+
+TFrame *TFrameModel::createFrame(TTile *tile) const
+{
+
 }

@@ -16,6 +16,7 @@ public:
     explicit TAnimation(QObject *parent = nullptr);
     ~TAnimation();
 
+    void move(const QPointF &offset);
     TFrameList frameList() const;
     int getFrameSize() const;
     void setFrameList(const TFrameList &frameList);
@@ -36,6 +37,9 @@ public:
     TFrameList getFrameList() const;
     int getTotalDuration() const;
 
+    TFrame *createFrame();
+    TFrame *createFrame(TTile *tile);
+
 private:
     TTile *mTile;
     int mTileLayer;
@@ -53,6 +57,8 @@ public:
 public:
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
+
+    // TObject interface
 };
 
 typedef QList<TAnimation*> TAnimationList;

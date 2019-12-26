@@ -21,6 +21,11 @@ TAnimation::~TAnimation()
 
 }
 
+void TAnimation::move(const QPointF &offset)
+{
+
+}
+
 TFrameList TAnimation::frameList() const
 {
     return mFrameList;
@@ -108,6 +113,16 @@ int TAnimation::getTotalDuration() const
         duration += frame->getDuration();
     }
     return duration;
+}
+
+TFrame *TAnimation::createFrame()
+{
+    return new TFrame(this);
+}
+
+TFrame *TAnimation::createFrame(TTile *tile)
+{
+    return new TFrame(tile, this);
 }
 
 TTile *TAnimation::getTile() const

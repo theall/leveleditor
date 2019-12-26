@@ -341,7 +341,7 @@ void TMainController::slotOnLayerSelected(int index)
 
     // set model into object dock
     if(layerItem)
-        mObjectController->setObjectModel(layerItem->baseModel());
+        mObjectController->setObjectListViewModel(layerItem->baseModel());
 }
 
 void TMainController::slotOnDirtyFlagChanged(bool isDirty)

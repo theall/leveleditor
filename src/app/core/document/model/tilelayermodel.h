@@ -6,6 +6,9 @@
 #include "entity/tile.h"
 #include "genericmodel.h"
 
+#define TILE_DEFAULT_POS_X 5000
+#define TILE_DEFAULT_POS_Y 5000
+
 class TTileModel : public TGenericModel<TTile>
 {
     Q_OBJECT
@@ -23,8 +26,9 @@ public:
 
     TTileList tileList() const;
     int tileSize() const;
+    int getTileIndex(TTile *tile);
 
-    TTile *createTile(TTileId *tileId, const QPointF &pos = QPointF());
+    TTile *createTile(TTileId *tileId, const QPointF &pos = QPointF(TILE_DEFAULT_POS_X,TILE_DEFAULT_POS_Y));
     TTile *getTile(int index) const;
 
 signals:

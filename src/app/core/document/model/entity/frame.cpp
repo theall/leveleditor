@@ -54,6 +54,21 @@ int TFrame::getDuration() const
      return mDuration;
 }
 
+void TFrame::setTileNumber(int tileNumber)
+{
+    mTileNumber = tileNumber;
+}
+
+void TFrame::setDuration(int duration)
+{
+    mDuration = duration;
+}
+
+void TFrame::setTileLayer(int tileLayer)
+{
+    mTileLayer = tileLayer;
+}
+
 int TFrame::getTileNumber() const
 {
     return mTileNumber;
@@ -77,15 +92,11 @@ void TFrame::readFromStream(QDataStream &stream)
     stream >> mTileNumber;
     stream >> mDuration;
     mTileNumber--;
-    mPropertySheet->setValue(PID_FRAME_TILE_LAYER, mTileLayer);
-    mPropertySheet->setValue(PID_FRAME_TILE_NUMBER, mTileNumber);
     mPropertySheet->setValue(PID_FRAME_DURATION, mDuration);
 }
 
 void TFrame::initPropertySheet()
 {
-    mPropertySheet->addProperty(PT_INT, P_TILE_LAYER, PID_FRAME_TILE_LAYER)->setReadOnly(true);
-    mPropertySheet->addProperty(PT_INT, P_NUMBER, PID_FRAME_TILE_NUMBER)->setReadOnly(true);
     mPropertySheet->addProperty(PT_INT, P_DURATION, PID_FRAME_DURATION)->setRange();
 }
 

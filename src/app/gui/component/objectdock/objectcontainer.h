@@ -6,6 +6,7 @@
 #include <QAction>
 
 #include "objectlistview.h"
+#include "subcontrolobjectlistview.h"
 
 class TObjectContainer : public QWidget
 {
@@ -16,9 +17,11 @@ public:
     ~TObjectContainer();
 
     TObjectListView *getobjectListView() const;
+    TSubcontrolObjectListView *getSubcontrolObjectListView() const;
 
 private:
     TObjectListView *mObjectListView;
+    TSubcontrolObjectListView *mSubcontrolObjectListView;
 };
 
 #endif // TOBJECTCONTAINER_H

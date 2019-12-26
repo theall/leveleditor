@@ -22,3 +22,8 @@ TObjectListView *TObjectDock::getObjectListView() const
 {
     return mObjectcontainer->getobjectListView();
 }
+
+TSubcontrolObjectListView *TObjectDock::getSubcontrolObjectListView() const
+{
+    return mObjectcontainer->getSubcontrolObjectListView();
+}

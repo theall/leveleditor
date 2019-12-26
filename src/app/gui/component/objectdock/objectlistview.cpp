@@ -8,7 +8,7 @@
 #include <QItemSelectionModel>
 
 TObjectListView::TObjectListView(QWidget *parent):
-    QTreeView(parent)
+    QTableView(parent)
 {
     setObjectName(QStringLiteral("ObjectListView"));
     setFrameShape(QFrame::Panel);
@@ -16,7 +16,11 @@ TObjectListView::TObjectListView(QWidget *parent):
     setSelectionBehavior(QAbstractItemView::SelectItems);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-    header()->hide();
+    horizontalHeader()->setStretchLastSection(true);
+    horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    horizontalHeader()->setVisible(false);
+    verticalHeader()->setVisible(false);
+
     setLayoutDirection(Qt::LeftToRight);
 }
 
@@ -48,11 +52,12 @@ void TObjectListView::selectRow(int row, QModelIndex &parent)
     QAbstractItemModel *m = model();
     if(m)
     {
-        QItemSelectionModel *itemSelectionModel = selectionModel();
-        QModelIndex headModelIndex = m->index(row, 0, parent);
-        QItemSelection itemSelection(headModelIndex, headModelIndex);
-        itemSelectionModel->select(itemSelection, QItemSelectionModel::ClearAndSelect);
-        verticalScrollBar()->setSliderPosition(row);
+//        QItemSelectionModel *itemSelectionModel = selectionModel();
+//        QModelIndex headModelIndex = m->index(row, 0, parent);
+//        QItemSelection itemSelection(headModelIndex, headModelIndex);
+//        itemSelectionModel->select(itemSelection, QItemSelectionModel::ClearAndSelect);
+//        verticalScrollBar()->setSliderPosition(row);
+        QTableView::selectRow(row);
         emit indexSelected(row);
     }
 }
@@ -96,8 +101,7 @@ void TObjectListView::setCheckMimeType(const QString &checkMimeType)
 
 void TObjectListView::setModel(QAbstractItemModel *model)
 {
-    QTreeView::setModel(model);
-    expandAll();
+    QTableView::setModel(model);
 }
 
 int TObjectListView::getIndex(const QModelIndex &index)
@@ -112,7 +116,7 @@ int TObjectListView::getIndex(const QModelIndex &index)
 
 void TObjectListView::mousePressEvent(QMouseEvent *event)
 {
-    QTreeView::mousePressEvent(event);
+    QTableView::mousePressEvent(event);
     QModelIndex row = indexAt(event->pos());
     emit indexPressed(row);
 }

@@ -129,6 +129,11 @@ TBaseModel *TSceneModel::getBaseModel(int index) const
     return baseModel;
 }
 
+int TSceneModel::getBaseModelIndex(TBaseModel *baseModel) const
+{
+    return mBaseModelList.indexOf(baseModel);
+}
+
 int TSceneModel::currentIndex() const
 {
     return mCurrentIndex;

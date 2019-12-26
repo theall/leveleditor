@@ -77,7 +77,8 @@ SOURCES += \
     $$PWD/dialogs/debugdialog.cpp \
     $$PWD/component/propertydock/widget/diredit.cpp \
     $$PWD/component/propertydock/propertymanager/dirpropertymanager.cpp \
-    $$PWD/component/propertydock/editorfactory/direditorfactory.cpp
+    $$PWD/component/propertydock/editorfactory/direditorfactory.cpp \
+    $$PWD/component/objectdock/subcontrolobjectlistview.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -145,7 +146,8 @@ HEADERS += \
     $$PWD/dialogs/debugdialog.h \
     $$PWD/component/propertydock/widget/diredit.h \
     $$PWD/component/propertydock/propertymanager/dirpropertymanager.h \
-    $$PWD/component/propertydock/editorfactory/direditorfactory.h
+    $$PWD/component/propertydock/editorfactory/direditorfactory.h \
+    $$PWD/component/objectdock/subcontrolobjectlistview.h
 
 FORMS += \
     $$PWD/mainwindow.ui \
