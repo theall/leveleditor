@@ -21,6 +21,19 @@ void TChunkModel::setChunIdList(const TChunkList &chunidList)
     mChunkList = chunidList;
 }
 
+void TChunkModel::setCurrentIndex(int currentIndex)
+{
+    mCurrentIndex = currentIndex;
+}
+
+TChunkId *TChunkModel::getCurrentChunkId() const
+{
+    if(mCurrentIndex<0 || mCurrentIndex>=mChunkList.size())
+        return nullptr;
+
+    return mChunkList.at(mCurrentIndex);
+}
+
 int TChunkModel::rowCount(const QModelIndex &) const
 {
     return mChunkList.size();

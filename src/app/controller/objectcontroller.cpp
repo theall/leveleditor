@@ -37,7 +37,7 @@ bool TObjectController::joint(TMainWindow *mainWindow, TCore *core)
 
     mObjectListView = mainWindow->getObjectDock()->getObjectListView();
     connect(mObjectListView, SIGNAL(indexPressed(const QModelIndex)), this, SLOT(slotObjectIndexPressed(const QModelIndex)));
-    mSubcontrolObjectListView = mainWindow->getObjectDock()->getSubcontrolObjectListView();
+    mSubControlObjectListView = mainWindow->getObjectDock()->getSubControlObjectListView();
     return TAbstractController::joint(mainWindow, core);
 }
 
@@ -55,14 +55,14 @@ void TObjectController::setCurrentDocument(TDocument *document)
 void TObjectController::setObjectListViewModel(TBaseModel *baseModel)
 {
     TBaseModel *basemodel = mSceneModel->getCurrentModel();
-    if(TSceneModel *sceneModel = dynamic_cast<TSceneModel*>(basemodel)) {
+    if(dynamic_cast<TSceneModel*>(basemodel)) {
         mObjectListView->setModel(nullptr);
         return ;
     }
     mObjectListView->setModel(baseModel);
 }
 
-void TObjectController::setSubcontrolObjectListViewModel(TBaseModel *baseModel){
+void TObjectController::setSubControlObjectListViewModel(TBaseModel *baseModel){
 
 }
 
@@ -104,24 +104,26 @@ void TObjectController::slotOnSelectedObjectChanged(TObject *, TObject *current)
 void TObjectController::slotObjectIndexPressed(const QModelIndex &index)
 {
     TBaseModel *baseModel = mSceneModel->getCurrentModel();
+    int row = index.row();
+
     if(TTileModel *tileModel = dynamic_cast<TTileModel*>(baseModel)) {
-        selectAndCenterOn(tileModel->tileList().at(index.row()));
+        selectAndCenterOn(tileModel->getObject(row));
     } else if(TAreaModel *areaModel = dynamic_cast<TAreaModel*>(baseModel)) {
-        selectAndCenterOn(areaModel->areaList().at(index.row()));
+        selectAndCenterOn(areaModel->getObject(row));
     } else if(TBoxModel *boxModel = dynamic_cast<TBoxModel*>(baseModel)) {
-        selectAndCenterOn(boxModel->boxList().at(index.row()));
+        selectAndCenterOn(boxModel->getObject(row));
     } else if(TDAreaModel *dareaModel = dynamic_cast<TDAreaModel*>(baseModel)) {
-        selectAndCenterOn(dareaModel->dAreaList().at(index.row()));
+        selectAndCenterOn(dareaModel->getObject(row));
     } else if(TPlatModel *platModel = dynamic_cast<TPlatModel*>(baseModel)) {
-        selectAndCenterOn(platModel->platList().at(index.row()));
+        selectAndCenterOn(platModel->getObject(row));
     } else if(TWallModel *wallModel = dynamic_cast<TWallModel*>(baseModel)) {
-        selectAndCenterOn(wallModel->wallList().at(index.row()));
-    } else if(TRespawnModel *respawModel = dynamic_cast<TRespawnModel*>(baseModel)) {
+        selectAndCenterOn(wallModel->getObject(row));
+    } else if(dynamic_cast<TRespawnModel*>(baseModel)) {
         selectAndCenterOn(reinterpret_cast<TObject*>(index.internalPointer()));
     } else if(TEnemyFactoryModel *enemyFactoryModel = dynamic_cast<TEnemyFactoryModel*>(baseModel)) {
-        selectAndCenterOn(enemyFactoryModel->enemyFactoryList().at(index.row()));
+        selectAndCenterOn(enemyFactoryModel->getObject(row));
     } else if(TTriggerModel *triggerModel = dynamic_cast<TTriggerModel*>(baseModel)) {
-        selectAndCenterOn(triggerModel->triggerList().at(index.row()));
+        selectAndCenterOn(triggerModel->getObject(row));
     }
 }
 

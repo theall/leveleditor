@@ -66,6 +66,7 @@ public:
     int getCurrentIndex() const;
 
     TTileModel *getCurrentAsTileLayerModel() const;
+    TEnemyFactoryModel *getCurrentAsEnemyFactoryModel() const;
     TBaseModel::Type getCurretnModelType() const;
 
     bool isCurrentTileLayerModel() const;

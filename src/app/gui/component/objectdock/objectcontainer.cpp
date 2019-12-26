@@ -17,9 +17,9 @@ TObjectContainer::TObjectContainer(QWidget *parent) :
     verticalLayout->setMargin(3);//设置属性边缘
 
     mObjectListView = new TObjectListView(this);
-    mSubcontrolObjectListView = new TSubcontrolObjectListView(this);
+    mSubControlObjectListView = new TSubControlObjectListView(this);
     verticalLayout->addWidget(mObjectListView);
-    verticalLayout->addWidget(mSubcontrolObjectListView);
+    verticalLayout->addWidget(mSubControlObjectListView);
     setLayout(verticalLayout);
 }
 
@@ -33,9 +33,9 @@ TObjectListView *TObjectContainer::getobjectListView() const
     return mObjectListView;
 }
 
-TSubcontrolObjectListView *TObjectContainer::getSubcontrolObjectListView() const
+TSubControlObjectListView *TObjectContainer::getSubControlObjectListView() const
 {
-    return mSubcontrolObjectListView;
+    return mSubControlObjectListView;
 }
 
 

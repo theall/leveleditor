@@ -62,7 +62,12 @@ void TLayerView::slotCurrentChanged(const QModelIndex &current, const QModelInde
     emit currentRowChanged(current.row());
 }
 
-void TLayerView::slotPressed(const QModelIndex &)
+//void TLayerView::slotbuttonCurrentChanged(const QModelIndex &current, const QModelIndex &previours)
+//{
+//    emit buttoncurrentRowChanged(current.row());
+//}
+
+void TLayerView::slotPressed(const QModelIndex &index)
 {
 
 }
@@ -172,6 +177,9 @@ void TLayerView::setModel(QAbstractItemModel *model)
     connect(this, SIGNAL(pressed(QModelIndex)), SLOT(slotPressed(QModelIndex)));
     connect(this, SIGNAL(activated(QModelIndex)), SLOT(slotOnActivated(QModelIndex)));
     connect(h, SIGNAL(sectionResized(int,int,int)), this, SLOT(slotOnSectionResized(int)));
+
+    //QItemSelectionModel *button = selectionModel();
+//    connect(button, SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(slotbuttonCurrentChanged(QModelIndex,QModelIndex)));
 
     h->setSectionResizeMode(COLUMN_INDEX_NAME, QHeaderView::Stretch);
     h->setSectionResizeMode(COLUMN_INDEX_VISIBILITY, QHeaderView::Fixed);

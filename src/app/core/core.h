@@ -53,7 +53,7 @@ public:
 
     TTilesetModelManager *tilesetModelManager() const;
 
-    TItemModel *getItemModel() const;
+    TItemModel *ItemModel() const;
 
 signals:
     void documentFileChanged(const QString &file);

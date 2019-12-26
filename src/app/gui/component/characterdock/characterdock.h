@@ -25,15 +25,19 @@ public:
     TCharacterDock(QWidget *parent = nullptr);
     ~TCharacterDock();
 
+    PanelType getCurrentPanelType() const;
     TCharacterView *characterView() const;
     TCharacterView *itemView() const;
     TCharacterView *shotView() const;
     TCharacterView *chunkView() const;
     void setPixmapSet(const PanelType &panelType, const QList<QPixmap> &pixmapSet ,const QList<int> &idList);
 
+signals:
+    void buttonPushed(const PanelType &panelType, int index);
 
 private slots:
     void slotActionToggled();
+    void slotButtonPushed(int index);
 
 private:
     TCharacterView *mCharacterView;
@@ -42,6 +46,8 @@ private:
     TCharacterView *mChunkView;
     QStackedWidget *mStackedWidget;
     QActionGroup *mActionGroup;
+
+    void addCharacterView(TCharacterView *view);
 
     // TBaseDock interface
 public:

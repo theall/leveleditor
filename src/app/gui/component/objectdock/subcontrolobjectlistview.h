@@ -3,11 +3,11 @@
 
 #include <QTableView>
 
-class TSubcontrolObjectListView : public QTableView
+class TSubControlObjectListView : public QTableView
 {
 public:
-    TSubcontrolObjectListView(QWidget *parent=nullptr);
-    ~TSubcontrolObjectListView();
+    TSubControlObjectListView(QWidget *parent=nullptr);
+    ~TSubControlObjectListView();
 
     // QAbstractItemView interface
 public:

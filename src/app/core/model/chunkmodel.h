@@ -12,11 +12,12 @@ public:
     ~TChunkModel();
 
     TChunkList chunIdList() const;
+    TChunkId *getCurrentChunkId() const;
     void setChunIdList(const TChunkList &chunIdList);
-
+    void setCurrentIndex(int currentIndex);
 private:
     TChunkList mChunkList;
-
+    int mCurrentIndex;
 public:
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;

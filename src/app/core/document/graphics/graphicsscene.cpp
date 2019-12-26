@@ -10,6 +10,7 @@
 #include "../base/finddoc.h"
 #include "../document.h"
 #include "../model/scenemodel.h"
+#include "../model/enemyfactorymodel.h"
 #include "../model/entity/area.h"
 #include "../model/entity/box.h"
 #include "../model/entity/darea.h"
@@ -443,15 +444,21 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 TTileModel *tileLayerModel = mSceneModel->getCurrentAsTileLayerModel();
                 TTile *tile = tileLayerModel->createTile(mStamp->getTileId(), mTileStampItem->pos());
                 TObjectList objectList;
-                objectList.append(tile);
+                objectList.append(tile); //把tile获取点击的行列添加到主窗口
                 TObjectAddCommand *command = new TObjectAddCommand(
                     TObjectAddCommand::ADD,
                     tileLayerModel,
                     objectList
                 );
                 mDocument->addUndoCommand(command);
-            } else if(currentModelType == TBaseModel::ENEMY_FACTORY) {
-
+            }  else if(currentModelType == TBaseModel::ENEMY_FACTORY) {
+                TEnemyFactoryModel *enemyFactoryModel = mSceneModel->getCurrentAsEnemyFactoryModel();
+//                TObjectAddCommand *command = new TObjectAddCommand(
+//                    TObjectAddCommand::ADD,
+//                    enemyFactoryModel,
+//                    objectList
+//                );
+                //mDocument->addUndoCommand(command);
             } else {
                 mObjectAreaItem->setRectangle(QRectF(mousePos, QSizeF()));
                 mObjectAreaItem->setVisible(true);

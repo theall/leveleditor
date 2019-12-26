@@ -258,6 +258,21 @@ void TDocument::setFaceStamp(TFaceId *faceId)
     mGraphicsScene->setCurrentStamp(faceId);
 }
 
+void TDocument::setItemStamp(TItemId *itemId)
+{
+    mGraphicsScene->setCurrentStamp(itemId);
+}
+
+void TDocument::setChunkStamp(TChunkId *ChunkId)
+{
+    mGraphicsScene->setCurrentStamp(ChunkId);
+}
+
+void TDocument::setShotStamp(TShotId *shotId)
+{
+    mGraphicsScene->setCurrentStamp(shotId);
+}
+
 EditMode TDocument::getEditMode() const
 {
     return mEditMode;
@@ -275,32 +290,32 @@ void TDocument::setEditMode(const EditMode &editMode)
     emit editModeChanged(mEditMode, oldMode);
 }
 
-void TDocument::cmdAddObject(TObject *object, TBaseModel *baseModel)
+void TDocument::cmdAddObject(const TObject *object, TBaseModel *baseModel)
 {
     if(!object || !baseModel) {
         return;
     }
     TObjectList objectList;
-    objectList.append(object);
+    objectList.append(objectList);
     internalAddRemoveObjectCommand(TObjectAddCommand::ADD, baseModel, objectList);
 }
 
-void TDocument::cmdAddObject(TObjectList &objectList, TBaseModel *baseModel)
+void TDocument::cmdAddObject(const TObjectList &objectList, TBaseModel *baseModel)
 {
     internalAddRemoveObjectCommand(TObjectAddCommand::ADD, baseModel, objectList);
 }
 
-void TDocument::cmdRemoveObject(TObject *object, TBaseModel *baseModel)
+void TDocument::cmdRemoveObject(const TObject *object, TBaseModel *baseModel)
 {
     if(!object || !baseModel) {
         return;
     }
     TObjectList objectList;
-    objectList.append(object);
+    objectList.append(objectList);
     internalAddRemoveObjectCommand(TObjectAddCommand::REMOVE, baseModel, objectList);
 }
 
-void TDocument::cmdRemoveObject(TObjectList &objectList, TBaseModel *baseModel)
+void TDocument::cmdRemoveObject(const TObjectList &objectList, TBaseModel *baseModel)
 {
     internalAddRemoveObjectCommand(TObjectAddCommand::REMOVE, baseModel, objectList);
 }

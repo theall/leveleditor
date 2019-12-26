@@ -23,7 +23,7 @@ TObjectListView *TObjectDock::getObjectListView() const
     return mObjectcontainer->getobjectListView();
 }
 
-TSubcontrolObjectListView *TObjectDock::getSubcontrolObjectListView() const
+TSubControlObjectListView *TObjectDock::getSubControlObjectListView() const
 {
-    return mObjectcontainer->getSubcontrolObjectListView();
+    return mObjectcontainer->getSubControlObjectListView();
 }

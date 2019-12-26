@@ -1,4 +1,5 @@
 #include "enemyfactorymodel.h"
+#include "enemymodel.h"
 
 TEnemyFactoryModel::TEnemyFactoryModel(QObject *parent) :
     TGenericModel<TEnemyFactory>(TBaseModel::ENEMY_FACTORY, parent)
@@ -13,28 +14,31 @@ TEnemyFactoryModel::~TEnemyFactoryModel()
 
 void TEnemyFactoryModel::clear()
 {
-
+    mObjectList.clear();
+    mEnemyModelList.clear();
 }
 
 void TEnemyFactoryModel::readFromStream(QDataStream &stream)
 {
     int enemyAmount = 0;
     stream >> enemyAmount;
-    mObjectList.clear();
+
+    clear();
 
     for(int i=0;i<enemyAmount;i++) {
-        TEnemyFactory *enemyFactory = new TEnemyFactory(this);
-        enemyFactory->readFromStream(stream);
-        mObjectList.append(enemyFactory);
+        TEnemyModel *enemyModel = new TEnemyModel(this);
+        enemyModel->readFromStream(stream);
+        mEnemyModelList.append(enemyModel);
+        mObjectList.append(enemyModel->enemyFactory());
     }
 }
 
 void TEnemyFactoryModel::saveToStream(QDataStream &stream) const
 {
-    stream << mObjectList.size();
+    stream << mEnemyModelList.size();
 
-    for(TEnemyFactory *enemyFactory : mObjectList) {
-        enemyFactory->saveToStream(stream);
+    for(TEnemyModel *enemyModel : mEnemyModelList) {
+        enemyModel->saveToStream(stream);
     }
 }
 
@@ -42,8 +46,8 @@ int TEnemyFactoryModel::rowCount(const QModelIndex &parent) const
 {
     if(!parent.isValid()) {
         return mObjectList.size();
-     }else
-         return 0;
+     }
+     return 0;
 }
 
 int TEnemyFactoryModel::columnCount(const QModelIndex &) const
@@ -54,12 +58,11 @@ int TEnemyFactoryModel::columnCount(const QModelIndex &) const
 QVariant TEnemyFactoryModel::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
-    if(row>=0 && row<mObjectList.size())
-    {
-        if(role==Qt::DisplayRole)
-        {
-            return tr("Enemy %1").arg(row+1);
-        }
+    if(row<0 || row>=mObjectList.size())
+        return QVariant();
+
+    if(role == Qt::DisplayRole) {
+        return tr("Factory %1").arg(row+1);
     }
     return QVariant();
 }
@@ -74,12 +77,27 @@ void TEnemyFactoryModel::setEnemyFactoryList(const TEnemyFactoryList &enemyFacto
     mObjectList = enemyFactoryList;
 }
 
-void TEnemyFactoryModel::onObjectInserted(const TObjectList &objectList, const QList<int> &indexList)
+TEnemyFactory *TEnemyFactoryModel::createEnemyFactory()
 {
-    emit objectInserted(convert(objectList), indexList);
+    return new TEnemyFactory(this);
 }
 
-void TEnemyFactoryModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList)
+TEnemyModelList TEnemyFactoryModel::enemyModelList() const
 {
-    emit objectRemoved(convert(objectList), indexList);
+    return mEnemyModelList;
+}
+
+void TEnemyFactoryModel::setEnemyModelList(const TEnemyModelList &enemyModelList)
+{
+    mEnemyModelList = enemyModelList;
+}
+
+void TEnemyFactoryModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)
+{
+    emit objectInserted(mObjectList, indexList);
+}
+
+void TEnemyFactoryModel::onObjectRemoved(const TObjectList &, const QList<int> &indexList)
+{
+    emit objectRemoved(mObjectList, indexList);
 }

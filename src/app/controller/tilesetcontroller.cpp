@@ -21,6 +21,12 @@ void TTilesetController::setTilesetEnabled(bool enabled)
     mTilesetTab->setEnabled(enabled);
 }
 
+TTileId *TTilesetController::getCurrentTileId() const
+{
+    TTilesetModelManager *tilesetModelManager = mCore->tilesetModelManager();
+    return tilesetModelManager->currentTilesetModel()->getCurrentTileId();
+}
+
 bool TTilesetController::joint(TMainWindow *mainWindow, TCore *core)
 {
     Q_ASSERT(mainWindow);

@@ -11,11 +11,15 @@ public:
     ~TItemModel();
 
     TItemIdList itemIdList() const;
+    TItemId *getCurrentItemId() const;
+
+    int getCurrentIndex() const;
     void setItemList(const TItemIdList &itemIdList);
+    void setCurrentIndex(int currentIndex);
 
 private:
     TItemIdList mItemIdList;
-
+    int mCurrentIndex;
     // QAbstractItemModel interface
 public:
     int rowCount(const QModelIndex &parent) const;

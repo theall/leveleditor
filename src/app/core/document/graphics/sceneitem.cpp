@@ -134,13 +134,14 @@ TLayerItemList TSceneItem::getLayerItemList() const
 void TSceneItem::slotOnSceneModelCurrentIndexChanged(int index)
 {
     TBaseModel *baseModel = mSceneModel->getBaseModel(index);
-    if(!baseModel) {
+    if(!baseModel || baseModel==mSceneModel) {
         setCurrentLayerItem(nullptr);
         for(TLayerItem *layerItem : mLayerItemList) {
             if(layerItem) {
                 layerItem->setOpacity(1.0);
             }
         }
+        mDarkMaskItem->setZValue(-1);
     } else {
         TLayerItem *layerItem = mModelLayerMap[baseModel];
         setCurrentLayerItem(layerItem);

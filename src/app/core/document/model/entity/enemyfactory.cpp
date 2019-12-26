@@ -50,7 +50,7 @@ void TEnemyFactory::readFromStream(QDataStream &stream)
     stream >> currentFrame;
     stream >> delay;
     stream >> event;
-    stream >> factoryAmount;
+    stream >> factoryAmount;// 。
     stream >> loop;
     mEnemyList.clear();
     for(int i=0;i<factoryAmount;i++) {

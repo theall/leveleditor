@@ -171,6 +171,15 @@ TTileModel *TSceneModel::getCurrentAsTileLayerModel() const
     return tileLayerModel;
 }
 
+TEnemyFactoryModel *TSceneModel::getCurrentAsEnemyFactoryModel() const
+{
+    TEnemyFactoryModel *enemyFactoryModel = nullptr;
+    TBaseModel *baseModel = mBaseModelList.at(mCurrentIndex);
+    if(baseModel && baseModel->isTile())
+        enemyFactoryModel = dynamic_cast<TEnemyFactoryModel*>(baseModel);
+    return enemyFactoryModel;
+}
+
 TBaseModel::Type TSceneModel::getCurretnModelType() const
 {
     TBaseModel *baseModel = mBaseModelList.at(mCurrentIndex);
@@ -563,12 +572,9 @@ int TSceneModel::columnCount(const QModelIndex &) const
     return 3;
 }
 
-int TSceneModel::rowCount(const QModelIndex &parent) const
+int TSceneModel::rowCount(const QModelIndex &) const
 {
-    if(!parent.isValid()) {
-        return mBaseModelList.size();
-    }
-    return 0;
+    return mBaseModelList.size();
 }
 
 QVariant TSceneModel::data(const QModelIndex &index, int role) const

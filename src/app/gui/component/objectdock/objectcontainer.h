@@ -17,11 +17,11 @@ public:
     ~TObjectContainer();
 
     TObjectListView *getobjectListView() const;
-    TSubcontrolObjectListView *getSubcontrolObjectListView() const;
+    TSubControlObjectListView *getSubControlObjectListView() const;
 
 private:
     TObjectListView *mObjectListView;
-    TSubcontrolObjectListView *mSubcontrolObjectListView;
+    TSubControlObjectListView *mSubControlObjectListView;
 };
 
 #endif // TOBJECTCONTAINER_H

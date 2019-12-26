@@ -184,7 +184,7 @@ void TCore::slotOnResourceLoadCompleted()
     emit ready();
 }
 
-TItemModel *TCore::getItemModel() const
+TItemModel *TCore::ItemModel() const
 {
     return mItemModel;
 }

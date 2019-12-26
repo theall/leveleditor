@@ -2,13 +2,11 @@
 #define TCHARACTER_PANEL_CONTROLLER_H
 
 #include "abstractcontroller.h"
+#include "../gui/component/characterdock/characterdock.h"
 
-class TCharacterDock;
-class TCharacterTab;
 class TChunkModel;
 class TItemModel;
 class TShotModel;
-class TCharacterView;
 class TItemView;
 class TChunkView;
 class TShotView;
@@ -21,29 +19,30 @@ public:
     TCharacterPanelController(QObject *parent = 0);
     ~TCharacterPanelController();
 
-private:
-    TCharacterDock *mCharacterDock;
-    TCharacterTab *mCharacterTab;
+    void setCurrentDocument(TDocument *document);
+    void setCharacterEnabled(bool enabled);
+    TPixmapId *getCurrentPixmapId() const;
 
 private:
-     TCharacterView *mCharacter;
+    TCharacterDock *mCharacterDock;
+
+private:
      TItemModel *mItemModel;
      TChunkModel *mChunkModel;
      TShotModel *mShotModel;
-     int msg;
 
-    // TAbstractController interface
-public:
-    bool joint(TMainWindow *mainWindow, TCore *core);
-    void setCurrentDocument(TDocument *document);
     void setFace();
     void setItem();
     void setShot();
     void setChunk();
+    
+    // TAbstractController interface
+public:
+    bool joint(TMainWindow *mainWindow, TCore *core);
 
 private slots:
     void slotOnCoreReady();
-    void slotCharacterToggled(int index, bool toggled);
+    void slotButtonPushed(const PanelType &panelType, int index);
 
 protected slots:
     void slotTimerEvent();

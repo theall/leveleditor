@@ -2,7 +2,7 @@
 
 #include <QHeaderView>
 
-TSubcontrolObjectListView::TSubcontrolObjectListView(QWidget *parent)
+TSubControlObjectListView::TSubControlObjectListView(QWidget *parent)
 {
     horizontalHeader()->setStretchLastSection(false);
     horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -11,17 +11,17 @@ TSubcontrolObjectListView::TSubcontrolObjectListView(QWidget *parent)
 
 
 }
-TSubcontrolObjectListView::~TSubcontrolObjectListView()
+TSubControlObjectListView::~TSubControlObjectListView()
 {
 
 }
 
-void TSubcontrolObjectListView::setModel(QAbstractItemModel *model)
+void TSubControlObjectListView::setModel(QAbstractItemModel *model)
 {
     QTableView::setModel(model);
 }
 
-void TSubcontrolObjectListView::selectRow(int row)
+void TSubControlObjectListView::selectRow(int row)
 {
     QTableView::selectRow(row);
 }

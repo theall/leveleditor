@@ -117,7 +117,8 @@ SOURCES += \
     $$PWD/document/model/genericmodel.cpp \
     $$PWD/document/model/entity/areaplat.cpp \
     $$PWD/document/graphics/layeritem/objectitem/jointitem.cpp \
-    $$PWD/document/graphics/base/stamp.cpp
+    $$PWD/document/graphics/base/stamp.cpp \
+    $$PWD/document/model/enemymodel.cpp
     
 HEADERS  += \
     $$PWD/core.h \
@@ -244,7 +245,8 @@ HEADERS  += \
     $$PWD/document/model/genericmodel.h \
     $$PWD/document/model/entity/areaplat.h \
     $$PWD/document/graphics/layeritem/objectitem/jointitem.h \
-    $$PWD/document/graphics/base/stamp.h
+    $$PWD/document/graphics/base/stamp.h \
+    $$PWD/document/model/enemymodel.h
     
 RESOURCES += \
     $$PWD/resource/core.qrc

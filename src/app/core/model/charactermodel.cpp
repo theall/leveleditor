@@ -28,6 +28,8 @@ void TCharacterModel::setFaceList(const TFaceList &faceList)
     mFaceList = faceList;
 }
 
+
+
 int TCharacterModel::getCurrentIndex() const
 {
     return mCurrentIndex;

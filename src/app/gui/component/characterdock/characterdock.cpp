@@ -18,7 +18,7 @@ TCharacterDock::TCharacterDock(QWidget *parent) :
     toolBar->setFloatable(false);//设置为不可浮动
     toolBar->setMovable(false);//设置为不可移动
     toolBar->setIconSize(QSize(16, 16));//设置图片
-
+    setEnabled(false);
     QIcon icon(":/animationdock/images/add.png");
     for(int i=0;i<PA_TOTAL_COUNT;i++) {
         QAction *action = toolBar->addAction(icon, QString(), this, SLOT(slotActionToggled()));
@@ -30,10 +30,13 @@ TCharacterDock::TCharacterDock(QWidget *parent) :
     QScrollArea *container = new QScrollArea(this);//提供了一个可以滚动的视口和两个滚动条
     container->setWidgetResizable(true);//设置窗口大小可以随意改变
 
-    mStackedWidget->addWidget(mCharacterView);
-    mStackedWidget->addWidget(mItemView);
-    mStackedWidget->addWidget(mShotView);
-    mStackedWidget->addWidget(mChunkView);
+    addCharacterView(mCharacterView);
+    addCharacterView(mItemView);
+    addCharacterView(mShotView);
+    addCharacterView(mChunkView);
+
+
+
 
     QVBoxLayout *scrollAreaLayout = new QVBoxLayout(container);//垂直布局 用父级构造一个新的顶级垂直框。
     scrollAreaLayout->setContentsMargins(0, 0, 0, 0);//设置上下左右边距
@@ -56,13 +59,27 @@ TCharacterDock::~TCharacterDock()
 
 }
 
+PanelType TCharacterDock::getCurrentPanelType() const
+{
+    return (PanelType)mStackedWidget->currentIndex();
+}
+
 void TCharacterDock::slotActionToggled()
 {
     QAction *action = (QAction*)sender();
     mStackedWidget->setCurrentIndex(action->data().toInt());
 }
 
+void TCharacterDock::slotButtonPushed(int index)
+{
+    emit buttonPushed((PanelType)mStackedWidget->currentIndex(), index);
+}
 
+void TCharacterDock::addCharacterView(TCharacterView *view)
+{
+    mStackedWidget->addWidget(view);
+    connect(view, SIGNAL(buttonPushed(int)), this, SLOT(slotButtonPushed(int)));
+}
 
 void TCharacterDock::setPixmapSet(const PanelType &panelType, const QList<QPixmap> &pixmapSet, const QList<int> &idList)
 {

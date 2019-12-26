@@ -13,8 +13,11 @@ public:
 
     TShotList shotIdList() const;
     void setShotIdList(const TShotList &shotIdList);
+    void setCurrentIndex(int currentIndex);
+    TShotId *getCurrentShotId() const;
 
 private:
+    int mCurrentIndex;
     TShotList mShotList;
 
 public:

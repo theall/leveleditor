@@ -4,8 +4,11 @@
 #include "../gui/dialogs/loadingdialog.h"
 #include "../gui/dialogs/newmapdialog.h"
 #include "../gui/component/tabwidget/tabwidget.h"
+#include "../gui/component/characterdock/characterdock.h"
+#include "../gui/component/characterdock/characterview.h"
 #include "../core/assets/assetsmanager.h"
 #include "../core/model/charactermodel.h"
+#include "../core/model/itemmodel.h"
 #include "../core/document/graphics/layeritem/objectitem/tileitem.h"
 
 #include <QProcess>
@@ -337,11 +340,23 @@ void TMainController::slotOnLayerSelected(int index)
     TGraphicsScene *graphicsScene = mDocument->graphicsScene();
     TLayerItem *layerItem = graphicsScene->getLayerItem(index);
     bool enableTileset = layerItem && layerItem->isTileLayer();
-    mTilesetController->setTilesetEnabled(enableTileset);
 
-    // set model into object dock
+    mTilesetController->setTilesetEnabled(enableTileset);
+    mCharacterController->setCharacterEnabled(layerItem && layerItem->isFactoryLayer()); //layerItem && layerItem->isFactoryLayer()
+
+    //set model into object dock
     if(layerItem)
         mObjectController->setObjectListViewModel(layerItem->baseModel());
+
+    // Update stamp pixmap if tile layer or factory is slected
+    bool isFactoryLayer = layerItem && layerItem->isFactoryLayer();
+    if(enableTileset) {
+        TPixmapId *pixmapId = mTilesetController->getCurrentTileId();
+        graphicsScene->setCurrentStamp(pixmapId);
+    } else if(isFactoryLayer) {
+        TPixmapId *pixmapId = mCharacterController->getCurrentPixmapId();
+        graphicsScene->setCurrentStamp(pixmapId);
+    }
 }
 
 void TMainController::slotOnDirtyFlagChanged(bool isDirty)
@@ -522,9 +537,6 @@ void TMainController::slotOnActionInsertPushed()
     if(currentModelType == TBaseModel::TILE) {
         TTileId *tileId = mCore->tilesetModelManager()->getCurrentTileId();
         mDocument->setTileStamp(tileId);
-    } else if(currentModelType == TBaseModel::ENEMY_FACTORY) {
-        TFaceId *faceId = mCore->characterModel()->getCurrentFaceId();
-        mDocument->setFaceStamp(faceId);
     }
     mDocument->setEditMode(INSERT);
 }

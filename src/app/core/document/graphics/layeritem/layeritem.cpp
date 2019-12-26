@@ -30,6 +30,11 @@ bool TLayerItem::isTileLayer() const
     return mLayerType==TILE;
 }
 
+bool TLayerItem::isFactoryLayer() const
+{
+    return mBaseModel->type()==TBaseModel::ENEMY_FACTORY;
+}
+
 bool TLayerItem::isObjectLayer() const
 {
     return mLayerType==OBJECT;

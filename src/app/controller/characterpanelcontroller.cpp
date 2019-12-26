@@ -6,9 +6,6 @@
 #include "../core/model/chunkmodel.h"
 #include "../core/assets/assetsmanager.h"
 
-#include "../gui/component/characterdock/characterview.h"
-#include "../gui/component/characterdock/characterdock.h"
-
 template<typename T>
 QList<QPixmap> toPixmapList(const QList<T> &pixmapIdList) {
     QList<QPixmap> pixmapList;
@@ -30,6 +27,28 @@ TCharacterPanelController::~TCharacterPanelController()
 
 }
 
+void TCharacterPanelController::setCharacterEnabled(bool enabled)
+{
+    mCharacterDock->setEnabled(enabled);
+}
+
+TPixmapId *TCharacterPanelController::getCurrentPixmapId() const
+{
+    PanelType panelType = mCharacterDock->getCurrentPanelType();
+    if(panelType == PA_CHARACTER) {
+        return mCore->characterModel()->getCurrentFaceId();
+    } else if(panelType == PA_ITEM) {
+        return mCore->ItemModel()->getCurrentItemId();
+    } else if(panelType == PA_SHOT) {
+        return mCore->shotModel()->getCurrentShotId();
+    } else if(panelType == PA_CHUNK) {
+        return mCore->chunkModel()->getCurrentChunkId();
+    }
+
+    return nullptr;
+}
+
+
 bool TCharacterPanelController::joint(TMainWindow *mainWindow, TCore *core)
 {
     Q_ASSERT(mainWindow);
@@ -38,8 +57,10 @@ bool TCharacterPanelController::joint(TMainWindow *mainWindow, TCore *core)
     connect(core, SIGNAL(ready()), this, SLOT(slotOnCoreReady()));
 
 	mCharacterDock = mainWindow->getCharacterDock();
-    connect(mCharacterDock->characterView(), SIGNAL(characterToggled(int,bool)), this,
-            SLOT(slotCharacterToggled(int,bool)));
+    connect(mCharacterDock,
+            SIGNAL(buttonPushed(PanelType,int)),
+            this,
+            SLOT(slotButtonPushed(PanelType,int)));
 
     return TAbstractController::joint(mainWindow, core);
 }
@@ -57,9 +78,31 @@ void TCharacterPanelController::slotOnCoreReady()
     setChunk();
 }
 
-void TCharacterPanelController::slotCharacterToggled(int index, bool)
+void TCharacterPanelController::slotButtonPushed(const PanelType &panelType, int index)
 {
-    mCore->characterModel()->setCurrentIndex(index);
+    if(!mDocument)
+        return;
+
+    switch (panelType) {
+    case PA_CHARACTER:
+        mCore->characterModel()->setCurrentIndex(index);
+        mDocument->setFaceStamp(mCore->characterModel()->getCurrentFaceId());
+        break;
+    case PA_ITEM:
+        mCore->ItemModel()->setCurrentIndex(index);
+        mDocument->setItemStamp(mCore->ItemModel()->getCurrentItemId());
+        break;
+    case PA_CHUNK:
+        mCore->chunkModel()->setCurrentIndex(index);
+        mDocument->setChunkStamp(mCore->chunkModel()->getCurrentChunkId());
+        break;
+    case PA_SHOT:
+        mCore->shotModel()->setCurrentIndex(index);
+        mDocument->setShotStamp(mCore->shotModel()->getCurrentShotId());
+        break;
+    default:
+        break;
+    }
 }
 
 void TCharacterPanelController::setFace()
@@ -76,7 +119,7 @@ void TCharacterPanelController::setFace()
 
 void TCharacterPanelController::setItem()
 {
-    TItemIdList itemList = mCore->getItemModel()->itemIdList();
+    TItemIdList itemList = mCore->ItemModel()->itemIdList();
     QList<int> itemidList;
     QList<QPixmap> itempixmapList;
     for(TItemId *itemId : itemList) {
@@ -84,7 +127,6 @@ void TCharacterPanelController::setItem()
         itemidList.append(itemId->id());
     }
     mCharacterDock->setPixmapSet(PA_ITEM, itempixmapList, itemidList);
-
 }
 
 void TCharacterPanelController::setShot()
@@ -105,7 +147,7 @@ void TCharacterPanelController::setChunk()
     TChunkList chunkList = mCore->chunkModel()->chunIdList();
     QList<int> chunkid;
     QList<QPixmap> chunkpixmapList;
-    for(TChunkId *chunkId : chunkList) {
+    for(TChunkId *chunkId : chunkList){
         chunkpixmapList.append(chunkId->primitive());
         chunkid.append(chunkId->id());
     }

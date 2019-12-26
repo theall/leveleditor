@@ -6,6 +6,9 @@
 #include "objectgeneric.hpp"
 #include "genericmodel.h"
 
+class TEnemyModel;
+typedef QList<TEnemyModel*> TEnemyModelList;
+
 class TEnemyFactoryModel : public TGenericModel<TEnemyFactory>
 {
     Q_OBJECT
@@ -18,6 +21,14 @@ public:
 
     TEnemyFactoryList enemyFactoryList() const;
     void setEnemyFactoryList(const TEnemyFactoryList &enemyFactoryList);
+
+    TEnemyModelList enemyModelList() const;
+    void setEnemyModelList(const TEnemyModelList &enemyModelList);
+
+    TEnemyFactory *createEnemyFactory();
+
+private:
+    TEnemyModelList mEnemyModelList;
 
 signals:
     void objectInserted(const TEnemyFactoryList &objectList, const QList<int> &indexList);

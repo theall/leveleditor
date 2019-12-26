@@ -25,6 +25,8 @@ TCharacterView::TCharacterView(QWidget *parent) :
     setFlow(LeftToRight);//设置排列为从左向右排列
     setFrameShadow(QFrame::Plain);//为框架添加阴影QFrame::Plain
     setFrameShape(QFrame::NoFrame);//设置框架边线为什么都不做
+    //connect(mShow, SIGNAL(triggered(bool)), this, SLOT(slotActionShowTriggered(bool)));//开眼
+    //connect(mHide, SIGNAL(triggered(bool)), this, SLOT(slotActionHideTriggered(bool)));//关眼
 
     retranslateUi();
 }
@@ -43,12 +45,19 @@ int TCharacterView::add(const QPixmap &face, int id)
     button->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     button->setMinimumSize(1, mIconSize);
     button->setMaximumSize(mIconSize, mIconSize);
+    button->setToolTip(QString::asprintf("%1", id));
     connect(button, SIGNAL(clicked(bool)), this, SLOT(slotOnFaceButtonToggled(bool)));
     mButtonList.append(button);
     QListWidgetItem *item = new QListWidgetItem(this);
     item->setSizeHint(QSize(mIconSize,mIconSize));
     setItemWidget(item, button);
+    //button->setEnabled(false);
     return mButtonList.size();
+}
+
+void TCharacterView::getButton(bool button) const
+{
+    //return button;
 }
 
 void TCharacterView::setPixmapSet(const QList<QPixmap> &pixmapSet, const QList<int> &idList)
@@ -78,8 +87,9 @@ void TCharacterView::slotOnFaceButtonToggled(bool toggled)
             mLastPushedButton->blockSignals(true);
             mLastPushedButton->setChecked(false);
             mLastPushedButton->blockSignals(false);
+            //button->setEnabled(true);
         }
-        emit characterToggled(mButtonList.indexOf(button), toggled);
+        emit buttonPushed(mButtonList.indexOf(button));
     }
     mLastPushedButton = button;
 }

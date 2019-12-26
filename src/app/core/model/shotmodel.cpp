@@ -26,6 +26,20 @@ int TShotModel::rowCount(const QModelIndex &) const
     return mShotList.size();
 }
 
+
+TShotId *TShotModel::getCurrentShotId() const
+{
+    if(mCurrentIndex<0 || mCurrentIndex>=mShotList.size())
+        return nullptr;
+
+    return mShotList.at(mCurrentIndex);
+}
+
+void TShotModel::setCurrentIndex(int currentIndex)
+{
+    mCurrentIndex = currentIndex;
+}
+
 QVariant TShotModel::data(const QModelIndex &index, int role) const
 {
     if(role == Qt::DecorationRole) {

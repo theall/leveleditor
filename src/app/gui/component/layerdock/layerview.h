@@ -31,6 +31,7 @@ signals:
     void requestRemoveObject(int index);
     void onSelectionChanged(const QList<int> &rows);
     void currentRowChanged(int row);
+    //void buttoncurrentRowChanged(int row);
     void requestShowLayers(const QList<int> &rows, bool show);
     void requestLockLayers(const QList<int> &rows, bool lock);
 
@@ -41,6 +42,7 @@ protected:
 
 private slots:
     void slotCurrentChanged(const QModelIndex &current, const QModelIndex &previours);
+    //void slotbuttonCurrentChanged(const QModelIndex &current, const QModelIndex &previours);
     void slotPressed(const QModelIndex &index);
     void slotOnActivated(const QModelIndex &index);
     void slotOnSectionResized(int logicalIndex);

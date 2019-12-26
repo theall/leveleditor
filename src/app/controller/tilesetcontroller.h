@@ -12,6 +12,7 @@ public:
     ~TTilesetController();
 
     void setTilesetEnabled(bool enabled);
+    TTileId *getCurrentTileId() const;
 
 private:
     TTilesetTab *mTilesetTab;

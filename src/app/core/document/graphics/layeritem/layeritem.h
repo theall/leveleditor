@@ -43,6 +43,8 @@ public:
     void promote(qreal zIndex);
     void restore();
 
+    bool isFactoryLayer() const;
+
 signals:
     void boundingRectChanged(const QRectF &rect);
 

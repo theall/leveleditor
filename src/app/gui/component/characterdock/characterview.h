@@ -19,10 +19,10 @@ public:
 
     int add(const QPixmap &face, int id);
     void setPixmapSet(const QList<QPixmap> &pixmapSet, const QList<int> &idList);
-
+    void getButton(bool button) const;
 signals:
-    void characterToggled(int index, bool toggled);
-
+    void buttonPushed(int index);
+    void setCharaterEnabled(QPushButton *button);
 private:
     int mIconSize;
     QPushButton *mLastPushedButton;
@@ -30,13 +30,13 @@ private:
     QMap<QPushButton*, int> mButtonValueMap;
     QList<void*> mChiaractersets;
     QMenu *mContextMenu;
-
+    TCharacterView *mCharacterButton;
+    //void setCharacterEnabled(bool enabled);
     void retranslateUi();
     void clear();
 
 private slots:
     void slotOnFaceButtonToggled(bool);
-
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;

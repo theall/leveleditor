@@ -120,7 +120,7 @@ int TBaseModel::rowCount(const QModelIndex &) const
     return 0;
 }
 
-QVariant TBaseModel::data(const QModelIndex &, int ) const
+QVariant TBaseModel::data(const QModelIndex &index, int role) const
 {
     return QVariant();
 }

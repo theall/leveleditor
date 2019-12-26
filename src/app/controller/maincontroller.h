@@ -27,7 +27,8 @@ public:
     void setCurrentDocument(TDocument *document) Q_DECL_OVERRIDE;
 
 signals:
-
+    void setCharaterEnabled(QPushButton *button);
+    
 private slots:
     // From TMainWindow
     void slotRequestOpenMap(const QString &file);
@@ -44,7 +45,7 @@ private slots:
     void slotRequestShowBorder(bool show);
     void slotOnActionSelectPushed();
     void slotOnActionInsertPushed();
-
+    
     // From TTabController
     void slotRequestCloseDocument(TDocument *document);
     void slotRequestSwitchToDocument(TDocument *document);
@@ -85,6 +86,7 @@ private:
     TLayersController *mLayersController;
     TAnimationController *mAnimationController;
     TObjectController *mObjectController;
+    TCharacterDock *mCharacterDock;
 
     bool confirmAllSaved();
     void createNewDocument(const QString &moduleName, const TMap::Type &mapType, int mapId);

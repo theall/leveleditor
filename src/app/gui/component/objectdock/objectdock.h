@@ -14,7 +14,7 @@ public:
     ~TObjectDock();
 
     TObjectListView *getObjectListView() const;
-    TSubcontrolObjectListView *getSubcontrolObjectListView() const;
+    TSubControlObjectListView *getSubControlObjectListView() const;
 
 private:
     TObjectContainer *mObjectcontainer;

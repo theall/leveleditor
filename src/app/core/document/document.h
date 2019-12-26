@@ -18,6 +18,9 @@ enum EditMode {
 };
 
 class TFaceId;
+class TItemId;
+class TChunkId;
+class TShotId;
 class TTileId;
 class TPixmap;
 class TPropertyObject;
@@ -57,16 +60,19 @@ public:
     TGraphicsScene *graphicsScene() const;
     TSceneModel *getSceneModel() const;
 
-    void setTileStamp(TTileId *tileid);
+    void setTileStamp(TTileId *tileId);
     void setFaceStamp(TFaceId *faceId);
-
+    void setItemStamp(TItemId *itemId);
+    void setChunkStamp(TChunkId *chunkId);
+    void setShotStamp(TShotId *shotId);
+    
     EditMode getEditMode() const;
     void setEditMode(const EditMode &editMode);
 
-    void cmdAddObject(TObject *object, TBaseModel *baseModel);
-    void cmdAddObject(TObjectList &objectList, TBaseModel *baseModel);
-    void cmdRemoveObject(TObject *object, TBaseModel *baseModel);
-    void cmdRemoveObject(TObjectList &objectList, TBaseModel *baseModel);
+    void cmdAddObject(const TObject *object, TBaseModel *baseModel);
+    void cmdAddObject(const TObjectList &objectList, TBaseModel *baseModel);
+    void cmdRemoveObject(const TObject *object, TBaseModel *baseModel);
+    void cmdRemoveObject(const TObjectList &objectList, TBaseModel *baseModel);
 
 signals:
     void projectFileChanged();
