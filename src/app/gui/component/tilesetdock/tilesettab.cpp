@@ -8,9 +8,10 @@ TTilesetTab::TTilesetTab(QWidget *parent) :
 {
     setDocumentMode(true);//设置以文档页的模式呈现选项卡小部件
     setTabsClosable(false);//此属性保留是否自动将关闭按钮添加到每个选项卡
-
+    setEnabled(false);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);//此属性保留小部件的默认布局行为。
     resize(240, 320);//保留小部件大小
+
     QTabBar *bar = tabBar();//获取tabbar的对象指针，因为接下来要连接bar上的信号
     bar->setMovable(false);//默认为false
     bar->setContextMenuPolicy(Qt::CustomContextMenu);//设置上下文菜单排列 参数看不懂
