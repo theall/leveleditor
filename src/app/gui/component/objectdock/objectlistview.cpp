@@ -116,8 +116,10 @@ int TObjectListView::getIndex(const QModelIndex &index)
 
 void TObjectListView::mousePressEvent(QMouseEvent *event)
 {
+    QTableView::mousePressEvent(event);
     QModelIndex modelIndex = indexAt(event->pos());
-    if(modelIndex.row())//= -1
+    int row = modelIndex.row();
+    if(row != -1)
         emit indexPressed(modelIndex);
 }
 

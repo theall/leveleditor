@@ -9,12 +9,17 @@
 TObjectContainer::TObjectContainer(QWidget *parent) :
     QWidget(parent)
 {
-    setObjectName(QStringLiteral("Objectcontainer"));//保存名字
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);//小部件的缩放
+    QToolBar *toolbar = new QToolBar(this);
+
+
+    setObjectName(QStringLiteral("Objectcontainer"));
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
     QVBoxLayout *verticalLayout = new QVBoxLayout(this);
-    verticalLayout->setSpacing(1);//将控件与控件之间的间距设为1
-    verticalLayout->setMargin(3);//设置属性边缘
+    verticalLayout->addWidget(toolbar);
+
+    verticalLayout->setSpacing(1);
+    verticalLayout->setMargin(3);
 
     mObjectListView = new TObjectListView(this);
     mSubControlObjectListView = new TSubControlObjectListView(this);
@@ -37,7 +42,5 @@ TSubControlObjectListView *TObjectContainer::getSubControlObjectListView() const
 {
     return mSubControlObjectListView;
 }
-
-
 
 

@@ -332,6 +332,7 @@ void TDocument::internalAddRemoveObjectCommand(TObjectAddCommand::Command id, TB
         objectList
     );
     addUndoCommand(command);
+    emit addFinish();
 }
 
 TSceneModel *TDocument::getSceneModel() const

@@ -92,11 +92,12 @@ signals:
     void requestShowBorder(bool);
     void onActionSelectPushed();
     void onActionInsertPushed();
-private slots:
+private slots: 
     // From TTabWidget
     void slotOnTabCountChanged(int count);
     void slotOnActionSaveTriggered();
     void slotOnTabIndexChanged(int index);
+    void slotOnMouseMoved(const QPoint &pos);
 
     // From self
     void slotOpenRecentFile();
@@ -136,6 +137,7 @@ private:
     Ui::MainWindow *ui;
 
     QAction *mViewsAndToolbarsMenu;
+    QLabel *mLabel;
     QList<QAction*> mRecentFilesAction;
 
     TCentralWidget *mCentralWidget;

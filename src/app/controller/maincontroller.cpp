@@ -537,6 +537,9 @@ void TMainController::slotOnActionInsertPushed()
     if(currentModelType == TBaseModel::TILE) {
         TTileId *tileId = mCore->tilesetModelManager()->getCurrentTileId();
         mDocument->setTileStamp(tileId);
+    } else if(currentModelType == TBaseModel::ENEMY_FACTORY) {
+        TFaceId *faceId = mCore->characterModel()->getCurrentFaceId();
+        mDocument->setFaceStamp(faceId);
     }
     mDocument->setEditMode(INSERT);
 }

@@ -80,6 +80,7 @@ signals:
     void saved();
     void resourceChanged();
     void iconChanged(TPixmap *newPixmap);
+    void addFinish();
     // Send to external
     void editModeChanged(const EditMode &current, const EditMode &prev);
 

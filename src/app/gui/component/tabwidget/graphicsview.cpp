@@ -110,7 +110,6 @@ void TGraphicsView::mousePressEvent(QMouseEvent *event)
 void TGraphicsView::mouseReleaseEvent(QMouseEvent *event)
 {
     QGraphicsView::mouseReleaseEvent(event);
-
     mLeftButtonDown = false;
 }
 
@@ -122,7 +121,8 @@ void TGraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
 void TGraphicsView::mouseMoveEvent(QMouseEvent *event)
 {
     QGraphicsView::mouseMoveEvent(event);
-
+    QGraphicsView::mapToScene(event->pos());
+    emit onMouseMoved(event->pos());
     if(!mLeftButtonDown)
         return;
 
@@ -148,6 +148,5 @@ void TGraphicsView::mouseMoveEvent(QMouseEvent *event)
         if(vOverceed)
             vBar->forceSetValue(verticalValue);
     }
-
     mLastMousePos = mousePos;
 }

@@ -20,9 +20,11 @@ public:
     void clear();
 
     TEnemyFactoryList enemyFactoryList() const;
+    TEnemyFactory *getEnemyFactory(int index);
     void setEnemyFactoryList(const TEnemyFactoryList &enemyFactoryList);
 
     TEnemyModelList enemyModelList() const;
+    TEnemyModel *getEnemyModel(int index);
     void setEnemyModelList(const TEnemyModelList &enemyModelList);
 
     TEnemyFactory *createEnemyFactory();

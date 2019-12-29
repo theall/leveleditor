@@ -44,6 +44,8 @@ void TAreaItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         return;
     }
     TPlatItem *platItem = (TPlatItem*)TObjectItem::getObjectItem(plat);
+    if(!platItem)
+        return;
     QRectF indicatorToRect = getIndicatorRect(platItem->boundingRect());
     painter->fillRect(indicatorToRect, Qt::black);
 

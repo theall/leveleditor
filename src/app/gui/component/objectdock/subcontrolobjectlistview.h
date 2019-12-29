@@ -5,17 +5,25 @@
 
 class TSubControlObjectListView : public QTableView
 {
+    Q_OBJECT
+
 public:
     TSubControlObjectListView(QWidget *parent=nullptr);
     ~TSubControlObjectListView();
 
-    // QAbstractItemView interface
-public:
+    QList<int> getSelectedIndexes();
+    int getCurrentIndex();
+    void selectRow(int row);
     void setModel(QAbstractItemModel *model);
 
-    // QAbstractItemView interface
-public:
-    void selectRow(int row);
+private:
+    inline int getIndex(const QModelIndex &index);
+
+signals:
+    void indexPressed(int index);
+
+protected:
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 };
 
 #endif // TSUBCONTROLOBJECTLISTVIEW_H

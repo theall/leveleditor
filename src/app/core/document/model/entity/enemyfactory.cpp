@@ -22,6 +22,11 @@ TEnemyList TEnemyFactory::enemyList() const
     return mEnemyList;
 }
 
+TEnemy *TEnemyFactory::getEnemy(int index) const
+{
+    return mEnemyList.at(index);
+}
+
 void TEnemyFactory::setEnemyList(const TEnemyList &enemyList)
 {
     mEnemyList = enemyList;

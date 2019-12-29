@@ -34,6 +34,7 @@
 TMainWindow::TMainWindow(QWidget *parent) :
     QMainWindow(parent)
   , ui(new Ui::MainWindow)
+  , mLabel(new QLabel(this))
   , mCentralWidget(new TCentralWidget(this)) //集中 中心窗口
   , mUndoDock(new TUndoDock(this))//History
   , mMapsDock(new TMapsDock(this))//maps
@@ -119,6 +120,9 @@ TMainWindow::TMainWindow(QWidget *parent) :
     ui->menuView->insertAction(ui->actionShowBorder, mViewsAndToolbarsMenu);
     ui->menuView->insertSeparator(ui->actionShowBorder);
 
+    ui->statusBar->addWidget(mLabel);
+    ui->statusBar->addPermanentWidget(mZoomComboBox);
+
     addDockWidget(Qt::LeftDockWidgetArea, mMapsDock);
     addDockWidget(Qt::RightDockWidgetArea, mTilesetDock);
     addDockWidget(Qt::RightDockWidgetArea, mCharacterDock);
@@ -139,10 +143,11 @@ TMainWindow::TMainWindow(QWidget *parent) :
     connect(mCentralWidget->tabWidget(), SIGNAL(currentChanged(int)), this, SLOT(slotOnTabIndexChanged(int)));
     connect(mCentralWidget->tabWidget(), SIGNAL(onTabCountChanged(int)), this, SLOT(slotOnTabCountChanged(int)));
     connect(mCentralWidget->tabWidget(), SIGNAL(onActionSaveTriggered()), this, SLOT(slotOnActionSaveTriggered()));
+    connect(mCentralWidget->tabWidget(), SIGNAL(onMouseMoved(QPoint)), this, SLOT(slotOnMouseMoved(QPoint)));
 
     // Status bar
     connect(mZoomComboBox, SIGNAL(scaleChanged(qreal)), this, SLOT(slotSceneScaleChanged(qreal)));
-    ui->statusBar->addPermanentWidget(mZoomComboBox);
+
 
     setAcceptDrops(true);
 
@@ -470,6 +475,11 @@ void TMainWindow::slotOnTabIndexChanged(int)
     if(graphicsView) {
         mZoomComboBox->setScaleValue(graphicsView->scale(), false);
     }
+}
+
+void TMainWindow::slotOnMouseMoved(const QPoint &pos)
+{
+    mLabel->setText(tr("Pos: %1,%2").arg(pos.x()).arg(pos.y()));
 }
 
 void TMainWindow::on_actionSaveMap_triggered()

@@ -72,6 +72,7 @@ int TTabWidget::addTab(void *document, const QString &name, const QPixmap &icon)
     TTabContainer *view = new TTabContainer(this);
     int i =  QTabWidget::addTab(view, QIcon(icon), name);
     emit onTabCountChanged(count());
+    connect(view->graphicsView(), SIGNAL(onMouseMoved(QPoint)), this, SIGNAL(onMouseMoved(QPoint)));
     return i;
 }
 

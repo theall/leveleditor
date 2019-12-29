@@ -17,8 +17,10 @@ public:
     TRespawnModel(QObject *parent = Q_NULLPTR);
 
     void clear();
+    TPointObject *getTPointObject(int index);
     TRespawnList respawnList() const;
     int indexOf(TRespawn *respawn) const;
+    int pointObjectIndex(TPointObject *pointObject);
 
 signals:
     void objectInserted(const TRespawnList &objectList, const QList<int> &indexList);
@@ -30,8 +32,8 @@ public:
 
     // QAbstractItemModel interface
 public:
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
-    QModelIndex parent(const QModelIndex &index) const;
+//    QModelIndex index(int row, int column, const QModelIndex &parent) const;
+//    QModelIndex parent(const QModelIndex &index) const;
     int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;

@@ -72,6 +72,11 @@ TEnemyFactoryList TEnemyFactoryModel::enemyFactoryList() const
     return mObjectList;
 }
 
+TEnemyFactory *TEnemyFactoryModel::getEnemyFactory(int index)
+{
+    return mObjectList.at(index);
+}
+
 void TEnemyFactoryModel::setEnemyFactoryList(const TEnemyFactoryList &enemyFactoryList)
 {
     mObjectList = enemyFactoryList;
@@ -85,6 +90,11 @@ TEnemyFactory *TEnemyFactoryModel::createEnemyFactory()
 TEnemyModelList TEnemyFactoryModel::enemyModelList() const
 {
     return mEnemyModelList;
+}
+
+TEnemyModel *TEnemyFactoryModel::getEnemyModel(int index)
+{
+    return mEnemyModelList.at(index);
 }
 
 void TEnemyFactoryModel::setEnemyModelList(const TEnemyModelList &enemyModelList)

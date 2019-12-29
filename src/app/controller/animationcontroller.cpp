@@ -211,7 +211,7 @@ void TAnimationController::slotOnSelectedObjectChanged(TObject *, TObject *)
 {
     TSceneModel *sceneModel = mDocument->getSceneModel();
     TBaseModel *baseModel = sceneModel->getCurrentModel();
-    if(TTileModel *tileModel = dynamic_cast<TTileModel*>(baseModel)) {
+    if(dynamic_cast<TTileModel*>(baseModel)) {
         TGraphicsScene *graphicsScene = static_cast<TGraphicsScene*>(mMainWindow->getCurrentGraphicsScene());
         for(TObjectItem *objectItem : graphicsScene->getSelectedObjectItemList()) {
             TAnimationItem *aniamtionItem = dynamic_cast<TAnimationItem*>(objectItem);

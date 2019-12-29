@@ -54,8 +54,9 @@ QVariant TEnemyModel::data(const QModelIndex &index, int role) const
     TEnemy *enemy = mObjectList.at(row);
     if(role == Qt::DisplayRole) {
         return tr("Enemy %1").arg(row+1);
-    } else if(role == Qt::DecorationRole) {
-        return enemy->getPixmap()->content();
     }
+//    else if(role == Qt::DecorationRole) {
+//        return enemy->getPixmap()->content();
+//    }
     return QVariant();
 }

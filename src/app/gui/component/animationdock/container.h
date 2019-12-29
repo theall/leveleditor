@@ -68,7 +68,7 @@ private slots:
     void slotMoveRightTriggered();
 
 private:
-    QAction *mBtnNewAnimation;// 类提供了一个抽象的用户界面操作，可以插入到小部件中
+    QAction *mBtnNewAnimation;
     QAction *mBtnPlay;
     QAction *mBtnCopyAnimation;
     QAction *mBtnStop;

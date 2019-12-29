@@ -16,6 +16,7 @@ public:
     ~TEnemyFactory();
 
     TEnemyList enemyList() const;
+    TEnemy *getEnemy(int index) const;
     void setEnemyList(const TEnemyList &enemyList);
 
 private:

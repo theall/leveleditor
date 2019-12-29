@@ -4,6 +4,7 @@
 #include "abstractcontroller.h"
 
 #include "../core/document/model/scenemodel.h"
+#include "../core/document/model/enemymodel.h"
 
 class TObjectDock;
 class TObjectContainer;
@@ -21,8 +22,9 @@ public:
     bool joint(TMainWindow *mainWindow, TCore *core) Q_DECL_OVERRIDE;
     void setCurrentDocument(TDocument *document) Q_DECL_OVERRIDE;
 
+    void resetCurrentModel();
     void setObjectListViewModel(TBaseModel *baseModel);
-    void setSubControlObjectListViewModel(TBaseModel *baseModel);
+    void setSubControlObjectListViewModel(TEnemyModel *enemyModel);
 
 private slots:
 
@@ -31,6 +33,9 @@ private slots:
 
     //From TObjectListView
     void slotObjectIndexPressed(const QModelIndex &index);
+
+    //From TSubControlobjectListView
+    void slotEnemyIndexPressed(int index);
 
 protected slots:
     void slotTimerEvent();
