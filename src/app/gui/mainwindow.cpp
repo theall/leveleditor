@@ -143,7 +143,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
     connect(mCentralWidget->tabWidget(), SIGNAL(currentChanged(int)), this, SLOT(slotOnTabIndexChanged(int)));
     connect(mCentralWidget->tabWidget(), SIGNAL(onTabCountChanged(int)), this, SLOT(slotOnTabCountChanged(int)));
     connect(mCentralWidget->tabWidget(), SIGNAL(onActionSaveTriggered()), this, SLOT(slotOnActionSaveTriggered()));
-    connect(mCentralWidget->tabWidget(), SIGNAL(onMouseMoved(QPoint)), this, SLOT(slotOnMouseMoved(QPoint)));
+    connect(mCentralWidget->tabWidget(), SIGNAL(onMouseMoved(QPointF)), this, SLOT(slotOnMouseMoved(QPointF)));
 
     // Status bar
     connect(mZoomComboBox, SIGNAL(scaleChanged(qreal)), this, SLOT(slotSceneScaleChanged(qreal)));
@@ -477,7 +477,7 @@ void TMainWindow::slotOnTabIndexChanged(int)
     }
 }
 
-void TMainWindow::slotOnMouseMoved(const QPoint &pos)
+void TMainWindow::slotOnMouseMoved(const QPointF &pos)
 {
     mLabel->setText(tr("Pos: %1,%2").arg(pos.x()).arg(pos.y()));
 }

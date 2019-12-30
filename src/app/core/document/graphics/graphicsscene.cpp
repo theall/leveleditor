@@ -16,6 +16,7 @@
 #include "../model/entity/darea.h"
 #include "../model/entity/plat.h"
 #include "../model/entity/wall.h"
+#include "../model/entity/respawn.h"
 
 #include "../undocommand/objectaddcommand.h"
 #include "../undocommand/objectmovecommand.h"
@@ -211,6 +212,10 @@ void TGraphicsScene::selectObjectItem(TObjectItem *objectItem)
 void TGraphicsScene::removeSelectedItems()
 {
     TObjectList objectList = mSelectedItems->getSelectedObjectList();
+    for(TObject *object : objectList) {
+        if(!(dynamic_cast<TRespawn*>(object)))//||dynamic_cast<>(object)
+            objectList.removeAll(object);
+    }
     if(objectList.isEmpty())
         return;
 

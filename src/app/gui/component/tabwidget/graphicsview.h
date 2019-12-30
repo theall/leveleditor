@@ -20,7 +20,7 @@ public:
 signals:
     void resized();
     void requestPopupContextMenu(const QPointF &po);
-    void onMouseMoved(const QPoint &pos);
+    void onMouseMoved(const QPointF &pos);
 
 private:
     qreal mScale;

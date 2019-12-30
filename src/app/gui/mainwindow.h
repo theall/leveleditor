@@ -97,7 +97,7 @@ private slots:
     void slotOnTabCountChanged(int count);
     void slotOnActionSaveTriggered();
     void slotOnTabIndexChanged(int index);
-    void slotOnMouseMoved(const QPoint &pos);
+    void slotOnMouseMoved(const QPointF &pos);
 
     // From self
     void slotOpenRecentFile();

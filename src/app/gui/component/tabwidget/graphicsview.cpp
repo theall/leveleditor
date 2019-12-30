@@ -121,8 +121,8 @@ void TGraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
 void TGraphicsView::mouseMoveEvent(QMouseEvent *event)
 {
     QGraphicsView::mouseMoveEvent(event);
-    QGraphicsView::mapToScene(event->pos());
-    emit onMouseMoved(event->pos());
+    QPointF pos = mapToScene(event->pos());
+    emit onMouseMoved(pos);
     if(!mLeftButtonDown)
         return;
 

@@ -41,7 +41,7 @@ signals:
     // To main window
     void onTabCountChanged(int count);
     void onActionSaveTriggered();
-    void onMouseMoved(const QPoint &pos);
+    void onMouseMoved(const QPointF &pos);
 
 private slots:
     void slotOnCurrentIndexChanged(int index);

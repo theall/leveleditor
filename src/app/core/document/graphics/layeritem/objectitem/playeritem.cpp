@@ -15,8 +15,9 @@ TPlayerItem::TPlayerItem(TPointObject *pointObject, QGraphicsItem *parent) :
 {
     Q_ASSERT(pointObject);
 
-    setBoundingRect(QRectF(-WIDTH/2, -HEIGHT, WIDTH, HEIGHT));
-    move(pointObject->pos());
+    QRectF r = QRectF(-WIDTH/2, -HEIGHT, WIDTH, HEIGHT);
+    r.translate(pointObject->pos());
+    setBoundingRect(r);
 }
 
 TPlayerItem::~TPlayerItem()
