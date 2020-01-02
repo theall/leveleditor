@@ -4,6 +4,7 @@ TBoxModel::TBoxModel(QObject *parent) :
     TGenericModel<TBox>(TBaseModel::BOX, parent)
 {
     setName(tr("Box"));
+    setIcon(QIcon(":/scenemodel/images/box.png"));
 }
 
 void TBoxModel::clear()

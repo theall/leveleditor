@@ -5,6 +5,7 @@ TPlatModel::TPlatModel(QObject *parent) :
     TGenericModel<TPlat>(TBaseModel::PLAT, parent)
 {
     setName(tr("Platform"));
+    setIcon(QIcon(":/scenemodel/images/platform.png"));
 }
 
 void TPlatModel::readFromStream(QDataStream &stream)

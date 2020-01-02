@@ -4,6 +4,7 @@ TWallModel::TWallModel(QObject *parent) :
     TGenericModel<TWall>(TBaseModel::WALL, parent)
 {
     setName(tr("Wall"));
+    setIcon(QIcon(":/scenemodel/images/wall.png"));
 }
 
 void TWallModel::readFromStream(QDataStream &stream)

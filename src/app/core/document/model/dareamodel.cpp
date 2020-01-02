@@ -4,6 +4,7 @@ TDAreaModel::TDAreaModel(QObject *parent) :
     TGenericModel<TDArea>(TBaseModel::DAREA, parent)
 {
     setName(tr("Danger Area"));
+     setIcon(QIcon(":/scenemodel/images/danger-area.png"));
 }
 
 TDAreaModel::~TDAreaModel()

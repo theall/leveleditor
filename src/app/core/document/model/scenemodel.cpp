@@ -58,6 +58,7 @@ TSceneModel::TSceneModel(const TMap::Type &mapType, QObject *parent) :
   , mFlagPointObject2(new TPointObject(this))
 {
     setName(tr("Map Property"));
+    setIcon(QIcon(":/scenemodel/images/map-x.png"));
 
     mBaseModelList.append(mTileLayerModel1);
     mBaseModelList.append(mTileLayerModel2);

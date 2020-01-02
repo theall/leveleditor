@@ -4,6 +4,7 @@ TAreaModel::TAreaModel(QObject *parent) :
     TGenericModel<TArea>(TBaseModel::AREA, parent)
 {
     setName(tr("Area"));
+    setIcon(QIcon(":/scenemodel/images/area.png"));
 }
 
 TAreaModel::~TAreaModel()

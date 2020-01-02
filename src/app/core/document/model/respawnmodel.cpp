@@ -4,6 +4,7 @@ TRespawnModel::TRespawnModel(QObject *parent) :
     TGenericModel<TRespawn>(TBaseModel::RESPAWN, parent)
 {
     setName(tr("Respawn"));
+    setIcon(QIcon(":/scenemodel/images/respawn.png"));
 }
 
 void TRespawnModel::clear()

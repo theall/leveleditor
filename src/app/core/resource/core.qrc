@@ -3,5 +3,14 @@
         <file>images/layer-image.png</file>
         <file>images/layer-object.png</file>
         <file>images/camera.png</file>
+        <file>images/box.png</file>
+        <file>images/factory.png</file>
+        <file>images/wall.png</file>
+        <file>images/area.png</file>
+        <file>images/danger-area.png</file>
+        <file>images/platform.png</file>
+        <file>images/respawn.png</file>
+        <file>images/map-x.png</file>
+        <file>images/trigger.png</file>
     </qresource>
 </RCC>

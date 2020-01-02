@@ -5,6 +5,7 @@ TEnemyFactoryModel::TEnemyFactoryModel(QObject *parent) :
     TGenericModel<TEnemyFactory>(TBaseModel::ENEMY_FACTORY, parent)
 {
     setName(tr("Factory"));
+    setIcon(QIcon(":/scenemodel/images/factory.png"));
 }
 
 TEnemyFactoryModel::~TEnemyFactoryModel()

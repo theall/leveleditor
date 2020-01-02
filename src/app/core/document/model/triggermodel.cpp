@@ -4,6 +4,7 @@ TTriggerModel::TTriggerModel(QObject *parent) :
     TGenericModel<TTrigger>(TBaseModel::TRIGGER, parent)
 {
     setName(tr("TriggerModel"));
+    setIcon(QIcon(":/scenemodel/images/trigger.png"));
 }
 
 TTriggerModel::~TTriggerModel()
