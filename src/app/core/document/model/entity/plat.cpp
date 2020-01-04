@@ -116,9 +116,6 @@ void TPlat::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(PID_PLAT_SOUND, sound);
     mPropertySheet->setValue(PID_PLAT_BREAKABLE, breakable);
     mPropertySheet->setValue(PID_PLAT_EVENT_NUMBER_2, eventN2);
-    if(mDocument) {
-        //mPixmap = mDocument->getPixmap(QString::asprintf("plat%d.bmp", pic))->pixmap();
-    }
 }
 
 void TPlat::initPropertySheet()

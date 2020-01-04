@@ -1,5 +1,4 @@
 #include "object.h"
-#include "../../document.h"
 #include "../../base/tr.h"
 #include "../../base/finddoc.h"
 
@@ -21,14 +20,9 @@ const QString g_type_string[TObject::INVALID+1] = {
 
 TObject::TObject(Type type, QObject *parent) :
     TPropertyObject(parent)
-  , mDocument(nullptr)
   , mType(type)
   , mVisible(true)
 {
-#ifndef TEST
-    FIND_DOCUMENT;
-#endif
-
     initPropertySheet();
 }
 

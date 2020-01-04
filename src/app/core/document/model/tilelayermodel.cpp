@@ -1,5 +1,6 @@
 #include "tilelayermodel.h"
 #include "basemodel.h"
+#include "../../assets/assetsmanager.h"
 
 #include <utils/macro.h>
 
@@ -52,6 +53,14 @@ void TTileModel::readFromStream(QDataStream &stream)
         mObjectList.append(tile);
     }
 
+    // Inject tileid into tile
+    TAssetsManager *assetManager = TAssetsManager::getInstance();
+    for(TTile *tile : mObjectList) {
+        int tilesetNo = tile->getTilesetNo();
+        int tileNo = tile->getTileNo();
+        TTileId *tileId = assetManager->getTile(tilesetNo, tileNo);
+        tile->setTileId(tileId);
+    }
     // Process tile target
     for(TTile *tile : mObjectList) {
         int tileTarget = tile->targetNumber();

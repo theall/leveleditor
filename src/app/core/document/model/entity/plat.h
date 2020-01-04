@@ -6,7 +6,6 @@
 
 #include "rectobject.h"
 
-class TDocument;
 class TPlat : public TRectObject
 {
     Q_OBJECT

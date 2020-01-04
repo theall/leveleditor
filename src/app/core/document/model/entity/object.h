@@ -8,8 +8,6 @@
 
 #include "../../property/propertyobject.h"
 
-class TDocument;
-
 class TObject : public TPropertyObject
 {
     Q_OBJECT
@@ -44,7 +42,6 @@ public:
     void setVisible(bool visible);
 
 protected:
-    TDocument *mDocument;
     virtual void initPropertySheet();
 
 private:

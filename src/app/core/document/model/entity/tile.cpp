@@ -1,6 +1,5 @@
 #include "tile.h"
 #include "../../base/tr.h"
-#include "../../document.h"
 #include "../../../assets/tileid.h"
 #include "../../../assets/cachedpixmap.h"
 
@@ -167,6 +166,8 @@ TTile::TTile(QObject *parent) :
   , mTileId(nullptr)
   , mHasMoveModel(false)
   , mTargetNumber(-1)
+  , mTilesetNo(-1)
+  , mTileNo(-1)
 {
     initPropertySheet();
 }
@@ -214,8 +215,6 @@ void TTile::readFromStream(QDataStream &stream)
 {
     float x;
     float y;
-    int number;
-    int setNumber;
     int xEnd1;
     int xEnd2;
     int xRand1;
@@ -237,8 +236,8 @@ void TTile::readFromStream(QDataStream &stream)
     float yScrSpeed;
     stream >> x;
     stream >> y;
-    stream >> number;
-    stream >> setNumber;
+    stream >> mTileNo;
+    stream >> mTilesetNo;
     stream >> xEnd1;
     stream >> xEnd2;
     stream >> xRand1;
@@ -293,8 +292,6 @@ void TTile::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(PID_TILE_TARGET, target);
     mPropertySheet->setValue(PID_TILE_SCREEN_SPEED, screenSpeed);
 
-    mTileId = mDocument->getTileId(setNumber, number);
-
     setPos(pos1);
     setUp();
 
@@ -311,7 +308,7 @@ void TTile::readFromStream(QDataStream &stream)
             end1.setX(tileLeft);
         }
 
-        QSize tileSize = mTileId->pixmap()->size();
+        QSize tileSize = QSize(100, 100);//= mTileId->pixmap()->size();
         if(end2.y() < 1)
             end2.setY(tileTop + tileSize.height());
         if(end2.x() < 1)
@@ -361,6 +358,26 @@ void TTile::slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &ol
     }
 }
 
+int TTile::getTileNo() const
+{
+    return mTileNo;
+}
+
+void TTile::setTileNo(int tileNo)
+{
+    mTileNo = tileNo;
+}
+
+int TTile::getTilesetNo() const
+{
+    return mTilesetNo;
+}
+
+void TTile::setTilesetNo(int tilesetNo)
+{
+    mTilesetNo = tilesetNo;
+}
+
 TTileId *TTile::tileId() const
 {
     return mTileId;
@@ -372,6 +389,7 @@ void TTile::setTileId(TTileId *tileId)
         return;
 
     mTileId = tileId;
+
     setUp();
 }
 

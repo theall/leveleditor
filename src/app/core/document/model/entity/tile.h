@@ -9,7 +9,6 @@
 
 class TTileId;
 class TPixmap;
-class TDocument;
 
 class TTileMoveModel : QObject
 {
@@ -117,6 +116,12 @@ public:
 
     QRectF getRect() const;
 
+    int getTilesetNo() const;
+    void setTilesetNo(int tilesetNo);
+
+    int getTileNo() const;
+    void setTileNo(int tileNo);
+
 private slots:
     void slotPropertyItemValueChanged(TPropertyItem *item, const QVariant &oldValue);
 
@@ -127,6 +132,8 @@ private:
     TTileId *mTileId;
     bool mHasMoveModel;
     int mTargetNumber;
+    int mTilesetNo;
+    int mTileNo;
 
     void setUp();
 	void initPropertySheet();

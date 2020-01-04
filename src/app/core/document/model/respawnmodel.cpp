@@ -148,6 +148,7 @@ int TRespawnModel::pointObjectIndex(TPointObject *pointObject)
             return index*2+1;
         index++;
     }
+    return index;
 }
 
 void TRespawnModel::onObjectInserted(const TObjectList &objectList, const QList<int> &indexList)
