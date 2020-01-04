@@ -200,3 +200,13 @@ bool TBox::isCongener(TObject *object) const
 {
     return static_cast<TBox*>(object);
 }
+
+QByteArray TBox::toByteArray(TObject *object) const
+{
+
+}
+
+void TBox::loadFromByteArray(const QByteArray &byteArray)
+{
+
+}

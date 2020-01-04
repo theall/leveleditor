@@ -1,11 +1,13 @@
 #include "graphicsview.h"
 #include "../../widgets/flexiblescrollbar.h"
+#include "graphicsviewcontexmenu.h"
 
 #include <utils/preferences.h>
 
 TGraphicsView::TGraphicsView(QWidget *parent) :
     QGraphicsView(parent)
   , mLeftButtonDown(false)
+  , mGraphicsViewContextMenu(new TGraphicsViewContextMenu(this))
 {
     setTransformationAnchor(QGraphicsView::AnchorViewCenter);
 #ifdef Q_OS_MAC
@@ -31,6 +33,8 @@ TGraphicsView::TGraphicsView(QWidget *parent) :
     setHorizontalScrollBar(new TFlexibleScrollBar(Qt::Horizontal, this));
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
+    connect(mGraphicsViewContextMenu,SIGNAL(pressDownPaste()), this, SLOT(slotPressDownPaste()));
 }
 
 TGraphicsView::~TGraphicsView()
@@ -89,6 +93,16 @@ void TGraphicsView::forceCenterOn(const QPointF &pos)
     }
 }
 
+TGraphicsViewContextMenu *TGraphicsView::graphicsViewContextMenu() const
+{
+    return mGraphicsViewContextMenu;
+}
+
+void TGraphicsView::slotPressDownPaste()
+{
+    emit pressDownPaste(mCurrentMousePos);
+}
+
 void TGraphicsView::resizeEvent(QResizeEvent *)
 {
     emit resized();
@@ -96,7 +110,7 @@ void TGraphicsView::resizeEvent(QResizeEvent *)
 
 void TGraphicsView::contextMenuEvent(QContextMenuEvent *event)
 {
-    emit requestPopupContextMenu(event->globalPos());
+//    emit requestPopupContextMenu(event->globalPos());
 }
 
 void TGraphicsView::mousePressEvent(QMouseEvent *event)
@@ -105,6 +119,12 @@ void TGraphicsView::mousePressEvent(QMouseEvent *event)
 
     mLeftButtonDown = true;
     mLastMousePos = event->globalPos();
+    if(event->button() == Qt::RightButton) {
+        emit requestPopupContextMenu();
+        mGraphicsViewContextMenu->exec(QCursor::pos());
+        mLeftButtonDown = false;
+    }if(event->button() == Qt::LeftButton)
+        mGraphicsViewContextMenu->setAllActionsState(false);
 }
 
 void TGraphicsView::mouseReleaseEvent(QMouseEvent *event)
@@ -121,8 +141,8 @@ void TGraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
 void TGraphicsView::mouseMoveEvent(QMouseEvent *event)
 {
     QGraphicsView::mouseMoveEvent(event);
-    QPointF pos = mapToScene(event->pos());
-    emit onMouseMoved(pos);
+    mCurrentMousePos = mapToScene(event->pos());
+    emit onMouseMoved(mCurrentMousePos);
     if(!mLeftButtonDown)
         return;
 

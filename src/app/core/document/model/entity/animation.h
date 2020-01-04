@@ -8,7 +8,7 @@
 #include "../../base/io.h"
 
 class TTile;
-class TAnimation : public TObject, TIO
+class TAnimation : public TObject
 {
     Q_OBJECT
 
@@ -16,7 +16,6 @@ public:
     explicit TAnimation(QObject *parent = nullptr);
     ~TAnimation();
 
-    void move(const QPointF &offset);
     TFrameList frameList() const;
     int getFrameSize() const;
     void setFrameList(const TFrameList &frameList);
@@ -59,6 +58,12 @@ public:
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
 
     // TObject interface
+
+    // TObject interface
+public:
+    QByteArray toByteArray(TObject *object) const;
+    void loadFromByteArray(const QByteArray &byteArray);
+    void move(const QPointF &offset);
 };
 
 typedef QList<TAnimation*> TAnimationList;

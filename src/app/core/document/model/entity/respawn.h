@@ -6,7 +6,7 @@
 #include "pointobject.h"
 #include "../../base/io.h"
 
-class TRespawn : public TObject, TIO
+class TRespawn : public TObject
 {
     Q_OBJECT
 
@@ -32,6 +32,11 @@ public:
     QString typeString() const;
     bool isCongener(TObject *object) const;
 
+
+    // TObject interface
+public:
+    QByteArray toByteArray(TObject *object) const;
+    void loadFromByteArray(const QByteArray &byteArray);
 };
 
 typedef QList<TRespawn*> TRespawnList;

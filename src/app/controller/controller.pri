@@ -12,7 +12,8 @@ SOURCES += \
     $$PWD/characterpanelcontroller.cpp \
     $$PWD/mapsdockcontroller.cpp \
     $$PWD/animationcontroller.cpp \
-    $$PWD/objectcontroller.cpp
+    $$PWD/objectcontroller.cpp \
+    $$PWD/clipboard.cpp
 
 HEADERS  += \
     $$PWD/abstractcontroller.h \
@@ -28,4 +29,5 @@ HEADERS  += \
     $$PWD/characterpanelcontroller.h \
     $$PWD/mapsdockcontroller.h \
     $$PWD/animationcontroller.h \
-    $$PWD/objectcontroller.h
+    $$PWD/objectcontroller.h \
+    $$PWD/clipboard.h

@@ -69,3 +69,13 @@ void TPointObject::readFromStream(QDataStream &stream)
     stream >> point;
     setPos(point);
 }
+
+QByteArray TPointObject::toByteArray(TObject *object) const
+{
+
+}
+
+void TPointObject::loadFromByteArray(const QByteArray &byteArray)
+{
+
+}

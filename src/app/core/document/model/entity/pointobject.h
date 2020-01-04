@@ -4,7 +4,7 @@
 #include "object.h"
 #include "../../base/io.h"
 
-class TPointObject : public TObject, TIO
+class TPointObject : public TObject
 {
 public:
     TPointObject(QObject *parent = Q_NULLPTR);
@@ -31,6 +31,11 @@ public:
 public:
     void saveToStream(QDataStream &stream) const;
     void readFromStream(QDataStream &stream);
+
+    // TObject interface
+public:
+    QByteArray toByteArray(TObject *object) const;
+    void loadFromByteArray(const QByteArray &byteArray);
 };
 
 #endif // TPOINTOBJECT_H

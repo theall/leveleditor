@@ -46,7 +46,7 @@ private:
     TSubControlObjectListView *mSubControlObjectListView;
 
 private:
-    void selectAndCenterOn(TObject *object);
+    void selectAndCenterOn(TObjectList &objectList);
 
 };
 

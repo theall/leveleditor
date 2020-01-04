@@ -3,6 +3,8 @@
 #include "../core/shared/filesystemwatcher.h"
 #include "../core/document/graphics/graphicsscene.h"
 #include "../gui/component/tabwidget/tabwidget.h"
+#include "../gui/component/tabwidget/graphicsview.h"
+#include "../gui/component/tabwidget/graphicsviewcontexmenu.h"
 #include "../utils/utils.h"
 
 #include <QDebug>
@@ -55,6 +57,14 @@ void TTabController::setCurrentDocument(TDocument *document)
         return;
     }
     mTabWidget->setCurrentIndex(index);
+    TGraphicsView *graphicsView = mTabWidget->currentGraphicsView();
+    connect(graphicsView, SIGNAL(requestPopupContextMenu()), this, SLOT(slotRequestPopupContextMenu()));
+    connect(graphicsView, SIGNAL(pressDownPaste(QPointF)), this, SIGNAL(pressDownPaste(QPointF)));
+
+    mGraphicsViewContextMenu = mTabWidget->currentGraphicsView()->graphicsViewContextMenu();
+    connect(mGraphicsViewContextMenu, SIGNAL(pressDownClone()), this, SLOT(slotPressDownClone()));
+    connect(mGraphicsViewContextMenu, SIGNAL(pressDownCopy()), this, SIGNAL(pressDownCopy()));
+    connect(mGraphicsViewContextMenu, SIGNAL(pressDownDelete()), this, SIGNAL(pressDownDelete()));
 }
 
 void TTabController::removeDocument(TDocument *document)
@@ -206,6 +216,19 @@ void TTabController::slotDocumentFileChanged(const QString &file)
         mChangedDocuments.append(document);
 
     startMyTimer();
+}
+
+void TTabController::slotRequestPopupContextMenu()
+{
+    TGraphicsScene *graphicsScene = static_cast<TGraphicsScene*>(mTabWidget->currentGraphicsScene());
+    TObjectItemList objectItemList = graphicsScene->getSelectedObjectItemList();
+    if(objectItemList.isEmpty())
+        mGraphicsViewContextMenu->setAllActionsState(true);
+}
+
+void TTabController::slotPressDownClone()
+{
+
 }
 
 void TTabController::slotTimerEvent()

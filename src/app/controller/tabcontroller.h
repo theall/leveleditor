@@ -5,6 +5,7 @@
 
 class TGraphicsScene;
 class TTabWidget;
+class TGraphicsViewContextMenu;
 
 class TTabController : public TAbstractController
 {
@@ -33,14 +34,17 @@ signals:
     void requestCloseDocument(TDocument *document);
     void documentDirtyFlagChanged(TDocument *document, bool isDirty);
 
+    void pressDownCopy();
+    void pressDownPaste(const QPointF &pos);
+    void pressDownDelete();
+
 private:
     TTabWidget *mTabWidget;
+    TGraphicsViewContextMenu *mGraphicsViewContextMenu;
     QList<TDocument*> mChangedDocuments;
     QDateTime mLastCheckTime;
     int mLastListCount;
     bool mLock;
-
-    QMenu *mGraphicsViewContextMenu;
 
 private slots:
     // From TTabWidget
@@ -49,6 +53,8 @@ private slots:
     void slotRequestExploreFile(const QString &file);
     void slotRequestStartMove(void* document);
     void slotRequestStopMove(void* document);
+    void slotRequestPopupContextMenu();
+    void slotPressDownClone();
 
     // From TDocument
     void slotDocumentDirtyFlagChanged(bool isDirty);

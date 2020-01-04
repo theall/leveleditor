@@ -79,7 +79,7 @@ void TObjectController::setObjectListViewModel(TBaseModel *baseModel)
     mObjectListView->setModel(baseModel);
 }
 
-void TObjectController::setSubControlObjectListViewModel(TEnemyModel *enemyModel){
+void TObjectController::setSubControlObjectListViewModel(TEnemyModel *enemyModel) {
     mSubControlObjectListView->setModel(enemyModel);
 }
 
@@ -101,17 +101,6 @@ void TObjectController::slotOnSelectedObjectChanged(TObject *, TObject *current)
         mObjectListView->selectRow(wallModel->currentIndex(current), parent);
     } else if(TRespawnModel *respawModel = dynamic_cast<TRespawnModel*>(baseModel)) {
         mObjectListView->selectRow(respawModel->pointObjectIndex(dynamic_cast<TPointObject*>(current)), parent);
-//        TRespawn *respawn = (TRespawn*)current->parent();
-//        int index = respawModel->indexOf(respawn);
-//        if(index == -1)
-//            return;
-
-//        QModelIndex modelIndex = respawModel->index(index, 0, QModelIndex());
-//        if(respawn->startPointObject() == current) {
-//            mObjectListView->selectRow(1, modelIndex);
-//        } else {
-//            mObjectListView->selectRow(0, modelIndex);
-//        }
     } else if(TEnemyFactoryModel *enemyFactoryModel = dynamic_cast<TEnemyFactoryModel*>(baseModel)) {
         mObjectListView->selectRow(enemyFactoryModel->currentIndex(current), parent);
     } else if(TTriggerModel *triggerModel = dynamic_cast<TTriggerModel*>(baseModel)) {
@@ -122,39 +111,46 @@ void TObjectController::slotOnSelectedObjectChanged(TObject *, TObject *current)
 void TObjectController::slotObjectIndexPressed(const QModelIndex &index)
 {
     TBaseModel *baseModel = mSceneModel->getCurrentModel();
-    int row = index.row();
-
-    if(TTileModel *tileModel = dynamic_cast<TTileModel*>(baseModel)) {
-        selectAndCenterOn(tileModel->getObject(row));
-    } else if(TAreaModel *areaModel = dynamic_cast<TAreaModel*>(baseModel)) {
-        selectAndCenterOn(areaModel->getObject(row));
-    } else if(TBoxModel *boxModel = dynamic_cast<TBoxModel*>(baseModel)) {
-        selectAndCenterOn(boxModel->getObject(row));
-    } else if(TDAreaModel *dareaModel = dynamic_cast<TDAreaModel*>(baseModel)) {
-        selectAndCenterOn(dareaModel->getObject(row));
-    } else if(TPlatModel *platModel = dynamic_cast<TPlatModel*>(baseModel)) {
-        selectAndCenterOn(platModel->getObject(row));
-    } else if(TWallModel *wallModel = dynamic_cast<TWallModel*>(baseModel)) {
-        selectAndCenterOn(wallModel->getObject(row));
-    } else if(TRespawnModel *respawnModel = dynamic_cast<TRespawnModel*>(baseModel)) {
-        selectAndCenterOn(respawnModel->getTPointObject(index.row()));
-    } else if(TEnemyFactoryModel *enemyFactoryModel = dynamic_cast<TEnemyFactoryModel*>(baseModel)) {
-        selectAndCenterOn(enemyFactoryModel->getObject(row));
-        setSubControlObjectListViewModel(enemyFactoryModel->getEnemyModel(row));
-    } else if(TTriggerModel *triggerModel = dynamic_cast<TTriggerModel*>(baseModel)) {
-        selectAndCenterOn(triggerModel->getObject(row));
+//    int row = index.row();
+    TObjectList objectList;
+    for(int row : mObjectListView->getSelectedIndexes()) {
+        if(TTileModel *tileModel = dynamic_cast<TTileModel*>(baseModel)) {
+            objectList.append(tileModel->getObject(row));
+        } else if(TAreaModel *areaModel = dynamic_cast<TAreaModel*>(baseModel)) {
+            objectList.append(areaModel->getObject(row));
+        } else if(TBoxModel *boxModel = dynamic_cast<TBoxModel*>(baseModel)) {
+            objectList.append(boxModel->getObject(row));
+        } else if(TDAreaModel *dareaModel = dynamic_cast<TDAreaModel*>(baseModel)) {
+            objectList.append(dareaModel->getObject(row));
+        } else if(TPlatModel *platModel = dynamic_cast<TPlatModel*>(baseModel)) {
+            objectList.append(platModel->getObject(row));
+        } else if(TWallModel *wallModel = dynamic_cast<TWallModel*>(baseModel)) {
+            objectList.append(wallModel->getObject(row));
+        } else if(TRespawnModel *respawnModel = dynamic_cast<TRespawnModel*>(baseModel)) {
+            objectList.append(respawnModel->getObject(row));
+        } else if(TEnemyFactoryModel *enemyFactoryModel = dynamic_cast<TEnemyFactoryModel*>(baseModel)) {
+            objectList.append(enemyFactoryModel->getObject(row));
+            setSubControlObjectListViewModel(enemyFactoryModel->getEnemyModel(row));
+        } else if(TTriggerModel *triggerModel = dynamic_cast<TTriggerModel*>(baseModel)) {
+            objectList.append(triggerModel->getObject(row));
+        }
     }
+    selectAndCenterOn(objectList);
 }
 
 void TObjectController::slotEnemyIndexPressed(int index)
 {
     TBaseModel *baseModel = mSceneModel->getCurrentModel();
+    TObjectList objectList;
+
     if(TEnemyFactoryModel *enemyFactoryModel = dynamic_cast<TEnemyFactoryModel*>(baseModel)) {
         int enemyFactoryIndex = mObjectListView->getCurrentIndex();
         TEnemyFactory *enemyFactory = enemyFactoryModel->getEnemyFactory(enemyFactoryIndex);
-        selectAndCenterOn(enemyFactory->getEnemy(index));
-
+        for(int row : mSubControlObjectListView->getSelectedIndexes()){
+            objectList.append(enemyFactory->getEnemy(row));
+        }
     }
+    selectAndCenterOn(objectList);
 }
 
 void TObjectController::slotTimerEvent()
@@ -162,15 +158,20 @@ void TObjectController::slotTimerEvent()
 
 }
 
-void TObjectController::selectAndCenterOn(TObject *object)
+void TObjectController::selectAndCenterOn(TObjectList &objectList)
 {
-    TObjectItem *objectItem = TObjectItem::getObjectItem(object);
-    if(!objectItem)
-        return;
+    TObjectItemList objectItemList;
+    TObjectItem *objectItem;
+    for(TObject *object : objectList) {
+        objectItem = TObjectItem::getObjectItem(object);
+        objectItemList.append(objectItem);
+        if(!objectItem)
+            return;
+    }
 
     TGraphicsScene *graphicsScene = static_cast<TGraphicsScene*>(mMainWindow->getCurrentGraphicsScene());
     if(!graphicsScene)
         return;
-    graphicsScene->selectObjectItem(objectItem);
+    graphicsScene->selectObjectItemList(objectItemList);
     mMainWindow->getCurrentGraphicsView()->centerOn(objectItem);
 }

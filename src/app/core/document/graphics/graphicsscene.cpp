@@ -213,7 +213,7 @@ void TGraphicsScene::removeSelectedItems()
 {
     TObjectList objectList = mSelectedItems->getSelectedObjectList();
     for(TObject *object : objectList) {
-        if(!(dynamic_cast<TRespawn*>(object)))//||dynamic_cast<>(object)
+        if(dynamic_cast<TRespawn*>(object))//||dynamic_cast<>(object)
             objectList.removeAll(object);
     }
     if(objectList.isEmpty())

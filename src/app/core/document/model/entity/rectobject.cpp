@@ -94,3 +94,13 @@ void TRectObject::readFromStream(QDataStream &)
 {
 
 }
+
+QByteArray TRectObject::toByteArray(TObject *object) const
+{
+
+}
+
+void TRectObject::loadFromByteArray(const QByteArray &byteArray)
+{
+
+}

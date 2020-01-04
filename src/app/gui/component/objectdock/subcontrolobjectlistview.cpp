@@ -3,7 +3,8 @@
 #include <QHeaderView>
 #include <QResizeEvent>
 
-TSubControlObjectListView::TSubControlObjectListView(QWidget *)
+TSubControlObjectListView::TSubControlObjectListView(QWidget *parent) :
+    QTableView(parent)
 {
     setObjectName(QStringLiteral("SubcontrolObjectListView"));
     setFrameShape(QFrame::Panel);

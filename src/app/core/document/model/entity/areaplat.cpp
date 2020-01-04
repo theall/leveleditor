@@ -65,3 +65,22 @@ void TAreaPlat::readFromStream(QDataStream &stream)
     mPlatIndex--;
 
 }
+
+QByteArray TAreaPlat::toByteArray(TObject *object) const
+{
+
+}
+
+void TAreaPlat::loadFromByteArray(const QByteArray &byteArray)
+{
+
+}
+
+void TAreaPlat::move(const QPointF &offset)
+{
+    if(offset.isNull())
+        return;
+
+    QRectF currentRect = getRect();
+    currentRect.translate(offset);
+}

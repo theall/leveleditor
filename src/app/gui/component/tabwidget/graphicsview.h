@@ -5,6 +5,8 @@
 #include <QGraphicsView>
 #include <QContextMenuEvent>
 
+class TGraphicsViewContextMenu;
+
 class TGraphicsView : public QGraphicsView
 {
     Q_OBJECT
@@ -17,15 +19,24 @@ public:
     void setScale(const qreal &scale);
     void forceCenterOn(const QPointF &pos);
 
+    TGraphicsViewContextMenu *graphicsViewContextMenu() const;
+
 signals:
     void resized();
-    void requestPopupContextMenu(const QPointF &po);
+//    void requestPopupContextMenu(const QPointF &po);
+    void pressDownPaste(const QPointF &pos);
+    void requestPopupContextMenu();
     void onMouseMoved(const QPointF &pos);
+
+private slots:
+    void slotPressDownPaste();
 
 private:
     qreal mScale;
     bool mLeftButtonDown;
     QPoint mLastMousePos;
+    QPointF mCurrentMousePos;
+    TGraphicsViewContextMenu *mGraphicsViewContextMenu;
 
     // QWidget interface
 protected:

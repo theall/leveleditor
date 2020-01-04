@@ -2,6 +2,7 @@
 #include "../../base/tr.h"
 #include "../../../assets/tileid.h"
 #include "../../../assets/cachedpixmap.h"
+#include "../../../assets/assetsmanager.h"
 
 #include <QPoint>
 #include <QPointF>
@@ -140,7 +141,7 @@ TStartPoint *TDoor::startPoint() const
 
 void TDoor::setStartPos(const QPointF &pos)
 {
-    mStartPoint->setPos(pos);
+//    mStartPoint->setPos(pos);
 }
 
 QString TDoor::typeString() const
@@ -291,7 +292,8 @@ void TTile::readFromStream(QDataStream &stream)
     mPropertySheet->setValue(PID_TILE_FOLLOW_TYPE, followType);
     mPropertySheet->setValue(PID_TILE_TARGET, target);
     mPropertySheet->setValue(PID_TILE_SCREEN_SPEED, screenSpeed);
-
+    TAssetsManager *assetsManger = TAssetsManager::getInstance();
+    mTileId = assetsManger->getTile(mTilesetNo, mTileNo);
     setPos(pos1);
     setUp();
 
@@ -322,6 +324,16 @@ void TTile::readFromStream(QDataStream &stream)
 
         mDoor->setRect(QRectF(end1, QSize(end2.x()-end1.x(),end2.y()-end1.y())));
     }
+}
+
+QByteArray TTile::toByteArray(TObject *object) const
+{
+
+}
+
+void TTile::loadFromByteArray(const QByteArray &byteArray)
+{
+
 }
 
 QPixmap TTile::pixmap() const

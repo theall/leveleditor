@@ -211,3 +211,13 @@ bool TEnemy::isCongener(TObject *) const
 {
     return false;
 }
+
+QByteArray TEnemy::toByteArray(TObject *object) const
+{
+
+}
+
+void TEnemy::loadFromByteArray(const QByteArray &byteArray)
+{
+
+}

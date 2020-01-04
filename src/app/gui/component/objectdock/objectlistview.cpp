@@ -2,9 +2,9 @@
 
 #include <QTreeView>
 #include <QHeaderView>
-#include <QResizeEvent>
 #include <QVBoxLayout>
 #include <QScrollBar>
+#include <QMouseEvent>
 #include <QItemSelectionModel>
 
 TObjectListView::TObjectListView(QWidget *parent):
@@ -47,16 +47,11 @@ int TObjectListView::getCurrentIndex()
     return getIndex(currentIndex());
 }
 
-void TObjectListView::selectRow(int row, QModelIndex &parent)
+void TObjectListView::selectRow(int row, QModelIndex &)
 {
     QAbstractItemModel *m = model();
     if(m)
     {
-//        QItemSelectionModel *itemSelectionModel = selectionModel();
-//        QModelIndex headModelIndex = m->index(row, 0, parent);
-//        QItemSelection itemSelection(headModelIndex, headModelIndex);
-//        itemSelectionModel->select(itemSelection, QItemSelectionModel::ClearAndSelect);
-//        verticalScrollBar()->setSliderPosition(row);
         QTableView::selectRow(row);
         emit indexSelected(row);
     }
@@ -121,5 +116,11 @@ void TObjectListView::mousePressEvent(QMouseEvent *event)
     int row = modelIndex.row();
     if(row != -1)
         emit indexPressed(modelIndex);
+}
+
+void TObjectListView::mouseMoveEvent(QMouseEvent *event)
+{
+    QTableView::mouseMoveEvent(event);
+
 }
 

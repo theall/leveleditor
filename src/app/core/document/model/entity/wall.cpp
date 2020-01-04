@@ -34,6 +34,16 @@ void TWall::readFromStream(QDataStream &stream)
     setRect(x, y, w, h);
 }
 
+QByteArray TWall::toByteArray(TObject *object) const
+{
+
+}
+
+void TWall::loadFromByteArray(const QByteArray &byteArray)
+{
+
+}
+
 void TWall::initPropertySheet()
 {
 

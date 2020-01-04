@@ -185,3 +185,13 @@ bool TTrigger::isCongener(TObject *) const
 {
     return false;
 }
+
+QByteArray TTrigger::toByteArray(TObject *object) const
+{
+
+}
+
+void TTrigger::loadFromByteArray(const QByteArray &byteArray)
+{
+
+}

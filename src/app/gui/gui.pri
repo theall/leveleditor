@@ -108,7 +108,6 @@ HEADERS += \
     $$PWD/component/layerdock/layerdock.h \
     $$PWD/component/layerdock/layerview.h \
     $$PWD/widgets/zoomcombobox.h \
-    $$PWD/component/tabwidget/graphicsview.h \
     $$PWD/dialogs/soundresourcedialog.h \
     $$PWD/component/propertydock/widget/pixmapedit.h \
     $$PWD/component/propertydock/widget/sounditemedit.h \
@@ -147,7 +146,8 @@ HEADERS += \
     $$PWD/component/propertydock/widget/diredit.h \
     $$PWD/component/propertydock/propertymanager/dirpropertymanager.h \
     $$PWD/component/propertydock/editorfactory/direditorfactory.h \
-    $$PWD/component/objectdock/subcontrolobjectlistview.h
+    $$PWD/component/objectdock/subcontrolobjectlistview.h \
+    $$PWD/component/tabwidget/graphicsview.h
 
 FORMS += \
     $$PWD/mainwindow.ui \

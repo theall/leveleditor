@@ -50,6 +50,9 @@ private slots:
     void slotRequestCloseDocument(TDocument *document);
     void slotRequestSwitchToDocument(TDocument *document);
     void slotDocumentDirtyFlagChanged(TDocument *document, bool isDirty);
+    void slotPressDownCopy();
+    void slotPressDownPaste(const QPointF &pos);
+    void slotPressDownDelete();
 
     // From TPropertyController
     void slotPropertyItemValueChanged(TPropertyItem *propertyItem, const QVariant &newValue);

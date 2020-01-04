@@ -44,6 +44,12 @@ private:
 public:
     void saveToStream(QDataStream &stream) const override;
     void readFromStream(QDataStream &stream) override;
+
+    // TObject interface
+public:
+    QByteArray toByteArray(TObject *object) const;
+    void loadFromByteArray(const QByteArray &byteArray);
+    void move(const QPointF &offset);
 };
 
 #endif // TAREAPLAT_H

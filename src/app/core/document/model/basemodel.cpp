@@ -98,16 +98,6 @@ void TBaseModel::onObjectRemoved(const TObjectList &, const QList<int> &)
 
 }
 
-//void TBaseModel::onObjectInserted(const TObjectList &, const QList<int> &)
-//{
-//    emit dataChanged(QModelIndex(), QModelIndex());
-//}
-
-//void TBaseModel::onObjectRemoved(const TObjectList &, const QList<int> &)
-//{
-//    emit dataChanged(QModelIndex(), QModelIndex());
-//}
-
 int TBaseModel::columnCount(const QModelIndex &) const
 {
     Q_ASSERT(false);
@@ -133,4 +123,14 @@ QModelIndex TBaseModel::index(int row, int column, const QModelIndex &) const
 QModelIndex TBaseModel::parent(const QModelIndex &) const
 {
     return QModelIndex();
+}
+
+void TBaseModel::saveToStream(QDataStream &stream) const
+{
+
+}
+
+void TBaseModel::readFromStream(QDataStream &stream)
+{
+
 }

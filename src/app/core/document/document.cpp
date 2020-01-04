@@ -323,16 +323,14 @@ void TDocument::cmdRemoveObject(const TObjectList &objectList, TBaseModel *baseM
 void TDocument::internalAddRemoveObjectCommand(TObjectAddCommand::Command id, TBaseModel *baseModel, const TObjectList &objectList)
 {
     if(!baseModel)
-    {
         return;
-    }
+
     TObjectAddCommand *command = new TObjectAddCommand(
         id,
         baseModel,
         objectList
     );
     addUndoCommand(command);
-    emit addFinish();
 }
 
 TSceneModel *TDocument::getSceneModel() const

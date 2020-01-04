@@ -29,6 +29,11 @@ public:
 public:
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
+
+    // TObject interface
+public:
+    QByteArray toByteArray(TObject *object) const;
+    void loadFromByteArray(const QByteArray &byteArray);
 };
 typedef QList<TPlat*> TPlatList;
 

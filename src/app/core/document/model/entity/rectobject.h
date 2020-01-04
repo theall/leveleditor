@@ -6,7 +6,7 @@
 #include "object.h"
 #include "../../base/io.h"
 
-class TRectObject : public TObject, TIO
+class TRectObject : public TObject
 {
 public:
     TRectObject(TObject::Type type, QObject *parent = Q_NULLPTR);
@@ -36,6 +36,11 @@ private:
 public:
     void saveToStream(QDataStream &stream) const;
     void readFromStream(QDataStream &stream);
+
+    // TObject interface
+public:
+    QByteArray toByteArray(TObject *object) const;
+    void loadFromByteArray(const QByteArray &byteArray);
 };
 typedef QList<TRectObject*> TRectObjectList;
 

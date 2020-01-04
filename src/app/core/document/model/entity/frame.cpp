@@ -109,3 +109,19 @@ bool TFrame::isCongener(TObject *object) const
 {
     return static_cast<TFrame*>(object);
 }
+
+QByteArray TFrame::toByteArray(TObject *object) const
+{
+
+}
+
+void TFrame::loadFromByteArray(const QByteArray &byteArray)
+{
+
+}
+
+void TFrame::move(const QPointF &offset)
+{
+    if(offset.isNull())
+        return;
+}

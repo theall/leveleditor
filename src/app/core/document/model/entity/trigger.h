@@ -29,6 +29,11 @@ private:
 public:
     QString typeString() const;
     bool isCongener(TObject *object) const;
+
+    // TObject interface
+public:
+    QByteArray toByteArray(TObject *object) const;
+    void loadFromByteArray(const QByteArray &byteArray);
 };
 
 typedef QList<TTrigger*> TTriggerList;

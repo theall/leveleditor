@@ -75,6 +75,11 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
     QModelIndex index(int row, int column, const QModelIndex &parent) const;
     QModelIndex parent(const QModelIndex &child) const;
+
+    // TIO interface
+public:
+    void saveToStream(QDataStream &stream) const;
+    void readFromStream(QDataStream &stream);
 };
 typedef QList<TBaseModel*> TBaseModelList;
 #endif // TBASEMODEL_H

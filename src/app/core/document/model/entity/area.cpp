@@ -73,3 +73,22 @@ bool TArea::isCongener(TObject *object) const
 {
     return static_cast<TArea*>(object);
 }
+
+QByteArray TArea::toByteArray(TObject *object) const
+{
+
+}
+
+void TArea::loadFromByteArray(const QByteArray &byteArray)
+{
+
+}
+
+void TArea::move(const QPointF &offset)
+{
+    if(offset.isNull())
+        return;
+
+    QRectF currentRect = getRect();
+    currentRect.translate(offset);
+}

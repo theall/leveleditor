@@ -7,7 +7,7 @@
 #include "enemy.h"
 #include "../../base/io.h"
 
-class TEnemyFactory : public TObject, TIO
+class TEnemyFactory : public TObject
 {
     Q_OBJECT
 
@@ -32,6 +32,11 @@ public:
 public:
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
+
+    // TObject interface
+public:
+    QByteArray toByteArray(TObject *object) const;
+    void loadFromByteArray(const QByteArray &byteArray);
 };
 
 typedef QList<TEnemyFactory*> TEnemyFactoryList;

@@ -10,9 +10,13 @@
 #include "../core/model/charactermodel.h"
 #include "../core/model/itemmodel.h"
 #include "../core/document/graphics/layeritem/objectitem/tileitem.h"
+#include "clipboard.h"
 
 #include <QProcess>
 #include <QMessageBox>
+#include <QClipboard>
+#include <QApplication>
+#include <QMimeData>
 #include <QCoreApplication>
 
 TMainController::TMainController(QObject *parent) :
@@ -32,6 +36,9 @@ TMainController::TMainController(QObject *parent) :
     connect(mTabController, SIGNAL(requestCloseDocument(TDocument*)), this, SLOT(slotRequestCloseDocument(TDocument*)));
     connect(mTabController, SIGNAL(requestSwitchToDocument(TDocument*)), this, SLOT(slotRequestSwitchToDocument(TDocument*)));
     connect(mTabController, SIGNAL(documentDirtyFlagChanged(TDocument*,bool)), this, SLOT(slotDocumentDirtyFlagChanged(TDocument*,bool)));
+    connect(mTabController, SIGNAL(pressDownCopy()), this, SLOT(slotPressDownCopy()));
+    connect(mTabController, SIGNAL(pressDownPaste(const QPointF)), this, SLOT(slotPressDownPaste(const QPointF)));
+    connect(mTabController, SIGNAL(pressDownDelete()), this, SLOT(slotPressDownDelete()));
 
     connect(mMainPropertyController,
             SIGNAL(propertyItemValueChanged(TPropertyItem*,QVariant)),
@@ -285,6 +292,46 @@ void TMainController::slotDocumentDirtyFlagChanged(TDocument *document, bool isD
 
     mMainWindow->enableSaveAction(isDirty);
     mMainWindow->enableSaveAllAction(mCore->hasDirtyDocument());
+}
+
+void TMainController::slotPressDownCopy()
+{
+    TGraphicsScene *graphicsScene = mDocument->graphicsScene();
+    TObjectItemList objectItemList = graphicsScene->getSelectedObjectItemList();
+    if(objectItemList.isEmpty())
+        return;
+    TObjectList objectList;
+    for(TObjectItem *objectItem: objectItemList)
+        objectList.append(objectItem->object());
+    TClipboard *clipboard = TClipboard::getInstance();
+    clipboard->setData(objectList.at(0)->type(), objectList);
+}
+
+void TMainController::slotPressDownPaste(const QPointF &pos)
+{
+    TBaseModel *baseModel = mDocument->getSceneModel()->getCurrentModel();
+    TClipboard *clipboard = TClipboard::getInstance();
+    TObjectList objectList;
+    objectList = clipboard->getObjectList();
+    if(objectList.isEmpty())
+        return;
+    for(TObject *object : objectList)
+        object->setPos(pos);
+    mDocument->cmdAddObject(objectList, baseModel);
+}
+
+void TMainController::slotPressDownDelete()
+{
+    TGraphicsScene *graphicsScene = mDocument->graphicsScene();
+    TObjectItemList objectItemList = graphicsScene->getSelectedObjectItemList();
+    if(objectItemList.isEmpty())
+        return;
+
+    TBaseModel *baseModel = mDocument->getSceneModel()->getCurrentModel();
+    TObjectList objectList;
+    for(TObjectItem *objectItem: objectItemList)
+        objectList.append(objectItem->object());
+    mDocument->cmdRemoveObject(objectList, baseModel);
 }
 
 void TMainController::slotPropertyItemValueChanged(TPropertyItem *propertyItem, const QVariant &newValue)

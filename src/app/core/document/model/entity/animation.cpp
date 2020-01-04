@@ -23,7 +23,7 @@ TAnimation::~TAnimation()
 
 void TAnimation::move(const QPointF &offset)
 {
-
+    this->move(offset);
 }
 
 TFrameList TAnimation::frameList() const
@@ -188,4 +188,13 @@ QString TAnimation::typeString() const
 bool TAnimation::isCongener(TObject *object) const
 {
     return static_cast<TAnimation*>(object);
+}
+
+QByteArray TAnimation::toByteArray(TObject *object) const
+{
+}
+
+void TAnimation::loadFromByteArray(const QByteArray &byteArray)
+{
+
 }

@@ -86,3 +86,13 @@ bool TEnemyFactory::isCongener(TObject *) const
 {
     return false;
 }
+
+QByteArray TEnemyFactory::toByteArray(TObject *object) const
+{
+
+}
+
+void TEnemyFactory::loadFromByteArray(const QByteArray &byteArray)
+{
+
+}

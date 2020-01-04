@@ -144,3 +144,13 @@ bool TPlat::isCongener(TObject *) const
 {
     return false;
 }
+
+QByteArray TPlat::toByteArray(TObject *object) const
+{
+
+}
+
+void TPlat::loadFromByteArray(const QByteArray &byteArray)
+{
+
+}

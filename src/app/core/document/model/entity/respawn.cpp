@@ -59,3 +59,13 @@ bool TRespawn::isCongener(TObject *) const
 {
     return false;
 }
+
+QByteArray TRespawn::toByteArray(TObject *object) const
+{
+
+}
+
+void TRespawn::loadFromByteArray(const QByteArray &byteArray)
+{
+
+}

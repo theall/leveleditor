@@ -41,6 +41,16 @@ void TObject::initPropertySheet()
     mPropertySheet->setContextName(g_type_string[mType]);
 }
 
+void TObject::saveToStream(QDataStream &stream) const
+{
+
+}
+
+void TObject::readFromStream(QDataStream &stream)
+{
+
+}
+
 bool TObject::visible() const
 {
     return mVisible;
@@ -49,4 +59,19 @@ bool TObject::visible() const
 void TObject::setVisible(bool visible)
 {
     mVisible = visible;
+}
+
+QByteArray TObject::toByteArray(TObject *object) const
+{
+
+}
+
+void TObject::loadFromByteArray(const QByteArray &byteArray)
+{
+
+}
+
+void TObject::setPos(const QPointF &pos)
+{
+
 }
