@@ -12,6 +12,7 @@ public:
 
     TFaceList faceList() const;
     TFaceId *getCurrentFaceId() const;
+    TFaceId *getFaceId(int index) const;
     void setFaceList(const TFaceList &faceList);
 
     int getCurrentIndex() const;

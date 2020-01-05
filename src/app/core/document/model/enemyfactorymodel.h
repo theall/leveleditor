@@ -5,6 +5,10 @@
 #include "entity/enemyfactory.h"
 #include "objectgeneric.hpp"
 #include "genericmodel.h"
+#include "enemymodel.h"
+
+#define TILE_DEFAULT_POS_X 5000
+#define TILE_DEFAULT_POS_Y 5000
 
 class TEnemyModel;
 typedef QList<TEnemyModel*> TEnemyModelList;
@@ -26,10 +30,16 @@ public:
     TEnemyModelList enemyModelList() const;
     TEnemyModel *getEnemyModel(int index);
     void setEnemyModelList(const TEnemyModelList &enemyModelList);
-
+    void getFactoryIndex(int index);
+    TEnemy *createEnemy(TFaceId *faceId, const QPointF &pos = QPointF(TILE_DEFAULT_POS_X,TILE_DEFAULT_POS_Y));
     TEnemyFactory *createEnemyFactory();
+    TEnemyModel *getCurrentEnemyModel();
+
+    int getCurrentIndex() const;
+    void setCurrentIndex(int currentIndex);
 
 private:
+    int mCurrentIndex;
     TEnemyModelList mEnemyModelList;
 
 signals:

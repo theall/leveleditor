@@ -45,19 +45,24 @@ int TCharacterView::add(const QPixmap &face, int id)
     button->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     button->setMinimumSize(1, mIconSize);
     button->setMaximumSize(mIconSize, mIconSize);
-    button->setToolTip(QString::asprintf("%1", id));
-    connect(button, SIGNAL(clicked(bool)), this, SLOT(slotOnFaceButtonToggled(bool)));
+    button->setToolTip(QString("%1").arg(id));
+    connect(button, SIGNAL(toggled(bool)), this, SLOT(slotOnFaceButtonToggled(bool)));
     mButtonList.append(button);
     QListWidgetItem *item = new QListWidgetItem(this);
     item->setSizeHint(QSize(mIconSize,mIconSize));
     setItemWidget(item, button);
-    //button->setEnabled(false);
     return mButtonList.size();
 }
 
-void TCharacterView::getButton(bool button) const
+void TCharacterView::pushButton(int index)
 {
-    //return button;
+    QPushButton *button = (QPushButton*)itemWidget(item(index));
+    button->setChecked(true);
+}
+
+int TCharacterView::getCurrentPushButtonIndex() const
+{
+    return mButtonList.indexOf(mLastPushedButton);
 }
 
 void TCharacterView::setPixmapSet(const QList<QPixmap> &pixmapSet, const QList<int> &idList)
@@ -87,7 +92,6 @@ void TCharacterView::slotOnFaceButtonToggled(bool toggled)
             mLastPushedButton->blockSignals(true);
             mLastPushedButton->setChecked(false);
             mLastPushedButton->blockSignals(false);
-            //button->setEnabled(true);
         }
         emit buttonPushed(mButtonList.indexOf(button));
     }

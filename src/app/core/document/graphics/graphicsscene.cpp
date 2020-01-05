@@ -16,6 +16,7 @@
 #include "../model/entity/darea.h"
 #include "../model/entity/plat.h"
 #include "../model/entity/wall.h"
+#include "../model/entity/enemy.h"
 #include "../model/entity/respawn.h"
 
 #include "../undocommand/objectaddcommand.h"
@@ -43,6 +44,7 @@ bool objectRectCompare(TObjectItem *i1, TObjectItem *i2) {
     return squareOfRect(i1->boundingRect()) < squareOfRect(i2->boundingRect());
 }
 
+TStamp *TGraphicsScene::mStamp = new TStamp();
 TGraphicsScene::TGraphicsScene(QObject *parent) :
     QGraphicsScene(parent)
   , mFps(60)
@@ -62,7 +64,6 @@ TGraphicsScene::TGraphicsScene(QObject *parent) :
   , mSelectionRectangle(new TSelectionRectangle(mUiItemsGroup))
   , mLastSelectedObjectItem(nullptr)
   , mDocument(nullptr)
-  , mStamp(new TStamp)
   , mEditMode(DEFAULT)
 {
     mUiItemsGroup->setZValue(TOP_Z_VALUE);
@@ -216,6 +217,7 @@ void TGraphicsScene::removeSelectedItems()
         if(dynamic_cast<TRespawn*>(object))//||dynamic_cast<>(object)
             objectList.removeAll(object);
     }
+
     if(objectList.isEmpty())
         return;
 
@@ -304,9 +306,11 @@ void TGraphicsScene::updateUiItems()
     bool isInsertTileMode = isInsertMode && modelType==TBaseModel::TILE;
     bool isInsertEnemyMode = isInsertMode && modelType==TBaseModel::ENEMY_FACTORY;
     bool tileStampNeedShow = mUnderMouse && (isInsertTileMode|isInsertEnemyMode);
+//    bool charaStampNeedShow = mLeftButtonDown &&(isInsertEnemyMode|isInsertTileMode);
     if(tileStampNeedShow)
-        mTileStampItem->setCenterPos(mMouseMovingPos);
+    	mTileStampItem->setCenterPos(mMouseMovingPos);
     mTileStampItem->setVisible(tileStampNeedShow);
+//    else if(charaStampNeedShow)
 
     mHoveredItem->setVisible(mUnderMouse && isDefaultMode);
     mSelectedItems->setVisible(isDefaultMode);
@@ -449,21 +453,27 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 TTileModel *tileLayerModel = mSceneModel->getCurrentAsTileLayerModel();
                 TTile *tile = tileLayerModel->createTile(mStamp->getTileId(), mTileStampItem->pos());
                 TObjectList objectList;
-                objectList.append(tile); //把tile获取点击的行列添加到主窗口
+                objectList.append(tile);
                 TObjectAddCommand *command = new TObjectAddCommand(
                     TObjectAddCommand::ADD,
                     tileLayerModel,
                     objectList
                 );
                 mDocument->addUndoCommand(command);
-            }  else if(currentModelType == TBaseModel::ENEMY_FACTORY) {
-                TEnemyFactoryModel *enemyFactoryModel = mSceneModel->getCurrentAsEnemyFactoryModel();
-//                TObjectAddCommand *command = new TObjectAddCommand(
-//                    TObjectAddCommand::ADD,
-//                    enemyFactoryModel,
-//                    objectList
-//                );
-                //mDocument->addUndoCommand(command);
+            } else if(currentModelType == TBaseModel::ENEMY_FACTORY) {
+                TEnemyModel *enemyModel = mSceneModel->getCurrentAsEnemyModel();
+                if(!enemyModel)
+                    return;
+
+                TEnemy *enemy = enemyModel->createEnemy(mStamp->getFaceId(), mTileStampItem->pos());
+                TObjectList objectList;
+                objectList.append(enemy);
+                TObjectAddCommand *command = new TObjectAddCommand(
+                    TObjectAddCommand::ADD,
+                    enemyModel,
+                    objectList
+                );
+                mDocument->addUndoCommand(command);
             } else {
                 mObjectAreaItem->setRectangle(QRectF(mousePos, QSizeF()));
                 mObjectAreaItem->setVisible(true);
@@ -861,6 +871,12 @@ TLayerItemList TGraphicsScene::getLayerItemList() const
 }
 
 void TGraphicsScene::setCurrentStamp(TPixmapId *pixmapId)
+{
+    mStamp->setPixmapId(pixmapId);
+    mTileStampItem->setPixmap(mStamp->pixmap());
+}
+
+void TGraphicsScene::setFaceStamp(TPixmapId *pixmapId)
 {
     mStamp->setPixmapId(pixmapId);
     mTileStampItem->setPixmap(mStamp->pixmap());

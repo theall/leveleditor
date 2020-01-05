@@ -19,7 +19,9 @@ public:
 
     int add(const QPixmap &face, int id);
     void setPixmapSet(const QList<QPixmap> &pixmapSet, const QList<int> &idList);
-    void getButton(bool button) const;
+    void pushButton(int index);
+    int getCurrentPushButtonIndex() const;
+
 signals:
     void buttonPushed(int index);
     void setCharaterEnabled(QPushButton *button);

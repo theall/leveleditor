@@ -48,16 +48,14 @@ bool TObjectController::joint(TMainWindow *mainWindow, TCore *core)
 
 void TObjectController::setCurrentDocument(TDocument *document)
 {
-    Q_UNUSED(document);
-    if(!document) {
-        return ;
-    }
+    if(!document)
+        return;
+
     TGraphicsScene *graphicsScene = document->graphicsScene();
     mSceneModel = document->getSceneModel();
     setObjectListViewModel(nullptr);
     setSubControlObjectListViewModel(nullptr);
     connect(graphicsScene, SIGNAL(selectedObjectChanged(TObject*,TObject*)), this, SLOT(slotOnSelectedObjectChanged(TObject*,TObject*)));
-
 }
 
 void TObjectController::resetCurrentModel()
@@ -79,7 +77,8 @@ void TObjectController::setObjectListViewModel(TBaseModel *baseModel)
     mObjectListView->setModel(baseModel);
 }
 
-void TObjectController::setSubControlObjectListViewModel(TEnemyModel *enemyModel) {
+void TObjectController::setSubControlObjectListViewModel(TEnemyModel *enemyModel)
+{
     mSubControlObjectListView->setModel(enemyModel);
 }
 

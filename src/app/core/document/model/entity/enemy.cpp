@@ -152,6 +152,16 @@ void TEnemy::readFromStream(QDataStream &stream)
     setUpPixmapId();
 }
 
+QByteArray TEnemy::toByteArray(TObject *object) const
+{
+
+}
+
+void TEnemy::loadFromByteArray(const QByteArray &byteArray)
+{
+
+}
+
 void TEnemy::initPropertySheet()
 {
     mPropertySheet->addProperty(PT_DIR, P_DIR, PID_ENEMY_DIR);
@@ -202,6 +212,23 @@ void TEnemy::slotCategoryChanged(const QVariant &oldValue, const QVariant &newVa
     setUpPixmapId();
 }
 
+void TEnemy::setEnemyId(TFaceId *face)
+{
+    if(mFaceId == face)
+        return;
+
+    mFaceId = face;
+    setUp();
+}
+
+void TEnemy::setUp()
+{
+    if(mFaceId) {
+        mPixmap = mFaceId->pixmap();
+        mPropertySheet->setValue(P_CATEGORY, mPixmap->fileName());
+    }
+}
+
 QString TEnemy::typeString() const
 {
     return T("Enemy");
@@ -210,14 +237,4 @@ QString TEnemy::typeString() const
 bool TEnemy::isCongener(TObject *) const
 {
     return false;
-}
-
-QByteArray TEnemy::toByteArray(TObject *object) const
-{
-
-}
-
-void TEnemy::loadFromByteArray(const QByteArray &byteArray)
-{
-
 }

@@ -7,6 +7,7 @@
 #include "basemodel.h"
 #include "../../assets/maps.h"
 
+class TEnemyModel;
 class TAreaModel;
 class TBoxModel;
 class TDAreaModel;
@@ -67,6 +68,7 @@ public:
 
     TTileModel *getCurrentAsTileLayerModel() const;
     TEnemyFactoryModel *getCurrentAsEnemyFactoryModel() const;
+    TEnemyModel *getCurrentAsEnemyModel() const;
     TBaseModel::Type getCurretnModelType() const;
 
     bool isCurrentTileLayerModel() const;

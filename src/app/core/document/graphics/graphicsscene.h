@@ -67,6 +67,7 @@ public:
     TLayerItemList getLayerItemList() const;
 
     void setCurrentStamp(TPixmapId *pixmapId);
+    void setFaceStamp(TPixmapId *pixmapId);
 
     void setEditMode(int editMode);
     void showSelectedItemsBorder(bool visible = true);
@@ -117,8 +118,9 @@ private:
     TSelectionRectangle *mSelectionRectangle;
     TObjectItem *mLastSelectedObjectItem;
     TDocument *mDocument;
-    TStamp *mStamp;
+    static TStamp *mStamp;
     int mEditMode;
+    int mEnemyIndex;
 
     void step();
     void setSelectedObjectItem(TObjectItem *objectItem);

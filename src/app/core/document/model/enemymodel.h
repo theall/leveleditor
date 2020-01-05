@@ -5,6 +5,9 @@
 #include "objectgeneric.hpp"
 #include "entity/enemy.h"
 
+#define TILE_DEFAULT_POS_X 5000
+#define TILE_DEFAULT_POS_Y 5000
+
 class TEnemyFactory;
 class TEnemyModel : public TGenericModel<TEnemy>
 {
@@ -15,6 +18,9 @@ public:
 
     TEnemyFactory *enemyFactory() const;
     void setEnemyFactory(TEnemyFactory *enemyFactory);
+
+    TEnemy *createEnemy(TFaceId *faceId, const QPointF &pos = QPointF(TILE_DEFAULT_POS_X,TILE_DEFAULT_POS_Y));
+    TEnemy *createEnemy();
 
 private:
     TEnemyFactory *mEnemyFactory;

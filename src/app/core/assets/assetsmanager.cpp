@@ -112,7 +112,7 @@ TAssetsManager::~TAssetsManager()
 {
     clear();
 }
-
+// open main Game
 bool TAssetsManager::setResourcePath(const QString &path)
 {
     mPath = path.trimmed();

@@ -4,6 +4,7 @@
 #include <QPixmap>
 
 class TTileId;
+class TFaceId;
 class TPixmapId;
 class TStamp
 {
@@ -12,6 +13,7 @@ public:
 
     TPixmapId *pixmapId() const;
     TTileId *getTileId() const;
+    TFaceId *getFaceId() const;
     void setPixmapId(TPixmapId *pixmapId);
 
     QPixmap pixmap() const;

@@ -25,11 +25,9 @@ public:
 
 private:
     TCharacterDock *mCharacterDock;
-
-private:
-     TItemModel *mItemModel;
-     TChunkModel *mChunkModel;
-     TShotModel *mShotModel;
+    TItemModel *mItemModel;
+    TChunkModel *mChunkModel;
+    TShotModel *mShotModel;
 
     void setFace();
     void setItem();

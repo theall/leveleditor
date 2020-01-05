@@ -18,7 +18,7 @@ TCharacterDock::TCharacterDock(QWidget *parent) :
     toolBar->setFloatable(false);//设置为不可浮动
     toolBar->setMovable(false);//设置为不可移动
     toolBar->setIconSize(QSize(16, 16));//设置图片
-    setEnabled(false);
+	setEnabled(false);
     QIcon icon(":/animationdock/images/add.png");
     for(int i=0;i<PA_TOTAL_COUNT;i++) {
         QAction *action = toolBar->addAction(icon, QString(), this, SLOT(slotActionToggled()));
@@ -34,9 +34,6 @@ TCharacterDock::TCharacterDock(QWidget *parent) :
     addCharacterView(mItemView);
     addCharacterView(mShotView);
     addCharacterView(mChunkView);
-
-
-
 
     QVBoxLayout *scrollAreaLayout = new QVBoxLayout(container);//垂直布局 用父级构造一个新的顶级垂直框。
     scrollAreaLayout->setContentsMargins(0, 0, 0, 0);//设置上下左右边距
@@ -102,6 +99,32 @@ void TCharacterDock::setPixmapSet(const PanelType &panelType, const QList<QPixma
     }
     if(characterView) {
         characterView->setPixmapSet(pixmapSet, idList);
+    }
+}
+
+void TCharacterDock::selectIndex(const PanelType &panel, int index)
+{
+    mStackedWidget->setCurrentIndex(panel);
+
+    TCharacterView *characterView = nullptr;
+    switch (panel) {
+    case PA_CHARACTER:
+        characterView = mCharacterView;
+        break;
+    case PA_ITEM:
+        characterView = mItemView;
+        break;
+    case PA_SHOT:
+        characterView = mShotView;
+        break;
+    case PA_CHUNK:
+        characterView = mChunkView;
+        break;
+    default:
+        break;
+    }
+    if(characterView) {
+        characterView->pushButton(index);
     }
 }
 

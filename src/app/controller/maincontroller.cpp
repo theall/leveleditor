@@ -6,6 +6,7 @@
 #include "../gui/component/tabwidget/tabwidget.h"
 #include "../gui/component/characterdock/characterdock.h"
 #include "../gui/component/characterdock/characterview.h"
+#include "../core/assets/faceid.h"
 #include "../core/assets/assetsmanager.h"
 #include "../core/model/charactermodel.h"
 #include "../core/model/itemmodel.h"
@@ -272,6 +273,7 @@ void TMainController::slotRequestSwitchToDocument(TDocument *document)
     mTilesetController->setCurrentDocument(document);
     mAnimationController->setCurrentDocument(document);
     mObjectController->setCurrentDocument(document);
+    mCharacterController->setCurrentDocument(document);
 
     if(mDocument) {
         mDocument->disconnect(this);
@@ -284,6 +286,10 @@ void TMainController::slotRequestSwitchToDocument(TDocument *document)
     }
     mMainWindow->enableSaveAction(document&&document->isDirty());
     mMainWindow->enableRunAction(document!=nullptr);
+
+    if(document && mMainWindow->isInsertActionChecked()) {
+        document->setEditMode(INSERT);
+    }
 }
 
 void TMainController::slotDocumentDirtyFlagChanged(TDocument *document, bool isDirty)
@@ -582,10 +588,10 @@ void TMainController::slotOnActionInsertPushed()
 
     TBaseModel::Type currentModelType = mDocument->getSceneModel()->getCurretnModelType();
     if(currentModelType == TBaseModel::TILE) {
-        TTileId *tileId = mCore->tilesetModelManager()->getCurrentTileId();
+        TTileId *tileId = mTilesetController->getCurrentTileId();
         mDocument->setTileStamp(tileId);
-    } else if(currentModelType == TBaseModel::ENEMY_FACTORY) {
-        TFaceId *faceId = mCore->characterModel()->getCurrentFaceId();
+    } else if(currentModelType == TBaseModel::ENEMY_FACTORY){
+        TFaceId *faceId = (TFaceId*)mCharacterController->getCurrentPixmapId();
         mDocument->setFaceStamp(faceId);
     }
     mDocument->setEditMode(INSERT);

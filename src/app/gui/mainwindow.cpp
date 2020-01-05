@@ -216,6 +216,11 @@ void TMainWindow::checkInsertAction()
     checkActionWithoutEmitSignal(ui->actionInsertMode, true);
 }
 
+bool TMainWindow::isInsertActionChecked() const
+{
+    return ui->actionInsertMode->isChecked();
+}
+
 void TMainWindow::triggerCurrentSelectedAction()
 {
     QAction *checkedAction = mActionGroup->checkedAction();

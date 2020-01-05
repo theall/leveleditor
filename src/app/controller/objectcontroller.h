@@ -27,7 +27,6 @@ public:
     void setSubControlObjectListViewModel(TEnemyModel *enemyModel);
 
 private slots:
-
     // From graphics scene
     void slotOnSelectedObjectChanged(TObject *prev, TObject *current);
 

@@ -273,6 +273,11 @@ void TDocument::setShotStamp(TShotId *shotId)
     mGraphicsScene->setCurrentStamp(shotId);
 }
 
+void TDocument::setStamp(TPixmapId *pixmapId)
+{
+    mGraphicsScene->setCurrentStamp(pixmapId);
+}
+
 EditMode TDocument::getEditMode() const
 {
     return mEditMode;
@@ -324,13 +329,13 @@ void TDocument::internalAddRemoveObjectCommand(TObjectAddCommand::Command id, TB
 {
     if(!baseModel)
         return;
-
     TObjectAddCommand *command = new TObjectAddCommand(
         id,
         baseModel,
         objectList
     );
     addUndoCommand(command);
+    emit addFinish();
 }
 
 TSceneModel *TDocument::getSceneModel() const

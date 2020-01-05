@@ -65,7 +65,8 @@ public:
     void setItemStamp(TItemId *itemId);
     void setChunkStamp(TChunkId *chunkId);
     void setShotStamp(TShotId *shotId);
-    
+    void setStamp(TPixmapId *pixmapId);
+
     EditMode getEditMode() const;
     void setEditMode(const EditMode &editMode);
 
@@ -80,7 +81,7 @@ signals:
     void saved();
     void resourceChanged();
     void iconChanged(TPixmap *newPixmap);
-
+    void addFinish();
     // Send to external
     void editModeChanged(const EditMode &current, const EditMode &prev);
 

@@ -31,6 +31,7 @@ public:
     TCharacterView *shotView() const;
     TCharacterView *chunkView() const;
     void setPixmapSet(const PanelType &panelType, const QList<QPixmap> &pixmapSet ,const QList<int> &idList);
+    void selectIndex(const PanelType &panel, int faceIndex);
 
 signals:
     void buttonPushed(const PanelType &panelType, int index);

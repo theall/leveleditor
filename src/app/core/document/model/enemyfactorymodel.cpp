@@ -3,6 +3,7 @@
 
 TEnemyFactoryModel::TEnemyFactoryModel(QObject *parent) :
     TGenericModel<TEnemyFactory>(TBaseModel::ENEMY_FACTORY, parent)
+  , mCurrentIndex(-1)
 {
     setName(tr("Factory"));
     setIcon(QIcon(":/scenemodel/images/factory.png"));
@@ -68,19 +69,12 @@ QVariant TEnemyFactoryModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-TEnemyFactoryList TEnemyFactoryModel::enemyFactoryList() const
+TEnemy *TEnemyFactoryModel::createEnemy(TFaceId *faceId, const QPointF &pos)
 {
-    return mObjectList;
-}
-
-TEnemyFactory *TEnemyFactoryModel::getEnemyFactory(int index)
-{
-    return mObjectList.at(index);
-}
-
-void TEnemyFactoryModel::setEnemyFactoryList(const TEnemyFactoryList &enemyFactoryList)
-{
-    mObjectList = enemyFactoryList;
+    TEnemy *enemy = new TEnemy(this);
+    enemy->setEnemyId(faceId);
+    enemy->setPos(pos);
+    return enemy;
 }
 
 TEnemyFactory *TEnemyFactoryModel::createEnemyFactory()
@@ -88,9 +82,29 @@ TEnemyFactory *TEnemyFactoryModel::createEnemyFactory()
     return new TEnemyFactory(this);
 }
 
+TEnemyFactoryList TEnemyFactoryModel::enemyFactoryList() const
+{
+    return mObjectList;
+}
+
+void TEnemyFactoryModel::setEnemyFactoryList(const TEnemyFactoryList &enemyFactoryList)
+{
+    mObjectList = enemyFactoryList;
+}
+
 TEnemyModelList TEnemyFactoryModel::enemyModelList() const
 {
     return mEnemyModelList;
+}
+
+TEnemyFactory *TEnemyFactoryModel::getEnemyFactory(int index)
+{
+    return mObjectList.at(index);
+}
+
+void TEnemyFactoryModel::setEnemyModelList(const TEnemyModelList &enemyModelList)
+{
+    mEnemyModelList = enemyModelList;
 }
 
 TEnemyModel *TEnemyFactoryModel::getEnemyModel(int index)
@@ -98,9 +112,22 @@ TEnemyModel *TEnemyFactoryModel::getEnemyModel(int index)
     return mEnemyModelList.at(index);
 }
 
-void TEnemyFactoryModel::setEnemyModelList(const TEnemyModelList &enemyModelList)
+TEnemyModel *TEnemyFactoryModel::getCurrentEnemyModel()
 {
-    mEnemyModelList = enemyModelList;
+    if(mCurrentIndex<0 || mCurrentIndex>=mEnemyModelList.size())
+        return nullptr;
+
+    return mEnemyModelList.at(mCurrentIndex);
+}
+
+int TEnemyFactoryModel::getCurrentIndex() const
+{
+    return mCurrentIndex;
+}
+
+void TEnemyFactoryModel::setCurrentIndex(int currentIndex)
+{
+    mCurrentIndex = currentIndex;
 }
 
 void TEnemyFactoryModel::onObjectInserted(const TObjectList &, const QList<int> &indexList)

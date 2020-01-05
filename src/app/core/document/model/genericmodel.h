@@ -11,6 +11,7 @@ class TGenericModel : public TBaseModel
 public:
     TGenericModel(Type type, QObject *parent = Q_NULLPTR) :
         TBaseModel(type, parent)
+      , mCurrentIndex(-1)
     {
 
     };
@@ -45,9 +46,7 @@ public:
         QList<int> indexRemoved;
         for(T *object : objectList) {
             int index = container.indexOf(object);
-            beginRemoveRows(QModelIndex(), index, index);
             container.removeAt(index);
-            endRemoveRows();
             indexRemoved.append(index);
         }
         return indexRemoved;
@@ -59,9 +58,7 @@ public:
         QList<int> indexRemoved;
         for(int i=0;i<indexList.size();i++) {
             int index = indexList.at(i);
-            beginRemoveRows(QModelIndex(), index, index);
             T object = container.at(index);
-            endRemoveRows();
             container.removeAt(index);
             objectList.append(object);
             indexRemoved.append(index);
@@ -70,7 +67,25 @@ public:
         return objectList;
     }
 
+    T *getCurrentObject() const {
+        if(mCurrentIndex<0 || mCurrentIndex>=mObjectList.size())
+            return nullptr;
+
+        return mObjectList.at(mCurrentIndex);
+    }
+
+    int getCurrentIndex() const
+    {
+        return mCurrentIndex;
+    }
+
+    void setCurrentIndex(int currentIndex)
+    {
+        mCurrentIndex = currentIndex;
+    }
+
 protected:
+    int mCurrentIndex;
     QList<T*> mObjectList;
 
     QList<T*> convert(const TObjectList &objectList)
@@ -100,7 +115,6 @@ protected:
         indexList.append(index);
         insertObject(mObjectList, indexList);
     }
-
     void insertObject(const QList<T*> &objectList, const QList<int> &indexList)
     {
         QList<T*> objectInsertedList = objectList;
@@ -132,13 +146,9 @@ private:
             int index = indexList.at(i);
             if(index<0 || index>=objectCount) {
                 index = objectCount;
-                beginInsertRows(QModelIndex(), index, index);
                 mObjectList.append(object);
-                endInsertRows();
             } else {
-                beginInsertRows(QModelIndex(), index, index);
                 mObjectList.insert(index, object);
-                endInsertRows();
             }
             objectInsertedList.append(object);
             insertedIndexList.append(index);

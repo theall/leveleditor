@@ -2,6 +2,7 @@
 
 TCharacterModel::TCharacterModel(QObject *parent) :
     QAbstractListModel(parent)
+  , mCurrentIndex(-1)
 {
 
 }
@@ -23,12 +24,18 @@ TFaceId *TCharacterModel::getCurrentFaceId() const
     return mFaceList.at(mCurrentIndex);
 }
 
+TFaceId *TCharacterModel::getFaceId(int index) const
+{
+    if(index<0 || index>=mFaceList.size())
+        return nullptr;
+
+    return mFaceList.at(index);
+}
+
 void TCharacterModel::setFaceList(const TFaceList &faceList)
 {
     mFaceList = faceList;
 }
-
-
 
 int TCharacterModel::getCurrentIndex() const
 {

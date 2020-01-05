@@ -49,6 +49,7 @@ public:
 
     void checkSelectAction();
     void checkInsertAction();
+    bool isInsertActionChecked() const;
 
     void triggerCurrentSelectedAction();
 

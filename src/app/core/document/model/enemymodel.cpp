@@ -18,6 +18,19 @@ void TEnemyModel::setEnemyFactory(TEnemyFactory *enemyFactory)
     mEnemyFactory = enemyFactory;
 }
 
+TEnemy *TEnemyModel::createEnemy(TFaceId *faceId, const QPointF &pos)
+{
+    TEnemy *enemy = new TEnemy(this);
+    enemy->setEnemyId(faceId);
+    enemy->setPos(pos);
+    return enemy;
+}
+
+TEnemy *TEnemyModel::createEnemy()
+{
+    return new TEnemy(this);
+}
+
 void TEnemyModel::saveToStream(QDataStream &stream) const
 {
     mEnemyFactory->setEnemyList(mObjectList);
@@ -54,9 +67,8 @@ QVariant TEnemyModel::data(const QModelIndex &index, int role) const
     TEnemy *enemy = mObjectList.at(row);
     if(role == Qt::DisplayRole) {
         return tr("Enemy %1").arg(row+1);
-    }
-//    else if(role == Qt::DecorationRole) {
-//        return enemy->getPixmap()->content();
-//    }
+    } /*else if(role == Qt::DecorationRole) {
+        return enemy->getPixmap()->content();
+    }*/
     return QVariant();
 }

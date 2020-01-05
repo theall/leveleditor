@@ -176,9 +176,18 @@ TEnemyFactoryModel *TSceneModel::getCurrentAsEnemyFactoryModel() const
 {
     TEnemyFactoryModel *enemyFactoryModel = nullptr;
     TBaseModel *baseModel = mBaseModelList.at(mCurrentIndex);
-    if(baseModel && baseModel->isTile())
+    if(baseModel && baseModel->type()==TBaseModel::ENEMY_FACTORY)
         enemyFactoryModel = dynamic_cast<TEnemyFactoryModel*>(baseModel);
     return enemyFactoryModel;
+}
+
+TEnemyModel *TSceneModel::getCurrentAsEnemyModel() const
+{
+    TEnemyFactoryModel *enemyFactoryModel = getCurrentAsEnemyFactoryModel();
+    if(!enemyFactoryModel)
+        return nullptr;
+
+    return enemyFactoryModel->getCurrentEnemyModel();
 }
 
 TBaseModel::Type TSceneModel::getCurretnModelType() const

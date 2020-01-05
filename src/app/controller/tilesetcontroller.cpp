@@ -44,10 +44,10 @@ void TTilesetController::setCurrentDocument(TDocument *document)
         mDocument->disconnect(this);
 
     if(document) {
-        if(document->getEditMode()==INSERT) {
-            TTileId *tileId = mCore->tilesetModelManager()->getCurrentTileId();
-            document->setTileStamp(tileId);
-        }
+//        if(document->getEditMode()==INSERT) {
+//            TTileId *tileId = mCore->tilesetModelManager()->getCurrentTileId();
+//            document->setTileStamp(tileId);
+//        }
 
         TGraphicsScene *graphicsScene = document->graphicsScene();
         connect(graphicsScene, SIGNAL(selectedObjectChanged(TObject*,TObject*)), this, SLOT(slotOnSelectedObjectChanged(TObject*,TObject*)));

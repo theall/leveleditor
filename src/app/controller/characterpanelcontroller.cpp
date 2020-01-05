@@ -36,7 +36,8 @@ TPixmapId *TCharacterPanelController::getCurrentPixmapId() const
 {
     PanelType panelType = mCharacterDock->getCurrentPanelType();
     if(panelType == PA_CHARACTER) {
-        return mCore->characterModel()->getCurrentFaceId();
+        int index = mCharacterDock->characterView()->getCurrentPushButtonIndex();
+        return mCore->characterModel()->getFaceId(index);
     } else if(panelType == PA_ITEM) {
         return mCore->ItemModel()->getCurrentItemId();
     } else if(panelType == PA_SHOT) {
@@ -44,10 +45,8 @@ TPixmapId *TCharacterPanelController::getCurrentPixmapId() const
     } else if(panelType == PA_CHUNK) {
         return mCore->chunkModel()->getCurrentChunkId();
     }
-
     return nullptr;
 }
-
 
 bool TCharacterPanelController::joint(TMainWindow *mainWindow, TCore *core)
 {
@@ -65,9 +64,19 @@ bool TCharacterPanelController::joint(TMainWindow *mainWindow, TCore *core)
     return TAbstractController::joint(mainWindow, core);
 }
 
-void TCharacterPanelController::setCurrentDocument(TDocument *)
+void TCharacterPanelController::setCurrentDocument(TDocument *document)
 {
+    if(mDocument)
+        mDocument->disconnect(this);
 
+    if(document) {
+        if(mMainWindow->isInsertActionChecked()) {
+            document->setStamp(getCurrentPixmapId());
+        }
+
+        //TGraphicsScene *graphicsScene = document->graphicsScene();
+        //connect(graphicsScene, SIGNAL(selectedObjectChanged(TObject*,TObject*)), this, SLOT(slotOnSelectedObjectChanged(TObject*,TObject*)));
+    }
 }
 
 void TCharacterPanelController::slotOnCoreReady()
@@ -76,6 +85,8 @@ void TCharacterPanelController::slotOnCoreReady()
     setItem();
     setShot();
     setChunk();
+
+    mCharacterDock->selectIndex(PA_CHARACTER, 0);
 }
 
 void TCharacterPanelController::slotButtonPushed(const PanelType &panelType, int index)
