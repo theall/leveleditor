@@ -50,6 +50,7 @@ private slots:
     void slotRequestCloseDocument(TDocument *document);
     void slotRequestSwitchToDocument(TDocument *document);
     void slotDocumentDirtyFlagChanged(TDocument *document, bool isDirty);
+    void slotRequestPopupContextMenu(TGraphicsViewContextMenu *graphicsViewContextMenu);
     void slotPressDownCopy();
     void slotPressDownPaste(const QPointF &pos);
     void slotPressDownDelete();

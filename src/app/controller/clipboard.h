@@ -25,12 +25,17 @@ class TClipboard : public QObject
 public:
     ~TClipboard();
 
+    void setRectF(const QRectF &rectF);
+    QList<QPointF> getPointFList() const;
+    void setPointFList(const QList<QPointF> &pointFList);
     void setData(const TObject::Type &type, const TObjectList &objectList);
-    bool hasObject(const TObject::Type &type) const;
+    bool whetherObject(const TObject::Type &type) const;
+    bool isEmpty();
+    TObject::Type getType() const;
     TObjectList getObjectList() const;
 
     template<class T>
-    QList<T*> getData() const
+    QList<T*> getData(QPointF pos) const
     {
         QList<T*> objectList;
         for(QByteArray byteArray : mDataList)
@@ -48,5 +53,7 @@ private:
 
     TObject::Type mType;
     QList<QByteArray> mDataList;
+    QList<QPointF> mPointFList;
+    QRectF mRectF;
 };
 #endif // TCLIPBOARD_H

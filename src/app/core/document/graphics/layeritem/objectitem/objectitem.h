@@ -49,6 +49,7 @@ public:
     bool drawBorder() const;
     void setDrawBorder(bool drawBorder);
 
+    QRectF getBoundingRect() const;
     void setBoundingRect(const QRectF &boundingRect);
 
     virtual void step();

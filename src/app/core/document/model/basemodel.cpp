@@ -68,6 +68,26 @@ TBaseModel::Type TBaseModel::type() const
     return mType;
 }
 
+bool TBaseModel::currentObjectWhetherCurrentModel(TObject::Type type)
+{
+    if(type == TObject::TILE && mType == TBaseModel::TILE) {
+        return true;
+    } else if(type == TObject::ANIMATION && mType == TBaseModel::TILE) {
+        return true;
+    } else if(type == TObject::AREA && mType == TBaseModel::AREA) {
+        return true;
+    } else if(type == TObject::BOX && mType == TBaseModel::BOX) {
+        return true;
+    } else if(type == TObject::DAREA && mType == TBaseModel::DAREA) {
+        return true;
+    } else if(type == TObject::ENEMY && mType == TBaseModel::ENEMY_FACTORY) {
+        return true;
+    } else if(type == TObject::PLAT && mType == TBaseModel::PLAT) {
+        return true;
+    }
+    return false;
+}
+
 bool TBaseModel::isTile() const
 {
     return mType == TILE;

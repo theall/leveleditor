@@ -104,6 +104,11 @@ void TObjectItem::move(const QPointF &offset)
     mBoundingRect.translate(offset);
 }
 
+QRectF TObjectItem::getBoundingRect() const
+{
+    return mBoundingRect;
+}
+
 void TObjectItem::setBoundingRect(const QRectF &boundingRect)
 {
     mBoundingRect = boundingRect;

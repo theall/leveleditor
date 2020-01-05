@@ -9,7 +9,32 @@ TClipboard::TClipboard(QObject *parent) :
 
 TClipboard::~TClipboard()
 {
+    
+}
 
+void TClipboard::setRectF(const QRectF &rectF)
+{
+    mRectF = rectF;
+}
+
+QList<QPointF> TClipboard::getPointFList() const
+{
+    QPointF pos = mRectF.center();
+    QList<QPointF> pointFList;
+    for(QPointF Pos : mPointFList)
+        pointFList.append(Pos-pos);
+
+    return pointFList;
+}
+
+void TClipboard::setPointFList(const QList<QPointF> &pointFList)
+{
+    mPointFList = pointFList;
+}
+
+TObject::Type TClipboard::getType() const
+{
+    return mType;
 }
 
 void TClipboard::setData(const TObject::Type &type, const TObjectList &objectList)
@@ -25,11 +50,16 @@ void TClipboard::setData(const TObject::Type &type, const TObjectList &objectLis
     }
 }
 
-bool TClipboard::hasObject(const TObject::Type &type) const
+bool TClipboard::whetherObject(const TObject::Type &type) const
 {
     if(mType != type)
         return false;
     return true;
+}
+
+bool TClipboard::isEmpty()
+{
+    return mDataList.isEmpty();
 }
 
 TObjectList TClipboard::getObjectList() const

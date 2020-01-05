@@ -6,6 +6,7 @@
 #include "../gui/component/tabwidget/graphicsview.h"
 #include "../gui/component/tabwidget/graphicsviewcontexmenu.h"
 #include "../utils/utils.h"
+#include "clipboard.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -224,6 +225,7 @@ void TTabController::slotRequestPopupContextMenu()
     TObjectItemList objectItemList = graphicsScene->getSelectedObjectItemList();
     if(objectItemList.isEmpty())
         mGraphicsViewContextMenu->setAllActionsState(true);
+    emit requestPopupContextMenu(mGraphicsViewContextMenu);
 }
 
 void TTabController::slotPressDownClone()

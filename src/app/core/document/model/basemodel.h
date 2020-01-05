@@ -47,6 +47,8 @@ public:
 
     Type type() const;
 
+    bool currentObjectWhetherCurrentModel(TObject::Type type);
+
     bool isTile() const;
 
     virtual void insertObjects(const TObjectList &objectList, const QList<int> &indexList);

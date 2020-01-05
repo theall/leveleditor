@@ -6,6 +6,7 @@
 #include "../gui/component/tabwidget/tabwidget.h"
 #include "../gui/component/characterdock/characterdock.h"
 #include "../gui/component/characterdock/characterview.h"
+#include "../gui/component/tabwidget/graphicsviewcontexmenu.h"
 #include "../core/assets/faceid.h"
 #include "../core/assets/assetsmanager.h"
 #include "../core/model/charactermodel.h"
@@ -37,6 +38,7 @@ TMainController::TMainController(QObject *parent) :
     connect(mTabController, SIGNAL(requestCloseDocument(TDocument*)), this, SLOT(slotRequestCloseDocument(TDocument*)));
     connect(mTabController, SIGNAL(requestSwitchToDocument(TDocument*)), this, SLOT(slotRequestSwitchToDocument(TDocument*)));
     connect(mTabController, SIGNAL(documentDirtyFlagChanged(TDocument*,bool)), this, SLOT(slotDocumentDirtyFlagChanged(TDocument*,bool)));
+    connect(mTabController, SIGNAL(requestPopupContextMenu(TGraphicsViewContextMenu*)), this, SLOT(slotRequestPopupContextMenu(TGraphicsViewContextMenu*)));
     connect(mTabController, SIGNAL(pressDownCopy()), this, SLOT(slotPressDownCopy()));
     connect(mTabController, SIGNAL(pressDownPaste(const QPointF)), this, SLOT(slotPressDownPaste(const QPointF)));
     connect(mTabController, SIGNAL(pressDownDelete()), this, SLOT(slotPressDownDelete()));
@@ -300,6 +302,13 @@ void TMainController::slotDocumentDirtyFlagChanged(TDocument *document, bool isD
     mMainWindow->enableSaveAllAction(mCore->hasDirtyDocument());
 }
 
+void TMainController::slotRequestPopupContextMenu(TGraphicsViewContextMenu *graphicsViewContextMenu)
+{
+    TBaseModel *baseModel = mDocument->getSceneModel()->getCurrentModel();
+    TClipboard *clipboard = TClipboard::getInstance();
+    graphicsViewContextMenu->setActionPasteState(!(baseModel->currentObjectWhetherCurrentModel(clipboard->getType())));
+}
+
 void TMainController::slotPressDownCopy()
 {
     TGraphicsScene *graphicsScene = mDocument->graphicsScene();
@@ -307,22 +316,34 @@ void TMainController::slotPressDownCopy()
     if(objectItemList.isEmpty())
         return;
     TObjectList objectList;
+    QList<QPointF>posList;
+    QRectF rectF;
     for(TObjectItem *objectItem: objectItemList)
+    {
+        posList.append(objectItem->getCurrentPos());
+        rectF = rectF.united(objectItem->getBoundingRect());
         objectList.append(objectItem->object());
+    }
     TClipboard *clipboard = TClipboard::getInstance();
     clipboard->setData(objectList.at(0)->type(), objectList);
+    clipboard->setRectF(rectF);
+    clipboard->setPointFList(posList);
 }
 
 void TMainController::slotPressDownPaste(const QPointF &pos)
 {
     TBaseModel *baseModel = mDocument->getSceneModel()->getCurrentModel();
     TClipboard *clipboard = TClipboard::getInstance();
-    TObjectList objectList;
-    objectList = clipboard->getObjectList();
+    TObjectList objectList = clipboard->getObjectList();
+    QList<QPointF> pointFList = clipboard->getPointFList();
     if(objectList.isEmpty())
         return;
+    int i=0;
     for(TObject *object : objectList)
-        object->setPos(pos);
+    {
+        object->setPos(pos+pointFList.at(i));
+        i++;
+    }
     mDocument->cmdAddObject(objectList, baseModel);
 }
 

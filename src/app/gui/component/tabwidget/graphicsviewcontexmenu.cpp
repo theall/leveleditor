@@ -7,6 +7,9 @@ TGraphicsViewContextMenu::TGraphicsViewContextMenu(QWidget *parent) :
     mActionCopy = addAction(QString(), this, SLOT(slotActionCopyTriggered()));
     mActionPaste = addAction(QString(), this, SLOT(slotActionPasteTriggered()));
     mActionDelete = addAction(QString(), this, SLOT(slotActionDeleteTriggered()));
+
+    mActionPaste->setDisabled(true);
+
     retranslateUi();
 }
 
@@ -39,7 +42,6 @@ void TGraphicsViewContextMenu::setAllActionsState(bool state)
 {
     setActionCloneState(state);
     setActionCopyState(state);
-    setActionPasteState(state);
     setActionDeleteState(state);
 }
 

@@ -34,6 +34,7 @@ signals:
     void requestCloseDocument(TDocument *document);
     void documentDirtyFlagChanged(TDocument *document, bool isDirty);
 
+    void requestPopupContextMenu(TGraphicsViewContextMenu *graphicsViewContextMenu);
     void pressDownCopy();
     void pressDownPaste(const QPointF &pos);
     void pressDownDelete();
