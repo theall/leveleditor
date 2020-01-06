@@ -35,6 +35,11 @@ bool TLayerItem::isFactoryLayer() const
     return mBaseModel->type()==TBaseModel::ENEMY_FACTORY;
 }
 
+QList<QGraphicsItem *> TLayerItem::childItems() const
+{
+    return QGraphicsObject::childItems();
+}
+
 bool TLayerItem::isObjectLayer() const
 {
     return mLayerType==OBJECT;

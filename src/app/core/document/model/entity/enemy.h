@@ -16,15 +16,12 @@ public:
     TPixmap *getPixmap() const;
     TPixmapId *pixmapId() const;
     void setPixmapId(TPixmapId *pixmapId);
-    void setEnemyId(TFaceId *enemy);
     QRectF getRect() const;
 
 private:
-    TPixmap *mPixmap;
     TPixmapId *mPixmapId;
     TPropertyItem *mCategoryPropertyItem;
     TPropertyItem *mEnemyPropertyItem;
-    TFaceId *mFaceId;
 
     void setUp();
     void initPropertySheet();

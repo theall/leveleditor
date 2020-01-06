@@ -109,8 +109,12 @@ void TObjectController::slotOnSelectedObjectChanged(TObject *, TObject *current)
 
 void TObjectController::slotObjectIndexPressed(const QModelIndex &index)
 {
+    if(!mDocument)
+        return;
+
     TBaseModel *baseModel = mSceneModel->getCurrentModel();
-//    int row = index.row();
+
+    // Select and center object items
     TObjectList objectList;
     for(int row : mObjectListView->getSelectedIndexes()) {
         if(TTileModel *tileModel = dynamic_cast<TTileModel*>(baseModel)) {
@@ -135,6 +139,13 @@ void TObjectController::slotObjectIndexPressed(const QModelIndex &index)
         }
     }
     selectAndCenterOn(objectList);
+
+    // Sychronize index into enemy factory model
+    if(baseModel->type() == TBaseModel::ENEMY_FACTORY) {
+        int row = index.row();
+        TEnemyFactoryModel *enemyFactoryModel = mDocument->getSceneModel()->getEnemyFactoryModel();
+        enemyFactoryModel->setCurrentIndex(row);
+    }
 }
 
 void TObjectController::slotEnemyIndexPressed(int index)

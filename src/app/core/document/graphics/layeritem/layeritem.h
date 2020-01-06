@@ -44,6 +44,7 @@ public:
     void restore();
 
     bool isFactoryLayer() const;
+    virtual QList<QGraphicsItem *> childItems() const;
 
 signals:
     void boundingRectChanged(const QRectF &rect);

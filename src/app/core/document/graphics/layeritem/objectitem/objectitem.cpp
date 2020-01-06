@@ -111,7 +111,12 @@ QRectF TObjectItem::getBoundingRect() const
 
 void TObjectItem::setBoundingRect(const QRectF &boundingRect)
 {
+    if(mBoundingRect == boundingRect)
+        return;
+
     mBoundingRect = boundingRect;
+
+    emit boundingRectChanged(boundingRect);
 }
 
 void TObjectItem::step()

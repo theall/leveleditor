@@ -21,7 +21,7 @@ void TEnemyModel::setEnemyFactory(TEnemyFactory *enemyFactory)
 TEnemy *TEnemyModel::createEnemy(TFaceId *faceId, const QPointF &pos)
 {
     TEnemy *enemy = new TEnemy(this);
-    enemy->setEnemyId(faceId);
+    enemy->setPixmapId(faceId);
     enemy->setPos(pos);
     return enemy;
 }
@@ -71,4 +71,14 @@ QVariant TEnemyModel::data(const QModelIndex &index, int role) const
         return enemy->getPixmap()->content();
     }*/
     return QVariant();
+}
+
+void TEnemyModel::onObjectInserted(const TObjectList &objectList, const QList<int> &indexList)
+{
+    emit objectInserted(convert(objectList), indexList);
+}
+
+void TEnemyModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList)
+{
+    emit objectRemoved(convert(objectList), indexList);
 }

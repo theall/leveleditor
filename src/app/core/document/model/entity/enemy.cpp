@@ -42,6 +42,9 @@ TPixmapId *TEnemy::pixmapId() const
 
 void TEnemy::setPixmapId(TPixmapId *pixmapId)
 {
+    if(mPixmapId == pixmapId)
+        return;
+
     mPixmapId = pixmapId;
 }
 
@@ -56,7 +59,7 @@ QRectF TEnemy::getRect() const
 
     QSize pixmapSize = pixmap->size();
     QPointF currentPos = pos();
-    currentPos -= QPoint(pixmapSize.width()/2, pixmapSize.height());
+    currentPos -= QPoint(pixmapSize.width()/16, pixmapSize.height()/32);
     return QRectF(currentPos, pixmapSize);
 }
 
@@ -210,23 +213,6 @@ void TEnemy::slotCategoryChanged(const QVariant &oldValue, const QVariant &newVa
     Q_UNUSED(newValue);
 
     setUpPixmapId();
-}
-
-void TEnemy::setEnemyId(TFaceId *face)
-{
-    if(mFaceId == face)
-        return;
-
-    mFaceId = face;
-    setUp();
-}
-
-void TEnemy::setUp()
-{
-    if(mFaceId) {
-        mPixmap = mFaceId->pixmap();
-        mPropertySheet->setValue(P_CATEGORY, mPixmap->fileName());
-    }
 }
 
 QString TEnemy::typeString() const

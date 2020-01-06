@@ -71,10 +71,11 @@ QVariant TEnemyFactoryModel::data(const QModelIndex &index, int role) const
 
 TEnemy *TEnemyFactoryModel::createEnemy(TFaceId *faceId, const QPointF &pos)
 {
-    TEnemy *enemy = new TEnemy(this);
-    enemy->setEnemyId(faceId);
-    enemy->setPos(pos);
-    return enemy;
+    TEnemyModel *enemyModel = getCurrentEnemyModel();
+    if(!enemyModel)
+        return nullptr;
+
+    return enemyModel->createEnemy(faceId, pos);
 }
 
 TEnemyFactory *TEnemyFactoryModel::createEnemyFactory()

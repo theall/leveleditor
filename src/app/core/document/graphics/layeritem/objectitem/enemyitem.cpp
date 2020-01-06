@@ -35,9 +35,8 @@ void TEnemyItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
     TPixmap *pixmap = mEnemy->getPixmap();
     if(!pixmap)
         return;
-
     QPixmap p = pixmap->pixmap();
     QPointF currentPos = getCurrentPos();
-    currentPos -= QPointF(p.width()/2, p.height());
+    //currentPos += QPointF(p.width()/2, p.height());
     painter->drawPixmap(currentPos, p);
 }
