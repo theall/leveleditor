@@ -51,6 +51,10 @@
         <file>images/pause.png</file>
         <file>images/play.png</file>
         <file>images/stop_play.png</file>
+        <file>images/character.png</file>
+        <file>images/item.png</file>
+        <file>images/shot.png</file>
+        <file>images/chunk.png</file>
     </qresource>
     <qresource prefix="/other">
         <file>images/controller3.png</file>

@@ -18,6 +18,28 @@ TCharacterDock::TCharacterDock(QWidget *parent) :
     toolBar->setFloatable(false);//设置为不可浮动
     toolBar->setMovable(false);//设置为不可移动
     toolBar->setIconSize(QSize(16, 16));//设置图片
+<<<<<<< HEAD
+    setEnabled(false);
+    QIcon icon(":/animationdock/images/character.png");
+    QIcon icon1(":/animationdock/images/item.png");
+    QIcon icon2(":/animationdock/images/shot.png");
+    QIcon icon3(":/animationdock/images/chunk.png");
+    QAction *action0 = toolBar->addAction(icon, QString(), this, SLOT(slotActionToggled()));
+    QAction *action1 = toolBar->addAction(icon1, QString(), this, SLOT(slotActionToggled()));
+    QAction *action2 = toolBar->addAction(icon2, QString(), this, SLOT(slotActionToggled()));
+    QAction *action3 = toolBar->addAction(icon3, QString(), this, SLOT(slotActionToggled()));
+
+    action0->setData(0);
+    action1->setData(1);
+    action2->setData(2);
+    action3->setData(3);
+
+    mActionGroup->addAction(action0);
+    mActionGroup->addAction(action1);
+    mActionGroup->addAction(action2);
+    mActionGroup->addAction(action3);
+
+=======
 	setEnabled(false);
     QIcon icon(":/animationdock/images/add.png");
     for(int i=0;i<PA_TOTAL_COUNT;i++) {
@@ -25,6 +47,7 @@ TCharacterDock::TCharacterDock(QWidget *parent) :
         action->setData(i);
         mActionGroup->addAction(action);
     }
+>>>>>>> afb0a8a6234d53a52c0971779a427f26bd59a855
     mActionGroup->actions().at(0)->setChecked(true);
 
     QScrollArea *container = new QScrollArea(this);//提供了一个可以滚动的视口和两个滚动条
