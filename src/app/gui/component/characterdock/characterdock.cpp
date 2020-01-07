@@ -29,6 +29,7 @@ TCharacterDock::TCharacterDock(QWidget *parent) :
     for(int i=0;i<PA_TOTAL_COUNT;i++) {
         QAction *action = toolBar->addAction(QIcon(pngFileList.at(i)), QString(), this, SLOT(slotActionToggled()));
         action->setData(i);
+        action->setCheckable(true);
         mActionGroup->addAction(action);
     }
 
