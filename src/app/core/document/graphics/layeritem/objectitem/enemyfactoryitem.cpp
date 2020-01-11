@@ -64,6 +64,8 @@ void TEnemyFactoryItem::addEnemy(TEnemy *enemy)
 void TEnemyFactoryItem::calcBoundingRect()
 {
     QRectF newRect(0, 0, 1, 1);
+    if(!mEnemyItemList.isEmpty())
+        newRect = mEnemyItemList.first()->getBoundingRect();
     for(TEnemyItem *enemyItem : mEnemyItemList) {
         newRect = newRect.united(enemyItem->boundingRect());
     }

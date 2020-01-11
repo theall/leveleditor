@@ -77,8 +77,12 @@ TObjectItemList TLayerItem::getObjectItemList() const
 
 QRectF TLayerItem::calcBoundingRect()
 {
-    QRectF newRect(0, 0, 1, 1);
-    for(QGraphicsItem *item : childItems()) {
+    QList<QGraphicsItem*> childItemsList = childItems();
+    if(childItemsList.isEmpty())
+        return QRectF();
+
+    QRectF newRect = childItemsList.takeFirst()->boundingRect();
+    for(QGraphicsItem *item : childItemsList) {
         QRectF itemRect = item->boundingRect();
         if(!itemRect.isValid())
             continue;

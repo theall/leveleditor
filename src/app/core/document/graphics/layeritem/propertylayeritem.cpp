@@ -57,8 +57,6 @@ void TPropertyLayerItem::slotlPropertyItemValueChanged(TPropertyItem *item, cons
 
 QRectF TPropertyLayerItem::calcBoundingRect()
 {
-    QRectF rect(0, 0, 1, 1);
-    rect = rect.united(mFlagItem1->boundingRect());
-    rect = rect.united(mFlagItem2->boundingRect());
-    return rect;
+    QRectF rect = mFlagItem1->boundingRect();
+    return rect.united(mFlagItem2->boundingRect());;
 }
