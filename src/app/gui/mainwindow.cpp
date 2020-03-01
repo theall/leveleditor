@@ -30,6 +30,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QStyleFactory>
+#include <QDesktopServices>
 
 TMainWindow::TMainWindow(QWidget *parent) :
     QMainWindow(parent)
