@@ -61,6 +61,7 @@ private:
 
     void setIndexList(const TObjectList &objectList, TBaseModel *baseModel);
 
+
     QList<int> mIndexList;
     TObject::Type mType;
     QList<QByteArray> mDataList;
