@@ -31,6 +31,8 @@
 #include <QMessageBox>
 #include <QStyleFactory>
 
+#include <QDesktopServices>
+
 TMainWindow::TMainWindow(QWidget *parent) :
     QMainWindow(parent)
   , ui(new Ui::MainWindow)
@@ -156,6 +158,7 @@ TMainWindow::TMainWindow(QWidget *parent) :
     connect(prefs, SIGNAL(hideMenuBarChanged(bool)), this, SLOT(slotHideMenuBarChanged(bool)));
     connect(prefs, SIGNAL(hideStatusBarChanged(bool)), this, SLOT(slotHideStatusBarChanged(bool)));
     connect(prefs, SIGNAL(styleChanged(QString)), this, SLOT(slotStyleChanged(QString)));
+
 }
 
 TMainWindow::~TMainWindow()
@@ -579,10 +582,18 @@ void TMainWindow::on_actionInsertMode_triggered()
     emit onActionInsertPushed();
 }
 
+void TMainWindow::on_actionLicense_triggered()
+{
+    QDesktopServices::openUrl(QUrl("http://github.com/theall/leveleditor/", QUrl::TolerantMode));
+}
+
+
 void TMainWindow::on_actionAbout_triggered()
 {
     mAboutDialog->exec();
 }
+
+
 
 void TMainWindow::on_actionRun_triggered()
 {

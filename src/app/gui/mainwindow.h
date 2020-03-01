@@ -127,6 +127,7 @@ private slots:
     void on_actionDocumentProperties_triggered();
     void on_actionSelectMode_triggered();
     void on_actionInsertMode_triggered();
+    void on_actionLicense_triggered();//
     void on_actionAbout_triggered();
     void on_actionRun_triggered();
     void on_actionShowBorder_triggered(bool arg1);
