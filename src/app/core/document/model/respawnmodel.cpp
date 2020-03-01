@@ -160,3 +160,8 @@ void TRespawnModel::onObjectRemoved(const TObjectList &objectList, const QList<i
 {
     emit objectRemoved(convert(objectList), indexList);
 }
+
+void TRespawnModel::onObjectMove(const TObjectList &objectList, const QList<int> &posList)
+{
+
+}

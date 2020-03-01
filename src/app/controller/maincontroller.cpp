@@ -312,22 +312,10 @@ void TMainController::slotRequestPopupContextMenu(TGraphicsViewContextMenu *grap
 void TMainController::slotPressDownCopy()
 {
     TGraphicsScene *graphicsScene = mDocument->graphicsScene();
+    TBaseModel *baseModel = mDocument->getSceneModel()->getCurrentModel();
     TObjectItemList objectItemList = graphicsScene->getSelectedObjectItemList();
-    if(objectItemList.isEmpty())
-        return;
-    TObjectList objectList;
-    QList<QPointF>posList;
-    QRectF rectF;
-    for(TObjectItem *objectItem: objectItemList)
-    {
-        posList.append(objectItem->getCurrentPos());
-        rectF = rectF.united(objectItem->getBoundingRect());
-        objectList.append(objectItem->object());
-    }
     TClipboard *clipboard = TClipboard::getInstance();
-    clipboard->setData(objectList.at(0)->type(), objectList);
-    clipboard->setRectF(rectF);
-    clipboard->setPointFList(posList);
+    clipboard->setData(objectItemList, baseModel);
 }
 
 void TMainController::slotPressDownPaste(const QPointF &pos)
@@ -335,13 +323,13 @@ void TMainController::slotPressDownPaste(const QPointF &pos)
     TBaseModel *baseModel = mDocument->getSceneModel()->getCurrentModel();
     TClipboard *clipboard = TClipboard::getInstance();
     TObjectList objectList = clipboard->getObjectList();
-    QList<QPointF> pointFList = clipboard->getPointFList();
+    QList<QPointF> pointList = clipboard->getPointList();
     if(objectList.isEmpty())
         return;
     int i=0;
     for(TObject *object : objectList)
     {
-        object->setPos(pos+pointFList.at(i));
+        object->setPos(pos+pointList.at(i));
         i++;
     }
     mDocument->cmdAddObject(objectList, baseModel);
@@ -421,7 +409,8 @@ void TMainController::slotOnLayerSelected(int index)
     //set model into object dock
     if(layerItem)
         mObjectController->setObjectListViewModel(layerItem->baseModel());
-
+        if(!(dynamic_cast<TEnemyFactoryModel*>(layerItem->baseModel())))
+            mObjectController->setSubControlObjectListViewModel(nullptr);
     // Update stamp pixmap if tile layer or factory is slected
     bool isFactoryLayer = layerItem && layerItem->isFactoryLayer();
     if(enableTileset) {

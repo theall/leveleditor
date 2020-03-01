@@ -237,12 +237,21 @@ void TAnimationController::slotRequestRemoveFrames(const QList<int> &indexList)
 
 void TAnimationController::slotRequestMoveIndex(const QList<int> &indexList, const Dir &dir)
 {
+    QList<int> posList;
+    TObjectList objectList;
     if(dir == Dir::Up) {
 
     } else if(dir == Dir::Down) {
 
     } else if(dir == Dir::Left) {
-
+        TFrameModel *frameModel = static_cast<TFrameModel*>(mFrameListView->model());
+        for(int index : indexList) {
+            TFrame *frame = frameModel->getFrame(index);
+            objectList.append(frame);
+        }
+        for(int i=0; i<indexList.size(); i++)
+            posList.append(indexList[i]-1);
+        mDocument->moveObjectIndex(frameModel, objectList, posList);
     } else if(dir == Dir::Right) {
 
     }

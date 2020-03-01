@@ -2,6 +2,8 @@
 #include "gui/component/layerdock/layerdock.h"
 #include "gui/component/layerdock/layerview.h"
 
+#include "core/document/graphics/layeritem/propertylayeritem.h"
+
 TLayersController::TLayersController(QObject *parent) :
     TAbstractController(parent)
   , mLayerView(nullptr)
@@ -50,6 +52,19 @@ void TLayersController::setCurrentDocument(TDocument *document)
     if(model) {
         mLayerView->selectRow(model->getCurrentIndex());
     }
+
+    TGraphicsScene *scene = document->graphicsScene();
+    for(int row : mLayerView->getSelectedRows()){
+        TLayerItem *layerItem = scene->getLayerItem(row);
+        if(dynamic_cast<TPropertyLayerItem*>(layerItem)) {
+            mLayerDock->setOpacitySlider(false);
+        } else
+            mLayerDock->setOpacitySlider(true);
+
+        if(layerItem) {
+            mLayerDock->setOpacitySliderValue(layerItem->opacity());
+        }
+    }
 }
 
 void TLayersController::slotCurrentLayerSelected(int row)
@@ -87,6 +102,9 @@ void TLayersController::slotRequestShowLayers(const QList<int> &rows, bool show)
     if(!sceneModel)
         return;
 
+    TBaseModel *baseModel = sceneModel->getCurrentModel();
+    mLayerView->setActionShowHideState(baseModel->visible());
+
     for(int index : rows) {
         TBaseModel *baseModel = sceneModel->getBaseModel(index);
         if(baseModel)
@@ -99,6 +117,9 @@ void TLayersController::slotRequestLockLayers(const QList<int> &rows, bool lock)
     TSceneModel *sceneModel = getCurrentSceneModel();
     if(!sceneModel)
         return;
+
+    TBaseModel *baseModel = sceneModel->getCurrentModel();
+    mLayerView->setActionLockUnLockState(baseModel->locked());
 
     for(int index : rows) {
         TBaseModel *baseModel = sceneModel->getBaseModel(index);

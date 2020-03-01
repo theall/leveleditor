@@ -76,6 +76,11 @@ void TDAreaModel::onObjectRemoved(const TObjectList &objectList, const QList<int
     emit objectRemoved(convert(objectList), indexList);
 }
 
+void TDAreaModel::onObjectMove(const TObjectList &objectList, const QList<int> &posList)
+{
+
+}
+
 TDAreaList TDAreaModel::dAreaList() const
 {
     return mObjectList;

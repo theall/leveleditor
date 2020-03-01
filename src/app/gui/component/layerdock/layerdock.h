@@ -20,6 +20,7 @@ public:
     TLayerView *layerView() const;
     void setOpacitySliderValue(int value);
     void setOpacitySliderValue(qreal value);
+    void setOpacitySlider(bool state);
 
 signals:
     void layerOpacityChanged(QList<int> rows, float opacity);

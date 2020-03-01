@@ -73,3 +73,9 @@ void TWallModel::onObjectRemoved(const TObjectList &objectList, const QList<int>
 {
     emit objectRemoved(convert(objectList), indexList);
 }
+
+void TWallModel::onObjectMove(const TObjectList &objectList, const QList<int> &posList)
+{
+
+}
+

@@ -89,6 +89,13 @@ void TFrameModel::onObjectRemoved(const TObjectList &, const QList<int> &)
     emit dataChanged(QModelIndex(), QModelIndex());
 }
 
+void TFrameModel::onObjectMove(const TObjectList &objectList, const QList<int> &posList)
+{
+    beginResetModel();
+    endResetModel();
+    emit dataChanged(QModelIndex(), QModelIndex());
+}
+
 void TFrameModel::clear()
 {
     mAnimation->clear();

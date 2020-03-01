@@ -140,3 +140,8 @@ void TEnemyFactoryModel::onObjectRemoved(const TObjectList &, const QList<int> &
 {
     emit objectRemoved(mObjectList, indexList);
 }
+
+void TEnemyFactoryModel::onObjectMove(const TObjectList &objectList, const QList<int> &posList)
+{
+
+}

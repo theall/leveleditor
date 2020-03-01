@@ -48,6 +48,11 @@ void TAreaModel::onObjectRemoved(const TObjectList &objectList, const QList<int>
     emit objectRemoved(convert(objectList), indexList);
 }
 
+void TAreaModel::onObjectMove(const TObjectList &objectList, const QList<int> &posList)
+{
+
+}
+
 int TAreaModel::rowCount(const QModelIndex &parent) const
 {
     if(!parent.isValid()) {

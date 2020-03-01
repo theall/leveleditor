@@ -72,7 +72,12 @@ void TObjectController::setObjectListViewModel(TBaseModel *baseModel)
     TBaseModel *basemodel = mSceneModel->getCurrentModel();
     if(dynamic_cast<TSceneModel*>(basemodel)) {
         mObjectListView->setModel(nullptr);
+        mSubControlObjectListView->hide();
         return ;
+    }
+    if(!(dynamic_cast<TEnemyFactoryModel*>(basemodel))){
+        setSubControlObjectListViewModel(nullptr);
+        mSubControlObjectListView->hide();
     }
     mObjectListView->setModel(baseModel);
 }
@@ -80,6 +85,8 @@ void TObjectController::setObjectListViewModel(TBaseModel *baseModel)
 void TObjectController::setSubControlObjectListViewModel(TEnemyModel *enemyModel)
 {
     mSubControlObjectListView->setModel(enemyModel);
+    if(enemyModel)
+        mSubControlObjectListView->show();
 }
 
 void TObjectController::slotOnSelectedObjectChanged(TObject *, TObject *current)

@@ -1,5 +1,16 @@
 #include "clipboard.h"
 
+#include <QMap>
+
+#define ADD_OBJECT(T, objectList) \
+    for(QByteArray byteArray : mDataList) \
+    { \
+        T *t = new T(); \
+        QDataStream stream(&byteArray, QIODevice::ReadWrite); \
+        t->readFromStream(stream); \
+        objectList.append(t); \
+    }
+
 IMPL_SINGLE_INSTANCE(TClipboard)
 TClipboard::TClipboard(QObject *parent) :
     QObject(parent)
@@ -12,42 +23,47 @@ TClipboard::~TClipboard()
     
 }
 
-void TClipboard::setRectF(const QRectF &rectF)
-{
-    mRectF = rectF;
-}
-
-QList<QPointF> TClipboard::getPointFList() const
-{
-    QPointF pos = mRectF.center();
-    QList<QPointF> pointFList;
-    for(QPointF Pos : mPointFList)
-        pointFList.append(Pos-pos);
-
-    return pointFList;
-}
-
-void TClipboard::setPointFList(const QList<QPointF> &pointFList)
-{
-    mPointFList = pointFList;
-}
-
 TObject::Type TClipboard::getType() const
 {
     return mType;
 }
 
-void TClipboard::setData(const TObject::Type &type, const TObjectList &objectList)
+void TClipboard::setData(const TObjectItemList &objectItemList, TBaseModel *baseModel)
 {
-    mType = type;
+    mType = TObject::INVALID;
     mDataList.clear();
 
+    if(objectItemList.isEmpty())
+        return;
+
+    TObjectList objectList;
+    QList<QPointF> pointList;
+    TObjectItem *firstItem = objectItemList.at(0);
+    QRectF rect = firstItem->getBoundingRect();
+    mType = firstItem->objectType();
+
+    for(TObjectItem *objectItem: objectItemList)
+    {
+        rect = rect.united(objectItem->getBoundingRect());
+        pointList.append(objectItem->getCurrentPos());
+        objectList.append(objectItem->object());
+    }
+
+    QPointF centerPos = rect.center();
+    for(QPointF pos : pointList)
+        mPointList.append(centerPos-pos);
+
+    setIndexList(objectList, baseModel);
+    QMap<int, QByteArray> map;
+    int i=0;
     for(TObject *object : objectList) {
         QByteArray byteArray;
         QDataStream stream(&byteArray, QIODevice::WriteOnly);
         object->saveToStream(stream);
-        mDataList.append(byteArray);
+        map.insert(mIndexList.at(i), byteArray);
+        i++;
     }
+    mDataList = map.values();
 }
 
 bool TClipboard::whetherObject(const TObject::Type &type) const
@@ -62,94 +78,77 @@ bool TClipboard::isEmpty()
     return mDataList.isEmpty();
 }
 
-TObjectList TClipboard::getObjectList() const
+QList<QPointF> TClipboard::getPointList() const
 {
+    return mPointList;
+}
+
+TObjectList TClipboard::getObjectList() const
+{   
     TObjectList objectList;
     switch (mType) {
     case TObject::ANIMATION :
-        for(QByteArray byteArray : mDataList)
-        {
-            TAnimation *animation = new TAnimation();
-            QDataStream stream(&byteArray, QIODevice::ReadWrite);
-            animation->readFromStream(stream);
-            objectList.append(animation);
-        }
+        ADD_OBJECT(TAnimation, objectList);
         break;
     case TObject::AREA :
-        for(QByteArray byteArray : mDataList)
-        {
-            TArea *area = new TArea();
-            QDataStream stream(&byteArray, QIODevice::ReadWrite);
-            area->readFromStream(stream);
-            objectList.append(area);
-        }
+        ADD_OBJECT(TArea, objectList);
         break;
     case TObject::BOX :
-        for(QByteArray byteArray : mDataList)
-        {
-            TBox *box = new TBox();
-            QDataStream stream(&byteArray, QIODevice::ReadWrite);
-            box->readFromStream(stream);
-            objectList.append(box);
-        }
+        ADD_OBJECT(TBox, objectList);
         break;
     case TObject::DAREA :
-        for(QByteArray byteArray : mDataList)
-        {
-            TDArea *darea = new TDArea();
-            QDataStream stream(&byteArray, QIODevice::ReadWrite);
-            darea->readFromStream(stream);
-            objectList.append(darea);
-        }
+        ADD_OBJECT(TDArea, objectList);
         break;
     case TObject::ENEMY :
-        for(QByteArray byteArray : mDataList)
-        {
-            TEnemy *enemy = new TEnemy();
-            QDataStream stream(&byteArray, QIODevice::ReadWrite);
-            enemy->readFromStream(stream);
-            objectList.append(enemy);
-        }
+        ADD_OBJECT(TEnemy, objectList);
         break;
     case TObject::FRAME :
-        for(QByteArray byteArray : mDataList)
-        {
-            TFrame *frame = new TFrame();
-            QDataStream stream(&byteArray, QIODevice::ReadWrite);
-            frame->readFromStream(stream);
-            objectList.append(frame);
-        }
+        ADD_OBJECT(TFrame, objectList);
         break;
     case TObject::TRIGGER :
-        for(QByteArray byteArray : mDataList)
-        {
-            TTrigger *trigger = new TTrigger();
-            QDataStream stream(&byteArray, QIODevice::ReadWrite);
-            trigger->readFromStream(stream);
-            objectList.append(trigger);
-        }
+        ADD_OBJECT(TTrigger, objectList);
         break;
     case TObject::PLAT :
-        for(QByteArray byteArray : mDataList)
-        {
-            TPlat *plat = new TPlat();
-            QDataStream stream(&byteArray, QIODevice::ReadWrite);
-            plat->readFromStream(stream);
-            objectList.append(plat);
-        }
+        ADD_OBJECT(TPlat, objectList);
         break;
     case TObject::TILE :
-        for(QByteArray byteArray : mDataList)
-        {
-            TTile *tile = new TTile();
-            QDataStream stream(&byteArray, QIODevice::ReadWrite);
-            tile->readFromStream(stream);
-            objectList.append(tile);
-        }
+        ADD_OBJECT(TTile, objectList);
         break;
      default :
         break;
     }
     return objectList;
+}
 
+void TClipboard::setIndexList(const TObjectList &objectList, TBaseModel *baseModel)
+{
+    if(TAreaModel *areaModel = dynamic_cast<TAreaModel*>(baseModel)) {
+        for(TObject *object : objectList)
+            mIndexList.append(areaModel->areaList().indexOf(dynamic_cast<TArea*>(object)));
+    } else if(TBoxModel *boxModel = dynamic_cast<TBoxModel*>(baseModel)) {
+        for(TObject *object : objectList)
+            mIndexList.append(boxModel->boxList().indexOf(dynamic_cast<TBox*>(object)));
+    } else if(TDAreaModel *dareaModel = dynamic_cast<TDAreaModel*>(baseModel)) {
+        for(TObject *object : objectList)
+            mIndexList.append(dareaModel->dAreaList().indexOf(dynamic_cast<TDArea*>(object)));
+    } else if(TEnemyFactoryModel *enemyFactoryModel = dynamic_cast<TEnemyFactoryModel*>(baseModel)) {
+        for(TObject *object : objectList) {
+            if(TEnemyFactory *enemyFactory = dynamic_cast<TEnemyFactory*>(object)){
+                mIndexList.append(enemyFactoryModel->enemyFactoryList().indexOf(enemyFactory));
+            } else {
+                TEnemyModel *enemyModel = dynamic_cast<TEnemyModel*>(baseModel);
+                TEnemyFactory *enemyFactory1 = enemyModel->enemyFactory();
+                mIndexList.append(enemyFactory1->enemyList().indexOf(dynamic_cast<TEnemy*>(object)));
+            }
+        }
+    } else if(TTriggerModel *triggerModel = dynamic_cast<TTriggerModel*>(baseModel)) {
+        for(TObject *object : objectList)
+            mIndexList.append(triggerModel->triggerList().indexOf(dynamic_cast<TTrigger*>(object)));
+    } else if(TPlatModel *platModel = dynamic_cast<TPlatModel*>(baseModel)) {
+        for(TObject *object : objectList)
+            mIndexList.append(platModel->platList().indexOf(dynamic_cast<TPlat*>(object)));
+    } else if(TTileModel *tileModel = dynamic_cast<TTileModel*>(baseModel)) {
+        for(TObject *object : objectList)
+            mIndexList.append(tileModel->tileList().indexOf(dynamic_cast<TTile*>(object)));
+    }
 }

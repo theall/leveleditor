@@ -4,7 +4,6 @@
 const QString g_commandText[TObjectAddCommand::COUNT] = {
     T("Add %1"),
     T("Remove %1"),
-    T("Move %1 index")
 };
 
 TObjectAddCommand::TObjectAddCommand(
@@ -54,8 +53,6 @@ void TObjectAddCommand::undo()
         mIndexList = mBaseModel->removeObjects(mObjectList);
     } else if(mCommand == REMOVE) {
         mBaseModel->insertObjects(mObjectList, mIndexList);
-    } else if(mCommand == MOVE) {
-
     }
 }
 
@@ -65,8 +62,6 @@ void TObjectAddCommand::redo()
         mBaseModel->insertObjects(mObjectList, mIndexList);
     } else if(mCommand == REMOVE) {
         mIndexList = mBaseModel->removeObjects(mObjectList);
-    } else if(mCommand == MOVE) {
-
     }
 }
 

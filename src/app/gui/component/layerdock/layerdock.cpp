@@ -22,6 +22,8 @@ TLayerDock::TLayerDock(QWidget *parent) :
     QHBoxLayout *opacityLayout = new QHBoxLayout;//水平排列
     mOpacitySlider->setRange(0, 100);//设置滑块的最小值和最大值
     mOpacitySlider->setEnabled(false);//设置未连接时不可用
+    mOpacitySlider->setValue(100);
+    //mOpacitySlider->setCurrent();
     mOpacityLabel->setBuddy(mOpacitySlider);//将标签与滑块链接起来
     opacityLayout->addWidget(mOpacityLabel);
     opacityLayout->addWidget(mOpacitySlider);
@@ -107,6 +109,11 @@ void TLayerDock::setOpacitySliderValue(qreal value)
     mOpacitySlider->blockSignals(true);
     mOpacitySlider->setValue((int)(value*100));
     mOpacitySlider->blockSignals(false);
+}
+
+void TLayerDock::setOpacitySlider(bool state)
+{
+    mOpacitySlider->setEnabled(state);
 }
 
 void TLayerDock::retranslateUi()

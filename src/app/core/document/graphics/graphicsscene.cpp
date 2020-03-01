@@ -447,6 +447,10 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             }
         }
     } else if(mEditMode == INSERT) {
+        TBaseModel *baseModel = mSceneModel->getCurrentModel();
+        if(baseModel->locked())
+            return;
+
         if(mLeftButtonDown) {
             TBaseModel::Type currentModelType = mSceneModel->getCurretnModelType();
             if(currentModelType == TBaseModel::TILE) {
@@ -545,6 +549,7 @@ void TGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         updateCursor();
         update();
     } else if(mEditMode == INSERT) {
+
         TBaseModel::Type currentModelType = mSceneModel->getCurretnModelType();
         if(currentModelType==TBaseModel::TILE
                 || currentModelType==TBaseModel::ENEMY_FACTORY) {
@@ -644,6 +649,9 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         }
     } else if(mEditMode == INSERT) {
         TBaseModel *baseModel = mSceneModel->getCurrentModel();
+        if(baseModel->locked())
+            return;
+
         TBaseModel::Type modelType = baseModel->type();
         TObject *newObject = nullptr;
         QRect areaRect = mObjectAreaItem->boundingRect().toRect();

@@ -97,3 +97,8 @@ void TPlatModel::onObjectRemoved(const TObjectList &objectList, const QList<int>
 {
     emit objectRemoved(convert(objectList), indexList);
 }
+
+void TPlatModel::onObjectMove(const TObjectList &objectList, const QList<int> &posList)
+{
+
+}

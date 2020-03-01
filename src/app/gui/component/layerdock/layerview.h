@@ -26,6 +26,8 @@ public:
     QSize sizeHint() const override;
     QList<int> getSelectedRows() const;
     QMenu *contextMenu();
+    void setActionShowHideState(bool state);
+    void setActionLockUnLockState(bool state);
 
 signals:
     void requestRemoveObject(int index);

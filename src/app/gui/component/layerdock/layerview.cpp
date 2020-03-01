@@ -31,7 +31,8 @@ TLayerView::TLayerView(QWidget *parent):
     connect(mActionHide, SIGNAL(triggered(bool)), this, SLOT(slotActionHideTriggered(bool)));//关眼
     connect(mActionLock, SIGNAL(triggered(bool)), this, SLOT(slotActionLockTriggered(bool)));//上锁
     connect(mActionUnLock, SIGNAL(triggered(bool)), this, SLOT(slotActionUnLockTriggered(bool)));//开锁
-
+    mActionShow->setDisabled(true);
+    mActionUnLock->setDisabled(true);
     retranslateUi();
 }
 
@@ -132,6 +133,18 @@ void TLayerView::slotActionLockTriggered(bool)
 void TLayerView::slotActionUnLockTriggered(bool)
 {
     emit requestLockLayers(getSelectedRows(), false);
+}
+
+void TLayerView::setActionShowHideState(bool state)
+{
+    mActionShow->setDisabled(!state);
+    mActionHide->setDisabled(state);
+}
+
+void TLayerView::setActionLockUnLockState(bool state)
+{
+    mActionLock->setDisabled(!state);
+    mActionUnLock->setDisabled(state);
 }
 
 void TLayerView::retranslateUi()

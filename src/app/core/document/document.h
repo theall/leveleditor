@@ -10,6 +10,7 @@
 #include "graphics/graphicsscene.h"
 #include "undocommand/propertyundocommand.h"
 #include "undocommand/objectaddcommand.h"
+#include "undocommand/objectmoveindexcommand.h"
 #include "../assets/maps.h"
 
 enum EditMode {
@@ -70,10 +71,11 @@ public:
     EditMode getEditMode() const;
     void setEditMode(const EditMode &editMode);
 
-    void cmdAddObject(const TObject *object, TBaseModel *baseModel);
+    void cmdAddObject(TObject *object, TBaseModel *baseModel);
     void cmdAddObject(const TObjectList &objectList, TBaseModel *baseModel);
     void cmdRemoveObject(const TObject *object, TBaseModel *baseModel);
     void cmdRemoveObject(const TObjectList &objectList, TBaseModel *baseModel);
+    void moveObjectIndex(TBaseModel *baseModel, const TObjectList &objectList, const QList<int> &posList);
 
 signals:
     void projectFileChanged();

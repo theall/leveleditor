@@ -1,6 +1,7 @@
 #include "document.h"
 #include "base/tr.h"
 #include "undocommand/objectaddcommand.h"
+#include "undocommand/objectmoveindexcommand.h"
 
 #include "../shared/filesystemwatcher.h"
 #include "../assets/assetsmanager.h"
@@ -295,13 +296,13 @@ void TDocument::setEditMode(const EditMode &editMode)
     emit editModeChanged(mEditMode, oldMode);
 }
 
-void TDocument::cmdAddObject(const TObject *object, TBaseModel *baseModel)
+void TDocument::cmdAddObject(TObject *object, TBaseModel *baseModel)
 {
     if(!object || !baseModel) {
         return;
     }
     TObjectList objectList;
-    objectList.append(objectList);
+    objectList.append(object);
     internalAddRemoveObjectCommand(TObjectAddCommand::ADD, baseModel, objectList);
 }
 
@@ -323,6 +324,18 @@ void TDocument::cmdRemoveObject(const TObject *object, TBaseModel *baseModel)
 void TDocument::cmdRemoveObject(const TObjectList &objectList, TBaseModel *baseModel)
 {
     internalAddRemoveObjectCommand(TObjectAddCommand::REMOVE, baseModel, objectList);
+}
+
+void TDocument::moveObjectIndex(TBaseModel *baseModel, const TObjectList &objectList, const QList<int> &posList)
+{
+    if(!baseModel)
+        return ;
+    TObjectMoveIndexCommand *command = new TObjectMoveIndexCommand(
+                baseModel,
+                objectList,
+                posList
+                );
+    addUndoCommand(command);
 }
 
 void TDocument::internalAddRemoveObjectCommand(TObjectAddCommand::Command id, TBaseModel *baseModel, const TObjectList &objectList)

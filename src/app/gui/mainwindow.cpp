@@ -31,8 +31,6 @@
 #include <QMessageBox>
 #include <QStyleFactory>
 
-#include <QDesktopServices>
-
 TMainWindow::TMainWindow(QWidget *parent) :
     QMainWindow(parent)
   , ui(new Ui::MainWindow)
@@ -158,7 +156,6 @@ TMainWindow::TMainWindow(QWidget *parent) :
     connect(prefs, SIGNAL(hideMenuBarChanged(bool)), this, SLOT(slotHideMenuBarChanged(bool)));
     connect(prefs, SIGNAL(hideStatusBarChanged(bool)), this, SLOT(slotHideStatusBarChanged(bool)));
     connect(prefs, SIGNAL(styleChanged(QString)), this, SLOT(slotStyleChanged(QString)));
-
 }
 
 TMainWindow::~TMainWindow()
@@ -694,4 +691,19 @@ void TMainWindow::on_actionOpenDebugDialog_triggered()
 {
     TDebugDialog debugDialog(this);
     debugDialog.exec();
+}
+
+void TMainWindow::on_actionZoomIn_triggered()
+{
+    mZoomComboBox->zoomIn();
+}
+
+void TMainWindow::on_actionZoomOut_triggered()
+{
+    mZoomComboBox->zoomOut();
+}
+
+void TMainWindow::on_actionZoomNormal_triggered()
+{
+    mZoomComboBox->resetZoom();
 }

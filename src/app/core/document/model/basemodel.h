@@ -58,6 +58,7 @@ public:
 protected:
     virtual void onObjectInserted(const TObjectList &objectList, const QList<int> &indexList);
     virtual void onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList);
+    virtual void onObjectMove(const TObjectList &objectList, const QList<int> &posList);
 
 signals:
     void visibilityChanged(bool visible);

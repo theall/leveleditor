@@ -134,6 +134,11 @@ private slots:
     void on_actionAlwaysOnTop_triggered(bool arg1);
     void on_actionCloseGame_triggered();
     void on_actionOpenDebugDialog_triggered();
+    void on_actionZoomIn_triggered();
+
+    void on_actionZoomOut_triggered();
+
+    void on_actionZoomNormal_triggered();
 
 private:
     Ui::MainWindow *ui;

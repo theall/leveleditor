@@ -12,7 +12,6 @@ public:
     enum Command {
         ADD,
         REMOVE,
-        MOVE,
         COUNT
     };
 

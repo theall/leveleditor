@@ -118,6 +118,11 @@ void TBaseModel::onObjectRemoved(const TObjectList &, const QList<int> &)
 
 }
 
+void TBaseModel::onObjectMove(const TObjectList &, const QList<int> &)
+{
+
+}
+
 int TBaseModel::columnCount(const QModelIndex &) const
 {
     Q_ASSERT(false);

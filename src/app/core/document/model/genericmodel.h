@@ -31,8 +31,8 @@ public:
         return removeObject(objectList);
     }
 
-    virtual QList<int> moveObjects(const QList<T*> &, const QList<int> &) {
-        return QList<int>();
+    virtual QList<int> moveObjects(const QList<T*> &objectList, const QList<int> &indexList) {
+        return moveObject(objectList, indexList);
     }
 
     int currentIndex(TObject *object)
@@ -46,9 +46,7 @@ public:
         QList<int> indexRemoved;
         for(T *object : objectList) {
             int index = container.indexOf(object);
-            beginRemoveRows(QModelIndex(), index, index);
             container.removeAt(index);
-            endRemoveRows();
             indexRemoved.append(index);
         }
         return indexRemoved;
@@ -60,9 +58,7 @@ public:
         QList<int> indexRemoved;
         for(int i=0;i<indexList.size();i++) {
             int index = indexList.at(i);
-            beginRemoveRows(QModelIndex(), index, index);
             T object = container.at(index);
-            endRemoveRows();
             container.removeAt(index);
             objectList.append(object);
             indexRemoved.append(index);
@@ -157,13 +153,9 @@ private:
             int index = indexList.at(i);
             if(index<0 || index>=objectCount) {
                 index = objectCount;
-                beginInsertRows(QModelIndex(), index, index);
                 mObjectList.append(object);
-                endInsertRows();
             } else {
-                beginInsertRows(QModelIndex(), index, index);
                 mObjectList.insert(index, object);
-                endInsertRows();
             }
             objectInsertedList.append(object);
             insertedIndexList.append(index);
@@ -216,6 +208,41 @@ private:
         return indexRemoved;
     }
 
+    QList<int> moveObject(const QList<T*> &objectList, const QList<int> &indexList)
+    {
+        QList<int> newIndexList;
+        QList<int> posList = indexList;
+        for(T *t: objectList)
+            newIndexList.append(mObjectList.indexOf(t));
+        newIndexList =  moveObject(newIndexList, posList);
+        onObjectMove(convert(objectList),posList);
+        return newIndexList;
+    }
+
+    QList<int> moveObject(const QList<int> indexList, const QList<int> posList)
+    {
+        QList<int> correnteIndeList = indexList;
+        QList<int> obiettivoIndexList = posList;
+        QList<T*> tList;
+        if(correnteIndeList.size() != obiettivoIndexList.size())
+            return QList<int>();
+        int indexListSize = correnteIndeList.size();
+        for(int i=0; i<indexListSize; i++)
+        {
+            tList.append(mObjectList.takeAt(correnteIndeList[i]));
+            for(int n = i; n<indexListSize; n++)
+                correnteIndeList[n] = correnteIndeList[n]+1;
+            for(int k = 0; k<indexListSize; k++)
+                obiettivoIndexList[k] = obiettivoIndexList[k]-1;
+        }
+        for(int i = 0;i<indexListSize; i++)
+        {
+            mObjectList.insert(obiettivoIndexList.at(i),tList.at(i));
+            for(int n = i; n<indexListSize; n++)
+                obiettivoIndexList[n] = obiettivoIndexList[n]+1;
+        }
+        return correnteIndeList;
+    }
     // TIO interface
 public:
     void saveToStream(QDataStream &) const {
@@ -234,6 +261,10 @@ public:
 
     QList<int> removeObjects(const TObjectList &objectList) {
         return removeObjects(convert(objectList));
+    }
+
+    QList<int> moveObjects(const TObjectList &objectList, const QList<int> &indexList){
+        return moveObjects(convert(objectList), indexList);
     }
 };
 
