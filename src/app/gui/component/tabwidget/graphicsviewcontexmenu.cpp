@@ -3,13 +3,28 @@
 TGraphicsViewContextMenu::TGraphicsViewContextMenu(QWidget *parent) :
     QMenu(parent)
 {
+
     mActionClone = addAction(QString(), this, SLOT(slotActionCloneTriggered()));
     mActionCopy = addAction(QString(), this, SLOT(slotActionCopyTriggered()));
     mActionPaste = addAction(QString(), this, SLOT(slotActionPasteTriggered()));
     mActionDelete = addAction(QString(), this, SLOT(slotActionDeleteTriggered()));
+    addSeparator();
+    mActionTop = addAction(QString(), this, SLOT(slotActionTopTriggered()));
+    mActionLeft = addAction(QString(),this,SLOT(slotActionLeftTriggered()));
+    mActionRight = addAction(QString(),this,SLOT(slotActionRightTriggered()));
+    mActionDown = addAction(QString(),this,SLOT(slotActionDownTriggered()));
+    mActionHorizontal = addAction(QString(),this,SLOT(slotActionHorizontalTriggered()));
+    mActionVertical = addAction(QString(),this,SLOT(slotActionVerticalTriggered()));
+    addSeparator();
+    mActionPlat = addAction(QString(),this,SLOT(slotActionPlatTriggered()));
+    mActionBox = addAction(QString(),this,SLOT(slotActionBoxTriggered()));
+    mActionArea = addAction(QString(),this,SLOT(slotActionAreaTriggered()));
+    mActionDangerArea = addAction(QString(),this,SLOT(slotActionDangerAreaTriggered()));
+    mActionClearHeight = addAction(QString(),this,SLOT(slotActionClearHeightTriggered()));
 
+    mActionHorizontal->setCheckable(true);
+    mActionVertical->setCheckable(true);
     mActionPaste->setDisabled(true);
-
     retranslateUi();
 }
 
@@ -66,10 +81,77 @@ void TGraphicsViewContextMenu::slotActionDeleteTriggered()
     setAllActionsState(true);
 }
 
+void TGraphicsViewContextMenu::slotActionTopTriggered()
+{
+
+}
+
+void TGraphicsViewContextMenu::slotActionLeftTriggered()
+{
+
+}
+
+void TGraphicsViewContextMenu::slotActionRightTriggered()
+{
+
+}
+
+void TGraphicsViewContextMenu::slotActionDownTriggered()
+{
+
+}
+
+void TGraphicsViewContextMenu::slotActionHorizontalTriggered()
+{
+
+}
+
+void TGraphicsViewContextMenu::slotActionVerticalTriggered()
+{
+
+}
+
+void TGraphicsViewContextMenu::slotActionPlatTriggered()
+{
+
+}
+
+void TGraphicsViewContextMenu::slotActionBoxTriggered()
+{
+
+}
+
+void TGraphicsViewContextMenu::slotActionAreaTriggered()
+{
+
+}
+
+void TGraphicsViewContextMenu::slotActionDangerAreaTriggered()
+{
+
+}
+
+void TGraphicsViewContextMenu::slotActionClearHeightTriggered()
+{
+
+}
+
 void TGraphicsViewContextMenu::retranslateUi()
 {
     mActionClone->setText(tr("Clone"));
     mActionCopy->setText(tr("Copy"));
     mActionPaste->setText(tr("Paste"));
     mActionDelete->setText(tr("Delete"));
+    mActionTop->setText(tr("Align Top"));
+    mActionLeft->setText(tr("Align Left"));
+    mActionRight->setText(tr("Align Right"));
+    mActionDown->setText(tr("Align Down"));
+    mActionHorizontal->setText(tr("Arrange Horizontal"));
+    mActionVertical->setText(tr("Arrange Vertical"));
+    mActionPlat->setText(tr("Add Plat"));
+    mActionBox->setText(tr("Add Box"));
+    mActionArea->setText(tr("Add Area"));
+    mActionDangerArea->setText(tr("Danger Area"));
+    mActionClearHeight->setText(tr("Clear Height"));
 }
+

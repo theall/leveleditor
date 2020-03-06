@@ -29,13 +29,33 @@ private slots:
     void slotActionCopyTriggered();
     void slotActionPasteTriggered();
     void slotActionDeleteTriggered();
-
+    void slotActionTopTriggered();
+    void slotActionLeftTriggered();
+    void slotActionRightTriggered();
+    void slotActionDownTriggered();
+    void slotActionHorizontalTriggered();
+    void slotActionVerticalTriggered();
+    void slotActionPlatTriggered();
+    void slotActionBoxTriggered();
+    void slotActionAreaTriggered();
+    void slotActionDangerAreaTriggered();
+    void slotActionClearHeightTriggered();
 private:
     QAction *mActionClone;
     QAction *mActionCopy;
     QAction *mActionPaste;
     QAction *mActionDelete;
-
+    QAction *mActionTop;
+    QAction *mActionLeft;
+    QAction *mActionRight;
+    QAction *mActionDown;
+    QAction *mActionHorizontal;
+    QAction *mActionVertical;
+    QAction *mActionPlat;
+    QAction *mActionBox;
+    QAction *mActionArea;
+    QAction *mActionDangerArea;
+    QAction *mActionClearHeight;
 private:
     void retranslateUi();
 };

@@ -452,7 +452,7 @@ void TGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             return;
 
         if(mLeftButtonDown) {
-            TBaseModel::Type currentModelType = mSceneModel->getCurretnModelType();
+            TBaseModel::Type currentModelType = mSceneModel->getCurretnModelType(); // 拿到当前的图层枚举
             if(currentModelType == TBaseModel::TILE) {
                 TTileModel *tileLayerModel = mSceneModel->getCurrentAsTileLayerModel();
                 TTile *tile = tileLayerModel->createTile(mStamp->getTileId(), mTileStampItem->pos());
@@ -566,17 +566,16 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     if(mEditMode == DEFAULT) {
         TObjectItem *autonomyObjectitem = nullptr;
-        QPointF mouseScenePos = event->scenePos();
-        TObjectItem *objectItem = getTopMostObjectItem(mouseScenePos);
+        QPointF mouseScenePos = event->scenePos();  //返回场景坐标位置
+        TObjectItem *objectItem = getTopMostObjectItem(mouseScenePos); //获取object的列表第一项 里面还快速排序了下整个列表
         if(mLastSelectedObjectItem && mLastSelectedObjectItem->needGrabMouse()) {
             autonomyObjectitem = mLastSelectedObjectItem;
         }
-        if(!autonomyObjectitem) {
+        if(!autonomyObjectitem) {   //如果为空让 把object 的第一个列表项赋给他
             if(objectItem && objectItem->autonomy())
                 autonomyObjectitem = objectItem;
         }
-        if(autonomyObjectitem)
-        {
+        if(autonomyObjectitem) { //如果不为空处理 这个项的事件
             autonomyObjectitem->mouseReleased(event);
             if(event->isAccepted())
                 return;
@@ -588,10 +587,10 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 TObjectItem *objectItem = getTopMostObjectItem(mouseScenePos);
                 if(objectItem) {
                     Qt::KeyboardModifiers modifers = event->modifiers();
-                    if(modifers&Qt::ControlModifier) {
-                        if(mLeftButtonDownPos==mouseScenePos) {
+                    if(modifers&Qt::ControlModifier) { //获取键盘如果是ctrl 多选中
+                        if(mLeftButtonDownPos==mouseScenePos) { //如果光标=当前项
                             // The mouse pos is not equal to mLeftButtonDownPos after selected items moved
-                            if(!mSelectedItems->containsObjectItem(objectItem)) {
+                            if(!mSelectedItems->containsObjectItem(objectItem)) { //如果按ctrl 选取
                                 mSelectedItems->addObjectItem(objectItem);
                                 setSelectedObjectItem(objectItem);
                             } else {
@@ -601,24 +600,24 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                                 setSelectedObjectItem(lastSelectedObjectItem);
                             }
                         }
-                    } else if(modifers&Qt::ShiftModifier) {
+                    } else if(modifers&Qt::ShiftModifier) { // 如果按Shift选取
                         if(!mLastSelectedObjectItem)
                             setSelectedObjectItem(objectItem);
-                    } else {
+                    } else {    // 默认选取
                         mSelectedItems->setObjectItem(objectItem);
                         setSelectedObjectItem(objectItem);
                     }
-                } else {
+                } else {    // 没选任何图层 选取
                     mSelectedItems->setObjectItem(nullptr);
                     setSelectedObjectItem(nullptr);
                 }
-            } else if(mAction == Selecting) {
+            } else if(mAction == Selecting) { // 选取框 矩形
                 mAction = NoAction;
 
                 QRectF selectionRect = mSelectionRectangle->boundingRect();
                 TObjectItemList objectItemList = getObjectItemList(selectionRect);
-                Qt::KeyboardModifiers modifers = event->modifiers();
-                if(modifers&Qt::ControlModifier) {
+                Qt::KeyboardModifiers modifers = event->modifiers(); // 返回发送事件的修饰符
+                if(modifers&Qt::ControlModifier) {  //获取键盘如果是ctrl 多选中
                     mSelectedItems->addObjectItems(objectItemList);
                 } else {
                     mSelectedItems->setObjectItemList(objectItemList);
@@ -626,7 +625,7 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 mSelectionRectangle->setVisible(false);
                 if(!mSelectedItems->isVisible())
                     mSelectedItems->setVisible(true);
-            } else if(mAction == Moving) {
+            } else if(mAction == Moving) { // 选取移动
                 mAction = NoAction;
                 QPointF offset = event->scenePos() - mLeftButtonDownPos;
                 if(!offset.isNull()) {
@@ -639,9 +638,9 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 mAction = NoAction;
                 QPointF offset = event->scenePos() - mLeftButtonDownPos;
                 if(!offset.isNull()) {
-                    //TRectObjectList rectObjectList = mSelectedItems->getSelectedRectObjectList();
-                    //if(!rectObjectList.isEmpty())
-                    //    pushRectResizingCommand(rectObjectList, offset);
+                   // TRectObjectList rectObjectList =  mSelectedItems->getSelectedRectObjectList();
+                   // if(!rectObjectList.isEmpty())
+                   //    pushRectResizingCommand(rectObjectList, offset);
                 }
             }
 

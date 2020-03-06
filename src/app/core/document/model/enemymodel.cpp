@@ -75,10 +75,12 @@ QVariant TEnemyModel::data(const QModelIndex &index, int role) const
 
 void TEnemyModel::onObjectInserted(const TObjectList &objectList, const QList<int> &indexList)
 {
+    mEnemyFactory->setEnemyList(mObjectList);
     emit objectInserted(convert(objectList), indexList);
 }
 
 void TEnemyModel::onObjectRemoved(const TObjectList &objectList, const QList<int> &indexList)
 {
+    mEnemyFactory->setEnemyList(mObjectList);
     emit objectRemoved(convert(objectList), indexList);
 }

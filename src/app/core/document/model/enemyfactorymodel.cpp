@@ -3,7 +3,7 @@
 
 TEnemyFactoryModel::TEnemyFactoryModel(QObject *parent) :
     TGenericModel<TEnemyFactory>(TBaseModel::ENEMY_FACTORY, parent)
-  , mCurrentIndex(-1)
+  , mCurrentIndex(0)
 {
     setName(tr("Factory"));
     setIcon(QIcon(":/scenemodel/images/factory.png"));

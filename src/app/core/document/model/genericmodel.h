@@ -11,7 +11,7 @@ class TGenericModel : public TBaseModel
 public:
     TGenericModel(Type type, QObject *parent = Q_NULLPTR) :
         TBaseModel(type, parent)
-      , mCurrentIndex(-1)
+      , mCurrentIndex(0)
     {
 
     }
