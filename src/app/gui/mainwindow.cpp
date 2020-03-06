@@ -30,6 +30,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QStyleFactory>
+#include <QDesktopServices>
 
 #include <QDesktopServices>
 
