@@ -38,6 +38,17 @@ signals:
     void pressDownCopy();
     void pressDownPaste(const QPointF &pos);
     void pressDownDelete();
+    void pressDownTop();
+    void pressDownLeft();
+    void pressDownRight();
+    void pressDownDown();
+    void pressDownHorizontal();
+    void pressDownVertical();
+    void pressDownPlat();
+    void pressDownBox();
+    void pressDownArea();
+    void pressDownDangerArea();
+    void pressDownClearHeight();
 
 private:
     TTabWidget *mTabWidget;

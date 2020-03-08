@@ -66,6 +66,16 @@ void TTabController::setCurrentDocument(TDocument *document)
     connect(mGraphicsViewContextMenu, SIGNAL(pressDownClone()), this, SLOT(slotPressDownClone()));
     connect(mGraphicsViewContextMenu, SIGNAL(pressDownCopy()), this, SIGNAL(pressDownCopy()));
     connect(mGraphicsViewContextMenu, SIGNAL(pressDownDelete()), this, SIGNAL(pressDownDelete()));
+    connect(mGraphicsViewContextMenu, SIGNAL(pressDownTop()), this, SIGNAL(pressDownTop()));
+    connect(mGraphicsViewContextMenu, SIGNAL(pressDownLeft()), this, SIGNAL(pressDownLeft()));
+    connect(mGraphicsViewContextMenu, SIGNAL(pressDownRight()), this, SIGNAL(pressDownRight()));
+    connect(mGraphicsViewContextMenu, SIGNAL(pressDownDown()), this, SIGNAL(pressDownDown()));
+    connect(mGraphicsViewContextMenu, SIGNAL(pressDownHorizontal()), this, SIGNAL(pressDownHorizontal()));
+    connect(mGraphicsViewContextMenu, SIGNAL(pressDownVertical()), this, SIGNAL(pressDownVertical()));
+    connect(mGraphicsViewContextMenu, SIGNAL(pressDownPlat()), this, SIGNAL(pressDownPlat()));
+    connect(mGraphicsViewContextMenu, SIGNAL(pressDownArea()), this, SIGNAL(pressDownArea()));
+    connect(mGraphicsViewContextMenu, SIGNAL(pressDownDangerArea()), this, SIGNAL(pressDownDangerArea()));
+    connect(mGraphicsViewContextMenu, SIGNAL(pressDownClearHeight()), this, SIGNAL(pressDownClearHeight()));
 }
 
 void TTabController::removeDocument(TDocument *document)

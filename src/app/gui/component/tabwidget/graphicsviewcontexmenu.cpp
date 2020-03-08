@@ -83,57 +83,57 @@ void TGraphicsViewContextMenu::slotActionDeleteTriggered()
 
 void TGraphicsViewContextMenu::slotActionTopTriggered()
 {
-
+    emit pressDownTop();
 }
 
 void TGraphicsViewContextMenu::slotActionLeftTriggered()
 {
-
+    emit pressDownLeft();
 }
 
 void TGraphicsViewContextMenu::slotActionRightTriggered()
 {
-
+    emit pressDownRight();
 }
 
 void TGraphicsViewContextMenu::slotActionDownTriggered()
 {
-
+    emit pressDownDown();
 }
 
 void TGraphicsViewContextMenu::slotActionHorizontalTriggered()
 {
-
+    emit pressDownHorizontal();
 }
 
 void TGraphicsViewContextMenu::slotActionVerticalTriggered()
 {
-
+    emit pressDownVertical();
 }
 
 void TGraphicsViewContextMenu::slotActionPlatTriggered()
 {
-
+    emit pressDownPlat();
 }
 
 void TGraphicsViewContextMenu::slotActionBoxTriggered()
 {
-
+    emit pressDownBox();
 }
 
 void TGraphicsViewContextMenu::slotActionAreaTriggered()
 {
-
+    emit pressDownArea();
 }
 
 void TGraphicsViewContextMenu::slotActionDangerAreaTriggered()
 {
-
+    emit pressDownDangerArea();
 }
 
 void TGraphicsViewContextMenu::slotActionClearHeightTriggered()
 {
-
+    emit pressDownClearHeight();
 }
 
 void TGraphicsViewContextMenu::retranslateUi()
