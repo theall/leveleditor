@@ -66,6 +66,7 @@
     <qresource prefix="/mapsdock">
         <file>images/tree.png</file>
         <file>images/default_thumbnail.png</file>
+        <file>images/Map.png</file>
     </qresource>
     <qresource prefix="/layersdock">
         <file>images/locked.png</file>

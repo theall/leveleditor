@@ -71,6 +71,19 @@ void TAnimationController::setCurrentDocument(TDocument *document)
     connect(graphicsScene, SIGNAL(selectedObjectChanged(TObject*, TObject*)), this, SLOT(slotOnSelectedObjectChanged(TObject*, TObject*)));
 }
 
+void TAnimationController::getCurrentObjectAttribute()
+{
+    TGraphicsScene *graphicsScene = static_cast<TGraphicsScene*>(mMainWindow->getCurrentGraphicsScene());
+    TObjectItemList objectItemList = graphicsScene->getSelectedObjectItemList();
+    TObjectList objectList;
+    for(TObjectItem *objectItem : objectItemList)
+        objectList.append(objectItem->object());
+    if(!objectList.isEmpty())
+        mMainWindow->setLabelObject(objectList.at(0)->typeString(),QString::number(objectList.length(),10));
+    else
+        mMainWindow->setLabelObject("","0");
+}
+
 TFrame *TAnimationController::createFrame(TTile *tile, TTileModel *tileModel, int tileIndex, int layerIndex, int Douration)
 {
     TFrame *frame = new TFrame(tile, tileModel);
@@ -101,6 +114,7 @@ void TAnimationController::slotOnAnimationListViewIndexPressed(int index)
 
     // Notify main controller to set property sheet to main property controller
     emit requestDisplayPropertySheet(frameModel->getPropertySheet());
+    getCurrentObjectAttribute();
 }
 
 void TAnimationController::slotOnFrameListViewIndexPressed(int index)
@@ -117,6 +131,7 @@ void TAnimationController::slotOnFrameListViewIndexPressed(int index)
 
     // Notify main controller to set property sheet to main property controller
     emit requestDisplayPropertySheet(frameModel->getFramePropertySheet(index));
+    getCurrentObjectAttribute();
 }
 
 TAnimationModel *TAnimationController::getAnimationModel() const
@@ -222,6 +237,7 @@ void TAnimationController::slotOnSelectedObjectChanged(TObject *, TObject *)
         }
         mContainer->enableNewAnimationButton(false);
     }
+    getCurrentObjectAttribute();
 }
 
 void TAnimationController::slotRequestRemoveFrames(const QList<int> &indexList)

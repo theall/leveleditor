@@ -69,13 +69,12 @@ void TObjectController::resetCurrentModel()
 
 void TObjectController::setObjectListViewModel(TBaseModel *baseModel)
 {
-    TBaseModel *basemodel = mSceneModel->getCurrentModel();
-    if(dynamic_cast<TSceneModel*>(basemodel)) {
+    if(dynamic_cast<TSceneModel*>(baseModel)) {
         mObjectListView->setModel(nullptr);
         mSubControlObjectListView->hide();
         return ;
     }
-    if(!(dynamic_cast<TEnemyFactoryModel*>(basemodel))){
+    if(!(dynamic_cast<TEnemyFactoryModel*>(baseModel))){
         setSubControlObjectListViewModel(nullptr);
         mSubControlObjectListView->hide();
     }

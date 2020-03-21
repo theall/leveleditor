@@ -5,6 +5,8 @@ TBaseModel::TBaseModel(TBaseModel::Type type, QObject *parent) :
   , mVisible(true)
   , mLocked(false)
   , mType(type)
+  , mTransparency(1.0)
+
 {
     mIcon.addFile(":/scenemodel/images/layer-image.png");
 }
@@ -121,6 +123,16 @@ void TBaseModel::onObjectRemoved(const TObjectList &, const QList<int> &)
 void TBaseModel::onObjectMove(const TObjectList &, const QList<int> &)
 {
 
+}
+
+float TBaseModel::transparency() const
+{
+    return mTransparency;
+}
+
+void TBaseModel::setTransparency(float transparency)
+{
+    mTransparency = transparency;
 }
 
 int TBaseModel::columnCount(const QModelIndex &) const

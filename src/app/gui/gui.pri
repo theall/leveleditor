@@ -161,3 +161,6 @@ FORMS += \
     $$PWD/dialogs/debugdialog.ui
 
 RESOURCES += $$PWD/resource/editor.qrc
+
+DISTFILES += \
+    $$PWD/resource/images/Map.png

@@ -3,6 +3,7 @@
 
 #include <QAction>
 #include <QToolBar>
+#include <QMenu>
 
 #include "../basedock.h"
 #include "mapsproxyview.h"
@@ -26,7 +27,6 @@ private slots:
 private:
     QAction *mActionShowTreeView;
     TMapsProxyView *mMapsProxyView;
-
     // TBaseDock interface
 public:
     void retranslateUi() Q_DECL_OVERRIDE;

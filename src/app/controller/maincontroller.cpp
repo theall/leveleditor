@@ -333,6 +333,7 @@ void TMainController::slotPressDownPaste(const QPointF &pos)
         i++;
     }
     mDocument->cmdAddObject(objectList, baseModel);
+    mObjectController->setObjectListViewModel(baseModel);
 }
 
 void TMainController::slotPressDownDelete()

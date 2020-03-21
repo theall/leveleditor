@@ -20,6 +20,8 @@ public:
     bool joint(TMainWindow *mainWindow, TCore *core) Q_DECL_OVERRIDE;
     void setCurrentDocument(TDocument *document) Q_DECL_OVERRIDE;
 
+    void getCurrentObjectAttribute();
+
 private:
     TFrame *createFrame(TTile *tile,TTileModel *tileModel, int tileIndex, int layerIndex, int Douration=1);
 signals:

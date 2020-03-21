@@ -5,6 +5,7 @@
 
 TModsTree::TModsTree(QWidget *parent) :
     QTreeView(parent)
+  , mMenu(nullptr)
 {
     setRootIsDecorated(true);//此属性保留是否显示用于展开和折叠顶级项的控件。默认情况为true
     setHeaderHidden(true);//标题隐藏 默认为false
@@ -18,6 +19,8 @@ TModsTree::TModsTree(QWidget *parent) :
     //但是，如果用户在单击某个项目时按Ctrl键，则会切换单击的项目，而所有其他项目都不会被触碰。
     //如果用户在单击项目时按Shift键，则当前项目和单击的项目之间的所有项目都将被选中或取消选中，
     //具体取决于单击的项目的状态。可以通过在多个项目上拖动鼠标来选择它们。
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),this,SLOT(slotCustomContextMenuRequested(const QPoint &)));
 }
 
 TModsTree::~TModsTree()
@@ -50,9 +53,33 @@ void TModsTree::mouseDoubleClickEvent(QMouseEvent *event)
     emit modelIndexDoubleClicked(clickedIndex);
 }
 
+void TModsTree::mousePressEvent(QMouseEvent *event)
+{
+    QTreeView::mousePressEvent(event);
+    mIndex = indexAt(event->pos());
+}
+
 void TModsTree::setModel(QAbstractItemModel *model)
 {
     QTreeView::setModel(model);
 
     expandAll();
+}
+
+void TModsTree::slotCustomContextMenuRequested(const QPoint &pos)
+{
+    if(!mMenu) {
+        mMenu = new QMenu(this);
+        connect(mMenu,SIGNAL(triggered(QAction*)),this,SLOT(slotActionTriggered(QAction*)));
+    }
+    mMenu->show();
+    mMenu->clear();
+    QAction *open = new QAction(tr("打开"), mMenu);
+    mMenu->addAction(open);
+    mMenu->popup(QCursor::pos());
+}
+
+void TModsTree::slotActionTriggered(QAction *open)
+{
+        emit modelIndexDoubleClicked(mIndex);
 }

@@ -32,12 +32,14 @@
 #include <QStyleFactory>
 #include <QDesktopServices>
 
-#include <QDesktopServices>
 
 TMainWindow::TMainWindow(QWidget *parent) :
     QMainWindow(parent)
   , ui(new Ui::MainWindow)
-  , mLabel(new QLabel(this))
+  , mLabelState(new QLabel(this))
+  , mLabelPos(new QLabel(this))
+  , mLabelObject(new QLabel(this))
+  , mLabelObjectNumber(new QLabel(this))
   , mCentralWidget(new TCentralWidget(this)) //集中 中心窗口
   , mUndoDock(new TUndoDock(this))//History
   , mMapsDock(new TMapsDock(this))//maps
@@ -123,7 +125,11 @@ TMainWindow::TMainWindow(QWidget *parent) :
     ui->menuView->insertAction(ui->actionShowBorder, mViewsAndToolbarsMenu);
     ui->menuView->insertSeparator(ui->actionShowBorder);
 
-    ui->statusBar->addWidget(mLabel);
+    ui->statusBar->addWidget(mLabelState);
+    ui->statusBar->addWidget(mLabelPos);
+    ui->statusBar->addWidget(mLabelObject);
+    ui->statusBar->addWidget(mLabelObjectNumber);
+    mLabelState->setText("Default");
     ui->statusBar->addPermanentWidget(mZoomComboBox);
 
     addDockWidget(Qt::LeftDockWidgetArea, mMapsDock);
@@ -254,6 +260,12 @@ void TMainWindow::asShow()
 
     loadConfig();
     show();
+}
+
+void TMainWindow::setLabelObject(const QString &str,const QString &number)
+{
+    mLabelObject->setText(str);
+    mLabelObjectNumber->setText(number+" objects selected");
 }
 
 void TMainWindow::on_actionOpenGame_triggered()
@@ -487,7 +499,7 @@ void TMainWindow::slotOnTabIndexChanged(int)
 
 void TMainWindow::slotOnMouseMoved(const QPointF &pos)
 {
-    mLabel->setText(tr("Pos: %1,%2").arg(pos.x()).arg(pos.y()));
+    mLabelPos->setText(tr("Pos: %1,%2").arg(pos.x()).arg(pos.y()));
 }
 
 void TMainWindow::on_actionSaveMap_triggered()
@@ -575,11 +587,13 @@ void TMainWindow::on_actionDocumentProperties_triggered()
 void TMainWindow::on_actionSelectMode_triggered()
 {
     emit onActionSelectPushed();
+    mLabelState->setText("Default");
 }
 
 void TMainWindow::on_actionInsertMode_triggered()
 {
     emit onActionInsertPushed();
+    mLabelState->setText("Insert");
 }
 
 void TMainWindow::on_actionLicense_triggered()

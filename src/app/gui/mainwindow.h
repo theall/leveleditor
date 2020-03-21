@@ -56,6 +56,7 @@ public:
     void addRecentFile(const QString &file);
     void setStatusMessage(const QString &message, int timeOut = 3000);
     void asShow();
+    void setLabelObject(const QString &str, const QString &number);
 
     TUndoDock *getUndoDock() const;
     TMapsDock *getMapsDock() const;
@@ -144,7 +145,10 @@ private:
     Ui::MainWindow *ui;
 
     QAction *mViewsAndToolbarsMenu;
-    QLabel *mLabel;
+    QLabel *mLabelState;
+    QLabel *mLabelPos;
+    QLabel *mLabelObject;
+    QLabel *mLabelObjectNumber;
     QList<QAction*> mRecentFilesAction;
 
     TCentralWidget *mCentralWidget;

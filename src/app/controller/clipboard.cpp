@@ -30,6 +30,7 @@ TObject::Type TClipboard::getType() const
 
 void TClipboard::setData(const TObjectItemList &objectItemList, TBaseModel *baseModel)
 {
+    mPointList.clear();
     mType = TObject::INVALID;
     mDataList.clear();
 

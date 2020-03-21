@@ -3,6 +3,7 @@
 
 #include <QEvent>
 #include <QTreeView>
+#include <QMenu>
 
 class TModsTree : public QTreeView
 {
@@ -15,8 +16,15 @@ public:
 private:
     void retranslateUi();
 
+    QModelIndex mIndex;
+    QMenu *mMenu;
+
 signals:
     void modelIndexDoubleClicked(const QModelIndex &index);
+
+private slots:
+    void slotCustomContextMenuRequested(const QPoint &pos);
+    void slotActionTriggered(QAction *open);
 
     // QWidget interface
 protected:
@@ -25,6 +33,7 @@ protected:
     // QWidget interface
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 
     // QAbstractItemView interface
 public:

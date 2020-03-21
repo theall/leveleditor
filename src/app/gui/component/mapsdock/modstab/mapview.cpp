@@ -3,6 +3,7 @@
 
 TMapView::TMapView(QWidget *parent) :
     QListWidget(parent)
+  , mMenu(nullptr)
 {
     setWrapping(true);
     setFlow(QListView::LeftToRight);
@@ -12,7 +13,10 @@ TMapView::TMapView(QWidget *parent) :
 
     QPixmap pixmap(96, 48);
     pixmap.fill(Qt::transparent);
+    pixmap.load(":/mapsdock/images/Map.png");
     mDefaultIcon = pixmap;
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)),this,SLOT(slotCustomContextMenuRequested(const QPoint &)));
 }
 
 TMapView::~TMapView()
@@ -51,11 +55,36 @@ void TMapView::setModel(QAbstractItemModel *model, const QModelIndex &index)
     }
 }
 
+void TMapView::slotCustomContextMenuRequested(const QPoint &pos)
+{
+    if(!mMenu) {
+        mMenu = new QMenu(this);
+        connect(mMenu,SIGNAL(triggered(QAction*)),this,SLOT(slotActionTriggered(QAction*)));
+    }
+    mMenu->show();
+    mMenu->clear();
+    QAction *open = new QAction(tr("打开"), mMenu);
+    mMenu->addAction(open);
+    mMenu->popup(QCursor::pos());
+}
+
+void TMapView::slotActionTriggered(QAction *open)
+{
+    emit modelIndexDoubleClicked(mIndex);
+}
+
 void TMapView::resizeEvent(QResizeEvent *event)
 {
     event->accept();
     setWrapping(false);
     setWrapping(true);
+}
+
+void TMapView::mousePressEvent(QMouseEvent *event)
+{
+    QListWidget::mousePressEvent(event);
+    QModelIndex clickedIndex = indexAt(event->pos());
+    mIndex = mModel->index(clickedIndex.row(), clickedIndex.column(), mParentIndex);
 }
 
 void TMapView::mouseDoubleClickEvent(QMouseEvent *event)

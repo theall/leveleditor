@@ -52,6 +52,8 @@ void TLayersController::setCurrentDocument(TDocument *document)
     if(model) {
         mLayerView->selectRow(model->getCurrentIndex());
     }
+    if(!document)
+        return;
 
     TGraphicsScene *scene = document->graphicsScene();
     for(int row : mLayerView->getSelectedRows()){
@@ -73,10 +75,13 @@ void TLayersController::slotCurrentLayerSelected(int row)
         return;
 
     mDocument->getSceneModel()->setCurrentIndex(row);
-
+    TSceneModel *sceneModel = getCurrentSceneModel();
+    TBaseModel *baseModel = sceneModel->getBaseModel(row);
+    mLayerDock->setOpacitySliderValue(baseModel?baseModel->transparency():1.0);
     TGraphicsScene *graphicsScene = mDocument->graphicsScene();
     TLayerItem *layerItem = graphicsScene->getLayerItem(row);
-    mLayerDock->setOpacitySliderValue(layerItem?layerItem->opacity():1.0);
+    layerItem->setOpacity(baseModel->transparency());
+//    mLayerDock->setOpacitySliderValue(layerItem?layerItem->opacity():1.0);
 
     // Notify main controller
     emit layerSelected(row);
@@ -88,6 +93,11 @@ void TLayersController::slotLayerOpacityChanged(const QList<int> &rows, float op
         return;
 
     TGraphicsScene *scene = mDocument->graphicsScene();
+    TSceneModel *sceneModel = getCurrentSceneModel();
+    for(int row : rows) {
+        TBaseModel *baseModel = sceneModel->getBaseModel(row);
+        baseModel->setTransparency(opacity);
+    }
     for(int row : rows) {
         TLayerItem *layerItem = scene->getLayerItem(row);
         if(layerItem) {

@@ -51,6 +51,9 @@ public:
 
     bool isTile() const;
 
+    float transparency() const;
+    void setTransparency(float transparency);
+
     virtual void insertObjects(const TObjectList &objectList, const QList<int> &indexList);
     virtual QList<int> removeObjects(const TObjectList &objectList);
     virtual QList<int> moveObjects(const TObjectList &objectList, const QList<int> &indexList);
@@ -70,6 +73,7 @@ private:
     bool mVisible;
     bool mLocked;
     Type mType;
+    float mTransparency;
 
     // QAbstractItemModel interface
 public:

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QAbstractItemModel>
+#include <QMenu>
 #include "modstab.h"
 #include "modstree.h"
 
@@ -25,10 +26,14 @@ public:
 signals:
     void modelIndexDoubleClicked(const QModelIndex &index);
 
+
+
+
 private:
     ViewMode mViewMode;
     TModsTab *mModsTab;
     TModsTree *mModsTree;
+
 };
 
 #endif // TMAPSPROXYVIEW_H
