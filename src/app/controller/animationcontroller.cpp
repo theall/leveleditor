@@ -43,6 +43,7 @@ bool TAnimationController::joint(TMainWindow *mainWindow, TCore *core)
     connect(mContainer, SIGNAL(requestAdjustFPS(int)), this, SIGNAL(requestAdjustFPS(int)));
     connect(mContainer, SIGNAL(requestPlayAnimation()), this, SIGNAL(requestPlayAnimation()));
     connect(mContainer, SIGNAL(requestStopPlayAnimation()), this, SIGNAL(requestStopPlayAnimation()));
+    connect(mContainer, SIGNAL(requestRemoveAnimations(QList<int>)), this, SLOT(slotRequestRemoveAnimations(QList<int>)));
 
     mAnimationListView = mainWindow->getAnimationDock()->getAnimationListView();
     connect(mAnimationListView, SIGNAL(indexPressed(int)), this, SLOT(slotOnAnimationListViewIndexPressed(int)));
@@ -238,6 +239,24 @@ void TAnimationController::slotOnSelectedObjectChanged(TObject *, TObject *)
         mContainer->enableNewAnimationButton(false);
     }
     getCurrentObjectAttribute();
+}
+
+void TAnimationController::slotRequestRemoveAnimations(const QList<int> &indexList)
+{
+    TAnimationModel *animationModel = static_cast<TAnimationModel*>(mAnimationListView->model());
+    TObjectList objectList;
+    for(int index : indexList) {
+        TFrameModel *frameModel = animationModel->getFrameModel(index);
+        TAnimation *animation = frameModel->animation();
+        objectList.append(animation);
+    }
+    TFrameModelList frameModelList = animationModel->frameModelList();
+    TAnimationList animationList;
+    for(TFrameModel *frameModel :frameModelList) {
+        animationList.append(frameModel->animation());
+    }
+    animationModel->setObjectList(animationList);
+   mDocument->cmdRemoveObject(objectList, animationModel);
 }
 
 void TAnimationController::slotRequestRemoveFrames(const QList<int> &indexList)

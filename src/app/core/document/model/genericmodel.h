@@ -72,6 +72,11 @@ public:
         return mObjectList;
     }
 
+    void setObjectList(const QList<T*> objectList)
+    {
+        mObjectList = objectList;
+    }
+
     T *getCurrentObject() const
     {
         if(mCurrentIndex<0 || mCurrentIndex>=mObjectList.size())

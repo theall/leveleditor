@@ -116,6 +116,8 @@ void TContainer::slotStopTriggered()
 
 void TContainer::slotRemoveAnimationTriggered()
 {
+    if(mAnimationListView->currentRow() == -1)
+        return;
     QList<int> selectedRows = mAnimationListView->getSelectedIndexes();
     if(selectedRows.size() > 0) {
         emit requestRemoveAnimations(selectedRows);

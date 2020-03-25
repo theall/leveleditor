@@ -31,6 +31,7 @@ signals:
     void requestStopPlayAnimation();
 
 private slots:
+    void slotRequestRemoveAnimations(const QList<int> &indexList);
     void slotRequestRemoveFrames(const QList<int> &indexList);
     void slotRequestMoveIndex(const QList<int> &indexList, const Dir &dir);
     void slotOnAnimationListViewIndexPressed(int index);

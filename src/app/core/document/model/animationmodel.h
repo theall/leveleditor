@@ -34,7 +34,8 @@ public:
     void readFromStream(QDataStream &stream) Q_DECL_OVERRIDE;
     void saveToStream(QDataStream &stream) const Q_DECL_OVERRIDE;
 
-    QList<int> removeFromContainer(TFrameModelList &container, TFrameModelList &objectList);
+    QList<int> removeFromContainer(TAnimationList &container, const QList<int> &indexList);
+
 
     // QAbstractItemModel interface
 public:
