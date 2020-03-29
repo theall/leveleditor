@@ -319,43 +319,48 @@ void TAssetsManager::loadAssets()
     QList<Category> stuffTypeList;
     QStringList stuffBitmapList;
     QDir stuffDir = mGfxDir.absoluteFilePath("stuff");
-    stuffDir.setFilter(QDir::Files | QDir::Hidden);
+    stuffDir.setFilter(QDir::Dirs);
     QFileInfoList stuffFileInfoList = stuffDir.entryInfoList();
-    for (int i = 0; i < stuffFileInfoList.size(); ++i) {
-        QFileInfo stuffFileInfo = stuffFileInfoList.at(i);
-        QString stuffFileName = stuffFileInfo.baseName();// "obj1_a1.bmp"
-        // Igore file name end with "_.bmp", example, "obj10_1_.bmp"
-        if(stuffFileName.endsWith('_'))
-            continue;
+    for(int j = 1; j < stuffFileInfoList.size(); ++j){
+        QFileInfo stuffFileInfo = stuffFileInfoList.at(j);
+        QString stuffNextFileName = stuffFileInfo.baseName();
+        QDir stuffNextDir = stuffDir.absoluteFilePath(stuffNextFileName);
+        QFileInfoList stuffNextFileInfoList = stuffNextDir.entryInfoList(QDir::Files | QDir::Hidden);
+        for (int i = 0; i < stuffNextFileInfoList.size(); ++i) {
+            QFileInfo stuffFileInfo = stuffNextFileInfoList.at(i);
+            QString stuffFileName = stuffFileInfo.baseName();// "obj1_a1.bmp"
+            // Igore file name end with "_.bmp", example, "obj10_1_.bmp"
+            if(stuffFileName.endsWith('_'))
+                continue;
 
-        QString stuffTypeName = extractStuffTypeFromFileName(stuffFileName).toLower();
-        if(stuffTypeName.isEmpty())
-            continue;
+            QString stuffTypeName = extractStuffTypeFromFileName(stuffFileName).toLower();
+            if(stuffTypeName.isEmpty())
+                continue;
 
-        int parentId = extractIdFromFileName(stuffFileName);
-        if(parentId == -1)
-            continue;
+            int parentId = extractIdFromFileName(stuffFileName);
+            if(parentId == -1)
+                continue;
 
-        if(stuffTypeName == "obj") {
-            // "obj1_a1.bmp"
-            stuffTypeList.append(ITEM);
-        } else if(stuffTypeName == "pt") {
-            stuffTypeList.append(CHUNK);
-        } else if(stuffTypeName == "shot") {
-            // "shot38.bmp"
-            stuffTypeList.append(SHOT);
-        } else if(stuffTypeName == "trig") {
-            stuffTypeList.append(TRIGGER);
-        } else {
-            continue;
+            if(stuffTypeName == "obj") {
+                // "obj1_a1.bmp"
+                stuffTypeList.append(ITEM);
+            } else if(stuffTypeName == "pt") {
+                stuffTypeList.append(CHUNK);
+            } else if(stuffTypeName == "shot") {
+                // "shot38.bmp"
+                stuffTypeList.append(SHOT);
+            } else if(stuffTypeName == "trig") {
+                stuffTypeList.append(TRIGGER);
+            } else {
+                continue;
+            }
+
+            int subId = extractSubIdFromFileName(stuffFileName);
+            stuffIdList.append(parentId);
+            stuffSubIdList.append(subId);
+            stuffBitmapList.append(stuffFileInfo.absoluteFilePath());
         }
-
-        int subId = extractSubIdFromFileName(stuffFileName);
-        stuffIdList.append(parentId);
-        stuffSubIdList.append(subId);
-        stuffBitmapList.append(stuffFileInfo.absoluteFilePath());
     }
-
     // Enumate tile set
     QList<int> tileSetIdList;
     QList<int> tileIdList;
