@@ -121,6 +121,15 @@ void TSelectedItem::endResizing()
     mResizeItem->endResizing();
 }
 
+QMarginsF TSelectedItem::getMarginsF() const
+{
+    QRectF objectRect = mObjectItem->boundingRect();
+    return QMarginsF(objectRect.left()-mBoundingRect.left(),
+                     objectRect.top()-mBoundingRect.top(),
+                     mBoundingRect.right()-objectRect.right(),
+                     mBoundingRect.bottom()-objectRect.bottom());
+}
+
 void TSelectedItem::slotRequestAdjustRect(const QMarginsF &margins)
 {
     if(!mObjectItem)

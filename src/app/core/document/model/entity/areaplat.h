@@ -49,7 +49,6 @@ public:
 public:
     QByteArray toByteArray(TObject *object) const;
     void loadFromByteArray(const QByteArray &byteArray);
-    void move(const QPointF &offset);
 };
 
 #endif // TAREAPLAT_H

@@ -27,6 +27,8 @@ public:
     bool startResizing();
     void endResizing();
 
+    QMarginsF getMarginsF() const;
+
 private slots:
     void slotRequestAdjustRect(const QMarginsF &margins);
     void slotObjectBoundingRectChanged(const QRectF &rect);

@@ -83,12 +83,3 @@ void TArea::loadFromByteArray(const QByteArray &byteArray)
 {
 
 }
-
-void TArea::move(const QPointF &offset)
-{
-    if(offset.isNull())
-        return;
-
-    QRectF currentRect = getRect();
-    currentRect.translate(offset);
-}

@@ -48,6 +48,8 @@ public:
     bool startResizing();
     void endResizing();
 
+    TSelectedItem *currentSelectedItem() const;
+
 protected:
     void timerEvent(QTimerEvent *event) override;
 
@@ -56,6 +58,7 @@ private:
     int mUpdateTimer;
     QRectF mBoundingRect;
     TObjectItemList mObjectItemList;
+    TSelectedItem *mCurrentSelectedItem;
     QMap<TObjectItem*, TSelectedItem*> mObjectItemMap;
     QMap<TObject*, TSelectedItem*> mObjectMap;
 

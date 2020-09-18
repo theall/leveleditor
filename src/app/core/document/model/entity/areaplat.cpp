@@ -75,12 +75,3 @@ void TAreaPlat::loadFromByteArray(const QByteArray &byteArray)
 {
 
 }
-
-void TAreaPlat::move(const QPointF &offset)
-{
-    if(offset.isNull())
-        return;
-
-    QRectF currentRect = getRect();
-    currentRect.translate(offset);
-}

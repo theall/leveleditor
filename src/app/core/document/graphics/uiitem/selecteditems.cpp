@@ -5,6 +5,7 @@
 
 TSelectedItems::TSelectedItems(QGraphicsItem *parent) :
     QGraphicsObject(parent)
+  , mCurrentSelectedItem(nullptr)
 {
     mUpdateTimer = startTimer(100);
 }
@@ -36,6 +37,8 @@ void TSelectedItems::setObjectItemList(const TObjectItemList &objectItemList)
         mObjectItemList.append(objectItem);
         mObjectItemMap.insert(objectItem, selectedItem);
         mObjectMap.insert(objectItem->object(), selectedItem);
+
+        mCurrentSelectedItem = selectedItem;
     }
     updateBoundingRect();
 }
@@ -173,6 +176,11 @@ bool TSelectedItems::startResizing()
 void TSelectedItems::endResizing()
 {
 
+}
+
+TSelectedItem *TSelectedItems::currentSelectedItem() const
+{
+    return mCurrentSelectedItem;
 }
 
 void TSelectedItems::updateBoundingRect()

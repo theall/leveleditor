@@ -626,7 +626,9 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                         setSelectedObjectItem(objectItemList.at(objectItemList.length()-1));
                 } else {
                     mSelectedItems->setObjectItemList(objectItemList);
-                    if(state)
+                    if(objectItemList.isEmpty()) {
+                        setSelectedObjectItem(nullptr);
+                    } else if(state)
                         setSelectedObjectItem(objectItemList.at(objectItemList.length()-1));
                 }
                 mSelectionRectangle->setVisible(false);
@@ -643,11 +645,12 @@ void TGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
             } else if(mAction == Resizing) {
                 mAction = NoAction;
-                QPointF offset = event->scenePos() - mLeftButtonDownPos;
-                if(!offset.isNull()) {
-                    //TRectObjectList rectObjectList = mSelectedItems->getSelectedRectObjectList();
-                    //if(!rectObjectList.isEmpty())
-                    //    pushRectResizingCommand(rectObjectList, offset);
+                TSelectedItem *currentSelectedItem = mSelectedItems->currentSelectedItem();
+                QMarginsF margins = currentSelectedItem->getMarginsF();
+                if(!margins.isNull()) {
+                    TRectObjectList rectObjectList = mSelectedItems->getSelectedRectObjectList();
+                    if(!rectObjectList.isEmpty())
+                        pushRectResizingCommand(rectObjectList, margins);
                 }
             }
 
